@@ -1,0 +1,49 @@
+# General
+
+## IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Backend
+.venv
+
+
+# Frontend
+
+## Compiled output
+frontend/dist
+frontend/tmp
+frontend/out-tsc
+frontend/bazel-out
+
+## Node
+frontend/node_modules
+frontend/npm-debug.log
+frontend/yarn-error.log
+
+## Visual Studio Code
+frontend/.vscode
+frontend/.vscode/tasks.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+## Miscellaneous
+frontend/.angular
+.sass-cache/
+frontend/connect.lock
+frontend/coverage
+frontend/libpeerconnection.log
+frontend/testem.log
+frontend/typings
+
+## System files
+.DS_Store
+Thumbs.db
