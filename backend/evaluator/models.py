@@ -5,6 +5,8 @@ from django.conf import settings
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from rest_framework.authtoken.models import Token
+from datetime import date, timedelta
+from .utils.utils_course_exercise import CourseExerciseStates as CEStates
 
 
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
@@ -93,7 +95,34 @@ class StudentCourse(models.Model):
 class CourseExercise(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    due_to = models.DateField(null=True)
+
+    @property
+    def state(self):
+        if self.due_to <= date.today() <= self.due_to + timedelta(days=14):
+            return CEStates.ACTIVE
+        if date.today() > self.due_to + timedelta(days=14):
+            return CEStates.EXPIRED
+        return CEStates.INACTIVE
 
     def __str__(self):
         return f'{self.course} - {self.exercise}'
 
+
+class Correction(models.Model):
+    class StateEnum(models.TextChoices):
+        OTHER = 'o', 'other'
+        IN_PROGRESS = 'ip', 'in progress'
+        NOT_SUBMITTED = 'ns', 'not submitted'
+        COMPLETED = 'c', 'completed'
+
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE)
+    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    draft = models.JSONField()
+
+    state = models.CharField(max_length=2, choices=StateEnum.choices, default=StateEnum.OTHER)
+
+    def __str__(self):
+        return f'{self.student} - {self.tutor} - {self.exercise}'

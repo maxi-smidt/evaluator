@@ -8,7 +8,8 @@ from .models import (Student,
                      Exercise,
                      TutorCourse,
                      StudentCourse,
-                     CourseExercise)
+                     CourseExercise,
+                     Correction)
 
 
 class TutorChangeForm(UserChangeForm):
@@ -60,3 +61,4 @@ admin.site.register(Exercise)
 admin.site.register(TutorCourse)
 admin.site.register(StudentCourse)
 admin.site.register(CourseExercise)
+admin.site.register(Correction)

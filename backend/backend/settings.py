@@ -51,9 +51,10 @@ REST_FRAMEWORK = {
     )
 }
 
-JWT_AUTH = {
-    'JWT_ALLOW_REFRESH': True,
-    'JWT_EXPIRATION_DELTA': timedelta(seconds=3600),
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ROTATE_REFRESH_TOKENS': False,
 }
 
 AUTH_USER_MODEL = 'evaluator.Tutor'
@@ -126,7 +127,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/London'
 
 USE_I18N = True
 

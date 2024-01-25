@@ -1,0 +1,9 @@
+.navbar-nav {
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
+}
+
+.navbar .d-flex {
+  flex-grow: 0;
+}

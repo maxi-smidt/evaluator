@@ -11,7 +11,8 @@
 
 # Backend
 .venv
-
+backend/db.sqlite3
+backend/initial_data.json
 
 # Frontend
 

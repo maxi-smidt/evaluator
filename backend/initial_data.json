@@ -1,0 +1,1086 @@
+[
+  {
+    "model": "evaluator.student",
+    "pk": "S0000000000",
+    "fields": {
+      "firstname": "Super",
+      "lastname": "User"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2210458000",
+    "fields": {
+      "firstname": "TestFname",
+      "lastname": "TestLname"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2210458016",
+    "fields": {
+      "firstname": "Maximilian",
+      "lastname": "Smidt"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458001",
+    "fields": {
+      "firstname": "Lili",
+      "lastname": "Albrecht"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458003",
+    "fields": {
+      "firstname": "Michael",
+      "lastname": "Bogensberger"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458005",
+    "fields": {
+      "firstname": "Magdalena",
+      "lastname": "Dorr"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458006",
+    "fields": {
+      "firstname": "Pia",
+      "lastname": "Habla"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458007",
+    "fields": {
+      "firstname": "Patrick",
+      "lastname": "Huber"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458008",
+    "fields": {
+      "firstname": "Iclal",
+      "lastname": "Ilhan"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458010",
+    "fields": {
+      "firstname": "Eva",
+      "lastname": "Kaplan"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458011",
+    "fields": {
+      "firstname": "Roxane",
+      "lastname": "Kaspar"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458012",
+    "fields": {
+      "firstname": "Katharina",
+      "lastname": "Leitner-Hanetseder"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458013",
+    "fields": {
+      "firstname": "Christoph",
+      "lastname": "Ochsenhofer"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458014",
+    "fields": {
+      "firstname": "Matthias",
+      "lastname": "Schaffer"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458015",
+    "fields": {
+      "firstname": "Natalie",
+      "lastname": "Schmidt"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458016",
+    "fields": {
+      "firstname": "Georg",
+      "lastname": "Seidlhuber"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458019",
+    "fields": {
+      "firstname": "Raphael",
+      "lastname": "Wurzer"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458021",
+    "fields": {
+      "firstname": "Laura",
+      "lastname": "Koenigsberger"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458022",
+    "fields": {
+      "firstname": "Laura",
+      "lastname": "Ziebermayr"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458024",
+    "fields": {
+      "firstname": "Iman",
+      "lastname": "Zec"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458025",
+    "fields": {
+      "firstname": "Julia",
+      "lastname": "Bodingbauer"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458026",
+    "fields": {
+      "firstname": "Florian",
+      "lastname": "Boehme"
+    }
+  },
+  {
+    "model": "evaluator.student",
+    "pk": "S2310458027",
+    "fields": {
+      "firstname": "Florian",
+      "lastname": "Zwicklbauer"
+    }
+  },
+  {
+    "model": "evaluator.tutor",
+    "pk": 1,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$gfRsoGSZ6l5rgsZ3jQKyvK$H3ObefzuFkUH3xTBdAVy5xwug7gHCBkNHhg/BPG34MY=",
+      "last_login": "2024-01-07T15:28:15.974Z",
+      "is_superuser": true,
+      "student": "S0000000000",
+      "s_number": "S0000000000",
+      "is_staff": true,
+      "is_active": true,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "evaluator.tutor",
+    "pk": 3,
+    "fields": {
+      "password": "pbkdf2_sha256$720000$wNhiuUlkuXTQBrw5sD5oyI$BuiNddfdk74jYBfhjYhVYKy/vzQnw0xGnPVAecSe1z8=",
+      "last_login": null,
+      "is_superuser": false,
+      "student": "S2210458016",
+      "s_number": "S2210458016",
+      "is_staff": false,
+      "is_active": true,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "evaluator.course",
+    "pk": 1,
+    "fields": {
+      "name": "ADS1/23"
+    }
+  },
+  {
+    "model": "evaluator.course",
+    "pk": 2,
+    "fields": {
+      "name": "DAE2/24"
+    }
+  },
+  {
+    "model": "evaluator.course",
+    "pk": 3,
+    "fields": {
+      "name": "Dummy1"
+    }
+  },
+  {
+    "model": "evaluator.course",
+    "pk": 4,
+    "fields": {
+      "name": "Dummy2"
+    }
+  },
+  {
+    "model": "evaluator.course",
+    "pk": 5,
+    "fields": {
+      "name": "Dummy3"
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 1,
+    "fields": {
+      "name": "ADS Übung 01",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 4
+            },
+            {
+              "name": "Quellcode",
+              "points": 24
+            },
+            {
+              "name": "Testfälle",
+              "points": 12
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 2",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Analyse",
+              "points": 27
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 3",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode und Testfälle",
+              "points": 27
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 2,
+    "fields": {
+      "name": "ADS Übung 02",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 17
+            },
+            {
+              "name": "Testfälle",
+              "points": 10
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 2",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 4
+            },
+            {
+              "name": "Quellcode",
+              "points": 23
+            },
+            {
+              "name": "Testfälle",
+              "points": 13
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 3",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 17
+            },
+            {
+              "name": "Testfälle",
+              "points": 10
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 3,
+    "fields": {
+      "name": "ADS Übung 03",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 15
+            },
+            {
+              "name": "Testfälle",
+              "points": 7
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 2",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 15
+            },
+            {
+              "name": "Testfälle",
+              "points": 7
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 3",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 15
+            },
+            {
+              "name": "Testfälle",
+              "points": 7
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 4",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 15
+            },
+            {
+              "name": "Testfälle",
+              "points": 7
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 4,
+    "fields": {
+      "name": "ADS Übung 04",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 11
+            },
+            {
+              "name": "Testfälle",
+              "points": 6
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 2",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 11
+            },
+            {
+              "name": "Testfälle",
+              "points": 6
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 3",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 11
+            },
+            {
+              "name": "Testfälle",
+              "points": 6
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 4",
+          "distribution": [
+            {
+              "name": "Analyse",
+              "points": 40
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 5,
+    "fields": {
+      "name": "ADS Übung 05",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 4
+            },
+            {
+              "name": "Quellcode",
+              "points": 26
+            },
+            {
+              "name": "Testfälle",
+              "points": 10
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 2",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 2
+            },
+            {
+              "name": "Quellcode",
+              "points": 12
+            },
+            {
+              "name": "Testfälle",
+              "points": 6
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 3",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 4
+            },
+            {
+              "name": "Quellcode",
+              "points": 26
+            },
+            {
+              "name": "Testfälle",
+              "points": 10
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 6,
+    "fields": {
+      "name": "ADS Übung 06",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 5
+            },
+            {
+              "name": "Quellcode",
+              "points": 28
+            },
+            {
+              "name": "Testfälle",
+              "points": 17
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 2",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 14
+            },
+            {
+              "name": "Testfälle",
+              "points": 8
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 3",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 16
+            },
+            {
+              "name": "Testfälle",
+              "points": 6
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 7,
+    "fields": {
+      "name": "ADS Übung 07",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 10
+            },
+            {
+              "name": "Quellcode",
+              "points": 40
+            },
+            {
+              "name": "Testfälle",
+              "points": 50
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 8,
+    "fields": {
+      "name": "ADS Übung 08",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 3
+            },
+            {
+              "name": "Quellcode",
+              "points": 18
+            },
+            {
+              "name": "Testfälle",
+              "points": 9
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 2",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 4
+            },
+            {
+              "name": "Quellcode",
+              "points": 20
+            },
+            {
+              "name": "Testfälle",
+              "points": 11
+            }
+          ]
+        },
+        {
+          "name": "Beispiel 3",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 4
+            },
+            {
+              "name": "Quellcode",
+              "points": 20
+            },
+            {
+              "name": "Testfälle",
+              "points": 11
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 9,
+    "fields": {
+      "name": "ADS Übung 09",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 10
+            },
+            {
+              "name": "Quellcode",
+              "points": 57
+            },
+            {
+              "name": "Testfälle",
+              "points": 33
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.exercise",
+    "pk": 10,
+    "fields": {
+      "name": "ADS Übung 10",
+      "draft": [
+        {
+          "name": "Beispiel 1",
+          "distribution": [
+            {
+              "name": "Lösungsidee",
+              "points": 10
+            },
+            {
+              "name": "Quellcode",
+              "points": 57
+            },
+            {
+              "name": "Testfälle",
+              "points": 33
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "model": "evaluator.tutorcourse",
+    "pk": 1,
+    "fields": {
+      "tutor": 3,
+      "course": 1
+    }
+  },
+  {
+    "model": "evaluator.tutorcourse",
+    "pk": 2,
+    "fields": {
+      "tutor": 3,
+      "course": 2
+    }
+  },
+  {
+    "model": "evaluator.tutorcourse",
+    "pk": 3,
+    "fields": {
+      "tutor": 3,
+      "course": 3
+    }
+  },
+  {
+    "model": "evaluator.tutorcourse",
+    "pk": 4,
+    "fields": {
+      "tutor": 3,
+      "course": 4
+    }
+  },
+  {
+    "model": "evaluator.tutorcourse",
+    "pk": 5,
+    "fields": {
+      "tutor": 3,
+      "course": 5
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 1,
+    "fields": {
+      "student": "S2210458000",
+      "course": 1,
+      "group": 1
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 2,
+    "fields": {
+      "student": "S2310458001",
+      "course": 1,
+      "group": 1
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 3,
+    "fields": {
+      "student": "S2310458025",
+      "course": 1,
+      "group": 1
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 4,
+    "fields": {
+      "student": "S2310458026",
+      "course": 1,
+      "group": 1
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 5,
+    "fields": {
+      "student": "S2310458003",
+      "course": 1,
+      "group": 1
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 6,
+    "fields": {
+      "student": "S2310458005",
+      "course": 1,
+      "group": 1
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 7,
+    "fields": {
+      "student": "S2310458006",
+      "course": 1,
+      "group": 2
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 8,
+    "fields": {
+      "student": "S2310458007",
+      "course": 1,
+      "group": 2
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 9,
+    "fields": {
+      "student": "S2310458008",
+      "course": 1,
+      "group": 2
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 10,
+    "fields": {
+      "student": "S2310458010",
+      "course": 1,
+      "group": 2
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 11,
+    "fields": {
+      "student": "S2310458011",
+      "course": 1,
+      "group": 2
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 12,
+    "fields": {
+      "student": "S2310458021",
+      "course": 1,
+      "group": 3
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 13,
+    "fields": {
+      "student": "S2310458012",
+      "course": 1,
+      "group": 3
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 14,
+    "fields": {
+      "student": "S2310458013",
+      "course": 1,
+      "group": 3
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 15,
+    "fields": {
+      "student": "S2310458014",
+      "course": 1,
+      "group": 3
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 16,
+    "fields": {
+      "student": "S2310458015",
+      "course": 1,
+      "group": 3
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 17,
+    "fields": {
+      "student": "S2310458016",
+      "course": 1,
+      "group": 4
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 18,
+    "fields": {
+      "student": "S2310458019",
+      "course": 1,
+      "group": 4
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 19,
+    "fields": {
+      "student": "S2310458024",
+      "course": 1,
+      "group": 4
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 20,
+    "fields": {
+      "student": "S2310458022",
+      "course": 1,
+      "group": 4
+    }
+  },
+  {
+    "model": "evaluator.studentcourse",
+    "pk": 21,
+    "fields": {
+      "student": "S2310458027",
+      "course": 1,
+      "group": 4
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "exercise": 1,
+      "due_to": "2023-10-28"
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 2,
+    "fields": {
+      "course": 1,
+      "exercise": 2,
+      "due_to": "2023-11-18"
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 3,
+    "fields": {
+      "course": 1,
+      "exercise": 3,
+      "due_to": "2023-12-02"
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 4,
+    "fields": {
+      "course": 1,
+      "exercise": 4,
+      "due_to": "2023-12-09"
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 5,
+    "fields": {
+      "course": 1,
+      "exercise": 5,
+      "due_to": "2023-12-23"
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 6,
+    "fields": {
+      "course": 1,
+      "exercise": 6,
+      "due_to": "2024-01-06"
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 7,
+    "fields": {
+      "course": 1,
+      "exercise": 7,
+      "due_to": "2024-01-13"
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 8,
+    "fields": {
+      "course": 1,
+      "exercise": 8,
+      "due_to": "2024-01-27"
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 9,
+    "fields": {
+      "course": 1,
+      "exercise": 9,
+      "due_to": "2024-02-10"
+    }
+  },
+  {
+    "model": "evaluator.courseexercise",
+    "pk": 10,
+    "fields": {
+      "course": 1,
+      "exercise": 10,
+      "due_to": "2024-02-17"
+    }
+  }
+]
