@@ -1,0 +1,37 @@
+{
+  "header": {
+    "btn-home": "Home",
+    "btn-todo": "Todo",
+    "btn-settings": "Settings",
+    "btn-logout": "Logout"
+  },
+  "login": {
+    "lbl-username": "Username",
+    "lbl-password": "Passwort",
+    "title": "Evaluator Login",
+    "submit": "Submit"
+  },
+  "course": {
+    "courseView": {
+      "title-assignments": "Übungsaufgaben",
+      "title-ranking": "Kurs Ranking"
+    },
+    "editView": {
+      "group": "Gruppe",
+      "inactive": "Inaktiv",
+      "btn-save": "Save"
+    },
+    "exerciseView": {
+      "group": "Group",
+      "last_name": "Nachname",
+      "first_name": "Vorname",
+      "evaluation": "Bewertung",
+      "status": "Status",
+      "action": "Aktion"
+    }
+  },
+  "homeView": {
+    "title": "Willkommen",
+    "courses": "Deine Kurse"
+  }
+}

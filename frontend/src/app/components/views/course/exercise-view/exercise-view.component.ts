@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Exercise} from "../../../../interfaces/exercise";
 import {CourseService} from "../../../../services/course.service";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute,} from "@angular/router";
+import {TranslationService} from "../../../../services/translation.service";
 
 @Component({
   selector: 'ms-exercise-view',
@@ -14,7 +15,7 @@ export class ExerciseViewComponent implements OnInit {
 
   constructor(private courseService: CourseService,
               private route: ActivatedRoute,
-              private router: Router) {
+              private translationService: TranslationService) {
     this.exercise = {
       correctedParticipants: 0,
       dueTo: new Date(),
@@ -25,12 +26,12 @@ export class ExerciseViewComponent implements OnInit {
       studentExercises: {}
     }
     this.cols = [
-      {field: 'lastName', header: 'Nachname'},
-      {field: 'firstName', header: 'Vorname'},
-      {field: 'points', header: 'Bewertung'},
-      {field: 'state', header: 'Status'},
-      {field: 'action', header: 'Action'}
-    ];
+      {field: 'lastName', header: this.translate('course.exerciseView.last_name')},
+      {field: 'firstName', header: this.translate('course.exerciseView.first_name')},
+      {field: 'points', header: this.translate('course.exerciseView.evaluation')},
+      {field: 'state', header: this.translate('course.exerciseView.status')},
+      {field: 'action', header: this.translate('course.exerciseView.action')}
+    ]
   }
 
   ngOnInit() {
@@ -42,6 +43,10 @@ export class ExerciseViewComponent implements OnInit {
         this.exercise = exercise;
       }
     });
+  }
+
+  private translate(key: string) {
+    return this.translationService.translate(key);
   }
 
   get groupNrs() {

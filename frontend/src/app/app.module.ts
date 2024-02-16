@@ -27,6 +27,8 @@ import {DragDropModule} from "primeng/dragdrop";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ToastModule} from "primeng/toast";
+import {TranslatePipe} from './pipes/translate.pipe';
+import {TranslationService} from "./services/translation.service";
 
 @NgModule({
   declarations: [
@@ -38,30 +40,32 @@ import {ToastModule} from "primeng/toast";
     UserSettingsViewComponent,
     courseComponents,
     EditViewComponent,
+    TranslatePipe,
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        BreadcrumbModule,
-        BadgeModule,
-        TableModule,
-        AccordionModule,
-        DataViewModule,
-        TagModule,
-        ButtonModule,
-        MatIconModule,
-        MatButtonModule,
-        DragDropModule,
-        ConfirmDialogModule,
-        ToastModule,
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    BreadcrumbModule,
+    BadgeModule,
+    TableModule,
+    AccordionModule,
+    DataViewModule,
+    TagModule,
+    ButtonModule,
+    MatIconModule,
+    MatButtonModule,
+    DragDropModule,
+    ConfirmDialogModule,
+    ToastModule,
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     ConfirmationService,
     MessageService,
+    TranslationService
   ],
   bootstrap: [AppComponent]
 })

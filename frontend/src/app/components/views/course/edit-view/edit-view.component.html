@@ -3,8 +3,8 @@
       *ngFor="let group of groupNrs"
       pDroppable
       (onDrop)="drop(group)">
-    <li *ngIf="group !== '-1'" class="list-group-item list-group-item-primary">Gruppe {{ group }}</li>
-    <li *ngIf="group === '-1'" class="list-group-item list-group-item-primary">Inaktiv</li>
+    <li *ngIf="group !== '-1'" class="list-group-item list-group-item-primary">{{ 'course.editView.group' | translate }} {{ group }}</li>
+    <li *ngIf="group === '-1'" class="list-group-item list-group-item-primary">{{ 'course.editView.inactive' | translate }}</li>
     <li class="list-group-item list-group-item-secondary"
         *ngFor="let student of groupedStudents[group]"
         pDraggable
@@ -16,7 +16,7 @@
 </div>
 
 <div class="text-center">
-  <button class="btn btn-primary mt-2 mb-5" (click)="onSaveBtnClick()">Save</button>
+  <button class="btn btn-primary mt-2 mb-5" (click)="onSaveBtnClick()">{{ 'course.editView.save' | translate }}</button>
 </div>
 
 <p-toast></p-toast>
