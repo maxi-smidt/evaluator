@@ -35,9 +35,9 @@ export class ExerciseViewComponent implements OnInit {
 
   ngOnInit() {
     const courseId = this.route.parent!.snapshot.params['courseId'];
-    const exerciseId = this.route.snapshot.params['exerciseId'];
+    const assignmentId = this.route.snapshot.params['assignmentId'];
 
-    this.courseService.getFullExercise(Number(courseId), Number(exerciseId)).subscribe({
+    this.courseService.getFullExercise(Number(courseId), Number(assignmentId)).subscribe({
       next: exercise => {
         this.exercise = exercise;
       }

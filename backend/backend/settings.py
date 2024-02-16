@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django_extensions',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
@@ -54,10 +55,10 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'ROTATE_REFRESH_TOKENS': False,
+    'ROTATE_REFRESH_TOKENS': True
 }
 
-AUTH_USER_MODEL = 'evaluator.Tutor'
+AUTH_USER_MODEL = 'evaluator.User'
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',

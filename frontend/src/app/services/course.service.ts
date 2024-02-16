@@ -14,8 +14,8 @@ export class CourseService extends BaseApiService {
     return this.http.get<Course>(this.baseUrl + `get-exercises?${params}`);
   }
 
-  getFullExercise(courseId: number, exerciseId: number) {
-    const params: string = `course_id=${courseId}&exercise_id=${exerciseId}`;
+  getFullExercise(courseId: number, assignmentId: number) {
+    const params: string = `course_id=${courseId}&assignment_id=${assignmentId}`;
     return this.http.get<Exercise>(this.baseUrl + `get-exercise?${params}`);
   }
 

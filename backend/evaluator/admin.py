@@ -1,64 +1,54 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-
-from .models import (Student,
+from .forms import (BaseUserChangeForm,
+                    TutorCreationForm,
+                    DegreeProgramDirectorCreationForm,
+                    CourseLeaderCreationForm)
+from .models import (User,
+                     CourseLeader,
+                     DegreeProgramDirector,
                      Tutor,
+                     DegreeProgram,
                      Course,
-                     Exercise,
-                     TutorCourse,
-                     StudentCourse,
-                     CourseExercise,
-                     Correction)
-
-
-class TutorChangeForm(UserChangeForm):
-    class Meta(UserChangeForm.Meta):
-        model = Tutor
-
-
-class TutorCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
-        model = Tutor
-        fields = ('student',)
+                     Assignment,
+                     PreviousDeduction,
+                     ClassGroup,
+                     Student,
+                     CourseInstance,
+                     Correction,
+                     AssignmentInstance,
+                     CourseEnrollment)
 
 
 class TutorAdmin(UserAdmin):
-    form = TutorChangeForm
     add_form = TutorCreationForm
+    form = BaseUserChangeForm
     model = Tutor
-    list_display = ('get_s_number', 'is_staff', 'is_active',)
-    list_filter = ('is_staff', 'is_active',)
-    fieldsets = (
-        (None, {'fields': ('student', 'password')}),
-        ('Permissions', {'fields': ('is_staff', 'is_active')}),
-    )
-    add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('student', 'password1', 'password2', 'is_staff', 'is_active')}
-         ),
-    )
-    search_fields = ('student__s_number',)
-    ordering = ('student__s_number',)
-
-    def get_s_number(self, obj):
-        return obj.student.s_number
-
-    get_s_number.admin_order_field = 'student__s_number'  # Allows column order sorting
-    get_s_number.short_description = 'S-Number'  # Renames column head
-
-    def save_model(self, request, obj, form, change):
-        if not change:  # Only set s_number when creating a new object
-            obj.s_number = obj.student.s_number
-        super().save_model(request, obj, form, change)
 
 
-admin.site.register(Student)
+class DegreeProgramDirectorAdmin(UserAdmin):
+    add_form = DegreeProgramDirectorCreationForm
+    form = BaseUserChangeForm
+    model = DegreeProgramDirector
+
+
+class CourseLeaderAdmin(UserAdmin):
+    add_form = CourseLeaderCreationForm
+    form = BaseUserChangeForm
+    model = CourseLeader
+
+
+admin.site.register(User)
+admin.site.register(CourseLeader, CourseLeaderAdmin)
+admin.site.register(DegreeProgramDirector, DegreeProgramDirectorAdmin)
 admin.site.register(Tutor, TutorAdmin)
+admin.site.register(DegreeProgram)
 admin.site.register(Course)
-admin.site.register(Exercise)
-admin.site.register(TutorCourse)
-admin.site.register(StudentCourse)
-admin.site.register(CourseExercise)
+admin.site.register(Assignment)
+admin.site.register(PreviousDeduction)
+admin.site.register(ClassGroup)
+admin.site.register(Student)
+admin.site.register(CourseInstance)
 admin.site.register(Correction)
+admin.site.register(AssignmentInstance)
+admin.site.register(CourseEnrollment)

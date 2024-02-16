@@ -14,7 +14,7 @@ export const courseRoutes: Routes = [{
   children: [
     {path: '', component: CourseViewComponent},
     {path: 'edit', component: EditViewComponent, canDeactivate: [(component: EditViewComponent) => component.checkChanges()]},
-    {path: 'exercise/:exerciseId', component: ExerciseViewComponent}
+    {path: 'exercise/:assignmentId', component: ExerciseViewComponent}
   ]
 }]
 

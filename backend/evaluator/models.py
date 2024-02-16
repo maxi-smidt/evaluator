@@ -1,128 +1,265 @@
-from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
+from datetime import timedelta
+from django.utils import timezone
+from enum import Enum
+from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import AbstractUser
 from django.db import models
-from django.conf import settings
-from django.dispatch import receiver
-from django.db.models.signals import post_save
-from rest_framework.authtoken.models import Token
-from datetime import date, timedelta
-from .utils.utils_course_exercise import CourseExerciseStates as CEStates
 
 
-@receiver(post_save, sender=settings.AUTH_USER_MODEL)
-def create_auth_token(sender, instance=None, created=False, **kwargs):
-    if created:
-        Token.objects.create(user=instance)
-
-
-class Student(models.Model):
-    s_number = models.CharField(max_length=11, primary_key=True)
-    firstname = models.CharField(max_length=25)
-    lastname = models.CharField(max_length=25)
-
-    def __str__(self):
-        return f'({self.s_number}) - {self.firstname} {self.lastname}'
-
-
-class TutorManager(BaseUserManager):
-    def create_user(self, s_number, password, **extra_fields):
-        if not s_number:
-            raise ValueError('The S-Number must be set')
-        student = Student.objects.get(s_number=s_number)
-        user = self.model(s_number=s_number, student=student, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, s_number, password, **extra_fields):
+class UserManager(BaseUserManager):
+    def create_superuser(self, username, email=None, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superuser must have is_staff=True.')
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('Superuser must have is_superuser=True.')
 
-        return self.create_user(s_number, password, **extra_fields)
+        if email:
+            email = self.normalize_email(email)
+
+        user = self.model(username=username, email=email, **extra_fields)
+        user.set_password(password)
+        user.save(using=self._db)
+        return user
 
 
-class Tutor(AbstractBaseUser, PermissionsMixin):
-    student = models.OneToOneField(Student, on_delete=models.CASCADE)
-    s_number = models.CharField(max_length=11, unique=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
+class User(AbstractUser):
+    class Role(models.TextChoices):
+        ADMIN = "ADMIN", "Admin"
+        DPD = "DEGREE_PROGRAM_DIRECTOR", "Degree Program Director"
+        CL = "COURSE_LEADER", "Course Leader"
+        TUTOR = "TUTOR", "Tutor"
 
-    objects = TutorManager()
+    base_role = Role.ADMIN
 
-    USERNAME_FIELD = 's_number'
-    REQUIRED_FIELDS = []
+    role = models.CharField(max_length=50, choices=Role.choices)
+
+    objects = UserManager()
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            self.role = self.base_role
+            super().save(*args, **kwargs)
+
+
+class CourseLeaderManager(BaseUserManager):
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(role=User.Role.CL)
+
+
+class CourseLeader(User):
+    base_role = User.Role.CL
+    course_leader = CourseLeaderManager()
+
+    class Meta:
+        proxy = True
+
+
+class DegreeProgramDirectorManager(BaseUserManager):
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(role=User.Role.DPD)
+
+
+class DegreeProgramDirector(User):
+    base_role = User.Role.DPD
+    degree_program_director = DegreeProgramDirectorManager()
+
+    class Meta:
+        proxy = True
+
+
+class TutorManager(BaseUserManager):
+    def get_queryset(self, *args, **kwargs):
+        return super().get_queryset(*args, **kwargs).filter(role=User.Role.TUTOR)
+
+
+class Tutor(User):
+    base_role = User.Role.TUTOR
+    tutor = TutorManager()
+
+    class Meta:
+        proxy = True
+
+
+class DegreeProgram(models.Model):
+    name = models.CharField(max_length=50,
+                            primary_key=True)
+    abbreviation = models.CharField(max_length=5,
+                                    unique=True)
+    dp_director = models.ForeignKey(DegreeProgramDirector,
+                                    on_delete=models.SET_NULL,
+                                    null=True)
 
     def __str__(self):
-        return f'{self.student} (Tutor)'
+        return f"{self.abbreviation} ({self.dp_director})"
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=50)
+    abbreviation = models.CharField(max_length=5,
+                                    unique=True)
+    degree_program = models.ForeignKey(DegreeProgram,
+                                       on_delete=models.CASCADE)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['name', 'degree_program'], name='course_pk')
+        ]
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.abbreviation} ({self.name})"
 
 
-class Exercise(models.Model):
-    name = models.CharField(max_length=30)
-    draft = models.JSONField()
+class Assignment(models.Model):
+    nr = models.IntegerField(null=False)
+    name = models.CharField(max_length=50,
+                            null=False)
+    draft = models.JSONField(null=False)
+    course = models.ForeignKey(Course,
+                               on_delete=models.CASCADE,
+                               null=False)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['nr', 'course'], name='assignment_pk')
+        ]
 
     def __str__(self):
-        return f'{self.name}'
+        return f"{self.name}"
 
 
-class TutorCourse(models.Model):
-    tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+class PreviousDeduction(models.Model):
+    exercise_name = models.CharField(max_length=50,
+                                     null=False)
+    message = models.CharField(max_length=200,
+                               null=False)
+    points = models.DecimalField(decimal_places=2,
+                                 max_digits=4)
+    assignment = models.ForeignKey(Assignment,
+                                   on_delete=models.CASCADE)
+
+
+class ClassGroup(models.Model):
+    start_year = models.IntegerField(null=False)
+    degree_program = models.ForeignKey(DegreeProgram,
+                                       on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.tutor} - {self.course}'
+        return f"{self.degree_program} ({self.start_year})"
 
 
-class StudentCourse(models.Model):
+class Student(models.Model):
+    id = models.CharField(max_length=11,
+                          primary_key=True)
+    first_name = models.CharField(max_length=50,
+                                  null=False)
+    last_name = models.CharField(max_length=50,
+                                 null=False)
+    class_group = models.ForeignKey(ClassGroup,
+                                    on_delete=models.SET_NULL,
+                                    null=True)
+
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} ({self.id})"
+
+
+class CourseInstance(models.Model):
+    year = models.IntegerField(null=False)
+    course = models.ForeignKey(Course,
+                               on_delete=models.CASCADE)
+    course_leaders = models.ManyToManyField(CourseLeader,
+                                            related_name="ci_course_leaders")
+    students = models.ManyToManyField(Student,
+                                      through='CourseEnrollment')
+    tutors = models.ManyToManyField(Tutor,
+                                    related_name='ci_tutors')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['year', 'course'], name='course_instance_pk')
+        ]
+
+    def __str__(self):
+        return f"{self.course} ({self.year})"
+
+
+class CourseEnrollment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    group = models.IntegerField(default=0)
+    course_instance = models.ForeignKey(CourseInstance, on_delete=models.CASCADE)
+    group = models.IntegerField(null=False, default=0)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['student', 'course_instance'], name='course_enrollment_pk')
+        ]
 
     def __str__(self):
-        return f'{self.student} - {self.course}'
+        return f"{self.student} - {self.course_instance}"
 
 
-class CourseExercise(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    due_to = models.DateField(null=True)
+class AssignmentInstance(models.Model):
+    class Status(Enum):
+        INACTIVE = "inactive"
+        ACTIVE = "active"
+        EXPIRED = "expired"
+
+    assignment = models.ForeignKey(Assignment,
+                                   on_delete=models.CASCADE)
+    course_instance = models.ForeignKey(CourseInstance,
+                                        on_delete=models.CASCADE,
+                                        related_name="assignment_instances")
+    due_to = models.DateTimeField()
 
     @property
-    def state(self):
-        if self.due_to <= date.today() <= self.due_to + timedelta(days=14):
-            return CEStates.ACTIVE
-        if date.today() > self.due_to + timedelta(days=14):
-            return CEStates.EXPIRED
-        return CEStates.INACTIVE
+    def status(self):
+        if self.due_to <= timezone.now() <= self.due_to + timedelta(days=14):
+            return self.Status.ACTIVE.name
+        if timezone.now() > self.due_to + timedelta(days=14):
+            return self.Status.EXPIRED.name
+        return self.Status.INACTIVE.name
+
+    class Meta:
+        unique_together = ('assignment', 'course_instance')
+
+    def save(self, *args, **kwargs):
+        if self.assignment.course != self.course_instance.course:
+            raise ValueError("Assignment must be related to the same course as the CourseInstance")
+        super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.course} - {self.exercise}'
+        return f"{self.assignment.name} - {self.course_instance.year}"
 
 
 class Correction(models.Model):
-    class StateEnum(models.TextChoices):
-        OTHER = 'o', 'other'
-        IN_PROGRESS = 'ip', 'in progress'
-        NOT_SUBMITTED = 'ns', 'not submitted'
-        COMPLETED = 'c', 'completed'
+    class Status(models.TextChoices):
+        NOT_SUBMITTED = "NOT_SUBMITTED", "not submitted"
+        CORRECTED = "CORRECTED", "corrected"
+        IN_PROGRESS = "IN_PROGRESS", "in progress"
+        UNDEFINED = "UNDEFINED", "undefined"
 
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE)
-    exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)
-    draft = models.JSONField()
-
-    state = models.CharField(max_length=2, choices=StateEnum.choices, default=StateEnum.OTHER)
+    student = models.ForeignKey(Student,
+                                on_delete=models.SET_NULL,
+                                null=True,
+                                related_name="co_student")
+    tutor = models.ForeignKey(Student,
+                              on_delete=models.SET_NULL,
+                              null=True,
+                              related_name='co_tutor')
+    assignment_instance = models.ForeignKey(AssignmentInstance,
+                                            on_delete=models.SET_NULL,
+                                            null=True,
+                                            related_name="co_assignment_instance")
+    expense = models.DurationField(null=True)
+    status = models.CharField(max_length=50,
+                              choices=Status,
+                              null=False,
+                              default=Status.UNDEFINED)
+    points = models.DecimalField(decimal_places=2,
+                                 max_digits=4,
+                                 null=True)
+    draft = models.JSONField(null=True)
 
     def __str__(self):
-        return f'{self.student} - {self.tutor} - {self.exercise}'
+        return f"{self.student} - {self.assignment_instance} - {self.tutor} - {self.status}"

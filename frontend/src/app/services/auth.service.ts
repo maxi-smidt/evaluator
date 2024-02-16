@@ -7,19 +7,24 @@ import {BaseApiService} from "./base-api.service";
 })
 export class AuthService extends BaseApiService {
   private currentUserSubject: BehaviorSubject<any> =
-    new BehaviorSubject<any>(localStorage.getItem('currentUser')
-      ? JSON.parse(localStorage.getItem('currentUser')!)
-      : null);
+    new BehaviorSubject<any>(this.token);
 
   private isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   private isSuperUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
-  login(s_number: string, password: string) {
-    console.log("login (Auth a)")
-    return this.http.post<any>(this.baseUrl + 'token/', {s_number, password})
-      .pipe(map(user => {
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
+  login(username: string, password: string) {
+    return this.http.post<any>(this.baseUrl + 'token/', {username, password})
+      .pipe(map(token => {
+        this.token = token;
+        this.currentUserSubject.next(token);
+      }));
+  }
+
+  refreshToken() {
+    return this.http.post<any>(this.baseUrl + 'token/refresh/', {'refresh': this.refToken})
+      .pipe(map(token => {
+        this.token = token;
+        this.currentUserSubject.next(token);
       }));
   }
 
@@ -68,11 +73,35 @@ export class AuthService extends BaseApiService {
     );
   }
 
-  get isLoggedIn(): boolean {
+  isLoggedIn(): boolean {
     return this.isUserLoggedIn.value;
   }
 
-  get isSuperLoggedIn(): boolean {
+  isSuperLoggedIn(): boolean {
     return this.isSuperUserLoggedIn.value;
+  }
+
+  get token() {
+    return localStorage.getItem('currentUser')
+      ? JSON.parse(localStorage.getItem('currentUser')!)
+      : null
+  }
+
+  get accessToken() {
+    return this.getToken('access');
+  }
+
+  get refToken() {
+    return this.getToken('refresh');
+  }
+
+  private getToken(type: string) {
+    return localStorage.getItem('currentUser')
+      ? JSON.parse(localStorage.getItem('currentUser')!)[type]
+      : null
+  }
+
+  set token(token: any) {
+    localStorage.setItem('currentUser', JSON.stringify(token));
   }
 }

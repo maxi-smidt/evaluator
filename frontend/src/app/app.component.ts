@@ -13,10 +13,10 @@ export class AppComponent {
   }
 
   get isLoggedIn(): boolean {
-    return this.authService.isLoggedIn;
+    return this.authService.isLoggedIn();
   }
 
   get isSuperUserLoggedIn(): boolean {
-    return this.authService.isSuperLoggedIn;
+    return this.authService.isSuperLoggedIn();
   }
 }
