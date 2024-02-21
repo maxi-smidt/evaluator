@@ -1,9 +1,9 @@
 from datetime import timedelta
 from django.utils import timezone
-from enum import Enum
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from enum import Enum
 
 
 class UserManager(BaseUserManager):
@@ -120,6 +120,8 @@ class Assignment(models.Model):
     course = models.ForeignKey(Course,
                                on_delete=models.CASCADE,
                                null=False)
+    points = models.IntegerField(null=False,
+                                 default=100)
 
     class Meta:
         constraints = [
@@ -145,6 +147,7 @@ class ClassGroup(models.Model):
     start_year = models.IntegerField(null=False)
     degree_program = models.ForeignKey(DegreeProgram,
                                        on_delete=models.CASCADE)
+    # TODO unique constraint
 
     def __str__(self):
         return f"{self.degree_program} ({self.start_year})"
@@ -175,6 +178,8 @@ class CourseInstance(models.Model):
                                       through='CourseEnrollment')
     tutors = models.ManyToManyField(Tutor,
                                     related_name='ci_tutors')
+    assignments = models.ManyToManyField(Assignment,
+                                         through='AssignmentInstance')
 
     class Meta:
         constraints = [
@@ -243,7 +248,7 @@ class Correction(models.Model):
                                 on_delete=models.SET_NULL,
                                 null=True,
                                 related_name="co_student")
-    tutor = models.ForeignKey(Student,
+    tutor = models.ForeignKey(Tutor,
                               on_delete=models.SET_NULL,
                               null=True,
                               related_name='co_tutor')
@@ -257,7 +262,7 @@ class Correction(models.Model):
                               null=False,
                               default=Status.UNDEFINED)
     points = models.DecimalField(decimal_places=2,
-                                 max_digits=4,
+                                 max_digits=5,
                                  null=True)
     draft = models.JSONField(null=True)
 

@@ -1,6 +1,6 @@
-import {BaseExercise} from "./base-exercise";
+import {BaseAssignment} from "./base-assignment";
 import {BaseStudent} from "./base-student";
 
-export interface Exercise extends BaseExercise {
+export interface Assignment extends BaseAssignment {
   studentExercises: { [groupNr: string]: BaseStudent[] };
 }

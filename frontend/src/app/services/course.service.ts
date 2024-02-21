@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {BaseApiService} from "./base-api.service";
 import {Course} from "../interfaces/course";
-import {Exercise} from "../interfaces/exercise";
+import {Assignment} from "../interfaces/assignment";
 import {BaseStudent} from "../interfaces/base-student";
 
 @Injectable({
@@ -16,7 +16,7 @@ export class CourseService extends BaseApiService {
 
   getFullExercise(courseId: number, assignmentId: number) {
     const params: string = `course_id=${courseId}&assignment_id=${assignmentId}`;
-    return this.http.get<Exercise>(this.baseUrl + `get-exercise?${params}`);
+    return this.http.get<Assignment>(this.baseUrl + `get-exercise?${params}`);
   }
 
   getStudentsInGroupsByCourse(courseId: number) {

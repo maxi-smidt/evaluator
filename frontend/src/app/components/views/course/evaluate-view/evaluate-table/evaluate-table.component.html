@@ -1,0 +1,39 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z0 evaluation-table">
+  <ng-container matColumnDef="text">
+    <th mat-header-cell *matHeaderCellDef>{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
+    <td mat-cell *matCellDef="let element">
+      <p-editor [(ngModel)]="element.text" [style]="{ height: '320px' }"></p-editor>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="points">
+    <th mat-header-cell *matHeaderCellDef>{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
+    <td mat-cell *matCellDef="let element">
+      <input type="number"
+             class="points-col"
+             [(ngModel)]="element['points']"
+             max="20"
+             min="-100"
+      >
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef></th>
+    <td mat-cell *matCellDef="let i = index">
+      <button mat-icon-button color="warn" (click)="deleteRow(i)" class="action-col">
+        <mat-icon>close</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+
+<div class="row justify-content-center mt-2">
+  <button mat-mini-fab color="primary" (click)="addRow()">
+    <mat-icon>add</mat-icon>
+  </button>
+</div>
+

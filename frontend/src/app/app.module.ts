@@ -29,6 +29,10 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ToastModule} from "primeng/toast";
 import {TranslatePipe} from './pipes/translate.pipe';
 import {TranslationService} from "./services/translation.service";
+import {EvaluateViewComponent} from './components/views/course/evaluate-view/evaluate-view.component';
+import {EvaluateTableComponent} from "./components/views/course/evaluate-view/evaluate-table/evaluate-table.component";
+import {MatTableModule} from "@angular/material/table";
+import {EditorModule} from 'primeng/editor';
 
 @NgModule({
   declarations: [
@@ -41,6 +45,8 @@ import {TranslationService} from "./services/translation.service";
     courseComponents,
     EditViewComponent,
     TranslatePipe,
+    EvaluateViewComponent,
+    EvaluateTableComponent
   ],
   imports: [
     BrowserModule,
@@ -60,6 +66,8 @@ import {TranslationService} from "./services/translation.service";
     DragDropModule,
     ConfirmDialogModule,
     ToastModule,
+    MatTableModule,
+    EditorModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

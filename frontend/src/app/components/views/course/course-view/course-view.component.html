@@ -13,11 +13,11 @@
         class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
         *ngFor="let exercise of course.exercises"
         [ngClass]="getExerciseStateClass(exercise)"
-        (click)="onListExerciseClick(exercise)">
+        (click)="onAssignmentClick(exercise)">
         {{ exercise.name }}
-        <span>
-            <p-badge [value]="(exercise.maxParticipants - exercise.correctedParticipants).toString()"></p-badge>
-          </span>
+        <span *ngIf="exercise.state != 'INACTIVE' && (exercise.maxParticipants - exercise.correctedParticipants) != 0">
+          <p-badge [value]="(exercise.maxParticipants - exercise.correctedParticipants).toString()"></p-badge>
+        </span>
       </li>
     </ul>
 

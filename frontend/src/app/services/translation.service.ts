@@ -16,7 +16,6 @@ export class TranslationService {
   loadLanguage(language: string): Observable<any> {
     return this.http.get(`/assets/i18n/${language}.json`).pipe(
       tap((translations: any) => {
-        console.log('load');
         this.translations = translations;
       })
     );
@@ -25,7 +24,6 @@ export class TranslationService {
   translate(key: string): string {
     const keys = key.split('.');
     let result = this.translations;
-    console.log(key);
 
     for (let k of keys) {
       result = result[k];

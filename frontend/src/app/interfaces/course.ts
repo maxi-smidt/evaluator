@@ -1,6 +1,6 @@
 import {BaseCourse} from "./base-course";
-import {BaseExercise} from "./base-exercise";
+import {BaseAssignment} from "./base-assignment";
 
 export interface Course extends BaseCourse {
-  exercises: BaseExercise[]
+  exercises: BaseAssignment[]
 }

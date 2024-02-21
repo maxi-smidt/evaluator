@@ -1,0 +1,41 @@
+.evaluation-table {
+    width: 100%;
+    border-collapse: separate;
+    border-radius: 5px;
+    border-style: solid;
+    border-color: #b0bec5;
+    border-width: 2px;
+}
+
+.mat-column-text {
+    width: 80%;
+    text-align: left;
+}
+
+.mat-column-points {
+    width: 7%;
+    text-align: left;
+}
+
+.mat-column-action {
+    width: 10%;
+    text-align: left;
+}
+
+.points-col {
+    width: 100%;
+    text-align: center;
+}
+
+.action-col {
+    width: 100%;
+}
+
+.red-text {
+  color: red;
+}
+
+textarea {
+    width: 100%;
+    overflow-wrap: break-word;
+}

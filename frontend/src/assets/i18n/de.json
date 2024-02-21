@@ -21,13 +21,20 @@
       "inactive": "Inaktiv",
       "btn-save": "Save"
     },
-    "exerciseView": {
+    "assignmentView": {
       "group": "Group",
       "last_name": "Nachname",
       "first_name": "Vorname",
       "evaluation": "Bewertung",
       "status": "Status",
       "action": "Aktion"
+    },
+    "evaluateView": {
+      "annotations": "Anmerkungen",
+      "evaluateTable": {
+        "points": "Punkte",
+        "annotation": "Anmerkung"
+      }
     }
   },
   "homeView": {

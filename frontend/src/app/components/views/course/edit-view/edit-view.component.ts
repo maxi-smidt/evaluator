@@ -48,7 +48,6 @@ export class EditViewComponent implements OnInit {
 
   dragStart(student: BaseStudent, group: string) {
     this.draggedStudent = {student: student, group: Number(group)};
-    console.log(this.draggedStudent);
   }
 
   drop(groupNr: string) {

@@ -1,4 +1,4 @@
-export interface BaseExercise {
+export interface BaseAssignment {
   id: number,
   name: string,
   dueTo: Date,

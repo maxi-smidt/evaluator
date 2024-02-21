@@ -1,0 +1,29 @@
+<h3>{{ correction.assignmentName }} - {{ correction.studentFullName }}</h3>
+
+<h4>{{ 'course.evaluateView.annotations' | translate }}</h4>
+
+<app-evaluate-table [tableData]="correction.draft.annotations"></app-evaluate-table>
+
+<div *ngFor="let exercise of correction.draft.exercise">
+  <h4> {{ exercise.name }} </h4>
+
+  <div *ngFor="let sub_exercise of exercise.sub">
+    <h6> {{ sub_exercise.name }} </h6>
+    <app-evaluate-table [tableData]="sub_exercise.notes"></app-evaluate-table>
+  </div>
+</div>
+
+<button mat-flat-button color="primary" class=""
+        (click)="onDownloadBtnClick()">
+  Download
+</button>
+
+<button mat-flat-button color="primary" class=""
+        (click)="onSaveFinishedBtnClick()">
+  Save (finished)
+</button>
+
+<button mat-flat-button color="primary" class=""
+        (click)="onSaveUnFinishedBtnClick()">
+  Save (unfinished)
+</button>

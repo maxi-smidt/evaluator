@@ -16,16 +16,18 @@ def get_full_assignment(ai: AssignmentInstance):
              'firstName': enr.student.first_name,
              'lastName': enr.student.last_name,
              'state': correction.status if correction else Correction.Status.UNDEFINED,
-             'points': correction.points if correction else 0
+             'points': correction.points if correction else None
              }
         )
     grouped_students = dict(grouped_students)
 
-    full_course = {'id': ai.id,
-                   'name': ai.assignment.name,
-                   'dueTo': ai.due_to,
-                   'state': ai.status,
-                   'maxParticipants': ai.course_instance.courseenrollment_set.count(),
-                   'correctedParticipants': ai.co_assignment_instance.filter(status=Correction.Status.CORRECTED).count(),
-                   'studentExercises': grouped_students}
-    return json.dumps(full_course, default=str)
+    full_assignment = {'id': ai.id,
+                       'courseId': ai.course_instance.id,
+                       'name': ai.assignment.name,
+                       'dueTo': ai.due_to,
+                       'state': ai.status,
+                       'maxParticipants': ai.course_instance.courseenrollment_set.count(),
+                       'correctedParticipants': ai.co_assignment_instance.filter(
+                           status=Correction.Status.CORRECTED).count(),
+                       'studentExercises': grouped_students}
+    return json.dumps(full_assignment, default=str)

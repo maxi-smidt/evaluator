@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BaseExercise} from "../../../../interfaces/base-exercise";
+import {BaseAssignment} from "../../../../interfaces/base-assignment";
 import {CourseService} from "../../../../services/course.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Course} from "../../../../interfaces/course";
@@ -27,7 +27,7 @@ export class CourseViewComponent implements OnInit {
     })
   }
 
-  getExerciseStateClass(bE: BaseExercise) {
+  getExerciseStateClass(bE: BaseAssignment) {
     if (bE.correctedParticipants === bE.maxParticipants) {
       return 'list-group-item-primary';
     }
@@ -42,8 +42,9 @@ export class CourseViewComponent implements OnInit {
     }
   }
 
-  onListExerciseClick(exercise: BaseExercise) {
-    this.router.navigate(['exercise', exercise.id, {courseId: this.course.id}], {relativeTo: this.route}).then();
+  onAssignmentClick(assignment: BaseAssignment) {
+    console.log(assignment);
+    this.router.navigate(['assignment', assignment.id], {relativeTo: this.route}).then();
   }
 
   onEditBtnClick() {
