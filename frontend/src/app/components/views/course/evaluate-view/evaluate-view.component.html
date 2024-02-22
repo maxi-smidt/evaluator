@@ -1,29 +1,29 @@
-<h3>{{ correction.assignmentName }} - {{ correction.studentFullName }}</h3>
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+<p-contextMenu [model]="contextMenuItems" [global]="true"></p-contextMenu>
+
+<h3>{{ correction.assignmentName }} - {{ correction.studentFullName }} | {{ totalPoints }}</h3>
 
 <h4>{{ 'course.evaluateView.annotations' | translate }}</h4>
 
-<app-evaluate-table [tableData]="correction.draft.annotations"></app-evaluate-table>
+<ms-evaluate-table [tableData]="correction.draft.annotations"
+                   [defaultPoints]="0"
+                   (totalPoints)="updateAnnotationPoints($event)">
+</ms-evaluate-table>
 
-<div *ngFor="let exercise of correction.draft.exercise">
-  <h4> {{ exercise.name }} </h4>
+@for (exercise of correction.draft.exercise; track exercise.name) {
+  <h4> {{ exercise.name }} | ({{ exercisePoints[exercise.name] }} / {{ getTotalExercisePoints(exercise.name) }}) </h4>
 
-  <div *ngFor="let sub_exercise of exercise.sub">
-    <h6> {{ sub_exercise.name }} </h6>
-    <app-evaluate-table [tableData]="sub_exercise.notes"></app-evaluate-table>
-  </div>
-</div>
+  @for (sub_exercise of exercise.sub; track sub_exercise.name) {
+    <h6> {{ sub_exercise.name }} | ({{ subExercisePoints[sub_exercise.name] }} / {{ sub_exercise.points }})</h6>
+    <ms-evaluate-table [tableData]="sub_exercise.notes"
+                       [defaultPoints]="sub_exercise.points"
+                       (totalPoints)="updateSubExercisePoints($event, sub_exercise.name, exercise.name)">
+    </ms-evaluate-table>
+  }
+}
 
-<button mat-flat-button color="primary" class=""
-        (click)="onDownloadBtnClick()">
-  Download
-</button>
-
-<button mat-flat-button color="primary" class=""
-        (click)="onSaveFinishedBtnClick()">
-  Save (finished)
-</button>
-
-<button mat-flat-button color="primary" class=""
-        (click)="onSaveUnFinishedBtnClick()">
-  Save (unfinished)
-</button>
+<p-dialog [(visible)]="expenseDialogVisible">
+  <label for="expense" class="form-label">{{ 'course.evaluateView.setExpense' | translate }}</label>
+  <input type="number" class="form-control" id="expense" [(ngModel)]="correction.expense">
+</p-dialog>

@@ -1,27 +1,26 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z0 evaluation-table">
-  <ng-container matColumnDef="text">
-    <th mat-header-cell *matHeaderCellDef>{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
-    <td mat-cell *matCellDef="let element">
-      <p-editor [(ngModel)]="element.text" [style]="{ height: '320px' }"></p-editor>
+<table mat-table [dataSource]="dataSource" class="evaluation-table">
+  <ng-container matColumnDef="text" class="text">
+    <th mat-header-cell *matHeaderCellDef class="text">{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
+    <td mat-cell *matCellDef="let element" class="text">
+      <p-editor [(ngModel)]="element.text"></p-editor>
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="points">
-    <th mat-header-cell *matHeaderCellDef>{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
-    <td mat-cell *matCellDef="let element">
-      <input type="number"
-             class="points-col"
-             [(ngModel)]="element['points']"
-             max="20"
-             min="-100"
-      >
+  <ng-container matColumnDef="points" class="points">
+    <th mat-header-cell *matHeaderCellDef class="points">{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
+    <td mat-cell *matCellDef="let element" class="points">
+      <p-inputNumber [size]="1" [min]="defaultPoints != 0 ? defaultPoints * -1 : undefined"
+        [(ngModel)]="element['points']" [showButtons]="true" buttonLayout="horizontal" [step]="1"
+        decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success"
+        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" (onInput)="onInputChange()">
+      </p-inputNumber>
     </td>
   </ng-container>
 
-  <ng-container matColumnDef="action">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let i = index">
-      <button mat-icon-button color="warn" (click)="deleteRow(i)" class="action-col">
+  <ng-container matColumnDef="action" class="action">
+    <th mat-header-cell *matHeaderCellDef class="action"></th>
+    <td mat-cell *matCellDef="let i = index" class="action">
+      <button mat-icon-button color="warn" (click)="deleteRow(i); onInputChange()">
         <mat-icon>close</mat-icon>
       </button>
     </td>

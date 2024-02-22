@@ -34,7 +34,8 @@
       "evaluateTable": {
         "points": "Punkte",
         "annotation": "Anmerkung"
-      }
+      },
+      "setExpense": "Zeitaufwand in Stunden"
     }
   },
   "homeView": {

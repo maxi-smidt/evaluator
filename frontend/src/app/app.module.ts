@@ -6,7 +6,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './components/login/login.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HomeViewComponent} from './components/views/home-view/home-view.component';
 import {JwtInterceptor} from "./interceptors/jwt.interceptor";
 import {AdminViewComponent} from './components/views/admin-view/admin-view.component';
@@ -33,6 +33,11 @@ import {EvaluateViewComponent} from './components/views/course/evaluate-view/eva
 import {EvaluateTableComponent} from "./components/views/course/evaluate-view/evaluate-table/evaluate-table.component";
 import {MatTableModule} from "@angular/material/table";
 import {EditorModule} from 'primeng/editor';
+import {InputNumberModule} from "primeng/inputnumber";
+import {KnobModule} from "primeng/knob";
+import {SpeedDialModule} from "primeng/speeddial";
+import {ContextMenuModule} from "primeng/contextmenu";
+import {DialogModule} from "primeng/dialog";
 
 @NgModule({
   declarations: [
@@ -48,27 +53,33 @@ import {EditorModule} from 'primeng/editor';
     EvaluateViewComponent,
     EvaluateTableComponent
   ],
-  imports: [
-    BrowserModule,
-    BrowserAnimationsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    BreadcrumbModule,
-    BadgeModule,
-    TableModule,
-    AccordionModule,
-    DataViewModule,
-    TagModule,
-    ButtonModule,
-    MatIconModule,
-    MatButtonModule,
-    DragDropModule,
-    ConfirmDialogModule,
-    ToastModule,
-    MatTableModule,
-    EditorModule
-  ],
+    imports: [
+        BrowserModule,
+        BrowserAnimationsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        BreadcrumbModule,
+        BadgeModule,
+        TableModule,
+        AccordionModule,
+        DataViewModule,
+        TagModule,
+        ButtonModule,
+        MatIconModule,
+        MatButtonModule,
+        DragDropModule,
+        ConfirmDialogModule,
+        ToastModule,
+        MatTableModule,
+        EditorModule,
+        InputNumberModule,
+        ReactiveFormsModule,
+        KnobModule,
+        SpeedDialModule,
+        ContextMenuModule,
+        DialogModule
+    ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     ConfirmationService,

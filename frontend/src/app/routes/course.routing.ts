@@ -19,7 +19,7 @@ export const courseRoutes: Routes = [{
       path: 'assignment/:assignmentId',
       children: [
         {path: '', component: AssignmentViewComponent},
-        {path: 'evaluate/:studentId', component: EvaluateViewComponent}
+        {path: 'evaluate/:studentId', component: EvaluateViewComponent, canDeactivate: [(component: EvaluateViewComponent) => component.checkChanges()]}
       ]
     }
   ]

@@ -64,11 +64,11 @@ export class AssignmentViewComponent implements OnInit {
 
   getSeverity(state: string) {
     switch (state) {
-      case 'completed':
+      case 'COMPLETED':
         return 'success';
-      case 'in progress':
+      case 'IN_PROGRESS':
         return 'info';
-      case 'not submitted':
+      case 'NOT_SUBMITTED':
         return 'danger';
       default:
         return 'warning';

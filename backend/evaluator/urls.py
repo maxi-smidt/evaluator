@@ -18,5 +18,6 @@ urlpatterns = [
     path('set-students-course-group/', views.set_student_course_group, name="set_students_course_group"),
     path('set-correction-not-submitted/', views.set_correction_not_submitted, name="set_correction_not_submitted"),
     path('delete-correction/', views.delete_correction, name="delete_correction"),
-    path('get-correction/', views.get_correction, name="get_correction")
+    path('get-correction/', views.get_correction, name="get_correction"),
+    path('save-correction/', views.save_correction, name="save_correction")
 ]

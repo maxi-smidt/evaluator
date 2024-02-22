@@ -31,6 +31,25 @@ export class CorrectionService extends BaseApiService {
       course_id: courseId,
       assignment_id: assignmentId
     }
-    return this.http.post<Correction>(this.baseUrl + 'get-correction/', body)
+    return this.http.post<Correction>(this.baseUrl + 'get-correction/', body);
+  }
+
+  saveCorrection(studentId: number, courseId: number, assignmentId: number, correction: Correction) {
+    const body = {
+      student_id: studentId,
+      course_id: courseId,
+      assignment_id: assignmentId,
+      correction: correction
+    }
+    return this.http.post<Correction>(this.baseUrl + 'save-correction/', body);
+  }
+
+  downloadCorrection(studentId: number, courseId: number, assignmentId: number) {
+    const body = {
+      student_id: studentId,
+      course_id: courseId,
+      assignment_id: assignmentId
+    }
+    return this.http.post<Correction>(this.baseUrl + 'download-correction/', body);
   }
 }

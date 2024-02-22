@@ -1,9 +1,9 @@
-import {AfterViewChecked, Component, Input, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {Entry} from "../../../../../interfaces/correction";
 
 @Component({
-  selector: 'app-evaluate-table',
+  selector: 'ms-evaluate-table',
   templateUrl: './evaluate-table.component.html',
   styleUrls: ['./evaluate-table.component.css']
 })
@@ -12,7 +12,15 @@ export class EvaluateTableComponent implements AfterViewChecked {
   protected dataSource;
 
   @Input()
+  defaultPoints: number = 0;
+
+  @Input()
   tableData: Entry[] = [];
+
+  @Output()
+  totalPoints = new EventEmitter<number>();
+
+  currentPoints: number = 0;
 
   constructor() {
     this.dataSource = new MatTableDataSource(this.tableData);
@@ -24,11 +32,14 @@ export class EvaluateTableComponent implements AfterViewChecked {
 
   protected deleteRow(index: number) {
     this.tableData.splice(index, 1);
-    this.dataSource = new MatTableDataSource(this.tableData);
   }
 
   protected addRow() {
     this.tableData.push({text: '', points: 0});
-    this.dataSource = new MatTableDataSource(this.tableData);
+  }
+
+  protected onInputChange() {
+    this.currentPoints = this.defaultPoints + this.tableData.reduce((acc, entry) => acc + entry.points, 0);
+    this.totalPoints.emit(this.currentPoints);
   }
 }

@@ -104,11 +104,10 @@ export class EditViewComponent implements OnInit {
         return result;
       }
     )
-
   }
 
   private confirmDialog(): Promise<boolean> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       this.confirmationService.confirm({
         message: 'You have unsaved changes, are you sure you want to proceed?',
         header: 'Confirmation',

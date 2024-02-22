@@ -1,5 +1,6 @@
 export interface Correction {
   assignmentName: string,
+  assignmentPoints: number,
   studentFullName: string,
   expense: number,
   points: number,
