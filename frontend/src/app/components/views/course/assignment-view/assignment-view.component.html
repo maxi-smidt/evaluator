@@ -3,59 +3,61 @@
 <h3 class="mb-3">{{ assignment.name }}</h3>
 
 <p-accordion [multiple]="true" [activeIndex]="[targetIdx]">
-  <p-accordionTab *ngFor="let group of groupNrs">
-    <ng-template pTemplate="header">
-      <span class="font-bold white-space-nowrap">{{ 'course.assignmentView.group' | translate }} {{ group }}</span>
-    </ng-template>
-
-    <p-table [rowHover]="true" [columns]="cols" [value]="assignment.studentExercises[group]"
-             [tableStyle]="{ 'min-width': '50rem' }">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns">
-            {{ col.header }}
-          </th>
-        </tr>
+  @for (group of groupNrs; track group) {
+    <p-accordionTab>
+      <ng-template pTemplate="header">
+        <span class="font-bold white-space-nowrap">{{ 'course.assignmentView.group' | translate }} {{ group }}</span>
       </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr (dblclick)="onStudentClick(rowData['id'], rowData['state'])">
-          <td *ngFor="let col of columns">
-            <ng-container *ngIf="col.field === 'state'; else otherFields">
-              <p-tag [severity]="getSeverity(rowData[col.field])">{{ rowData[col.field] }}</p-tag>
-            </ng-container>
 
-            <ng-template #otherFields>
-              <ng-container *ngIf="col.field === 'action'; else defaultFields">
-                @if (rowData['state'] === 'UNDEFINED') {
-                  <button mat-icon-button (click)="notSubmittedAction(rowData['id'])">
-                    <mat-icon>event_busy</mat-icon>
-                  </button>
-                }
-
-                @if (rowData['state'] === 'CORRECTED') {
-                  <button mat-icon-button (click)="editAction(rowData['id'])">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                  <button mat-icon-button (click)="downloadAction(rowData['id'])">
-                    <mat-icon>download</mat-icon>
-                  </button>
-                }
-
-                @if (rowData['state'] !== 'UNDEFINED') {
-                  <button mat-icon-button (click)="deleteAction(rowData['id'])">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                }
+      <p-table [rowHover]="true" [columns]="cols" [value]="assignment.studentExercises[group]"
+               [tableStyle]="{ 'min-width': '50rem' }">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns">
+              {{ col.header }}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr (dblclick)="onStudentClick(rowData['id'], rowData['state'])">
+            <td *ngFor="let col of columns">
+              <ng-container *ngIf="col.field === 'state'; else otherFields">
+                <p-tag [severity]="getSeverity(rowData[col.field])">{{ rowData[col.field] }}</p-tag>
               </ng-container>
-              <ng-template #defaultFields>
+
+              <ng-template #otherFields>
+                <ng-container *ngIf="col.field === 'action'; else defaultFields">
+                  @if (rowData['state'] === 'UNDEFINED') {
+                    <button mat-icon-button (click)="notSubmittedAction(rowData['id'])">
+                      <mat-icon>event_busy</mat-icon>
+                    </button>
+                  }
+
+                  @if (rowData['state'] === 'CORRECTED') {
+                    <button mat-icon-button (click)="editAction(rowData['id'])">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-icon-button (click)="downloadAction(rowData['id'])">
+                      <mat-icon>download</mat-icon>
+                    </button>
+                  }
+
+                  @if (rowData['state'] !== 'UNDEFINED') {
+                    <button mat-icon-button (click)="deleteAction(rowData['id'])">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  }
+                </ng-container>
+                <ng-template #defaultFields>
+                </ng-template>
+                {{ rowData[col.field] }}
               </ng-template>
-              {{ rowData[col.field] }}
-            </ng-template>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-accordionTab>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-accordionTab>
+  }
 </p-accordion>
 
 <router-outlet></router-outlet>

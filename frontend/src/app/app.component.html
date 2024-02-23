@@ -1,4 +1,6 @@
-<ms-header [isSuperUserLoggedIn]="isSuperUserLoggedIn" *ngIf="isLoggedIn"></ms-header>
+@if (isLoggedIn) {
+  <ms-header [isSuperUserLoggedIn]="isSuperUserLoggedIn"></ms-header>
+}
 
 <div class="body container">
   <router-outlet></router-outlet>
