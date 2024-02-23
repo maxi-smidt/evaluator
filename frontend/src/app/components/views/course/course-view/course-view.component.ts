@@ -43,7 +43,6 @@ export class CourseViewComponent implements OnInit {
   }
 
   onAssignmentClick(assignment: BaseAssignment) {
-    console.log(assignment);
     this.router.navigate(['assignment', assignment.id], {relativeTo: this.route}).then();
   }
 

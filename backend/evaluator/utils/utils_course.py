@@ -2,7 +2,7 @@ import json
 
 from collections import defaultdict
 from django.db.models import Q
-from ..models import CourseInstance, Correction
+from ..models import CourseInstance, Correction, TutorAssignment
 
 
 def get_full_course(course_instance: CourseInstance):
@@ -43,3 +43,21 @@ def set_groups_students_of_course(course_instance: CourseInstance, new_order: di
             if enr.group != group:
                 enr.group = group
                 enr.save()
+
+
+def set_tutor_course_partition(course_instance: CourseInstance, new_partition):
+    for part in new_partition:
+        tutor = course_instance.tutors.get(pk=part['tutor']['id'])
+        ai = course_instance.assignment_instances.get(pk=part['assignment']['id'])
+        new_group = part['group']
+        try:
+            ta = TutorAssignment.objects.get(tutor=tutor, assignment_instance=ai)
+            if new_group in [None, -1]:
+                ta.delete()
+            elif ta.group != new_group:
+                ta.group = new_group
+                ta.save()
+        except TutorAssignment.DoesNotExist:
+            if new_group not in [None, -1]:
+                ta = TutorAssignment(tutor=tutor, assignment_instance=ai, group=new_group)
+                ta.save()

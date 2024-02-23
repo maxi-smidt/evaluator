@@ -2,18 +2,29 @@ import {Injectable} from '@angular/core';
 import {BaseApiService} from "./base-api.service";
 import {Assignment} from "../interfaces/assignment";
 import {Correction} from "../interfaces/correction";
+import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
+import {FileDownloadService} from "./file-download.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CorrectionService extends BaseApiService {
-  setCorrectionNotSubmitted(studentId: number, courseId: number, assignmentId: number) {
+
+  constructor(http: HttpClient,
+              router: Router,
+              private fileDownloadService: FileDownloadService) {
+    super(http, router);
+  }
+
+  setCorrectionState(studentId: number, courseId: number, assignmentId: number, state: string) {
     const body = {
       student_id: studentId,
       course_id: courseId,
-      assignment_id: assignmentId
+      assignment_id: assignmentId,
+      state: state
     }
-    return this.http.post<Assignment>(this.baseUrl + 'set-correction-not-submitted/', body);
+    return this.http.post<Assignment>(this.baseUrl + 'set-correction-state/', body);
   }
 
   deleteCorrection(studentId: number, courseId: number, assignmentId: number) {
@@ -50,6 +61,10 @@ export class CorrectionService extends BaseApiService {
       course_id: courseId,
       assignment_id: assignmentId
     }
-    return this.http.post<Correction>(this.baseUrl + 'download-correction/', body);
+    return this.http.post<Blob>(this.baseUrl + 'download-correction/', body, { responseType: 'blob' as 'json' }).subscribe({
+      next: value => {
+        this.fileDownloadService.download(value, 'test.pdf');
+      }
+    })
   }
 }

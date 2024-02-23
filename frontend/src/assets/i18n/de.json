@@ -19,7 +19,8 @@
     "editView": {
       "group": "Gruppe",
       "inactive": "Inaktiv",
-      "btn-save": "Save"
+      "btn-save": "Save",
+      "btn-addGroup": "Gruppe hinzufügen"
     },
     "assignmentView": {
       "group": "Group",

@@ -2,8 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {CorrectionService} from "../../../../services/correction.service";
 import {Correction} from "../../../../interfaces/correction";
-import {ConfirmationService, MenuItem, MenuItemCommandEvent, MessageService} from "primeng/api";
-import {FileDownloadService} from "../../../../services/file-download.service";
+import {ConfirmationService, MenuItem, MessageService} from "primeng/api";
 
 @Component({
   selector: 'ms-evaluate-view',
@@ -21,16 +20,13 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   contextMenuItems: MenuItem[] | undefined;
 
   annotationPoints: number = 0;
-  subExercisePoints: { [key: string]: number } = {};
-  exercisePoints: { [key: string]: number } = {};
-  totalPoints: number = 0;
+  pointsDistribution: { [exerciseKey: string]: { [subExerciseKey: string]: number } } = {};
 
   constructor(private correctionService: CorrectionService,
               private route: ActivatedRoute,
               private confirmationService: ConfirmationService,
-              private messageService: MessageService,
-              private router: Router,
-              private fileDownloadService: FileDownloadService) {
+              protected messageService: MessageService,
+              private router: Router) {
     this.correction = {
       assignmentName: '', assignmentPoints: 0, studentFullName: '', expense: 0, status: '', points: 0,
       draft: {annotations: [], exercise: []}
@@ -60,11 +56,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         label: 'Download',
         icon: 'pi pi-fw pi-download',
         command: () => {
-          this.correctionService.downloadCorrection(this.studentId, this.courseId, this.assignmentId).subscribe({
-            error: err => {
-              this.messageService.add({severity: 'error', summary: 'Error', detail: 'Could not download File'});
-            }
-          })
+          this.correctionService.downloadCorrection(this.studentId, this.courseId, this.assignmentId);
         }
       },
       {
@@ -90,7 +82,6 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         this.correction = correction;
         this.correctionBefore = JSON.parse(JSON.stringify(correction));
         this.initPoints();
-        this.totalPoints = correction.points;
       }
     });
     this.intervalId = setInterval(() => {
@@ -110,6 +101,9 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
       this.correctionService.saveCorrection(this.studentId, this.courseId, this.assignmentId, this.correction).subscribe({
         next: () => {
           this.correctionBefore = JSON.parse(JSON.stringify(this.correction));
+        },
+        error: err => {
+          this.messageService.add({severity: 'error', summary: 'Error', detail: 'Could not save correction'});
         }
       })
     }
@@ -117,38 +111,30 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
 
   private initPoints() {
     for (const exc of this.correction.draft.exercise) {
-      let excPoints = 0;
+      this.pointsDistribution[exc.name] = {};
       for (const subExc of exc.sub) {
-        this.subExercisePoints[subExc.name] = subExc.points;
-        excPoints += subExc.points;
+        let points = subExc.notes.reduce((acc, note) => acc + note.points, 0);
+        this.pointsDistribution[exc.name][subExc.name] = subExc.points + points;
       }
-      this.exercisePoints[exc.name] = excPoints;
     }
   }
 
   protected updateSubExercisePoints(points: number, subExerciseName: string, exerciseName: string) {
-    this.subExercisePoints[subExerciseName] = points;
-    this.updateExercisePoints(exerciseName);
-    this.updateTotalPoints();
+    this.pointsDistribution[exerciseName][subExerciseName] = points;
   }
 
   protected updateAnnotationPoints(points: number) {
     this.annotationPoints = points;
-    this.updateTotalPoints();
   }
 
-  protected updateTotalPoints() {
-    this.totalPoints = this.annotationPoints;
-    Object.keys(this.exercisePoints).forEach(key => {
-      this.totalPoints += this.exercisePoints[key];
+  get totalPoints() {
+    let totalPoints = this.annotationPoints;
+    Object.values(this.pointsDistribution).forEach(subExercises => {
+      Object.values(subExercises).forEach(points => {
+        totalPoints += points;
+      });
     });
-  }
-
-  protected updateExercisePoints(exerciseName: string) {
-    const subExercises = this.correction.draft.exercise.find(ex => ex.name === exerciseName)!.sub;
-    this.exercisePoints[exerciseName] = subExercises.reduce((acc, sub) => {
-      return acc + (this.subExercisePoints[sub.name] || 0);
-    }, 0);
+    return totalPoints;
   }
 
   protected getTotalExercisePoints(exerciseName: string) {
@@ -156,17 +142,19 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
       .sub.reduce((acc, subExercise) => acc + subExercise.points, 0);
   }
 
+  protected currentExercisePoints(exerciseName: string) {
+    return Object.values(this.pointsDistribution[exerciseName] || {})
+      .reduce((acc, points) => acc + points, 0)
+  }
+
   private hasChanged() {
     return JSON.stringify(this.correction) !== JSON.stringify(this.correctionBefore);
   }
 
-  checkChanges() {
-    console.log("reached");
+  public checkChanges() {
     if (!this.hasChanged()) {
-      console.log("not changed");
       return true;
     }
-    console.log("sollte gehen :(");
     return this.confirmDialog().then(
       result => {
         return result;
@@ -193,7 +181,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
     });
   }
 
-  showExpenseDialog() {
+  private showExpenseDialog() {
     this.expenseDialogVisible = true;
   }
 }

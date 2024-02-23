@@ -38,8 +38,14 @@ import {KnobModule} from "primeng/knob";
 import {SpeedDialModule} from "primeng/speeddial";
 import {ContextMenuModule} from "primeng/contextmenu";
 import {DialogModule} from "primeng/dialog";
+import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
+import {MatOption, MatSelect, MatSelectModule} from "@angular/material/select";
+import {DropdownModule} from "primeng/dropdown";
+import {EditGroupComponent} from "./components/views/course/edit-view/edit-group/edit-group.component";
+import {EditPartitionComponent} from "./components/views/course/edit-view/edit-partition/edit-partition.component";
 
 @NgModule({
+  bootstrap: [AppComponent],
   declarations: [
     AppComponent,
     LoginComponent,
@@ -51,7 +57,9 @@ import {DialogModule} from "primeng/dialog";
     EditViewComponent,
     TranslatePipe,
     EvaluateViewComponent,
-    EvaluateTableComponent
+    EvaluateTableComponent,
+    EditGroupComponent,
+    EditPartitionComponent
   ],
     imports: [
         BrowserModule,
@@ -78,15 +86,20 @@ import {DialogModule} from "primeng/dialog";
         KnobModule,
         SpeedDialModule,
         ContextMenuModule,
-        DialogModule
+        DialogModule,
+        MatFormField,
+        MatSelect,
+        MatOption,
+        MatFormFieldModule,
+        MatSelectModule,
+        DropdownModule
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     ConfirmationService,
     MessageService,
     TranslationService
-  ],
-  bootstrap: [AppComponent]
+  ]
 })
 export class AppModule {
 }

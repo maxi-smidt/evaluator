@@ -4,6 +4,7 @@ import {CourseService} from "../../../../services/course.service";
 import {ActivatedRoute, Router,} from "@angular/router";
 import {TranslationService} from "../../../../services/translation.service";
 import {CorrectionService} from "../../../../services/correction.service";
+import {ConfirmationService} from "primeng/api";
 
 @Component({
   selector: 'ms-assignment-view',
@@ -21,7 +22,8 @@ export class AssignmentViewComponent implements OnInit {
               private route: ActivatedRoute,
               private translationService: TranslationService,
               private correctionService: CorrectionService,
-              private router: Router) {
+              private router: Router,
+              private confirmationService: ConfirmationService) {
     this.assignment = {
       correctedParticipants: 0,
       dueTo: new Date(),
@@ -64,7 +66,7 @@ export class AssignmentViewComponent implements OnInit {
 
   getSeverity(state: string) {
     switch (state) {
-      case 'COMPLETED':
+      case 'CORRECTED':
         return 'success';
       case 'IN_PROGRESS':
         return 'info';
@@ -75,29 +77,62 @@ export class AssignmentViewComponent implements OnInit {
     }
   }
 
-  onStudentClick(studentId: number) {
-    this.router.navigate(['evaluate', studentId], {relativeTo: this.route}).then();
+  onStudentClick(studentId: number, state: string) {
+    if (state !== 'CORRECTED' && state !== 'NOT_SUBMITTED') {
+      this.router.navigate(['evaluate', studentId], {relativeTo: this.route}).then();
+    }
   }
 
   notSubmittedAction(studentId: number) {
-    this.correctionService.setCorrectionNotSubmitted(studentId, this.courseId, this.assignmentId).subscribe({
+    this.correctionService.setCorrectionState(studentId, this.courseId, this.assignmentId, 'NOT_SUBMITTED').subscribe({
       next: assignment => {
         this.assignment = assignment;
       }
     });
   }
 
-  editAction() { //TODO
+  editAction(studentId: number) {
+    this.correctionService.setCorrectionState(studentId, this.courseId, this.assignmentId, 'IN_PROGRESS').subscribe({
+      next: () => {
+        this.router.navigate(['evaluate', studentId], {relativeTo: this.route}).then();
+      }
+    });
   }
 
   deleteAction(studentId: number) {
-    this.correctionService.deleteCorrection(studentId, this.courseId, this.assignmentId).subscribe({
-      next: assignment => {
-        this.assignment = assignment;
+    this.confirmDialog().then(
+      result => {
+        if (result) {
+          this.correctionService.deleteCorrection(studentId, this.courseId, this.assignmentId).subscribe({
+            next: assignment => {
+              this.assignment = assignment;
+            }
+          });
+        }
       }
-    })
+    );
   }
 
-  downloadAction() { //TODO
+  downloadAction(studentId: number) {
+    this.correctionService.downloadCorrection(studentId, this.courseId, this.assignmentId);
+  }
+
+  private confirmDialog(): Promise<boolean> {
+    return new Promise((resolve) => {
+      this.confirmationService.confirm({
+        message: 'Are you sure you want to delete the correction',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        acceptIcon: "none",
+        rejectIcon: "none",
+        rejectButtonStyleClass: "p-button-text",
+        accept: () => {
+          resolve(true);
+        },
+        reject: () => {
+          resolve(false);
+        }
+      });
+    });
   }
 }

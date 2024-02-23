@@ -1,3 +1,5 @@
+<p-confirmDialog></p-confirmDialog>
+
 <h3 class="mb-3">{{ assignment.name }}</h3>
 
 <p-accordion [multiple]="true" [activeIndex]="[targetIdx]">
@@ -16,7 +18,7 @@
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr (dblclick)="onStudentClick(rowData['id'])">
+        <tr (dblclick)="onStudentClick(rowData['id'], rowData['state'])">
           <td *ngFor="let col of columns">
             <ng-container *ngIf="col.field === 'state'; else otherFields">
               <p-tag [severity]="getSeverity(rowData[col.field])">{{ rowData[col.field] }}</p-tag>
@@ -24,29 +26,26 @@
 
             <ng-template #otherFields>
               <ng-container *ngIf="col.field === 'action'; else defaultFields">
-                <button mat-icon-button
-                        *ngIf="rowData['state'] === 'UNDEFINED'"
-                        (click)="notSubmittedAction(rowData['id'])">
-                  <mat-icon>event_busy</mat-icon>
-                </button>
+                @if (rowData['state'] === 'UNDEFINED') {
+                  <button mat-icon-button (click)="notSubmittedAction(rowData['id'])">
+                    <mat-icon>event_busy</mat-icon>
+                  </button>
+                }
 
-                <button mat-icon-button
-                        *ngIf="rowData['state'] === 'IN_PROGRESS' || rowData['state'] === 'CORRECTED'"
-                        (click)="editAction()">
-                  <mat-icon>edit</mat-icon>
-                </button>
+                @if (rowData['state'] === 'CORRECTED') {
+                  <button mat-icon-button (click)="editAction(rowData['id'])">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button mat-icon-button (click)="downloadAction(rowData['id'])">
+                    <mat-icon>download</mat-icon>
+                  </button>
+                }
 
-                <button mat-icon-button
-                        *ngIf="rowData['state'] !== 'UNDEFINED'"
-                        (click)="deleteAction(rowData['id'])">
-                  <mat-icon>delete</mat-icon>
-                </button>
-
-                <button mat-icon-button
-                        *ngIf="rowData['state'] === 'CORRECTED'"
-                        (click)="downloadAction()">
-                  <mat-icon>download</mat-icon>
-                </button>
+                @if (rowData['state'] !== 'UNDEFINED') {
+                  <button mat-icon-button (click)="deleteAction(rowData['id'])">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                }
               </ng-container>
               <ng-template #defaultFields>
               </ng-template>

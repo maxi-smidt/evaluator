@@ -3,6 +3,7 @@ import {BaseStudent} from "../../../../interfaces/base-student";
 import {CourseService} from "../../../../services/course.service";
 import {ActivatedRoute} from "@angular/router";
 import {ConfirmationService, MessageService} from 'primeng/api';
+import {EditPartition} from "../../../../interfaces/edit-partition";
 
 @Component({
   selector: 'ms-edit-view',
@@ -10,19 +11,18 @@ import {ConfirmationService, MessageService} from 'primeng/api';
   styleUrls: ['./edit-view.component.css'],
 })
 export class EditViewComponent implements OnInit {
-  courseId: number;
-  groupedStudents: { [groupNr: string]: BaseStudent[] };
-  groupedStudentsOrg: { [groupNr: string]: BaseStudent[] };
+  courseId: number = -1;
+  groupedStudents: { [groupNr: string]: BaseStudent[] } = {};
+  groupedStudentsBefore: { [groupNr: string]: BaseStudent[] } = {};
 
-  draggedStudent: { student: BaseStudent, group: number } | undefined | null;
+  partition: EditPartition[] = [];
+  partitionBefore: EditPartition[] = [];
+  groups: number[] = [];
 
   constructor(private courseService: CourseService,
               private route: ActivatedRoute,
               private confirmationService: ConfirmationService,
               private messageService: MessageService) {
-    this.courseId = -1;
-    this.groupedStudents = {};
-    this.groupedStudentsOrg = {};
   }
 
   ngOnInit() {
@@ -31,7 +31,15 @@ export class EditViewComponent implements OnInit {
       next: students => {
         this.groupedStudents = students;
         this.adjustInactiveGroup();
-        this.groupedStudentsOrg = JSON.parse(JSON.stringify(students));
+        this.groupedStudentsBefore = JSON.parse(JSON.stringify(students));
+      }
+    });
+
+    this.courseService.getTutorAssignmentPartition(this.courseId).subscribe({
+      next: value => {
+        this.partition = value.partition;
+        this.partitionBefore = JSON.parse(JSON.stringify(value.partition));
+        this.groups = value.groups;
       }
     });
   }
@@ -42,57 +50,16 @@ export class EditViewComponent implements OnInit {
     }
   }
 
-  get groupNrs() {
-    return Object.keys(this.groupedStudents);
-  }
-
-  dragStart(student: BaseStudent, group: string) {
-    this.draggedStudent = {student: student, group: Number(group)};
-  }
-
-  drop(groupNr: string) {
-    const newGroup = Number(groupNr);
-    const oldGroup = this.draggedStudent!.group;
-    if (oldGroup !== newGroup) {
-      const student = this.draggedStudent!.student;
-      this.insertSorted(student, newGroup);
-      this.deleteStudent(student, oldGroup);
-      this.draggedStudent = null;
-    }
-  }
-
-  private insertSorted(student: BaseStudent, group: number) {
-    const index = this.groupedStudents[group].findIndex(x => x.lastName > student.lastName);
-
-    if (index === -1) {
-      this.groupedStudents[group].push(student);
-    } else {
-      this.groupedStudents[group].splice(index, 0, student);
-    }
-  }
-
-  private deleteStudent(student: BaseStudent, group: number) {
-    const index = this.findIndex(group, student);
-    this.groupedStudents[group] = this.groupedStudents[group].filter((val, i) => i != index);
-  }
-
-  dragEnd() {
-    this.draggedStudent = null;
-  }
-
-  private findIndex(group: number, student: BaseStudent) {
-    let index = -1;
-    for (let i = 0; i < (this.groupedStudents[group]).length; i++) {
-      if (student.id === this.groupedStudents[group][i].id) {
-        index = i;
-        break;
-      }
-    }
-    return index;
-  }
-
   private hasChanged() {
-    return JSON.stringify(this.groupedStudents) !== JSON.stringify(this.groupedStudentsOrg);
+    return this.groupHasChanged() || this.partitionHasChanged();
+  }
+
+  private groupHasChanged() {
+    return JSON.stringify(this.groupedStudents) !== JSON.stringify(this.groupedStudentsBefore);
+  }
+
+  private partitionHasChanged() {
+    return JSON.stringify(this.partition) !== JSON.stringify(this.partitionBefore);
   }
 
   checkChanges() {
@@ -130,10 +97,22 @@ export class EditViewComponent implements OnInit {
       this.messageService.add({severity: 'info', summary: 'Info', detail: 'No changes detected'});
       return;
     }
-    this.courseService.setStudentsCourseGroup(this.courseId, this.groupedStudents).subscribe({
-      next: () => {
-        this.groupedStudentsOrg = this.groupedStudents;
-      }
-    })
+
+    if (this.groupHasChanged()) {
+      this.courseService.setStudentsCourseGroup(this.courseId, this.groupedStudents).subscribe({
+        next: groupedStudents => {
+          this.groupedStudents = groupedStudents;
+          this.groupedStudentsBefore = JSON.parse(JSON.stringify(groupedStudents));
+        }
+      });
+    }
+
+    if (this.partitionHasChanged()) {
+      this.courseService.setAssignmentPartition(this.courseId, this.partition).subscribe({
+        next: () => {
+          this.partitionBefore = JSON.parse(JSON.stringify(this.partition));
+        }
+      });
+    }
   }
 }

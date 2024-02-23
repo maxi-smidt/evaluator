@@ -38,6 +38,10 @@ class User(AbstractUser):
 
     objects = UserManager()
 
+    @property
+    def full_name(self):
+        return f"{self.last_name} {self.first_name}"
+
     def save(self, *args, **kwargs):
         if not self.pk:
             self.role = self.base_role
@@ -164,6 +168,10 @@ class Student(models.Model):
                                     on_delete=models.SET_NULL,
                                     null=True)
 
+    @property
+    def full_name(self):
+        return f"{self.last_name} {self.first_name}"
+
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.id})"
 
@@ -268,3 +276,22 @@ class Correction(models.Model):
 
     def __str__(self):
         return f"{self.student} - {self.assignment_instance} - {self.tutor} - {self.status}"
+
+
+class TutorAssignment(models.Model):
+    tutor = models.ForeignKey(Tutor,
+                              on_delete=models.CASCADE,
+                              related_name='tutor_assignments')
+    assignment_instance = models.ForeignKey(AssignmentInstance,
+                                            on_delete=models.CASCADE,
+                                            related_name='tutor_assignments')
+    group = models.IntegerField()
+
+    class Meta:
+        unique_together = ('tutor', 'assignment_instance', 'group')
+        constraints = [
+            models.CheckConstraint(check=models.Q(group__gte=0), name='valid_group_number')
+        ]
+
+    def __str__(self):
+        return f"Tutor: {self.tutor}, Assignment: {self.assignment_instance}, Group: {self.group}"
