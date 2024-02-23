@@ -1,7 +1,7 @@
 import io
 import json
 from datetime import timedelta
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from .models import User, Tutor, Correction, Assignment, CourseEnrollment, TutorAssignment
@@ -54,7 +54,13 @@ def get_assignment(request):
     ci = tutor.ci_tutors.get(pk=request.GET.get('course_id'))
     ai = ci.assignment_instances.get(assignment_id=request.GET.get('assignment_id'))
     full_assignment = get_full_assignment(ai)
-    return HttpResponse(full_assignment, content_type='application/json')
+    try:
+        ta = TutorAssignment.objects.get(tutor=tutor, assignment_instance=ai)
+        target_groups = ta.groups
+    except TutorAssignment.DoesNotExist:
+        target_groups = []
+    response = {'assignment': json.loads(full_assignment), 'targetGroups': target_groups}
+    return JsonResponse(response, content_type='application/json')
 
 
 @api_view(['GET', 'POST'])
@@ -171,20 +177,21 @@ def download_correction(request):
 def get_course_partition(request):
     tutor = get_object_or_404(Tutor, pk=request.user.id)
     ci = get_object_or_404(tutor.ci_tutors, pk=request.GET.get('course_id'))
-    groups = list(CourseEnrollment.objects.filter(course_instance=ci).values_list('group', flat=True).distinct())
+    group_selection = list(CourseEnrollment.objects.filter(course_instance=ci).exclude(group=-1)
+                           .values_list('group', flat=True).distinct())
     partition = []
     for tutor in ci.tutors.all():
         for assignment in ci.assignment_instances.all():
             try:
-                grp = TutorAssignment.objects.get(tutor=tutor, assignment_instance=assignment).group
+                groups = TutorAssignment.objects.get(tutor=tutor, assignment_instance=assignment).groups
             except TutorAssignment.DoesNotExist:
-                grp = None
+                groups = []
             partition.append({
                 'tutor': {'name': tutor.full_name, 'id': tutor.id},
                 'assignment': {'name': assignment.assignment.name, 'id': assignment.id},
-                'group': grp
+                'groups': sorted(groups)
             })
-    response = {'partition': partition, 'groups': sorted(groups)}
+    response = {'partition': partition, 'groups': sorted(group_selection)}
     return HttpResponse(json.dumps(response, default=str), content_type='application/json')
 
 

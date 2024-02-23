@@ -1,4 +1,4 @@
-<table class="table table-bordered">
+<table class="table table-bordered m-2">
   <thead>
   <tr>
     @for (header of tableHeader(); track header.id) {
@@ -12,10 +12,11 @@
         <th>{{ assignment.name }}</th>
         @for (tutor of tutors(); track tutor.id) {
           <td>
-            <p-dropdown [options]="groups()"
-                        [ngModel]="getGroupByTutorAndAssignment(tutor.id, assignment.id)"
-                        (ngModelChange)="setGroupByTutorAndAssignment(tutor.id, assignment.id, $event)">
-            </p-dropdown>
+            <p-multiSelect [showHeader]="false"
+                           [options]="groups()"
+                           [ngModel]="getGroupByTutorAndAssignment(tutor.id, assignment.id)"
+                           (ngModelChange)="setGroupByTutorAndAssignment(tutor.id, assignment.id, $event)">
+            </p-multiSelect>
           </td>
         }
       </tr>

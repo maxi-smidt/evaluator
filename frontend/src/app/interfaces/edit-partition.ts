@@ -11,5 +11,5 @@ export interface EditAssignment {
 export interface EditPartition {
   tutor: EditTutor;
   assignment: EditAssignment;
-  group: number | null;
+  groups: number[];
 }

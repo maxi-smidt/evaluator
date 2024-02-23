@@ -43,6 +43,7 @@ import {MatOption, MatSelect, MatSelectModule} from "@angular/material/select";
 import {DropdownModule} from "primeng/dropdown";
 import {EditGroupComponent} from "./components/views/course/edit-view/edit-group/edit-group.component";
 import {EditPartitionComponent} from "./components/views/course/edit-view/edit-partition/edit-partition.component";
+import {MultiSelectModule} from "primeng/multiselect";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -92,7 +93,8 @@ import {EditPartitionComponent} from "./components/views/course/edit-view/edit-p
         MatOption,
         MatFormFieldModule,
         MatSelectModule,
-        DropdownModule
+        DropdownModule,
+        MultiSelectModule
     ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},

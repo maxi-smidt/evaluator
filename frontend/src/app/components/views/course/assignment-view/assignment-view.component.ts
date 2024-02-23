@@ -14,7 +14,8 @@ import {ConfirmationService} from "primeng/api";
 export class AssignmentViewComponent implements OnInit {
   assignment: Assignment;
   cols: any[];
-  targetIdx: number;
+  groups: string[];
+  targetGroups: number[];
   assignmentId: number;
   courseId: number;
 
@@ -40,7 +41,8 @@ export class AssignmentViewComponent implements OnInit {
       {field: 'state', header: this.translate('course.assignmentView.status')},
       {field: 'action', header: this.translate('course.assignmentView.action')}
     ]
-    this.targetIdx = 0;
+    this.targetGroups = [];
+    this.groups = [];
     this.assignmentId = -1;
     this.courseId = -1;
   }
@@ -50,8 +52,11 @@ export class AssignmentViewComponent implements OnInit {
     this.assignmentId = this.route.parent!.snapshot.params['assignmentId'];
 
     this.courseService.getFullExercise(this.courseId, this.assignmentId).subscribe({
-      next: assignment => {
-        this.assignment = assignment;
+      next: value => {
+        this.assignment = value.assignment;
+        this.targetGroups = value.targetGroups;
+        this.groups = Object.keys(this.assignment.studentExercises);
+        this.adjustTargetGroupsToIndex();
       }
     });
   }
@@ -60,8 +65,10 @@ export class AssignmentViewComponent implements OnInit {
     return this.translationService.translate(key);
   }
 
-  get groupNrs() {
-    return Object.keys(this.assignment.studentExercises);
+  private adjustTargetGroupsToIndex() {
+    this.targetGroups.forEach((value, index, arr) => {
+      arr[index] = value - 1;
+    });
   }
 
   getSeverity(state: string) {

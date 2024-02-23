@@ -1,3 +1,5 @@
+import json
+
 from datetime import timedelta
 from django.utils import timezone
 from django.contrib.auth.base_user import BaseUserManager
@@ -285,13 +287,25 @@ class TutorAssignment(models.Model):
     assignment_instance = models.ForeignKey(AssignmentInstance,
                                             on_delete=models.CASCADE,
                                             related_name='tutor_assignments')
-    group = models.IntegerField()
+    _groups = models.TextField(default='[]')
+
+    @property
+    def groups(self):
+        return json.loads(self._groups)
+
+    @groups.setter
+    def groups(self, value):
+        if not all(isinstance(item, int) for item in value):
+            raise ValueError("All items in the array must be integers")
+        self._groups = json.dumps(value)
+
+    def save(self, *args, **kwargs):
+        if isinstance(self._groups, list):
+            self._groups = json.dumps(self._groups)
+        super(TutorAssignment, self).save(*args, **kwargs)
 
     class Meta:
-        unique_together = ('tutor', 'assignment_instance', 'group')
-        constraints = [
-            models.CheckConstraint(check=models.Q(group__gte=0), name='valid_group_number')
-        ]
+        unique_together = ('tutor', 'assignment_instance')
 
     def __str__(self):
-        return f"Tutor: {self.tutor}, Assignment: {self.assignment_instance}, Group: {self.group}"
+        return f"Tutor: {self.tutor}, Assignment: {self.assignment_instance}, Group: {self.groups}"

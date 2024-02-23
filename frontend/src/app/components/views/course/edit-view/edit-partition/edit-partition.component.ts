@@ -41,13 +41,13 @@ export class EditPartitionComponent {
     return distinctAssignments;
   });
 
-  getGroupByTutorAndAssignment(tutorId: string, assignmentId: string): number | null {
+  getGroupByTutorAndAssignment(tutorId: string, assignmentId: string) {
     const partition = this.partition().find(p => p.tutor.id === tutorId && p.assignment.id === assignmentId);
-    return partition!.group;
+    return partition!.groups;
   }
 
-  setGroupByTutorAndAssignment(tutorId: string, assignmentId: string, groupValue: number | null) {
+  setGroupByTutorAndAssignment(tutorId: string, assignmentId: string, groupValue: number[]) {
     const partition = this.partition().find(p => p.tutor.id === tutorId && p.assignment.id === assignmentId);
-    partition!.group = groupValue;
+    partition!.groups = groupValue;
   }
 }

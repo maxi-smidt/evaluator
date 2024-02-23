@@ -17,7 +17,7 @@ export class CourseService extends BaseApiService {
 
   getFullExercise(courseId: number, assignmentId: number) {
     const params: string = `course_id=${courseId}&assignment_id=${assignmentId}`;
-    return this.http.get<Assignment>(this.baseUrl + `get-exercise?${params}`);
+    return this.http.get<{ assignment: Assignment, targetGroups: number[] }>(this.baseUrl + `get-assignment?${params}`);
   }
 
   getStudentsInGroupsByCourse(courseId: number) {
@@ -43,6 +43,6 @@ export class CourseService extends BaseApiService {
       partition: partition,
       course_id: courseId
     }
-    return this.http.post<any>(this.baseUrl + 'set-course-partition/', body);
+    return this.http.post(this.baseUrl + 'set-course-partition/', body);
   }
 }
