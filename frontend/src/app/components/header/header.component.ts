@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {AuthService} from "../../services/auth.service";
 
 @Component({
@@ -7,9 +7,6 @@ import {AuthService} from "../../services/auth.service";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-  @Input()
-  isSuperUserLoggedIn: boolean = false;
-
   constructor(private authService: AuthService) {
   }
 

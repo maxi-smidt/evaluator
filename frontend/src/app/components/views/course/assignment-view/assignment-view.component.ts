@@ -62,7 +62,7 @@ export class AssignmentViewComponent implements OnInit {
   }
 
   private translate(key: string) {
-    return this.translationService.translate(key);
+    return this.translationService.get(key);
   }
 
   private adjustTargetGroupsToIndex() {

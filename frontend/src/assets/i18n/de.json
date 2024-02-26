@@ -41,6 +41,59 @@
   },
   "homeView": {
     "title": "Willkommen",
-    "courses": "Deine Kurse"
+    "courses": "Deine Kurse",
+    "adminHome": {
+      "userList": {
+        "title": "Users",
+        "btn-save": "Save",
+        "table-header": [
+          "Vorname",
+          "Nachname",
+          "Username",
+          "Role",
+          "Aktiv"
+        ],
+        "conf-header": "Changeset",
+        "active": "active",
+        "inactive": "inactive"
+      },
+      "userForm": {
+        "title": "User Form",
+        "btn-submit": "Submit",
+        "lbl-firstname": "Firstname",
+        "lbl-lastname": "Lastname",
+        "lbl-username": "Username",
+        "lbl-password": "Password",
+        "lbl-role": "Role",
+        "lbl-role-disabled": "Choose Role",
+        "role-choices": [
+          "ADMIN",
+          "DEGREE_PROGRAM_DIRECTOR",
+          "COURSE_LEADER",
+          "TUTOR"
+        ],
+        "error-500": "User already exists",
+        "error-else": "Could not create user"
+      },
+      "degreeProgramForm": {
+        "title": "Degree Program Form",
+        "btn-submit": "Submit",
+        "lbl-name": "Name",
+        "lbl-abbreviation": "Abbreviation",
+        "lbl-director": "Director",
+        "lbl-director-disabled": "Choose Director",
+        "error-500": "User already exists",
+        "error-else": "Could not create user"
+      },
+      "degreeProgramList": {
+        "title": "Degree Programs",
+        "table-header": [
+          "Name",
+          "Abbreviation",
+          "Director"
+        ],
+        "btn-save": "Save"
+      }
+    }
   }
 }

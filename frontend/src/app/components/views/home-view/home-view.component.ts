@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../../interfaces/user";
 import {UserService} from "../../../services/user.service";
-import {BaseCourse} from "../../../interfaces/base-course";
 
 @Component({
   selector: 'ms-home-view',
@@ -10,11 +9,9 @@ import {BaseCourse} from "../../../interfaces/base-course";
 })
 export class HomeViewComponent implements OnInit {
   user: User;
-  baseCourses: BaseCourse[];
 
   constructor(private userService: UserService) {
-    this.user = {firstName: '', lastName: '', sNumber: ''}
-    this.baseCourses = [];
+    this.user = {firstName: '', lastName: '', id: '', role: ''}
   }
 
   ngOnInit() {
@@ -22,12 +19,6 @@ export class HomeViewComponent implements OnInit {
       next: user => {
         this.user = user;
       }
-    })
-
-    this.userService.getUserCourses().subscribe({
-      next: baseCourses => {
-        this.baseCourses = baseCourses;
-      }
-    })
+    });
   }
 }

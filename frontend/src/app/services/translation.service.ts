@@ -21,7 +21,7 @@ export class TranslationService {
     );
   }
 
-  translate(key: string): string {
+  get(key: string): string {
     const keys = key.split('.');
     let result = this.translations;
 
@@ -30,6 +30,20 @@ export class TranslationService {
 
       if (result === undefined) {
         return key;
+      }
+    }
+    return result;
+  }
+
+  getArray(key: string): string[] {
+    const keys = key.split('.');
+    let result = this.translations;
+
+    for (let k of keys) {
+      result = result[k];
+
+      if (result === undefined) {
+        return [key];
       }
     }
     return result;

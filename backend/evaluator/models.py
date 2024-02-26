@@ -47,7 +47,7 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         if not self.pk:
             self.role = self.base_role
-            super().save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
 
 class CourseLeaderManager(BaseUserManager):
@@ -57,7 +57,7 @@ class CourseLeaderManager(BaseUserManager):
 
 class CourseLeader(User):
     base_role = User.Role.CL
-    course_leader = CourseLeaderManager()
+    objects = CourseLeaderManager()
 
     class Meta:
         proxy = True
@@ -70,7 +70,7 @@ class DegreeProgramDirectorManager(BaseUserManager):
 
 class DegreeProgramDirector(User):
     base_role = User.Role.DPD
-    degree_program_director = DegreeProgramDirectorManager()
+    objects = DegreeProgramDirectorManager()
 
     class Meta:
         proxy = True
@@ -83,7 +83,7 @@ class TutorManager(BaseUserManager):
 
 class Tutor(User):
     base_role = User.Role.TUTOR
-    tutor = TutorManager()
+    objects = TutorManager()
 
     class Meta:
         proxy = True
