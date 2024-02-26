@@ -4,7 +4,8 @@ from datetime import timedelta
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
-from .models import User, Tutor, Correction, Assignment, CourseEnrollment, TutorAssignment
+from .models import (User, Tutor, Correction, Assignment, CourseEnrollment, TutorAssignment, CourseLeader,
+                     DegreeProgramDirector, DegreeProgram)
 from .utils.pdf_maker import PDFMaker
 from .utils.utils_course import (get_full_course, get_students_of_course_by_group,
                                  set_groups_students_of_course, set_tutor_course_partition)
@@ -28,8 +29,8 @@ def can_activate_superuser(request):
 @api_view(['GET'])
 def get_user(request):
     user = get_object_or_404(User, pk=request.user.id)
-    response = json.dumps({'firstName': user.first_name, 'lastName': user.last_name, 'sNumber': user.username})
-    return HttpResponse(response, content_type='application/json')
+    return JsonResponse({'firstName': user.first_name, 'lastName': user.last_name,
+                         'id': user.username, 'role': user.role})
 
 
 @api_view(['GET'])
@@ -201,3 +202,71 @@ def set_course_partition(request):
     ci = get_object_or_404(tutor.ci_tutors, pk=request.data['course_id'])
     set_tutor_course_partition(ci, request.data['partition'])
     return HttpResponse()
+
+
+@api_view(['POST'])
+def register_user(request):
+    admin = get_object_or_404(User, pk=request.user.id)
+    assert admin.is_superuser
+    data = request.data['user']
+    if data['role'] == User.Role.CL:
+        new_user = CourseLeader(**data)
+    elif data['role'] == User.Role.DPD:
+        new_user = DegreeProgramDirector(**data)
+    elif data['role'] == User.Role.TUTOR:
+        new_user = Tutor(**data)
+    elif data['role'] == User.Role.ADMIN:
+        new_user = User(**data)
+    new_user.set_password(data['password'])
+    new_user.save()
+    return HttpResponse()
+
+
+@api_view(['GET', 'POST'])
+def all_users(request):
+    admin = get_object_or_404(User, pk=request.user.id)
+    assert admin.role == User.Role.ADMIN
+    raw_users = User.objects.all()
+    users = [{'firstName': u.first_name, 'lastName': u.last_name, 'id': u.username,
+              'role': u.role, 'isActive': u.is_active} for u in raw_users]
+    return JsonResponse(users, safe=False)
+
+
+@api_view(['POST'])
+def change_user_activity_state(request):
+    admin = get_object_or_404(User, pk=request.user.id)
+    assert admin.role == User.Role.ADMIN
+    users = request.data['users']
+    for user in users:
+        u = User.objects.get(username=user['id'])
+        u.is_active = user['isActive']
+        u.save()
+    return HttpResponse()
+
+
+@api_view(['GET'])
+def get_degree_program_directors(request):
+    admin = get_object_or_404(User, pk=request.user.id)
+    assert admin.role == User.Role.ADMIN
+    directors = DegreeProgramDirector.objects.all()
+    response = [{'name': d.full_name, 'id': d.username} for d in directors]
+    return JsonResponse(response, safe=False)
+
+
+@api_view(['POST'])
+def register_degree_program(request):
+    admin = get_object_or_404(User, pk=request.user.id)
+    assert admin.role == User.Role.ADMIN
+    dp = request.data['degree_program']
+    dpd = DegreeProgramDirector.objects.get(username=dp['id'])
+    DegreeProgram(name=dp['name'], abbreviation=dp['abbreviation'], dp_director=dpd).save()
+    return HttpResponse()
+
+
+@api_view(['GET'])
+def get_degree_programs(request):
+    admin = get_object_or_404(User, pk=request.user.id)
+    assert admin.role == User.Role.ADMIN
+    programs = DegreeProgram.objects.all()
+    response = [{'name': p.name, 'abbreviation': p.abbreviation, 'dpd': p.dp_director.full_name} for p in programs]
+    return JsonResponse(response, safe=False)

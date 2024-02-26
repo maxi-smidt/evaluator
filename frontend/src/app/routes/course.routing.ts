@@ -3,7 +3,7 @@ import {CourseViewComponent} from "../components/views/course/course-view/course
 import {userAuthGuard} from "../guards/user-auth.guard";
 import {AssignmentViewComponent} from "../components/views/course/assignment-view/assignment-view.component";
 import {CourseComponent} from "../components/views/course/course.component";
-import {CourseCardComponent} from "../components/views/home-view/course-card/course-card.component";
+import {CourseCardComponent} from "../components/views/home-view/tutor-home/course-card/course-card.component";
 import {EditViewComponent} from "../components/views/course/edit-view/edit-view.component";
 import {EvaluateViewComponent} from "../components/views/course/evaluate-view/evaluate-view.component";
 

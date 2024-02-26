@@ -9,7 +9,6 @@ urlpatterns = [
     path('token/', TokenObtainPairView.as_view(permission_classes=[AllowAny]), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(permission_classes=[AllowAny]), name='token_refresh'),
     path('can-activate/', views.can_activate, name='can_activate'),
-    path('can-activate-superuser/', views.can_activate_superuser, name='can_activate_superuser'),
     path('get-user/', views.get_user, name='get_user'),
     path('get-courses/', views.get_courses, name='get_courses'),
     path('get-exercises/', views.get_exercises_by_course, name="get_exercises_by_course_id"),
@@ -21,5 +20,11 @@ urlpatterns = [
     path('save-correction/', views.save_correction, name="save_correction"),
     path('download-correction/', views.download_correction, name="download_correction"),
     path('get-course-partition/', views.get_course_partition, name="get_course_partition"),
-    path('set-course-partition/', views.set_course_partition, name="set_course_partition")
+    path('set-course-partition/', views.set_course_partition, name="set_course_partition"),
+    path('register-user/', views.register_user, name="register_user"),
+    path('all-users/', views.all_users, name="all_users"),
+    path('change-user-activity-state/', views.change_user_activity_state, name="change_user_activity_state"),
+    path('get-degree-program-directors/', views.get_degree_program_directors, name="get_degree_program_directors"),
+    path('register-degree-program/', views.register_degree_program, name="register_degree_program"),
+    path('get-degree-programs/', views.get_degree_programs, name="get_degree_programs")
 ]

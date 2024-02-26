@@ -1,16 +1,14 @@
 import {Injectable} from '@angular/core';
 import {BehaviorSubject, catchError, firstValueFrom, map, of} from "rxjs";
 import {BaseApiService} from "./base-api.service";
+import {User} from "../interfaces/user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService extends BaseApiService {
-  private currentUserSubject: BehaviorSubject<any> =
-    new BehaviorSubject<any>(this.token);
-
+  private currentUserSubject: BehaviorSubject<any> = new BehaviorSubject<any>(this.token);
   private isUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  private isSuperUserLoggedIn: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   login(username: string, password: string) {
     return this.http.post<any>(this.baseUrl + 'token/', {username, password})
@@ -32,7 +30,6 @@ export class AuthService extends BaseApiService {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null);
     this.isUserLoggedIn.next(false);
-    this.isSuperUserLoggedIn.next(false);
     this.router.navigate(['login']).then();
   }
 
@@ -47,26 +44,8 @@ export class AuthService extends BaseApiService {
           this.isUserLoggedIn.next(true);
           return true;
         }),
-        catchError(error => {
+        catchError(() => {
           this.router.navigate(['login']).then();
-          return of(false);
-        })
-      )
-    );
-  }
-
-  canActivateSuperUser(): Promise<boolean> {
-    return firstValueFrom(
-      this.http.get<{ canActivateSuperUser: boolean }>(this.baseUrl + 'can-activate-superuser/').pipe(
-        map(response => {
-          if (!response.canActivateSuperUser) {
-            this.router.navigate(['home']).then();
-          }
-          this.isSuperUserLoggedIn.next(true);
-          return response.canActivateSuperUser;
-        }),
-        catchError(error => {
-          this.router.navigate(['home']).then();
           return of(false);
         })
       )
@@ -75,10 +54,6 @@ export class AuthService extends BaseApiService {
 
   isLoggedIn(): boolean {
     return this.isUserLoggedIn.value;
-  }
-
-  isSuperLoggedIn(): boolean {
-    return this.isSuperUserLoggedIn.value;
   }
 
   get token() {

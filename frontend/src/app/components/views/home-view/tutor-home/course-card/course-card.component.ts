@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
-import {BaseCourse} from "../../../../interfaces/base-course";
+import {BaseCourse} from "../../../../../interfaces/base-course";
 
 @Component({
   selector: 'ms-course-card',

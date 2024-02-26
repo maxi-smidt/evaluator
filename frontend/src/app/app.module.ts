@@ -9,7 +9,6 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HomeViewComponent} from './components/views/home-view/home-view.component';
 import {JwtInterceptor} from "./interceptors/jwt.interceptor";
-import {AdminViewComponent} from './components/views/admin-view/admin-view.component';
 import {HeaderComponent} from './components/header/header.component';
 import {UserSettingsViewComponent} from './components/views/user-settings-view/user-settings-view.component';
 import {courseComponents} from "./routes/course.routing";
@@ -44,6 +43,16 @@ import {DropdownModule} from "primeng/dropdown";
 import {EditGroupComponent} from "./components/views/course/edit-view/edit-group/edit-group.component";
 import {EditPartitionComponent} from "./components/views/course/edit-view/edit-partition/edit-partition.component";
 import {MultiSelectModule} from "primeng/multiselect";
+import {TutorHomeComponent} from "./components/views/home-view/tutor-home/tutor-home.component";
+import {AdminHomeComponent} from "./components/views/home-view/admin-home/admin-home.component";
+import {UserFormComponent} from "./components/views/home-view/admin-home/user-form/user-form.component";
+import {UserListComponent} from "./components/views/home-view/admin-home/user-list/user-list.component";
+import {
+  DegreeProgramFormComponent
+} from "./components/views/home-view/admin-home/degree-program-form/degree-program-form.component";
+import {
+  DegreeProgramListComponent
+} from "./components/views/home-view/admin-home/degree-program-list/degree-program-list.component";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -51,7 +60,6 @@ import {MultiSelectModule} from "primeng/multiselect";
     AppComponent,
     LoginComponent,
     HomeViewComponent,
-    AdminViewComponent,
     HeaderComponent,
     UserSettingsViewComponent,
     courseComponents,
@@ -60,42 +68,48 @@ import {MultiSelectModule} from "primeng/multiselect";
     EvaluateViewComponent,
     EvaluateTableComponent,
     EditGroupComponent,
-    EditPartitionComponent
+    EditPartitionComponent,
+    TutorHomeComponent,
+    AdminHomeComponent,
+    UserFormComponent,
+    UserListComponent,
+    DegreeProgramFormComponent,
+    DegreeProgramListComponent
   ],
-    imports: [
-        BrowserModule,
-        BrowserAnimationsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        BreadcrumbModule,
-        BadgeModule,
-        TableModule,
-        AccordionModule,
-        DataViewModule,
-        TagModule,
-        ButtonModule,
-        MatIconModule,
-        MatButtonModule,
-        DragDropModule,
-        ConfirmDialogModule,
-        ToastModule,
-        MatTableModule,
-        EditorModule,
-        InputNumberModule,
-        ReactiveFormsModule,
-        KnobModule,
-        SpeedDialModule,
-        ContextMenuModule,
-        DialogModule,
-        MatFormField,
-        MatSelect,
-        MatOption,
-        MatFormFieldModule,
-        MatSelectModule,
-        DropdownModule,
-        MultiSelectModule
-    ],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    BreadcrumbModule,
+    BadgeModule,
+    TableModule,
+    AccordionModule,
+    DataViewModule,
+    TagModule,
+    ButtonModule,
+    MatIconModule,
+    MatButtonModule,
+    DragDropModule,
+    ConfirmDialogModule,
+    ToastModule,
+    MatTableModule,
+    EditorModule,
+    InputNumberModule,
+    ReactiveFormsModule,
+    KnobModule,
+    SpeedDialModule,
+    ContextMenuModule,
+    DialogModule,
+    MatFormField,
+    MatSelect,
+    MatOption,
+    MatFormFieldModule,
+    MatSelectModule,
+    DropdownModule,
+    MultiSelectModule
+  ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     ConfirmationService,
