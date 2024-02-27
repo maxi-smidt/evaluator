@@ -28,7 +28,8 @@
       "first_name": "Vorname",
       "evaluation": "Bewertung",
       "status": "Status",
-      "action": "Aktion"
+      "action": "Aktion",
+      "error-403": "You can only delete your own corrections"
     },
     "evaluateView": {
       "annotations": "Anmerkungen",

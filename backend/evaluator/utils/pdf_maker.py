@@ -1,93 +1,141 @@
-import json
-
-from bs4 import BeautifulSoup
-from reportlab.lib import colors
-from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from io import BytesIO
+
+from weasyprint import HTML, CSS
+from yattag import Doc
+from datetime import datetime
 from ..models import Correction
 
 
-class PDFMaker:
+class PdfMaker:
+    t_header = ['Anmerkung', 'Punkte']
+    css = CSS(string='''
+        @page { size: A4; margin: 1.5cm; }
+        body { font-family: Arial, sans-serif;}
+        header p {font-size: 16px; font-weight: 400; }
+        header h1 { font-size: 32px; text-align: center; }
+        .date { position: absolute; top: -35px; right: -10px; font-size: 14px; }
+        .points { font-weight: 500; font-size: 17px; }
+        body { margin-top: 30px; }
+        body h3 { font-size: 19px; margin-bottom: 5px;}
+        body h4 { margin-top: 10px; margin-bottom: 5px; }
+        table { width: 100%; border-collapse: collapse; border: 1px solid #000;}
+        th, td { border: 1px solid #000; padding: 10px; font-size: 14px; }
+        th { background-color: #f2f2f2; padding: 5px 10px; font-size: 14px; }
+        td { padding: 2px 2px; }
+        td p { margin: 2px; }
+        .td-points { text-align: center; }
+        .td-text { padding-left: 7px; }
+        td ol { margin-bottom: 0;  margin-top: 0; }
+        th:first-child { width: 90%; }
+        th:nth-child(2) { width: 10%; }
+    ''')
+
+    def __init__(self, correction: Correction):
+        self.assignment = correction.assignment_instance.assignment.name
+        self.tutor = correction.tutor.full_name
+        self.student = correction.student.full_name
+        self.date = datetime.now().strftime('%m.%d.%Y')
+        self.points = float(correction.points)
+        self.draft = correction.draft
+
+    def make_header(self):
+        doc, tag, text = Doc().tagtext()
+        with tag('header'):
+            with tag('h1'):
+                text(self.assignment)
+            with tag('p', klass='date'):
+                text(self.date)
+            with tag('p'):
+                text('Tutor: ', self.tutor)
+            with tag('p'):
+                text('Student: ', self.student)
+            with tag('p', klass='points'):
+                text('Points: ', self.points)
+        return doc.getvalue()
+
+    def make_body(self):
+        doc, tag, text = Doc().tagtext()
+        with tag('div', klass='exercises'):
+            doc.asis(self.make_annotations(self.draft['annotations']))
+            doc.asis(self.make_exercises(self.draft['exercise']))
+
+        return doc.getvalue()
+
+    def make_annotations(self, annotations):
+        doc, tag, text = Doc().tagtext()
+        with tag('h3'):
+            text('Anmerkungen')
+        with tag('div'):
+            doc.asis(self.make_table(annotations))
+        return doc.getvalue()
+
+    def make_exercises(self, exercises):
+        doc, tag, text = Doc().tagtext()
+        for exercise in exercises:
+            with tag('h3'):
+                text(f'{exercise["name"]}: {self.calculate_exercise_points(exercise)}')
+            with tag('div'):
+                for sub in exercise['sub']:
+                    doc.asis(self.make_sub_exercise(sub))
+        return doc.getvalue()
+
+    def make_sub_exercise(self, sub_exercise):
+        doc, tag, text = Doc().tagtext()
+        with tag('h4'):
+            text(f'{sub_exercise["name"]}: {self.calculate_sub_exercise_points(sub_exercise)}/{sub_exercise["points"]}')
+        with tag('div'):
+            doc.asis(self.make_table(sub_exercise['notes']))
+        return doc.getvalue()
+
+    def make_table(self, data):
+        doc, tag, text = Doc().tagtext()
+        with tag('table', klass='table'):
+            with tag('thead'):
+                with tag('tr'):
+                    for header in self.t_header:
+                        with tag('th'):
+                            text(header)
+            with tag('tbody'):
+                for row in data:
+                    with tag('tr'):
+                        with tag('td', klass='td-text'):
+                            doc.asis(row['text'])
+                        with tag('td', klass='td-points'):
+                            doc.asis(self.__convert_points(row['points']))
+        return doc.getvalue()
+
+    def make_html(self):
+        doc, tag, text = Doc().tagtext()
+        with tag('html'):
+            with tag('head'):
+                doc.stag('meta', charset='UTF-8')
+            with tag('body'):
+                doc.asis(self.make_header())
+                doc.asis(self.make_body())
+        return doc.getvalue()
+
+    def make_pdf_stream(self):
+        html = HTML(string=self.make_html())
+        pdf_buffer = BytesIO()
+        html.write_pdf(pdf_buffer, stylesheets=[self.css])
+        pdf = pdf_buffer.getvalue()
+        pdf_buffer.close()
+        return pdf
+
     @staticmethod
-    def generate_pdf(correction: Correction):
-        data = correction.draft
-        pdf_stream = BytesIO()
-        pdf = SimpleDocTemplate(filename=pdf_stream,
-                                pagesize=A4,
-                                rightMargin=50,
-                                leftMargin=50,
-                                topMargin=20,
-                                bottomMargin=10)
-        flowables = []
-
-        styles = getSampleStyleSheet()
-
-        styles.add(ParagraphStyle(name='exerciseHeading', fontSize=14, spaceAfter=10, leading=18))
-        styles.add(ParagraphStyle(name='subExerciseHeading', fontSize=12, spaceAfter=6, leading=14))
-        styles.add(ParagraphStyle(name='rightAlign', alignment=2, fontSize=10, spaceAfter=6, spaceBefore=6))
-        styles.add(ParagraphStyle(name='name', spaceBefore=6, fontSize=10))
-        styles.add(ParagraphStyle(name='points', fontWeight='Bold', spaceBefore=15, fontSize=12, spaceAfter=2))
-
-        flowables.append(Paragraph('TODO changedate', styles['rightAlign']))
-        flowables.append(Paragraph(f"{correction.assignment_instance.assignment.name}", styles['Title']))
-        flowables.append(Paragraph(f"Tutor: {correction.tutor.full_name}", styles['name']))
-        flowables.append(Paragraph(f"Student: {correction.student.full_name}", styles['name']))
-        flowables.append(Paragraph(f"Points: {correction.points}", styles['points']))
-        flowables.append(Spacer(1, 12))
-
-        PDFMaker._create_annotations(data, flowables, styles)
-        PDFMaker._create_exercises(data, flowables, styles)
-
-        pdf.build(flowables)
-
-        pdf_bytes = pdf_stream.getvalue()
-        pdf_stream.close()
-        return pdf_bytes
+    def __convert_points(points):
+        return str(points) if points <= 0 else f'+{points}'
 
     @staticmethod
-    def _create_annotations(data, flowables, styles):
-        flowables.append(Paragraph(f"Anmerkungen", styles['exerciseHeading']))
-        annotation_table = PDFMaker._create_notes_table(data['annotations'])
-        flowables.append(annotation_table)
-        flowables.append(Spacer(1, 12))
+    def calculate_exercise_points(exercise):
+        total, points_max = 0, 0
+        for sub in exercise['sub']:
+            points_max += sub['points']
+            total += sub['points']
+            for note in sub['notes']:
+                total += note['points']
+        return f'{total}/{points_max}'
 
     @staticmethod
-    def _create_exercises(data, flowables, styles):
-        for exercise in data['exercise']:
-            flowables.append(Paragraph(f"{exercise['name']}: 'TODO add points'", styles['exerciseHeading']))
-
-            for sub_ev in exercise['sub']:
-                flowables.append(Paragraph(f"{sub_ev['name']}: {sub_ev['points']}", styles['subExerciseHeading']))
-                notes_table = PDFMaker._create_notes_table(sub_ev['notes'])
-                flowables.append(notes_table)
-                flowables.append(Spacer(1, 12))
-
-    @staticmethod
-    def _create_notes_table(notes):
-        styles = getSampleStyleSheet()
-        table_data = [['Anmerkung', 'Punkte']]
-        for note in notes:
-            table_data.append([Paragraph(PDFMaker._remove_class_attribute(note['text']), styles["BodyText"]), str(note['points']) if note['points'] <= 0 else f"+{note['points']}"])
-
-        table = Table(table_data, colWidths=[460, 40])
-
-        table.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.grey),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
-            ('ALIGN', (1, 0), (1, -1), 'CENTER'),
-            ('VALIGN', (1, 0), (1, -1), 'MIDDLE'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.rgb2cmyk(240, 240, 240)),
-            ('GRID', (0, 0), (-1, -1), 1, colors.black)
-        ]))
-        return table
-
-    @staticmethod
-    def _remove_class_attribute(html_content):
-        soup = BeautifulSoup(html_content, 'html.parser')
-        for element in soup.findAll():
-            del element['class']
-
-        return str(soup)
+    def calculate_sub_exercise_points(sub_exercise):
+        return sub_exercise['points'] + sum(note['points'] for note in sub_exercise['notes'])

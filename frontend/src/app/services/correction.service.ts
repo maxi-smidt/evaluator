@@ -42,7 +42,7 @@ export class CorrectionService extends BaseApiService {
       course_id: courseId,
       assignment_id: assignmentId
     }
-    return this.http.post<Correction>(this.baseUrl + 'get-correction/', body);
+    return this.http.post<{ correction: Correction, lock: boolean }>(this.baseUrl + 'get-correction/', body);
   }
 
   saveCorrection(studentId: number, courseId: number, assignmentId: number, correction: Correction) {

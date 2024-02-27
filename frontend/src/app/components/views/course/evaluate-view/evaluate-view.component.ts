@@ -17,7 +17,8 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   studentId: number;
   correction: Correction;
   correctionBefore: Correction;
-  contextMenuItems: MenuItem[] | undefined;
+  contextMenuItems: MenuItem[];
+  displayLock: boolean = false;
 
   annotationPoints: number = 0;
   pointsDistribution: { [exerciseKey: string]: { [subExerciseKey: string]: number } } = {};
@@ -78,9 +79,10 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
     this.studentId = this.route.snapshot.params['studentId'];
 
     this.correctionService.getCorrection(this.studentId, this.courseId, this.assignmentId).subscribe({
-      next: correction => {
-        this.correction = correction;
-        this.correctionBefore = JSON.parse(JSON.stringify(correction));
+      next: value => {
+        this.correction = value.correction;
+        this.correctionBefore = JSON.parse(JSON.stringify(value.correction));
+        this.displayLock = value.lock;
         this.initPoints();
       }
     });

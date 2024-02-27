@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
 from .models import (User, Tutor, Correction, Assignment, CourseEnrollment, TutorAssignment, CourseLeader,
                      DegreeProgramDirector, DegreeProgram)
-from .utils.pdf_maker import PDFMaker
+from .utils.pdf_maker import PdfMaker
 from .utils.utils_course import (get_full_course, get_students_of_course_by_group,
                                  set_groups_students_of_course, set_tutor_course_partition)
 from .utils.utils_exercise import get_full_assignment
@@ -36,9 +36,9 @@ def get_user(request):
 @api_view(['GET'])
 def get_courses(request):
     tutor = get_object_or_404(Tutor, pk=request.user.id)
-    courses = [{'id': tutor_course.course.id, 'name': tutor_course.course.abbreviation}
+    courses = [{'id': tutor_course.course.id, 'name': f'{tutor_course.course.abbreviation} {tutor_course.year}'}
                for tutor_course in tutor.ci_tutors.all()]
-    return HttpResponse(json.dumps(courses), content_type='application/json')
+    return JsonResponse(courses, safe=False)
 
 
 @api_view(['GET'])
@@ -104,7 +104,9 @@ def delete_correction(request):
     ci = get_object_or_404(tutor.ci_tutors, pk=request.data['course_id'])
     student = get_object_or_404(ci.students, pk=request.data['student_id'])
     ai = get_object_or_404(ci.assignment_instances, pk=request.data['assignment_id'])
-    corr = get_object_or_404(Correction, student=student, assignment_instance=ai, tutor=tutor)
+    corr = get_object_or_404(Correction, student=student, assignment_instance=ai)
+    if corr.tutor != tutor:
+        return JsonResponse(data={}, status=403)
     corr.delete()
     full_assignment = get_full_assignment(ai)
     return HttpResponse(full_assignment, content_type='application/json')
@@ -118,7 +120,7 @@ def get_correction(request):
     ai = get_object_or_404(ci.assignment_instances, pk=request.data['assignment_id'])
 
     try:
-        corr = Correction.objects.get(student=student, assignment_instance=ai, tutor=tutor)
+        corr = Correction.objects.get(student=student, assignment_instance=ai)
     except Correction.DoesNotExist:
         corr = Correction(student=student, assignment_instance=ai, tutor=tutor,
                           points=ai.assignment.points, draft=make_base_correction_draft(ai.assignment),
@@ -133,7 +135,8 @@ def get_correction(request):
         'status': corr.status,
         'draft': corr.draft
     }
-    return HttpResponse(json.dumps(correction, default=str), content_type='application/json')
+    lock = False if corr.tutor == tutor else True
+    return JsonResponse({'correction': correction, 'lock': lock})
 
 
 def make_base_correction_draft(assignment: Assignment):
@@ -168,7 +171,7 @@ def download_correction(request):
     if corr.status is not Correction.Status.CORRECTED:
         corr.status = Correction.Status.CORRECTED
         corr.save()
-    pdf = PDFMaker.generate_pdf(corr)
+    pdf = PdfMaker(corr).make_pdf_stream()
     response = HttpResponse(io.BytesIO(pdf), content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="your_filename.pdf"'
     return response

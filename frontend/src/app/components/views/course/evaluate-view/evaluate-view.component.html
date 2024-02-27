@@ -1,6 +1,11 @@
 <p-toast></p-toast>
 <p-confirmDialog></p-confirmDialog>
-<p-contextMenu [model]="contextMenuItems" [global]="true"></p-contextMenu>
+@if (!displayLock) {
+  <p-contextMenu [model]="contextMenuItems" [global]="true"></p-contextMenu>
+}
+<p-blockUI [blocked]="displayLock">
+  <i class="pi pi-lock" style="font-size: 3rem"></i>
+</p-blockUI>
 
 <h3>{{ correction.assignmentName }} - {{ correction.studentFullName }} | {{ totalPoints }}</h3>
 

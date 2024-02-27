@@ -4,7 +4,7 @@ import {CourseService} from "../../../../services/course.service";
 import {ActivatedRoute, Router,} from "@angular/router";
 import {TranslationService} from "../../../../services/translation.service";
 import {CorrectionService} from "../../../../services/correction.service";
-import {ConfirmationService} from "primeng/api";
+import {ConfirmationService, MessageService} from "primeng/api";
 
 @Component({
   selector: 'ms-assignment-view',
@@ -24,7 +24,8 @@ export class AssignmentViewComponent implements OnInit {
               private translationService: TranslationService,
               private correctionService: CorrectionService,
               private router: Router,
-              private confirmationService: ConfirmationService) {
+              private confirmationService: ConfirmationService,
+              private messageService: MessageService) {
     this.assignment = {
       correctedParticipants: 0,
       dueTo: new Date(),
@@ -113,6 +114,11 @@ export class AssignmentViewComponent implements OnInit {
           this.correctionService.deleteCorrection(studentId, this.courseId, this.assignmentId).subscribe({
             next: assignment => {
               this.assignment = assignment;
+            },
+            error: err => {
+              if (err.status === 403) {
+                this.messageService.add({severity: 'error', summary: 'Error', detail: this.translate('course.assignmentView.error-403')});
+              }
             }
           });
         }

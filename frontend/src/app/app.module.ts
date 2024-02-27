@@ -53,6 +53,7 @@ import {
 import {
   DegreeProgramListComponent
 } from "./components/views/home-view/admin-home/degree-program-list/degree-program-list.component";
+import {BlockUIModule} from "primeng/blockui";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -108,7 +109,8 @@ import {
     MatFormFieldModule,
     MatSelectModule,
     DropdownModule,
-    MultiSelectModule
+    MultiSelectModule,
+    BlockUIModule
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
