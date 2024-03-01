@@ -1,7 +1,8 @@
 import {CanActivateFn} from "@angular/router";
 import {inject} from "@angular/core";
-import {AuthService} from "../services/auth.service";
+import {UserService} from "../core/services/user.service";
+import {Observable} from "rxjs";
 
-export const userAuthGuard: CanActivateFn = (): Promise<boolean> => {
-  return inject(AuthService).canActivate();
+export const userAuthGuard: CanActivateFn = (): Observable<boolean> => {
+  return inject(UserService).isAuthenticated;
 }

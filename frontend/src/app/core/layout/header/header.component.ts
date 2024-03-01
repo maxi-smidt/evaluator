@@ -7,6 +7,8 @@ import {AuthService} from "../../services/auth.service";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+  toggleButton: boolean = true;
+
   constructor(private authService: AuthService) {
   }
 

@@ -1,9 +1,15 @@
 import io
 import json
 from datetime import timedelta
+
+from django.contrib.auth import authenticate
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
+
 from .models import (User, Tutor, Correction, Assignment, CourseEnrollment, TutorAssignment, CourseLeader,
                      DegreeProgramDirector, DegreeProgram)
 from .utils.pdf_maker import PdfMaker
@@ -12,18 +18,30 @@ from .utils.utils_course import (get_full_course, get_students_of_course_by_grou
 from .utils.utils_exercise import get_full_assignment
 
 
-@api_view(['GET'])
-def can_activate(request):
-    user = get_object_or_404(User, pk=request.user.id)
-    response = json.dumps({'canActivateUser': user.is_authenticated})
-    return HttpResponse(response, content_type='application/json')
+class CustomTokenObtainPairView(TokenObtainPairView):
+    def post(self, request, *args, **kwargs):
+        username = request.data.get('username')
+        password = request.data.get('password')
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            response = super().post(request, *args, **kwargs)
+            user = {'firstName': user.first_name, 'lastName': user.last_name, 'id': user.username, 'role': user.role}
+            return JsonResponse({'token': response.data, 'user': user})
+        else:
+            return JsonResponse({'error': 'Invalid Credentials'}, status=400)
 
 
-@api_view(['GET'])
-def can_activate_superuser(request):
-    user = get_object_or_404(User, pk=request.user.id)
-    response = json.dumps({'canActivateSuperUser': user.is_superuser})
-    return HttpResponse(response, content_type='application/json')
+class CustomTokenRefreshView(TokenRefreshView):
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+
+        if response.status_code == 200:
+            user = get_object_or_404(User, pk=request.user.id)
+            user = {'firstName': user.first_name, 'lastName': user.last_name, 'id': user.username, 'role': user.role}
+            return JsonResponse({'token': response.data, 'user': user})
+        return JsonResponse(response.data)
 
 
 @api_view(['GET'])
@@ -35,6 +53,8 @@ def get_user(request):
 
 @api_view(['GET'])
 def get_courses(request):
+    print(request.body)
+    print(request.headers)
     tutor = get_object_or_404(Tutor, pk=request.user.id)
     courses = [{'id': tutor_course.course.id, 'name': f'{tutor_course.course.abbreviation} {tutor_course.year}'}
                for tutor_course in tutor.ci_tutors.all()]

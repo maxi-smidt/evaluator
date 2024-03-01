@@ -29,14 +29,14 @@
               <ng-template #otherFields>
                 <ng-container *ngIf="col.field === 'action'; else defaultFields">
                   @if (rowData['state'] === 'UNDEFINED') {
-                    <p-button icon="pi pi-file-excel" [rounded]="true" [text]="true" severity="danger"
+                    <p-button icon="pi pi-file-excel" [rounded]="true" [text]="true" severity="secondary"
                               (click)="notSubmittedAction(rowData['id'])"></p-button>
                   }
 
                   @if (rowData['state'] === 'CORRECTED') {
-                    <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="danger"
+                    <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary"
                               (click)="editAction(rowData['id'])"></p-button>
-                    <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="danger"
+                    <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary"
                               (click)="downloadAction(rowData['id'])"></p-button>
                   }
 

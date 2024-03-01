@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Assignment} from "../../../../interfaces/assignment";
 import {CourseService} from "../../../../services/course.service";
 import {ActivatedRoute, Router,} from "@angular/router";
-import {TranslationService} from "../../../../services/translation.service";
+import {TranslationService} from "../../../../shared/services/translation.service";
 import {CorrectionService} from "../../../../services/correction.service";
 import {ConfirmationService, MessageService} from "primeng/api";
 

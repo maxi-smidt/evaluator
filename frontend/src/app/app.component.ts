@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {AuthService} from "./services/auth.service";
-import {TranslationService} from "./services/translation.service";
+import {TranslationService} from "./shared/services/translation.service";
+import {UserService} from "./core/services/user.service";
 
 @Component({
   selector: 'app-root',
@@ -10,7 +10,7 @@ import {TranslationService} from "./services/translation.service";
 export class AppComponent implements OnInit{
   title = 'frontend';
 
-  constructor(private authService: AuthService,
+  constructor(private userService: UserService,
               private translationService: TranslationService) {
   }
 
@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
     this.translationService.loadLanguage('de').subscribe();
   }
 
-  get isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
+  isLoggedIn() {
+    return this.userService.isAuthenticated;
   }
 }

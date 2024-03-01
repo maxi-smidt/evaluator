@@ -1,14 +1,11 @@
 from django.urls import path
 from rest_framework.permissions import AllowAny
-
 from . import views
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 
 urlpatterns = [
-    path('token/', TokenObtainPairView.as_view(permission_classes=[AllowAny]), name='token_obtain_pair'),
-    path('token/refresh/', TokenRefreshView.as_view(permission_classes=[AllowAny]), name='token_refresh'),
-    path('can-activate/', views.can_activate, name='can_activate'),
+    path('login/', views.CustomTokenObtainPairView.as_view(permission_classes=[AllowAny]), name='token_obtain_pair'),
+    path('token/refresh/', views.CustomTokenRefreshView.as_view(permission_classes=[AllowAny]), name='token_refresh'),
     path('get-user/', views.get_user, name='get_user'),
     path('get-courses/', views.get_courses, name='get_courses'),
     path('get-exercises/', views.get_exercises_by_course, name="get_exercises_by_course_id"),

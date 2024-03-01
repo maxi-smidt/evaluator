@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {User} from "../../../interfaces/user";
-import {UserService} from "../../../services/user.service";
+import {UserService} from "../../../core/services/user.service";
 
 @Component({
   selector: 'ms-home-view',
@@ -17,7 +17,7 @@ export class HomeViewComponent implements OnInit {
   ngOnInit() {
     this.userService.getUser().subscribe({
       next: user => {
-        this.user = user;
+        this.user = user!;
       }
     });
   }

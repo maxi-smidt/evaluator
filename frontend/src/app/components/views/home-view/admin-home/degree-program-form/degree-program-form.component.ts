@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AdminService} from "../../../../../services/admin.service";
 import {FormBuilder} from "@angular/forms";
 import {MessageService} from "primeng/api";
-import {TranslationService} from "../../../../../services/translation.service";
+import {TranslationService} from "../../../../../shared/services/translation.service";
 
 @Component({
   selector: 'ms-degree-program-form',

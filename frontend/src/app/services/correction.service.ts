@@ -1,20 +1,16 @@
 import {Injectable} from '@angular/core';
-import {BaseApiService} from "./base-api.service";
 import {Assignment} from "../interfaces/assignment";
 import {Correction} from "../interfaces/correction";
-import {Router} from "@angular/router";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {FileDownloadService} from "./file-download.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class CorrectionService extends BaseApiService {
+export class CorrectionService {
 
-  constructor(http: HttpClient,
-              router: Router,
+  constructor(private http: HttpClient,
               private fileDownloadService: FileDownloadService) {
-    super(http, router);
   }
 
   setCorrectionState(studentId: number, courseId: number, assignmentId: number, state: string) {
@@ -24,7 +20,7 @@ export class CorrectionService extends BaseApiService {
       assignment_id: assignmentId,
       state: state
     }
-    return this.http.post<Assignment>(this.baseUrl + 'set-correction-state/', body);
+    return this.http.post<Assignment>('set-correction-state/', body);
   }
 
   deleteCorrection(studentId: number, courseId: number, assignmentId: number) {
@@ -33,7 +29,7 @@ export class CorrectionService extends BaseApiService {
       course_id: courseId,
       assignment_id: assignmentId
     }
-    return this.http.post<Assignment>(this.baseUrl + 'delete-correction/', body);
+    return this.http.post<Assignment>('delete-correction/', body);
   }
 
   getCorrection(studentId: number, courseId: number, assignmentId: number) {
@@ -42,7 +38,7 @@ export class CorrectionService extends BaseApiService {
       course_id: courseId,
       assignment_id: assignmentId
     }
-    return this.http.post<{ correction: Correction, lock: boolean }>(this.baseUrl + 'get-correction/', body);
+    return this.http.post<{ correction: Correction, lock: boolean }>('get-correction/', body);
   }
 
   saveCorrection(studentId: number, courseId: number, assignmentId: number, correction: Correction) {
@@ -52,7 +48,7 @@ export class CorrectionService extends BaseApiService {
       assignment_id: assignmentId,
       correction: correction
     }
-    return this.http.post<Correction>(this.baseUrl + 'save-correction/', body);
+    return this.http.post<Correction>('save-correction/', body);
   }
 
   downloadCorrection(studentId: number, courseId: number, assignmentId: number) {
@@ -61,7 +57,7 @@ export class CorrectionService extends BaseApiService {
       course_id: courseId,
       assignment_id: assignmentId
     }
-    return this.http.post<HttpResponse<Blob>>(this.baseUrl + 'download-correction/', body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe({
+    return this.http.post<HttpResponse<Blob>>('download-correction/', body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe({
       next: value => {
         this.fileDownloadService.download(value.body, value.headers.get('filename')!);
       }

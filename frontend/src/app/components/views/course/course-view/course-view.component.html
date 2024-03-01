@@ -1,7 +1,10 @@
 <div class="row align-items-center justify-content-between">
-  <h3 class="mb-3 col-9">{{ course.name }}</h3>
-  <p-button icon="pi pi-cog" [rounded]="true" [text]="true" (click)="onEditBtnClick()"
-            size="large"></p-button>
+  <h3 class="mb-3 col">{{ course.name }}</h3>
+  <div class="col-auto">
+    <p-button [rounded]="true" [text]="true" severity="secondary" (click)="onEditBtnClick()">
+      <i class="pi pi-cog" style="font-size: 2rem"></i>
+    </p-button>
+  </div>
 </div>
 
 <div class="row gx-5">

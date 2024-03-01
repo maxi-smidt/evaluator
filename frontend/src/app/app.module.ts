@@ -4,12 +4,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {LoginComponent} from './components/login/login.component';
+import {LoginComponent} from './core/login/login.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HomeViewComponent} from './components/views/home-view/home-view.component';
-import {JwtInterceptor} from "./interceptors/jwt.interceptor";
-import {HeaderComponent} from './components/header/header.component';
+import {JwtInterceptor} from "./core/interceptors/jwt.interceptor";
+import {HeaderComponent} from './core/layout/header/header.component';
 import {UserSettingsViewComponent} from './components/views/user-settings-view/user-settings-view.component';
 import {courseComponents} from "./routes/course.routing";
 import {BreadcrumbModule} from "primeng/breadcrumb";
@@ -24,8 +24,8 @@ import {DragDropModule} from "primeng/dragdrop";
 import {ConfirmationService, MessageService} from "primeng/api";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {ToastModule} from "primeng/toast";
-import {TranslatePipe} from './pipes/translate.pipe';
-import {TranslationService} from "./services/translation.service";
+import {TranslatePipe} from './shared/pipes/translate.pipe';
+import {TranslationService} from "./shared/services/translation.service";
 import {EvaluateViewComponent} from './components/views/course/evaluate-view/evaluate-view.component';
 import {EvaluateTableComponent} from "./components/views/course/evaluate-view/evaluate-table/evaluate-table.component";
 import {EditorModule} from 'primeng/editor';
@@ -49,6 +49,7 @@ import {
   DegreeProgramListComponent
 } from "./components/views/home-view/admin-home/degree-program-list/degree-program-list.component";
 import {BlockUIModule} from "primeng/blockui";
+import {ApiInterceptor} from "./core/interceptors/api.interceptor";
 
 @NgModule({
   bootstrap: [AppComponent],
@@ -101,6 +102,7 @@ import {BlockUIModule} from "primeng/blockui";
   ],
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
+    {provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true},
     ConfirmationService,
     MessageService,
     TranslationService

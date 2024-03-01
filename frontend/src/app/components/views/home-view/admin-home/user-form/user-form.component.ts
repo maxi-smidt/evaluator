@@ -3,7 +3,7 @@ import {FormBuilder} from "@angular/forms";
 import {NewUser} from "../../../../../interfaces/user";
 import {AdminService} from "../../../../../services/admin.service";
 import {MessageService} from "primeng/api";
-import {TranslationService} from "../../../../../services/translation.service";
+import {TranslationService} from "../../../../../shared/services/translation.service";
 
 @Component({
   selector: 'ms-user-form',

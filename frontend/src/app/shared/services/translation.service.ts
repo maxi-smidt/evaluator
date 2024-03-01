@@ -14,7 +14,7 @@ export class TranslationService {
   }
 
   loadLanguage(language: string): Observable<any> {
-    return this.http.get(`/assets/i18n/${language}.json`).pipe(
+    return this.http.get(`assets/i18n/${language}.json`).pipe(
       tap((translations: any) => {
         this.translations = translations;
       })

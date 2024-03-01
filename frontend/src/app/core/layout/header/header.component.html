@@ -29,7 +29,9 @@
     </div>
 
     <div class="d-flex">
-      <button type="button" class="btn btn-outline-primary" (click)="onLogoutBtnClick()">{{ 'header.btn-logout' | translate }}</button>
+      <p-button label="{{ 'header.btn-logout' | translate }}" [outlined]="toggleButton"
+                (mouseenter)="toggleButton = false" (mouseleave)="toggleButton = true"
+                (click)="onLogoutBtnClick()" size="small"></p-button>
     </div>
   </div>
 </nav>

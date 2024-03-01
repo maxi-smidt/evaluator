@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AdminService} from "../../../../../services/admin.service";
 import {RegisteredUser} from "../../../../../interfaces/user";
 import {ConfirmationService} from "primeng/api";
-import {TranslationService} from "../../../../../services/translation.service";
+import {TranslationService} from "../../../../../shared/services/translation.service";
 
 @Component({
   selector: 'ms-user-list',
