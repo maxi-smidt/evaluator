@@ -172,8 +172,11 @@ def download_correction(request):
         corr.status = Correction.Status.CORRECTED
         corr.save()
     pdf = PdfMaker(corr).make_pdf_stream()
+    filename = corr.assignment_instance.assignment.course.file_name.format(lastname=student.last_name,
+                                                                           nr="%02d" % ai.assignment.nr)
     response = HttpResponse(io.BytesIO(pdf), content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="your_filename.pdf"'
+    response['filename'] = f'{filename}'
+    response['Access-Control-Expose-Headers'] = 'filename'
     return response
 
 

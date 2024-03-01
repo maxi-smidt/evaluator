@@ -3,7 +3,7 @@ import {BaseApiService} from "./base-api.service";
 import {Assignment} from "../interfaces/assignment";
 import {Correction} from "../interfaces/correction";
 import {Router} from "@angular/router";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpResponse} from "@angular/common/http";
 import {FileDownloadService} from "./file-download.service";
 
 @Injectable({
@@ -61,10 +61,10 @@ export class CorrectionService extends BaseApiService {
       course_id: courseId,
       assignment_id: assignmentId
     }
-    return this.http.post<Blob>(this.baseUrl + 'download-correction/', body, { responseType: 'blob' as 'json' }).subscribe({
+    return this.http.post<HttpResponse<Blob>>(this.baseUrl + 'download-correction/', body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe({
       next: value => {
-        this.fileDownloadService.download(value, 'test.pdf');
+        this.fileDownloadService.download(value.body, value.headers.get('filename')!);
       }
-    })
+    });
   }
 }
