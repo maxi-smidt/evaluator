@@ -1,38 +1,35 @@
-<table mat-table [dataSource]="dataSource" class="evaluation-table">
-  <ng-container matColumnDef="text" class="text">
-    <th mat-header-cell *matHeaderCellDef class="text">{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
-    <td mat-cell *matCellDef="let element" class="text">
-      <p-editor [(ngModel)]="element.text"></p-editor>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="points" class="points">
-    <th mat-header-cell *matHeaderCellDef class="points">{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
-    <td mat-cell *matCellDef="let element" class="points">
-      <p-inputNumber [size]="1" [min]="defaultPoints != 0 ? defaultPoints * -1 : undefined"
-        [(ngModel)]="element['points']" [showButtons]="true" buttonLayout="horizontal" [step]="1"
-        decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success"
-        incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus" (onInput)="onInputChange()">
-      </p-inputNumber>
-    </td>
-  </ng-container>
-
-  <ng-container matColumnDef="action" class="action">
-    <th mat-header-cell *matHeaderCellDef class="action"></th>
-    <td mat-cell *matCellDef="let i = index" class="action">
-      <button mat-icon-button color="warn" (click)="deleteRow(i); onInputChange()">
-        <mat-icon>close</mat-icon>
-      </button>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>
-
-<div class="row justify-content-center mt-2">
-  <button mat-mini-fab color="primary" (click)="addRow()">
-    <mat-icon>add</mat-icon>
-  </button>
+<div class="border border-3 rounded-3">
+  <table class="table table-borderless">
+    <thead>
+    <tr class="border border-bottom-1">
+      <th class="text">{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
+      <th class="points">{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
+      <th class="action"></th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (entry of tableData(); track entry; let idx = $index) {
+        <tr>
+          <td class="text">
+            <p-editor [(ngModel)]="entry.text"></p-editor>
+          </td>
+          <td>
+            <p-inputNumber [size]="1" [min]="defaultPoints() != 0 ? defaultPoints()! * -1 : undefined"
+                           [(ngModel)]="entry['points']" [showButtons]="true" buttonLayout="horizontal" [step]="1"
+                           decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success"
+                           incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+                           (onInput)="onInputChange()">
+            </p-inputNumber>
+          </td>
+          <td>
+            <p-button icon="pi pi-times" [rounded]="true" [text]="true" severity="danger" (click)="deleteRow(idx)"></p-button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
 </div>
 
+<div class="row text-center mt-2">
+  <p-button icon="pi pi-check" [rounded]="true" (click)="addRow()"></p-button>
+</div>

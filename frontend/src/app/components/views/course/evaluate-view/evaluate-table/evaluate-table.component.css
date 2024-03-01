@@ -17,3 +17,13 @@
 .action {
   width: 5%;
 }
+
+td {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+th {
+  font-weight: normal;
+  color: #999;
+}

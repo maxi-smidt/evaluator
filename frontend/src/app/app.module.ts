@@ -19,8 +19,6 @@ import {AccordionModule} from "primeng/accordion";
 import {DataViewModule} from "primeng/dataview";
 import {TagModule} from "primeng/tag";
 import {ButtonModule} from "primeng/button";
-import {MatIconModule} from "@angular/material/icon";
-import {MatButtonModule} from "@angular/material/button";
 import {EditViewComponent} from './components/views/course/edit-view/edit-view.component';
 import {DragDropModule} from "primeng/dragdrop";
 import {ConfirmationService, MessageService} from "primeng/api";
@@ -30,15 +28,12 @@ import {TranslatePipe} from './pipes/translate.pipe';
 import {TranslationService} from "./services/translation.service";
 import {EvaluateViewComponent} from './components/views/course/evaluate-view/evaluate-view.component';
 import {EvaluateTableComponent} from "./components/views/course/evaluate-view/evaluate-table/evaluate-table.component";
-import {MatTableModule} from "@angular/material/table";
 import {EditorModule} from 'primeng/editor';
 import {InputNumberModule} from "primeng/inputnumber";
 import {KnobModule} from "primeng/knob";
 import {SpeedDialModule} from "primeng/speeddial";
 import {ContextMenuModule} from "primeng/contextmenu";
 import {DialogModule} from "primeng/dialog";
-import {MatFormField, MatFormFieldModule} from "@angular/material/form-field";
-import {MatOption, MatSelect, MatSelectModule} from "@angular/material/select";
 import {DropdownModule} from "primeng/dropdown";
 import {EditGroupComponent} from "./components/views/course/edit-view/edit-group/edit-group.component";
 import {EditPartitionComponent} from "./components/views/course/edit-view/edit-partition/edit-partition.component";
@@ -90,12 +85,9 @@ import {BlockUIModule} from "primeng/blockui";
     DataViewModule,
     TagModule,
     ButtonModule,
-    MatIconModule,
-    MatButtonModule,
     DragDropModule,
     ConfirmDialogModule,
     ToastModule,
-    MatTableModule,
     EditorModule,
     InputNumberModule,
     ReactiveFormsModule,
@@ -103,11 +95,6 @@ import {BlockUIModule} from "primeng/blockui";
     SpeedDialModule,
     ContextMenuModule,
     DialogModule,
-    MatFormField,
-    MatSelect,
-    MatOption,
-    MatFormFieldModule,
-    MatSelectModule,
     DropdownModule,
     MultiSelectModule,
     BlockUIModule
