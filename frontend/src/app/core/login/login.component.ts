@@ -1,11 +1,19 @@
 import {Component} from '@angular/core';
 import {AuthService} from "../services/auth.service";
 import {Router} from "@angular/router";
+import {TranslatePipe} from "../../shared/pipes/translate.pipe";
+import {FormsModule} from "@angular/forms";
+import {ButtonModule} from "primeng/button";
 
 @Component({
   selector: 'ms-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  standalone: true,
+  imports: [
+    TranslatePipe,
+    FormsModule,
+    ButtonModule
+  ]
 })
 export class LoginComponent {
   username: string = '';

@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import {User} from "../../interfaces/user";
-import {BaseCourse} from "../../interfaces/base-course";
+import {User} from "../models/user.models";
 import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, distinctUntilChanged, map} from "rxjs";
-import {AuthService} from "./auth.service";
+import {BehaviorSubject, distinctUntilChanged, map, Observable, of, switchMap, tap} from "rxjs";
+import {BaseCourse} from "../../features/course/models/course.models";
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,14 @@ import {AuthService} from "./auth.service";
 export class UserService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser = this.currentUserSubject.asObservable().pipe(distinctUntilChanged());
-  public isAuthenticated = this.currentUser.pipe(map((user) => !!user));
+  public isAuthenticated = this.currentUser.pipe(
+    tap(user => {
+      if (!user) {
+        this.getUser().subscribe();
+      }
+    }),
+    switchMap(user => user ? of(!!user) : this.getUser().pipe(map(fetchedUser => !!fetchedUser))),
+  );
 
   constructor(private http: HttpClient) {
   }
@@ -20,8 +26,16 @@ export class UserService {
     this.currentUserSubject.next(user);
   }
 
-  getUser() {
-    return this.currentUser;
+  getUser(): Observable<User> {
+    if (this.currentUserSubject.value) {
+      return of(this.currentUserSubject.value);
+    } else {
+      return this.http.get<User>('get-user/').pipe(
+        tap(user => {
+          this.currentUserSubject.next(user);
+        })
+      );
+    }
   }
 
   getUserCourses() {

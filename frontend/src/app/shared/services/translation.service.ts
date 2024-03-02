@@ -7,10 +7,8 @@ import {Observable, tap} from "rxjs";
 })
 export class TranslationService {
   private translations: any = {};
-  private defaultLanguage: string = 'de';
 
   constructor(private http: HttpClient) {
-    this.loadLanguage(this.defaultLanguage);
   }
 
   loadLanguage(language: string): Observable<any> {
@@ -21,7 +19,7 @@ export class TranslationService {
     );
   }
 
-  get(key: string): string {
+  translate(key: string): string {
     const keys = key.split('.');
     let result = this.translations;
 

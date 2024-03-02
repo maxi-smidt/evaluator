@@ -20,8 +20,7 @@ export class JwtInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    request = this.addToken(request);
-    console.log(request);
+    request = this.addToken(request, this.jwtService.getAccessToken()!);
     return next.handle(request).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
         return this.handle401Error(request, next);
@@ -31,10 +30,7 @@ export class JwtInterceptor implements HttpInterceptor {
     }));
   }
 
-  private addToken(request: HttpRequest<any>) {
-    const token = this.jwtService.getToken();
-    console.log("token");
-    console.log(token);
+  private addToken(request: HttpRequest<any>, token: string) {
     return request.clone({
       setHeaders: {
         'Authorization': `Bearer ${token}`
@@ -51,7 +47,7 @@ export class JwtInterceptor implements HttpInterceptor {
         switchMap(() => {
           this.isRefreshing = false;
           this.refreshTokenSubject.next(this.jwtService.getToken());
-          return next.handle(this.addToken(request));
+          return next.handle(this.addToken(request, this.jwtService.getAccessToken()!));
         }));
 
     } else {
@@ -59,7 +55,7 @@ export class JwtInterceptor implements HttpInterceptor {
         filter(token => token != null),
         take(1),
         switchMap(() => {
-          return next.handle(this.addToken(request));
+          return next.handle(this.addToken(request, this.jwtService.getAccessToken()!));
         }));
     }
   }

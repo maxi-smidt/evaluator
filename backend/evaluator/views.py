@@ -6,8 +6,6 @@ from django.contrib.auth import authenticate
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from rest_framework.decorators import api_view
-from rest_framework.views import APIView
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
 from .models import (User, Tutor, Correction, Assignment, CourseEnrollment, TutorAssignment, CourseLeader,
@@ -53,8 +51,6 @@ def get_user(request):
 
 @api_view(['GET'])
 def get_courses(request):
-    print(request.body)
-    print(request.headers)
     tutor = get_object_or_404(Tutor, pk=request.user.id)
     courses = [{'id': tutor_course.course.id, 'name': f'{tutor_course.course.abbreviation} {tutor_course.year}'}
                for tutor_course in tutor.ci_tutors.all()]

@@ -3,7 +3,7 @@ import {map} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {JwtService} from "./jwt.service";
-import {User} from "../../interfaces/user";
+import {User} from "../models/user.models";
 import {UserService} from "./user.service";
 
 @Injectable({
@@ -18,9 +18,8 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    return this.http.post<{token: string, user: User}>('login/', {username, password})
+    return this.http.post<{ token: string, user: User }>('login/', {username, password})
       .pipe(map(value => {
-        console.log(value);
         this.setAuth(value.user, value.token);
       }));
   }
@@ -31,7 +30,11 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.http.post<{token: string, user: User}>('token/refresh/', {'refresh': this.jwtService.getRefreshToken()})
+    const refToken = this.jwtService.getRefreshToken();
+    if (refToken === null) {
+      this.logout();
+    }
+    return this.http.post<{ token: string, user: User }>('token/refresh/', {'refresh': this.jwtService.getRefreshToken()})
       .pipe(map(value => {
         this.setAuth(value.user, value.token);
       }));

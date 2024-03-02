@@ -1,21 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {TranslationService} from "./shared/services/translation.service";
+import {Component} from '@angular/core';
 import {UserService} from "./core/services/user.service";
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  templateUrl: './app.component.html'
 })
-export class AppComponent implements OnInit{
+export class AppComponent {
   title = 'frontend';
 
-  constructor(private userService: UserService,
-              private translationService: TranslationService) {
-  }
-
-  ngOnInit() {
-    this.translationService.loadLanguage('de').subscribe();
+  constructor(private userService: UserService) {
   }
 
   isLoggedIn() {
