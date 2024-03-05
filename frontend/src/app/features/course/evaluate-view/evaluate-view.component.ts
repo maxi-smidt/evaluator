@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {ConfirmationService, MenuItem, MessageService} from "primeng/api";
-import {Correction} from "../models/correction.models";
+import {Correction} from "../models/correction.model";
 import {CorrectionService} from "../services/correction.service";
 import {EvaluateTableComponent} from "./evaluate-table/evaluate-table.component";
 import {ContextMenuModule} from "primeng/contextmenu";
@@ -32,7 +32,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   intervalId: any;
   courseId: number;
   assignmentId: number;
-  studentId: number;
+  correctionId: number | undefined;
   correction: Correction;
   correctionBefore: Correction;
   contextMenuItems: MenuItem[];
@@ -46,12 +46,8 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
               private confirmationService: ConfirmationService,
               protected messageService: MessageService,
               private router: Router) {
-    this.correction = {
-      assignmentName: '', assignmentPoints: 0, studentFullName: '', expense: 0, status: '', points: 0,
-      draft: {annotations: [], exercise: []}
-    };
-    this.correctionBefore = this.correction;
-    this.studentId = -1;
+    this.correction = {} as any;
+    this.correctionBefore = {} as any;
     this.assignmentId = -1;
     this.courseId = -1;
 
@@ -75,7 +71,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         label: 'Download',
         icon: 'pi pi-fw pi-download',
         command: () => {
-          this.correctionService.downloadCorrection(this.studentId, this.courseId, this.assignmentId);
+          //this.correctionService.downloadCorrection(this.studentId, this.courseId, this.assignmentId);
         }
       },
       {
@@ -94,16 +90,18 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.courseId = this.route.parent!.parent!.snapshot.params['courseId'];
     this.assignmentId = this.route.parent!.snapshot.params['assignmentId'];
-    this.studentId = this.route.snapshot.params['studentId'];
+    this.correctionId = this.route.snapshot.params['correctionId'];
 
-    this.correctionService.getCorrection(this.studentId, this.courseId, this.assignmentId).subscribe({
+    this.correctionService.getCorrection(this.correctionId!).subscribe({
       next: value => {
-        this.correction = value.correction;
-        this.correctionBefore = JSON.parse(JSON.stringify(value.correction));
-        this.displayLock = value.lock;
+        console.log(value);
+        this.correction = value;
+        this.correctionBefore = JSON.parse(JSON.stringify(value));
+        //this.displayLock = value.lock;
         this.initPoints();
       }
     });
+
     this.intervalId = setInterval(() => {
       this.saveCorrection();
     }, 10000);
@@ -118,7 +116,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   private saveCorrection() {
     if (this.hasChanged()) {
       this.correction.points = this.totalPoints;
-      this.correctionService.saveCorrection(this.studentId, this.courseId, this.assignmentId, this.correction).subscribe({
+      this.correctionService.patchCorrection(this.correctionId!, {points: this.totalPoints, draft: this.correction.draft}).subscribe({
         next: () => {
           this.correctionBefore = JSON.parse(JSON.stringify(this.correction));
         },

@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Assignment} from "../models/assignment.models";
-import {Correction} from "../models/correction.models";
+import {Correction} from "../models/correction.model";
 import {HttpClient, HttpResponse} from "@angular/common/http";
 import {FileDownloadService} from "../../../shared/services/file-download.service";
 
@@ -13,42 +12,27 @@ export class CorrectionService {
               private fileDownloadService: FileDownloadService) {
   }
 
-  setCorrectionState(studentId: number, courseId: number, assignmentId: number, state: string) {
-    const body = {
-      student_id: studentId,
-      course_id: courseId,
-      assignment_id: assignmentId,
-      state: state
-    }
-    return this.http.post<Assignment>('set-correction-state/', body);
+  patchCorrection(correctionId: number, patch: any) {
+    return this.http.patch<Correction>(`correction/${correctionId}/`, patch)
   }
 
-  deleteCorrection(studentId: number, courseId: number, assignmentId: number) {
-    const body = {
-      student_id: studentId,
-      course_id: courseId,
-      assignment_id: assignmentId
+  createCorrection(studentId: number, assignmentId: number, status: string | undefined = undefined) {
+    const body: any = {
+      studentId: studentId,
+      assignmentId: assignmentId
     }
-    return this.http.post<Assignment>('delete-correction/', body);
+    if (status !== undefined) {
+      body.status = status;
+    }
+    return this.http.post<Correction>('correction/create/', body);
   }
 
-  getCorrection(studentId: number, courseId: number, assignmentId: number) {
-    const body = {
-      student_id: studentId,
-      course_id: courseId,
-      assignment_id: assignmentId
-    }
-    return this.http.post<{ correction: Correction, lock: boolean }>('get-correction/', body);
+  deleteCorrection(correctionId: number) {
+    return this.http.delete(`correction/${correctionId}/`);
   }
 
-  saveCorrection(studentId: number, courseId: number, assignmentId: number, correction: Correction) {
-    const body = {
-      student_id: studentId,
-      course_id: courseId,
-      assignment_id: assignmentId,
-      correction: correction
-    }
-    return this.http.post<Correction>('save-correction/', body);
+  getCorrection(correctionId: number) {
+    return this.http.get<Correction>(`correction/${correctionId}/`);
   }
 
   downloadCorrection(studentId: number, courseId: number, assignmentId: number) {
@@ -57,7 +41,10 @@ export class CorrectionService {
       course_id: courseId,
       assignment_id: assignmentId
     }
-    return this.http.post<HttpResponse<Blob>>('download-correction/', body, { observe: 'response', responseType: 'blob' as 'json' }).subscribe({
+    return this.http.post<HttpResponse<Blob>>('download-correction/', body, {
+      observe: 'response',
+      responseType: 'blob' as 'json'
+    }).subscribe({
       next: value => {
         this.fileDownloadService.download(value.body, value.headers.get('filename')!);
       }

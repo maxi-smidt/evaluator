@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {Course} from "../models/course.models";
-import {Assignment} from "../models/assignment.models";
-import {Student} from "../models/student.models";
-import {EditPartition} from "../models/edit-partition.models";
+import {xCourseInstance} from "../models/course.model";
+import {Assignment} from "../models/assignment.model";
+import {Student} from "../models/student.model";
+import {EditPartition} from "../models/edit-partition.model";
 import {HttpClient} from "@angular/common/http";
 
 @Injectable({
@@ -14,13 +14,11 @@ export class CourseService {
   }
 
   getFullCourse(courseId: number) {
-    const params: string = `course_id=${courseId}`;
-    return this.http.get<Course>(`get-exercises?${params}`);
+    return this.http.get<xCourseInstance>(`course/${courseId}/`);
   }
 
-  getFullExercise(courseId: number, assignmentId: number) {
-    const params: string = `course_id=${courseId}&assignment_id=${assignmentId}`;
-    return this.http.get<{ assignment: Assignment, targetGroups: number[] }>(`get-assignment?${params}`);
+  getFullAssignment(assignmentId: number) {
+    return this.http.get<Assignment>(`assignment/${assignmentId}/`);
   }
 
   getStudentsInGroupsByCourse(courseId: number) {

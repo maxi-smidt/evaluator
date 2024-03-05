@@ -1,7 +1,10 @@
-export interface User {
+export interface SimpleUser {
   firstName: string,
   lastName: string,
-  id: string,
+  username: string,
+}
+
+export interface User extends SimpleUser {
   role: string
 }
 
@@ -10,9 +13,9 @@ export interface RegisteredUser extends User {
 }
 
 export interface NewUser {
-  first_name: '',
-  last_name: '',
-  username: '',
-  password: '',
-  role: ''
+  firstName: string,
+  lastName: string,
+  username: string,
+  password: string,
+  role: string
 }

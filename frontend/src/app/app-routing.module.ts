@@ -6,12 +6,14 @@ import {SettingsComponent} from "./features/settings/settings.component";
 import {courseRoutes} from "./features/course/course.routing";
 import {tutorAuthGuard} from "./core/guards/tutor-auth.guard";
 import {HomeComponent} from "./features/home/home.component";
+import {dpRoutes} from "./features/degree-program/degree-program.routing";
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'home', component: HomeComponent, canActivate: [userAuthGuard]},
   {path: 'settings', component: SettingsComponent, canActivate: [userAuthGuard]},
   {path: 'course/:courseId', children: courseRoutes, canActivate: [tutorAuthGuard], canActivateChild: [tutorAuthGuard]},
+  {path: 'degree-program/:abbreviation', children: dpRoutes},
   {path: '**', redirectTo: 'home', pathMatch: "full"}
 ];
 

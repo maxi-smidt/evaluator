@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserService} from "../../../core/services/user.service";
 import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
 import {CourseCardComponent} from "./course-card/course-card.component";
-import {BaseCourse} from "../../course/models/course.models";
+import {xSimpleCourseInstance} from "../../course/models/course.model";
 
 @Component({
   selector: 'ms-tutor-home',
@@ -11,15 +11,15 @@ import {BaseCourse} from "../../course/models/course.models";
   imports: [TranslatePipe, CourseCardComponent]
 })
 export class TutorHomeComponent implements OnInit {
-  baseCourses: BaseCourse[] = [];
+  courseInstances: xSimpleCourseInstance[] = [];
 
   constructor(private userService: UserService) {
   }
 
   ngOnInit() {
     this.userService.getUserCourses().subscribe({
-      next: baseCourses => {
-        this.baseCourses = baseCourses;
+      next: courseInstances => {
+        this.courseInstances = courseInstances;
       }
     });
   }

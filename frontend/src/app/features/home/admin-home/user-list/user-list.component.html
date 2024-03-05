@@ -1,4 +1,4 @@
-<h2>{{ 'homeView.adminHome.userList.title' | translate }}</h2>
+<h2>{{ 'home.adminHome.userList.title' | translate }}</h2>
 <table class="table table-bordered table-responsive">
   <thead>
   <tr>
@@ -8,11 +8,11 @@
   </tr>
   </thead>
   <tbody>
-    @for (user of users; track user.id) {
+    @for (user of users; track user.username) {
       <tr>
         <td>{{ user.firstName }}</td>
         <td>{{ user.lastName }}</td>
-        <td>{{ user.id }}</td>
+        <td>{{ user.username }}</td>
         <td>{{ user.role }}</td>
         <td class="text-center">
           <input class="form-check-input" type="checkbox" (click)="onActivityChange(user)"
@@ -23,5 +23,6 @@
   </tbody>
 </table>
 <div class="text-center">
-  <button class="btn btn-primary" (click)="onActivitySave()">{{ 'homeView.adminHome.userList.btn-save' | translate }}</button>
+  <p-button label="{{ 'home.adminHome.userList.btn-save' | translate }}" size="small"
+            (click)="onActivitySave()"></p-button>
 </div>

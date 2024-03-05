@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router, RouterOutlet,} from "@angular/router";
 import {ConfirmationService, MessageService} from "primeng/api";
-import {Assignment} from "../models/assignment.models";
+import {Assignment} from "../models/assignment.model";
 import {CourseService} from "../services/course.service";
 import {TranslationService} from "../../../shared/services/translation.service";
 import {CorrectionService} from "../services/correction.service";
@@ -16,7 +16,6 @@ import {NgForOf, NgIf} from "@angular/common";
 @Component({
   selector: 'ms-assignment-view',
   templateUrl: './assignment-view.component.html',
-  styleUrls: ['./assignment-view.component.css'],
   standalone: true,
   imports: [
     ConfirmDialogModule,
@@ -34,7 +33,6 @@ export class AssignmentViewComponent implements OnInit {
   assignment: Assignment;
   cols: any[];
   groups: string[];
-  targetGroups: number[];
   assignmentId: number;
   courseId: number;
 
@@ -45,37 +43,27 @@ export class AssignmentViewComponent implements OnInit {
               private router: Router,
               private confirmationService: ConfirmationService,
               private messageService: MessageService) {
-    this.assignment = {
-      correctedParticipants: 0,
-      dueTo: new Date(),
-      id: -1,
-      maxParticipants: 0,
-      name: '',
-      state: '',
-      studentExercises: {}
-    }
     this.cols = [
       {field: 'lastName', header: this.translate('course.assignmentView.last_name')},
       {field: 'firstName', header: this.translate('course.assignmentView.first_name')},
       {field: 'points', header: this.translate('course.assignmentView.evaluation')},
-      {field: 'state', header: this.translate('course.assignmentView.status')},
+      {field: 'status', header: this.translate('course.assignmentView.status')},
       {field: 'action', header: this.translate('course.assignmentView.action')}
     ]
-    this.targetGroups = [];
     this.groups = [];
     this.assignmentId = -1;
     this.courseId = -1;
+    this.assignment = {} as Assignment;
   }
 
   ngOnInit() {
     this.courseId = this.route.parent!.parent!.snapshot.params['courseId'];
     this.assignmentId = this.route.parent!.snapshot.params['assignmentId'];
 
-    this.courseService.getFullExercise(this.courseId, this.assignmentId).subscribe({
+    this.courseService.getFullAssignment(this.assignmentId).subscribe({
       next: value => {
-        this.assignment = value.assignment;
-        this.targetGroups = value.targetGroups;
-        this.groups = Object.keys(this.assignment.studentExercises);
+        this.assignment = value;
+        this.groups = Object.keys(this.assignment.groupedStudents);
         this.adjustTargetGroupsToIndex();
       }
     });
@@ -86,13 +74,13 @@ export class AssignmentViewComponent implements OnInit {
   }
 
   private adjustTargetGroupsToIndex() {
-    this.targetGroups.forEach((value, index, arr) => {
+    this.assignment?.targetGroups.forEach((value, index, arr) => {
       arr[index] = value - 1;
     });
   }
 
-  getSeverity(state: string) {
-    switch (state) {
+  getSeverity(status: string) {
+    switch (status) {
       case 'CORRECTED':
         return 'success';
       case 'IN_PROGRESS':
@@ -104,39 +92,57 @@ export class AssignmentViewComponent implements OnInit {
     }
   }
 
-  onStudentClick(studentId: number, state: string) {
-    if (state !== 'CORRECTED' && state !== 'NOT_SUBMITTED') {
-      this.router.navigate(['evaluate', studentId], {relativeTo: this.route}).then();
+  onStudentClick(studentId: number, state: string, correctionId: number) {
+    if (state === 'CORRECTED' || state === 'NOT_SUBMITTED') {
+      return
+    }
+    if (state === 'UNDEFINED') {
+      this.correctionService.createCorrection(studentId, this.assignmentId, 'IN_PROGRESS').subscribe({
+        next: value => {
+          this.router.navigate(['correction', value.id], {relativeTo: this.route}).then();
+        }
+      });
+    } else {
+      this.router.navigate(['correction', correctionId], {relativeTo: this.route}).then();
     }
   }
 
-  notSubmittedAction(studentId: number) {
-    this.correctionService.setCorrectionState(studentId, this.courseId, this.assignmentId, 'NOT_SUBMITTED').subscribe({
-      next: assignment => {
-        this.assignment = assignment;
-      }
-    });
-  }
-
-  editAction(studentId: number) {
-    this.correctionService.setCorrectionState(studentId, this.courseId, this.assignmentId, 'IN_PROGRESS').subscribe({
+  notSubmittedAction(studentId: number, group: string) {
+    const status = 'NOT_SUBMITTED';
+    this.correctionService.createCorrection(studentId, this.assignmentId, status).subscribe({
       next: () => {
-        this.router.navigate(['evaluate', studentId], {relativeTo: this.route}).then();
+        let student = this.assignment.groupedStudents[group].find(student => student.id === studentId)!;
+        student.status = status;
       }
     });
   }
 
-  deleteAction(studentId: number) {
+  editAction(correctionId: number) {
+    this.correctionService.patchCorrection(correctionId, {status: 'IN_PROGRESS'}).subscribe({
+      next: () => {
+        this.router.navigate(['correction', correctionId], {relativeTo: this.route}).then();
+      }
+    });
+  }
+
+  deleteAction(correctionId: number, group: string) {
     this.confirmDialog().then(
       result => {
         if (result) {
-          this.correctionService.deleteCorrection(studentId, this.courseId, this.assignmentId).subscribe({
-            next: assignment => {
-              this.assignment = assignment;
+          this.correctionService.deleteCorrection(correctionId).subscribe({
+            next: test => {
+              let student = this.assignment.groupedStudents[group].find(student => student.correctionId === correctionId)!;
+              student.correctionId = null as any;
+              student.points = null as any;
+              student.status = 'UNDEFINED';
             },
             error: err => {
               if (err.status === 403) {
-                this.messageService.add({severity: 'error', summary: 'Error', detail: this.translate('course.assignmentView.error-403')});
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Error',
+                  detail: this.translate('course.assignmentView.error-403')
+                });
               }
             }
           });

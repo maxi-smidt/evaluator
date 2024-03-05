@@ -1,6 +1,6 @@
 <div class="card bg-primary-subtle m-2 text-center rounded text-nowrap"
-     (click)="onCourseClick(baseCourse().id)">
+     (click)="onCourseClick(courseInstance().id)">
   <div class="card-body">
-    {{ baseCourse().name }}
+    {{ courseInstance().course.abbreviation }} {{ courseInstance().year }}
   </div>
 </div>

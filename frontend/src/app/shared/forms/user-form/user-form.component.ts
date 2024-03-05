@@ -1,10 +1,13 @@
-import {Component} from '@angular/core';
+import {Component, input} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule} from "@angular/forms";
 import {MessageService} from "primeng/api";
-import {AdminService} from "../../services/admin.service";
-import {TranslationService} from "../../../../shared/services/translation.service";
-import {NewUser} from "../../../../core/models/user.models";
-import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
+import {TranslationService} from "../../services/translation.service";
+import {NewUser} from "../../../core/models/user.models";
+import {TranslatePipe} from "../../pipes/translate.pipe";
+import {ButtonModule} from "primeng/button";
+import {ToastModule} from "primeng/toast";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {UserService} from "../../../core/services/user.service";
 
 @Component({
   selector: 'ms-user-form',
@@ -12,17 +15,19 @@ import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
   standalone: true,
   imports: [
     ReactiveFormsModule,
-    TranslatePipe
+    TranslatePipe,
+    ButtonModule,
+    ToastModule,
+    ConfirmDialogModule
   ]
 })
 export class UserFormComponent {
-  roleChoices: string[];
+  roleChoices = input.required<string[]>();
 
-  constructor(private adminService: AdminService,
+  constructor(private userService: UserService,
               private formBuilder: FormBuilder,
               protected messageService: MessageService,
               private translationService: TranslationService) {
-    this.roleChoices = this.translationService.getArray('homeView.adminHome.userForm.role-choices')
   }
 
   checkoutForm = this.formBuilder.group({
@@ -31,7 +36,7 @@ export class UserFormComponent {
 
   onSubmit() {
     if (this.checkoutForm.valid) {
-      this.adminService.registerUser(this.checkoutForm.value as NewUser).subscribe({
+      this.userService.registerUser(this.checkoutForm.value as NewUser).subscribe({
         next: () => {
           this.checkoutForm.reset();
         },
@@ -40,13 +45,13 @@ export class UserFormComponent {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: this.translationService.translate('homeView.adminHome.userForm.error-500')
+              detail: this.translationService.translate('shared.forms.userForm.error-500')
             });
           } else {
             this.messageService.add({
               severity: 'error',
               summary: 'Error',
-              detail: this.translationService.translate('homeView.adminHome.userForm.error-else')
+              detail: this.translationService.translate('shared.forms.userForm.error-else')
             });
           }
         }

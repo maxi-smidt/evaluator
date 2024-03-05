@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
-import {NewUser, RegisteredUser} from "../../../core/models/user.models";
+import {RegisteredUser, SimpleUser} from "../../../core/models/user.models";
 import {HttpClient} from "@angular/common/http";
+import {AdminDegreeProgram} from "../../degree-program/models/degree-program.model";
 
 @Injectable({
   providedIn: 'root'
@@ -11,35 +12,22 @@ export class AdminService {
   }
 
   getAllUsers() {
-    return this.http.get<RegisteredUser[]>('all-users/');
+    return this.http.get<RegisteredUser[]>('users/');
   }
 
-  registerUser(user: NewUser) {
-    const body = {
-      user: user
-    }
-    return this.http.post('register-user/', body);
-  }
-
-  registerDegreeProgram(degreeProgram: {name: string, abbreviation: string, id: string}) {
-    const body = {
-      degree_program: degreeProgram
-    }
-    return this.http.post('register-degree-program/', body);
+  registerDegreeProgram(degreeProgram: AdminDegreeProgram) {
+    return this.http.post('degree-program/create/', degreeProgram);
   }
 
   changeUserActivityState(users: RegisteredUser[]) {
-    const body = {
-      users: users
-    }
-    return this.http.post('change-user-activity-state/', body);
+    return this.http.post('update-users/', users);
   }
 
   getDegreeProgramDirectors() {
-    return this.http.get<{name: string, id: string}[]>('get-degree-program-directors/');
+    return this.http.get<SimpleUser[]>('degree-program-directors/');
   }
 
   getDegreePrograms() {
-    return this.http.get<{name: string, abbreviation: string, dpd: string}[]>('get-degree-programs/');
+    return this.http.get<AdminDegreeProgram[]>('degree-programs/');
   }
 }

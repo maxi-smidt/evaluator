@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {Course} from "../models/course.models";
+import {xCourseInstance} from "../models/course.model";
 import {CourseService} from "../services/course.service";
 import {ButtonModule} from "primeng/button";
 import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
 import {NgClass} from "@angular/common";
 import {BadgeModule} from "primeng/badge";
-import {BaseAssignment} from "../models/assignment.models";
+import {SimpleAssignment} from "../models/assignment.model";
 
 @Component({
   selector: 'ms-course-view',
@@ -20,29 +20,28 @@ import {BaseAssignment} from "../models/assignment.models";
   ]
 })
 export class CourseViewComponent implements OnInit {
-  course: Course;
+  courseInstance: xCourseInstance | undefined;
 
   constructor(private courseService: CourseService,
               private route: ActivatedRoute,
               private router: Router) {
-    this.course = {id: -1, name: '', exercises: []};
   }
 
   ngOnInit() {
     const courseId = this.route.snapshot.params['courseId'];
     this.courseService.getFullCourse(Number(courseId)).subscribe({
       next: course => {
-        this.course = course;
+        this.courseInstance = course;
       }
     })
   }
 
-  getExerciseStateClass(bE: BaseAssignment) {
+  getExerciseStateClass(bE: SimpleAssignment) {
     if (bE.correctedParticipants === bE.maxParticipants) {
       return 'list-group-item-primary';
     }
 
-    switch (bE.state) {
+    switch (bE.status) {
       case 'EXPIRED':
         return 'list-group-item-danger';
       case 'INACTIVE':
@@ -52,7 +51,7 @@ export class CourseViewComponent implements OnInit {
     }
   }
 
-  onAssignmentClick(assignment: BaseAssignment) {
+  onAssignmentClick(assignment: SimpleAssignment) {
     this.router.navigate(['assignment', assignment.id], {relativeTo: this.route}).then();
   }
 

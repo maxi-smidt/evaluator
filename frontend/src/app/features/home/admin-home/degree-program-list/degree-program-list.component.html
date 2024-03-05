@@ -1,4 +1,4 @@
-<h2>{{ 'homeView.adminHome.degreeProgramList.title' | translate }}</h2>
+<h2>{{ 'home.adminHome.degreeProgramList.title' | translate }}</h2>
 <table class="table table-bordered table-responsive">
   <thead>
   <tr>
@@ -12,11 +12,17 @@
       <tr>
         <td>{{ program.name }}</td>
         <td>{{ program.abbreviation }}</td>
-        <td>{{ program.dpd }}</td>
+        <td>
+          @if (program.dpDirector) {
+            {{ program.dpDirector.lastName }} {{ program.dpDirector.firstName }}
+          } @else {
+            &lt;null&gt;
+          }
+        </td>
       </tr>
     }
   </tbody>
 </table>
 <div class="text-center">
-  <button class="btn btn-primary">{{ 'homeView.adminHome.degreeProgramList.btn-save' | translate }}</button>
+  <p-button label="{{ 'home.adminHome.degreeProgramList.btn-save' | translate }}" size="small"></p-button>
 </div>

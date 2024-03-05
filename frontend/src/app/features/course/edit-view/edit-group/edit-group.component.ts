@@ -1,5 +1,5 @@
 import {Component, input} from '@angular/core';
-import {Student} from "../../models/student.models";
+import {Student} from "../../models/student.model";
 import {DragDropModule} from "primeng/dragdrop";
 import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
 import {ButtonModule} from "primeng/button";

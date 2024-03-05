@@ -5,16 +5,18 @@ import {AdminService} from "../../services/admin.service";
 import {RegisteredUser} from "../../../../core/models/user.models";
 import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
 import {FormsModule} from "@angular/forms";
+import {ButtonModule} from "primeng/button";
 
 
 @Component({
   selector: 'ms-user-list',
   templateUrl: './user-list.component.html',
   standalone: true,
-  imports: [
-    TranslatePipe,
-    FormsModule
-  ]
+    imports: [
+        TranslatePipe,
+        FormsModule,
+        ButtonModule
+    ]
 })
 export class UserListComponent implements OnInit {
   tableHeader: string[];
@@ -24,7 +26,7 @@ export class UserListComponent implements OnInit {
   constructor(private adminService: AdminService,
               private confirmationService: ConfirmationService,
               private translationService: TranslationService) {
-    this.tableHeader = this.translationService.getArray('homeView.adminHome.userList.table-header');
+    this.tableHeader = this.translationService.getArray('home.adminHome.userList.table-header');
   }
 
 
@@ -37,7 +39,7 @@ export class UserListComponent implements OnInit {
   }
 
   onActivityChange(user: RegisteredUser) {
-    const idx = this.usersChangeSet.findIndex(u => u.id === user.id);
+    const idx = this.usersChangeSet.findIndex(u => u.username === user.username);
     if (idx === -1) {
       this.usersChangeSet.push(user);
     } else {
@@ -66,7 +68,7 @@ export class UserListComponent implements OnInit {
     return new Promise((resolve) => {
       this.confirmationService.confirm({
         message: this.makeConfirmationMessage(),
-        header: this.translationService.translate('homeView.adminHome.userList.conf-header'),
+        header: this.translationService.translate('home.adminHome.userList.conf-header'),
         icon: 'pi pi-exclamation-triangle',
         acceptIcon: "none",
         rejectIcon: "none",
@@ -84,7 +86,7 @@ export class UserListComponent implements OnInit {
   private makeConfirmationMessage() {
     return 'Changing:<br>' + this.usersChangeSet
       .map(user => `${user.lastName} ${user.firstName} (${user.role}) ->
-        ${this.translationService.translate('homeView.adminHome.userList.' + user.isActive ? 'active' : 'inactive')}`)
+        ${this.translationService.translate('home.adminHome.userList.' + (user.isActive ? 'active' : 'inactive'))}`)
       .join('<br>');
   }
 }

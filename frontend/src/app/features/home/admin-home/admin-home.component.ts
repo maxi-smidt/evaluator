@@ -1,11 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
-import {AppModule} from "../../../app.module";
 import {DegreeProgramListComponent} from "./degree-program-list/degree-program-list.component";
 import {UserListComponent} from "./user-list/user-list.component";
 import {DegreeProgramFormComponent} from "./degree-program-form/degree-program-form.component";
-import {UserFormComponent} from "./user-form/user-form.component";
+import {UserFormComponent} from "../../../shared/forms/user-form/user-form.component";
+import {TranslationService} from "../../../shared/services/translation.service";
 
 @Component({
   selector: 'ms-admin-home',
@@ -20,5 +20,14 @@ import {UserFormComponent} from "./user-form/user-form.component";
     UserFormComponent
   ]
 })
-export class AdminHomeComponent {
+export class AdminHomeComponent implements OnInit {
+  userFormChoices: string[] = [];
+
+  constructor(private translationService: TranslationService) {
+  }
+
+
+  ngOnInit() {
+    this.userFormChoices = this.translationService.getArray('home.adminHome.role-choices');
+  }
 }

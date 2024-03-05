@@ -1,5 +1,5 @@
 import {Component, computed, input} from '@angular/core';
-import {EditAssignment, EditPartition, EditTutor} from "../../models/edit-partition.models";
+import {EditAssignment, EditPartition, EditTutor} from "../../models/edit-partition.model";
 import {MultiSelectModule} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
 

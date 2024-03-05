@@ -34,9 +34,9 @@ export class AuthService {
     if (refToken === null) {
       this.logout();
     }
-    return this.http.post<{ token: string, user: User }>('token/refresh/', {'refresh': this.jwtService.getRefreshToken()})
+    return this.http.post<string>('token/refresh/', {'refresh': refToken})
       .pipe(map(value => {
-        this.setAuth(value.user, value.token);
+        this.jwtService.saveToken(value);
       }));
   }
 

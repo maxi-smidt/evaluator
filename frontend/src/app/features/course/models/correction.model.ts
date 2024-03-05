@@ -1,11 +1,18 @@
+import {Student} from "./student.model";
+
 export interface Correction {
-  assignmentName: string,
-  assignmentPoints: number,
-  studentFullName: string,
+  id: number,
+  student: Student,
+  assignment: CorrectionAssignment
   expense: number,
   points: number,
   status: string,
   draft: Draft
+}
+
+interface CorrectionAssignment {
+  name: string,
+  points: number
 }
 
 interface Draft {

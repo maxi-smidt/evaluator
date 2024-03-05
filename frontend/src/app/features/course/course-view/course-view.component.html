@@ -1,5 +1,5 @@
 <div class="row align-items-center justify-content-between">
-  <h3 class="mb-3 col">{{ course.name }}</h3>
+  <h3 class="mb-3 col">{{ courseInstance?.course?.name }} {{ courseInstance?.year }}</h3>
   <div class="col-auto">
     <p-button [rounded]="true" [text]="true" severity="secondary" (click)="onEditBtnClick()">
       <i class="pi pi-cog" style="font-size: 2rem"></i>
@@ -11,15 +11,15 @@
   <div class="col-md-6 col-sm-12">
     <h4>{{ 'course.courseView.title-assignments' | translate }}</h4>
     <ul class="list-group">
-      @for (exercise of course.exercises; track exercise.id) {
+      @for (assignment of courseInstance?.assignments; track assignment.id) {
         <li
           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-          [ngClass]="getExerciseStateClass(exercise)"
-          (click)="onAssignmentClick(exercise)">
-          {{ exercise.name }}
-          @if (exercise.state !== 'INACTIVE' && (exercise.maxParticipants - exercise.correctedParticipants) !== 0) {
+          [ngClass]="getExerciseStateClass(assignment)"
+          (click)="onAssignmentClick(assignment)">
+          {{ assignment.name }}
+          @if (assignment.status !== 'INACTIVE' && (assignment.maxParticipants - assignment.correctedParticipants) !== 0) {
             <span>
-              <p-badge [value]="(exercise.maxParticipants - exercise.correctedParticipants).toString()"></p-badge>
+              <p-badge [value]="(assignment.maxParticipants - assignment.correctedParticipants).toString()"></p-badge>
             </span>
           }
         </li>

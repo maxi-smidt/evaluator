@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ConfirmationService, MessageService} from 'primeng/api';
-import {Student} from "../models/student.models";
-import {EditPartition} from "../models/edit-partition.models";
+import {Student} from "../models/student.model";
+import {EditPartition} from "../models/edit-partition.model";
 import {CourseService} from "../services/course.service";
 import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";

@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {User} from "../models/user.models";
+import {NewUser, User} from "../models/user.models";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, distinctUntilChanged, map, Observable, of, switchMap, tap} from "rxjs";
-import {BaseCourse} from "../../features/course/models/course.models";
+import {BaseCourse, xSimpleCourseInstance} from "../../features/course/models/course.model";
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +30,7 @@ export class UserService {
     if (this.currentUserSubject.value) {
       return of(this.currentUserSubject.value);
     } else {
-      return this.http.get<User>('get-user/').pipe(
+      return this.http.get<User>('user/').pipe(
         tap(user => {
           this.currentUserSubject.next(user);
         })
@@ -39,8 +39,10 @@ export class UserService {
   }
 
   getUserCourses() {
-    return this.http.get<BaseCourse[]>('get-courses/')
+    return this.http.get<xSimpleCourseInstance[]>('courses/')
   }
 
-
+  registerUser(user: NewUser) {
+    return this.http.post('create-user/', user);
+  }
 }
