@@ -1,4 +1,4 @@
-import {Component, EventEmitter, input, Output} from '@angular/core';
+import {Component, computed, EventEmitter, input, Output} from '@angular/core';
 import {Entry} from "../../models/correction.model";
 import {EditorModule} from "primeng/editor";
 import {InputNumberModule} from "primeng/inputnumber";
@@ -20,8 +20,9 @@ import {FormsModule} from "@angular/forms";
   ]
 })
 export class EvaluateTableComponent {
-  defaultPoints = input<number>();
-  tableData = input<Entry[]>();
+  defaultPoints = input.required<number>();
+  tableData = input.required<Entry[]>();
+  readOnly = input.required<boolean>();
 
   @Output()
   totalPoints = new EventEmitter<number>();

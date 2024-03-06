@@ -151,8 +151,8 @@ export class AssignmentViewComponent implements OnInit {
     );
   }
 
-  downloadAction(studentId: number) {
-    this.correctionService.downloadCorrection(studentId, this.courseId, this.assignmentId);
+  downloadAction(correctionId: number) {
+    this.correctionService.downloadCorrection(correctionId);
   }
 
   private confirmDialog(): Promise<boolean> {

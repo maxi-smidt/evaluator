@@ -43,7 +43,6 @@ export class DegreeProgramFormComponent implements OnInit {
 
   onSubmit() {
     if (this.adminDegreeProgramForm.valid) {
-      console.log(this.adminDegreeProgramForm.value);
       this.adminService.registerDegreeProgram(this.adminDegreeProgramForm.value as AdminDegreeProgram).subscribe({
         next: () => {
           this.adminDegreeProgramForm.reset();

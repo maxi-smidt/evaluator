@@ -2,6 +2,7 @@ import {Student} from "./student.model";
 
 export interface Correction {
   id: number,
+  tutorUsername: string,
   student: Student,
   assignment: CorrectionAssignment
   expense: number,
@@ -15,7 +16,7 @@ interface CorrectionAssignment {
   points: number
 }
 
-interface Draft {
+export interface Draft {
   annotations: Entry[];
   exercise: Exercise[];
 }

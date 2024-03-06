@@ -35,13 +35,8 @@ export class CorrectionService {
     return this.http.get<Correction>(`correction/${correctionId}/`);
   }
 
-  downloadCorrection(studentId: number, courseId: number, assignmentId: number) {
-    const body = {
-      student_id: studentId,
-      course_id: courseId,
-      assignment_id: assignmentId
-    }
-    return this.http.post<HttpResponse<Blob>>('download-correction/', body, {
+  downloadCorrection(correctionId: number) {
+    return this.http.get<HttpResponse<Blob>>(`correction/download/${correctionId}/`, {
       observe: 'response',
       responseType: 'blob' as 'json'
     }).subscribe({

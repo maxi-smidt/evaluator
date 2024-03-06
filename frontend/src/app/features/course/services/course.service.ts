@@ -22,16 +22,11 @@ export class CourseService {
   }
 
   getStudentsInGroupsByCourse(courseId: number) {
-    const params: string = `course_id=${courseId}`;
-    return this.http.get<{ [groupNr: string]: Student[] }>(`students-course-group/?${params}`);
+    return this.http.get<{groupedStudents: { [groupNr: string]: Student[] }}>(`student-group/${courseId}/`);
   }
 
   setStudentsCourseGroup(courseId: number, students: { [groupNr: string]: Student[] }) {
-    const body = {
-      students: students,
-      course_id: courseId
-    }
-    return this.http.post<{ [groupNr: string]: Student[] }>('students-course-group/', body);
+    return this.http.patch<{groupedStudents: { [groupNr: string]: Student[] }}>(`student-group/${courseId}/`, {groupedStudents: students});
   }
 
   getTutorAssignmentPartition(courseId: number) {

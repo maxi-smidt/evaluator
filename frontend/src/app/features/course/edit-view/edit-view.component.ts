@@ -41,7 +41,7 @@ export class EditViewComponent implements OnInit {
     this.courseId = this.route.parent!.snapshot.params['courseId'];
     this.courseService.getStudentsInGroupsByCourse(this.courseId).subscribe({
       next: students => {
-        this.groupedStudents = students;
+        this.groupedStudents = students.groupedStudents;
         this.adjustInactiveGroup();
         this.groupedStudentsBefore = JSON.parse(JSON.stringify(students));
       }
@@ -113,8 +113,8 @@ export class EditViewComponent implements OnInit {
     if (this.groupHasChanged()) {
       this.courseService.setStudentsCourseGroup(this.courseId, this.groupedStudents).subscribe({
         next: groupedStudents => {
-          this.groupedStudents = groupedStudents;
-          this.groupedStudentsBefore = JSON.parse(JSON.stringify(groupedStudents));
+          this.groupedStudents = groupedStudents.groupedStudents;
+          this.groupedStudentsBefore = JSON.parse(JSON.stringify(this.groupedStudents));
         }
       });
     }

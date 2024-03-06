@@ -13,6 +13,7 @@
 
 <ms-evaluate-table [tableData]="correction.draft.annotations"
                    [defaultPoints]="0"
+                   [readOnly]="readOnly"
                    (totalPoints)="updateAnnotationPoints($event)">
 </ms-evaluate-table>
 
@@ -25,6 +26,7 @@
       / {{ sub_exercise.points }})</h6>
     <ms-evaluate-table [tableData]="sub_exercise.notes"
                        [defaultPoints]="sub_exercise.points"
+                       [readOnly]="readOnly"
                        (totalPoints)="updateSubExercisePoints($event, sub_exercise.name, exercise.name)">
     </ms-evaluate-table>
   }

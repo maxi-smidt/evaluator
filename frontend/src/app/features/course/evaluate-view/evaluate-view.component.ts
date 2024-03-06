@@ -11,6 +11,7 @@ import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
 import {BlockUIModule} from "primeng/blockui";
 import {DialogModule} from "primeng/dialog";
 import {FormsModule} from "@angular/forms";
+import {UserService} from "../../../core/services/user.service";
 
 @Component({
   selector: 'ms-evaluate-view',
@@ -37,6 +38,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
   correctionBefore: Correction;
   contextMenuItems: MenuItem[];
   displayLock: boolean = false;
+  readOnly: boolean = false;
 
   annotationPoints: number = 0;
   pointsDistribution: { [exerciseKey: string]: { [subExerciseKey: string]: number } } = {};
@@ -45,6 +47,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
               private route: ActivatedRoute,
               private confirmationService: ConfirmationService,
               protected messageService: MessageService,
+              private userService: UserService,
               private router: Router) {
     this.correction = {} as any;
     this.correctionBefore = {} as any;
@@ -57,7 +60,6 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         icon: 'pi pi-fw pi-save',
         command: () => {
           this.saveCorrection();
-          this.messageService.add({severity: 'info', summary: 'Info', detail: 'Saved'});
         }
       },
       {
@@ -71,7 +73,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
         label: 'Download',
         icon: 'pi pi-fw pi-download',
         command: () => {
-          //this.correctionService.downloadCorrection(this.studentId, this.courseId, this.assignmentId);
+          this.correctionService.downloadCorrection(this.correctionId!);
         }
       },
       {
@@ -92,15 +94,22 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
     this.assignmentId = this.route.parent!.snapshot.params['assignmentId'];
     this.correctionId = this.route.snapshot.params['correctionId'];
 
-    this.correctionService.getCorrection(this.correctionId!).subscribe({
-      next: value => {
-        console.log(value);
-        this.correction = value;
-        this.correctionBefore = JSON.parse(JSON.stringify(value));
-        //this.displayLock = value.lock;
-        this.initPoints();
+    this.userService.getUser().subscribe({
+      next: user => {
+        this.correctionService.getCorrection(this.correctionId!).subscribe({
+          next: correction => {
+            this.correction = correction;
+            this.correctionBefore = JSON.parse(JSON.stringify(correction));
+            this.displayLock = this.correction.status === 'CORRECTED';
+            this.readOnly = correction.tutorUsername !== user.username;
+          },
+          complete: () => {
+            this.initPoints();
+          }
+        });
       }
     });
+
 
     this.intervalId = setInterval(() => {
       this.saveCorrection();
@@ -115,12 +124,14 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
 
   private saveCorrection() {
     if (this.hasChanged()) {
-      this.correction.points = this.totalPoints;
-      this.correctionService.patchCorrection(this.correctionId!, {points: this.totalPoints, draft: this.correction.draft}).subscribe({
+      this.correctionService.patchCorrection(this.correctionId!, {
+        points: this.totalPoints,
+        draft: this.correction.draft
+      }).subscribe({
         next: () => {
           this.correctionBefore = JSON.parse(JSON.stringify(this.correction));
         },
-        error: err => {
+        error: () => {
           this.messageService.add({severity: 'error', summary: 'Error', detail: 'Could not save correction'});
         }
       })
@@ -201,9 +212,5 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
 
   private showExpenseDialog() {
     this.expenseDialogVisible = true;
-  }
-
-  onBlockBackClick() {
-    this.router.navigate(['../../'], {relativeTo: this.route}).then();
   }
 }

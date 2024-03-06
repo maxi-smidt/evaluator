@@ -2,17 +2,19 @@ import io
 import json
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, \
+    RetrieveUpdateAPIView
 # noinspection PyUnresolvedReferences
 from user.models import User, Tutor, CourseLeader, DegreeProgramDirector
-from .models import Correction, CourseEnrollment, TutorAssignment, DegreeProgram, AssignmentInstance
+from .models import Correction, CourseEnrollment, TutorAssignment, DegreeProgram, AssignmentInstance, CourseInstance
 from .utils.pdf_maker import PdfMaker
-from .utils.utils_course import (get_students_of_course_by_group, set_groups_students_of_course,
-                                 set_tutor_course_partition)
+from .utils.utils_course import set_tutor_course_partition
 from .serializers import (DegreeProgramSerializer, CourseInstanceSerializer, DetailCourseInstanceSerializer,
-                          DetailAssignmentInstanceSerializer, AdminDegreeProgramSerializer, CorrectionSerializer)
+                          DetailAssignmentInstanceSerializer, AdminDegreeProgramSerializer, CorrectionSerializer,
+                          GroupedStudentSerializer, CourseInstanceEnrollmentsSerializer)
 # noinspection PyUnresolvedReferences
 from user.permissions import IsDegreeProgramDirector, IsAdmin
 # noinspection PyUnresolvedReferences
@@ -59,15 +61,22 @@ class AssignmentInstanceDetailView(RetrieveAPIView):
             raise PermissionDenied("You do not have permission to access this resource.")
 
 
-@api_view(['GET', 'POST'])
-def set_or_get_student_course_group(request):
-    tutor = get_object_or_404(Tutor, pk=request.user.id)
-    course_id = request.GET.get('course_id') or request.data.get('course_id')
-    ci = get_object_or_404(tutor.ci_tutors, pk=course_id)
-    if request.method == 'POST':
-        set_groups_students_of_course(ci, request.data['students'])
-    students = get_students_of_course_by_group(ci)
-    return HttpResponse(json.dumps(students), content_type='application/json')
+class CorrectionDownloadRetrieveView(RetrieveAPIView):
+    queryset = Correction.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.status is not Correction.Status.CORRECTED:
+            obj.status = Correction.Status.CORRECTED
+            obj.save()
+        pdf = PdfMaker(obj).make_pdf_stream()
+        student = obj.student
+        ai = obj.assignment_instance
+        filename = ai.assignment.course.file_name.format(lastname=student.last_name, nr="%02d" % ai.assignment.nr)
+        response = HttpResponse(io.BytesIO(pdf), content_type='application/pdf')
+        response['filename'] = f'{filename}'
+        response['Access-Control-Expose-Headers'] = 'filename'
+        return response
 
 
 @api_view(['POST'])
@@ -87,6 +96,11 @@ def download_correction(request):
     response['filename'] = f'{filename}'
     response['Access-Control-Expose-Headers'] = 'filename'
     return response
+
+
+class StudentGroupRetrieveUpdateView(RetrieveUpdateAPIView):
+    serializer_class = CourseInstanceEnrollmentsSerializer
+    queryset = CourseInstance.objects.all()
 
 
 @api_view(['GET'])

@@ -78,20 +78,80 @@ class AssignmentInstanceStudentSerializer(serializers.ModelSerializer):
         return correction.id if correction else None
 
 
-class GroupedStudentSerializer(serializers.Serializer):
-    def get_grouped_students(self, assignment_instance):
-        course_instance = assignment_instance.course_instance
-        enrollments = CourseEnrollment.objects.filter(course_instance=course_instance).exclude(group=-1)
+class StudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = ['id', 'first_name', 'last_name']
 
+
+class CourseInstanceEnrollmentsSerializer(serializers.ModelSerializer):
+    grouped_students = serializers.SerializerMethodField()
+
+    class Meta:
+        model = CourseInstance
+        fields = ['grouped_students']
+
+    def get_grouped_students(self, obj):
+        enrollments = CourseEnrollment.objects.filter(course_instance=obj)
+
+        grouped = defaultdict(list)
+        for enrollment in enrollments:
+            student_data = StudentSerializer(enrollment.student).data
+            grouped[enrollment.group].append(student_data)
+        return grouped
+
+    def update(self, instance, validated_data):
+        grouped_students = self.context.get('request').data.get('grouped_students')
+        if grouped_students:
+            self.update_groups(grouped_students, instance)
+        return super().update(instance, validated_data)
+
+    def update_groups(self, grouped_students, course_instance):
+        for group, students in grouped_students.items():
+            for student in students:
+                enrollment = CourseEnrollment.objects.get(course_instance=course_instance, student_id=student['id'])
+                enrollment.group = group
+                enrollment.save()
+
+class GroupedStudentSerializer(serializers.Serializer):
+    def get_grouped_students(self, course_instance, assignment_instance=None):
+        enrollments = CourseEnrollment.objects.filter(course_instance=course_instance).exclude(group=-1)
+        serializer_choice = self.context.get('student_serializer')
         result = defaultdict(list)
         for enrollment in enrollments:
-            students_data = AssignmentInstanceStudentSerializer(
-                enrollment.student, context={'assignment_instance': assignment_instance}).data
-            result[enrollment.group].append(students_data)
+            if serializer_choice == 'StudentSerializer':
+                students_data = StudentSerializer(enrollment.student)
+            else:
+                students_data = AssignmentInstanceStudentSerializer(enrollment.student, context={'assignment_instance': assignment_instance})
+            result[enrollment.group].append(students_data.data)
         return result
 
+    def update(self, instance, validated_data):
+        print(instance)
+        print(validated_data)
+        return
+        for item in validated_data:
+            group = item.get('group')
+            students = item.get('students', [])
+
+            for student_data in students:
+                student_id = student_data.get('id')
+                enrollment = CourseEnrollment.objects.get(course_instance=instance, student_id=student_id)
+                enrollment.group = group
+                enrollment.save()
+
+        return instance
+
+    def validate(self, data):
+        print('x')
+        for key, value in data.items():
+            print(key, value)
+        return data
+
     def to_representation(self, instance):
-        return self.get_grouped_students(instance)
+        if self.context.get('student_serializer'):
+            return self.get_grouped_students(instance)
+        return self.get_grouped_students(instance.course_instance, assignment_instance=instance)
 
 
 class DetailAssignmentInstanceSerializer(AssignmentInstanceSerializer):
@@ -143,16 +203,21 @@ class MiniAssignmentSerializer(serializers.ModelSerializer):
 class CorrectionSerializer(serializers.ModelSerializer):
     assignment = serializers.SerializerMethodField(read_only=True)
     student = StudentSerializer(read_only=True)
+    tutor_username = serializers.SerializerMethodField(read_only=True)
 
     student_id = serializers.IntegerField(write_only=True)
     assignment_id = serializers.IntegerField(write_only=True)
 
     class Meta:
         model = Correction
-        fields = ['id', 'student', 'assignment', 'expense', 'points', 'status', 'draft', 'student_id', 'assignment_id']
+        fields = ['id', 'tutor_username', 'student', 'assignment', 'expense', 'points', 'status', 'draft', 'student_id',
+                  'assignment_id']
 
     def get_assignment(self, obj):
         return MiniAssignmentSerializer(instance=obj.assignment_instance.assignment).data
+
+    def get_tutor_username(self, obj):
+        return obj.tutor.username
 
     def create(self, validated_data):
         student_id = validated_data.pop('student_id')

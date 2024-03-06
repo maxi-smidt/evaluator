@@ -37,7 +37,7 @@
                     <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary"
                               (click)="editAction(rowData['id'])"></p-button>
                     <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary"
-                              (click)="downloadAction(rowData['id'])"></p-button>
+                              (click)="downloadAction(rowData['correctionId'])"></p-button>
                   }
 
                   @if (rowData['status'] !== 'UNDEFINED') {
