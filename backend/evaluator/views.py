@@ -1,16 +1,12 @@
 import io
-import json
 from django.http import HttpResponse
-from django.shortcuts import get_object_or_404
-from rest_framework.decorators import api_view
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, \
     RetrieveUpdateAPIView
 # noinspection PyUnresolvedReferences
 from user.models import User, Tutor, CourseLeader, DegreeProgramDirector
-from .models import Correction, CourseEnrollment, TutorAssignment, DegreeProgram, AssignmentInstance, CourseInstance
+from .models import Correction, DegreeProgram, AssignmentInstance, CourseInstance
 from .utils.pdf_maker import PdfMaker
-from .utils.utils_course import set_tutor_course_partition
 from . import serializers
 # noinspection PyUnresolvedReferences
 from user.permissions import IsDegreeProgramDirector, IsAdmin
@@ -84,36 +80,6 @@ class StudentGroupRetrieveUpdateView(RetrieveUpdateAPIView):
 class TutorGroupRetrieveUpdateView(RetrieveUpdateAPIView):
     serializer_class = serializers.TutorCoursePartitionSerializer
     queryset = CourseInstance.objects.all()
-
-
-@api_view(['GET'])
-def get_course_partition(request):
-    tutor = get_object_or_404(Tutor, pk=request.user.id)
-    ci = get_object_or_404(tutor.ci_tutors, pk=request.GET.get('course_id'))
-    group_selection = list(CourseEnrollment.objects.filter(course_instance=ci).exclude(group=-1)
-                           .values_list('group', flat=True).distinct())
-    partition = []
-    for tutor in ci.tutors.all():
-        for assignment in ci.assignment_instances.all():
-            try:
-                groups = TutorAssignment.objects.get(tutor=tutor, assignment_instance=assignment).groups
-            except TutorAssignment.DoesNotExist:
-                groups = []
-            partition.append({
-                'tutor': {'name': tutor.full_name, 'id': tutor.id},
-                'assignment': {'name': assignment.assignment.name, 'id': assignment.id},
-                'groups': sorted(groups)
-            })
-    response = {'partition': partition, 'groups': sorted(group_selection)}
-    return HttpResponse(json.dumps(response, default=str), content_type='application/json')
-
-
-@api_view(['POST'])
-def set_course_partition(request):
-    tutor = get_object_or_404(Tutor, pk=request.user.id)
-    ci = get_object_or_404(tutor.ci_tutors, pk=request.data['course_id'])
-    set_tutor_course_partition(ci, request.data['partition'])
-    return HttpResponse()
 
 
 class CorrectionCreateApiView(CreateAPIView):
