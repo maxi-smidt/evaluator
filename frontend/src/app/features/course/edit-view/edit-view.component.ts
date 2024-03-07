@@ -120,7 +120,7 @@ export class EditViewComponent implements OnInit {
     }
 
     if (this.partitionHasChanged()) {
-      this.courseService.setAssignmentPartition(this.courseId, this.partition).subscribe({
+      this.courseService.putAssignmentPartition(this.courseId, this.partition).subscribe({
         next: () => {
           this.partitionBefore = JSON.parse(JSON.stringify(this.partition));
         }

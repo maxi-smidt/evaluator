@@ -22,23 +22,20 @@ export class CourseService {
   }
 
   getStudentsInGroupsByCourse(courseId: number) {
-    return this.http.get<{groupedStudents: { [groupNr: string]: Student[] }}>(`student-group/${courseId}/`);
+    return this.http.get<{ groupedStudents: { [groupNr: string]: Student[] } }>(`student-group/${courseId}/`);
   }
 
   setStudentsCourseGroup(courseId: number, students: { [groupNr: string]: Student[] }) {
-    return this.http.patch<{groupedStudents: { [groupNr: string]: Student[] }}>(`student-group/${courseId}/`, {groupedStudents: students});
+    return this.http.patch<{
+      groupedStudents: { [groupNr: string]: Student[] }
+    }>(`student-group/${courseId}/`, {groupedStudents: students});
   }
 
   getTutorAssignmentPartition(courseId: number) {
-    const params: string = `course_id=${courseId}`;
-    return this.http.get<{ partition: EditPartition[], groups: number[] }>(`get-course-partition?${params}`);
+    return this.http.get<{ partition: EditPartition[], groups: number[] }>(`course-partition/${courseId}/`);
   }
 
-  setAssignmentPartition(courseId: number, partition: EditPartition[]) {
-    const body = {
-      partition: partition,
-      course_id: courseId
-    }
-    return this.http.post('set-course-partition/', body);
+  putAssignmentPartition(courseId: number, partition: EditPartition[]) {
+    return this.http.put(`course-partition/${courseId}/`, {partition: partition});
   }
 }

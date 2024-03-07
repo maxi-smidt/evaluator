@@ -1,15 +1,12 @@
-export interface EditTutor {
-  name: string,
-  id: string
-}
+import {SimpleUser} from "../../../core/models/user.models";
 
 export interface EditAssignment {
-  name: string,
   id: string
+  assignmentName: string,
+  groups: number[]
 }
 
 export interface EditPartition {
-  tutor: EditTutor;
-  assignment: EditAssignment;
-  groups: number[];
+  tutor: SimpleUser;
+  assignments: EditAssignment[];
 }

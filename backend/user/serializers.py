@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, DegreeProgramDirector
+from .models import User, DegreeProgramDirector, Tutor
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -17,4 +17,10 @@ class UserSerializer(serializers.ModelSerializer):
 class DegreeProgramDirectorSerializer(serializers.ModelSerializer):
     class Meta:
         model = DegreeProgramDirector
+        fields = ['username', 'first_name', 'last_name']
+
+
+class TutorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tutor
         fields = ['username', 'first_name', 'last_name']

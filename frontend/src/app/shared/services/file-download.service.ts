@@ -4,7 +4,7 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class FileDownloadService {
-  download(data: any, fileName: string) {
+  download(data: BlobPart, fileName: string) {
     const blob = new Blob([data], {type: 'application/octet-stream'});
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement('a');

@@ -17,7 +17,7 @@
           </td>
           <td>
             <p-inputNumber [size]="1"
-                           [min]="defaultPoints() != 0 ? defaultPoints()! * -1 : undefined"
+                           [min]="defaultPoints() !== 0 ? defaultPoints()! * -1 : undefined"
                            [ngModel]="entry.points"
                            (ngModelChange)="entry.points = $event ? + $event : 0"
                            [showButtons]="true" buttonLayout="horizontal"

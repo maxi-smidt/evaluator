@@ -30,7 +30,7 @@ import {UserService} from "../../../core/services/user.service";
 })
 export class EvaluateViewComponent implements OnInit, OnDestroy {
   expenseDialogVisible: boolean = false;
-  intervalId: any;
+  intervalId: number = 0;
   courseId: number;
   assignmentId: number;
   correctionId: number | undefined;
@@ -49,8 +49,8 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
               protected messageService: MessageService,
               private userService: UserService,
               private router: Router) {
-    this.correction = {} as any;
-    this.correctionBefore = {} as any;
+    this.correction = {} as Correction;
+    this.correctionBefore = {} as Correction;
     this.assignmentId = -1;
     this.courseId = -1;
 
@@ -142,7 +142,7 @@ export class EvaluateViewComponent implements OnInit, OnDestroy {
     for (const exc of this.correction.draft.exercise) {
       this.pointsDistribution[exc.name] = {};
       for (const subExc of exc.sub) {
-        let points = subExc.notes.reduce((acc, note) => acc + note.points, 0);
+        const points = subExc.notes.reduce((acc, note) => acc + note.points, 0);
         this.pointsDistribution[exc.name][subExc.name] = subExc.points + points;
       }
     }

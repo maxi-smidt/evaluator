@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {NewUser, User} from "../models/user.models";
 import {HttpClient} from "@angular/common/http";
 import {BehaviorSubject, distinctUntilChanged, map, Observable, of, switchMap, tap} from "rxjs";
-import {BaseCourse, xSimpleCourseInstance} from "../../features/course/models/course.model";
+import {xSimpleCourseInstance} from "../../features/course/models/course.model";
 
 @Injectable({
   providedIn: 'root'

@@ -2,7 +2,6 @@ import io
 import json
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView, RetrieveAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView, \
@@ -12,9 +11,7 @@ from user.models import User, Tutor, CourseLeader, DegreeProgramDirector
 from .models import Correction, CourseEnrollment, TutorAssignment, DegreeProgram, AssignmentInstance, CourseInstance
 from .utils.pdf_maker import PdfMaker
 from .utils.utils_course import set_tutor_course_partition
-from .serializers import (DegreeProgramSerializer, CourseInstanceSerializer, DetailCourseInstanceSerializer,
-                          DetailAssignmentInstanceSerializer, AdminDegreeProgramSerializer, CorrectionSerializer,
-                          GroupedStudentSerializer, CourseInstanceEnrollmentsSerializer)
+from . import serializers
 # noinspection PyUnresolvedReferences
 from user.permissions import IsDegreeProgramDirector, IsAdmin
 # noinspection PyUnresolvedReferences
@@ -22,7 +19,7 @@ from user.serializers import DegreeProgramDirectorSerializer
 
 
 class CourseInstanceListView(ListAPIView):
-    serializer_class = CourseInstanceSerializer
+    serializer_class = serializers.CourseInstanceSerializer
 
     def get_queryset(self):
         user = self.request.user
@@ -34,7 +31,7 @@ class CourseInstanceListView(ListAPIView):
 
 
 class CourseInstanceDetailView(RetrieveAPIView):
-    serializer_class = DetailCourseInstanceSerializer
+    serializer_class = serializers.DetailCourseInstanceSerializer
     lookup_field = 'course_id'
 
     def get_queryset(self):
@@ -48,7 +45,7 @@ class CourseInstanceDetailView(RetrieveAPIView):
 
 
 class AssignmentInstanceDetailView(RetrieveAPIView):
-    serializer_class = DetailAssignmentInstanceSerializer
+    serializer_class = serializers.DetailAssignmentInstanceSerializer
     lookup_field = 'assignment_id'
 
     def get_queryset(self):
@@ -79,27 +76,13 @@ class CorrectionDownloadRetrieveView(RetrieveAPIView):
         return response
 
 
-@api_view(['POST'])
-def download_correction(request):
-    tutor = get_object_or_404(Tutor, pk=request.user.id)
-    ci = get_object_or_404(tutor.ci_tutors, pk=request.data['course_id'])
-    student = get_object_or_404(ci.students, pk=request.data['student_id'])
-    ai = get_object_or_404(ci.assignment_instances, pk=request.data['assignment_id'])
-    corr = get_object_or_404(Correction, student=student, assignment_instance=ai, tutor=tutor)
-    if corr.status is not Correction.Status.CORRECTED:
-        corr.status = Correction.Status.CORRECTED
-        corr.save()
-    pdf = PdfMaker(corr).make_pdf_stream()
-    filename = corr.assignment_instance.assignment.course.file_name.format(lastname=student.last_name,
-                                                                           nr="%02d" % ai.assignment.nr)
-    response = HttpResponse(io.BytesIO(pdf), content_type='application/pdf')
-    response['filename'] = f'{filename}'
-    response['Access-Control-Expose-Headers'] = 'filename'
-    return response
-
-
 class StudentGroupRetrieveUpdateView(RetrieveUpdateAPIView):
-    serializer_class = CourseInstanceEnrollmentsSerializer
+    serializer_class = serializers.CourseInstanceEnrollmentsSerializer
+    queryset = CourseInstance.objects.all()
+
+
+class TutorGroupRetrieveUpdateView(RetrieveUpdateAPIView):
+    serializer_class = serializers.TutorCoursePartitionSerializer
     queryset = CourseInstance.objects.all()
 
 
@@ -134,12 +117,12 @@ def set_course_partition(request):
 
 
 class CorrectionCreateApiView(CreateAPIView):
-    serializer_class = CorrectionSerializer
+    serializer_class = serializers.CorrectionSerializer
     queryset = Correction.objects.all()
 
 
 class CorrectionRetrieveUpdateDestroyView(RetrieveUpdateDestroyAPIView):
-    serializer_class = CorrectionSerializer
+    serializer_class = serializers.CorrectionSerializer
     queryset = Correction.objects.all()
 
 
@@ -151,16 +134,16 @@ class DegreeProgramDirectorListView(ListAPIView):
 
 class DegreeProgramCreateView(CreateAPIView):
     permission_classes = [IsAdmin]
-    serializer_class = AdminDegreeProgramSerializer
+    serializer_class = serializers.AdminDegreeProgramSerializer
 
 
 class DegreeProgramListView(ListAPIView):
     def get_serializer_class(self):
         user = self.request.user
         if user.role == User.Role.ADMIN:
-            return AdminDegreeProgramSerializer
+            return serializers.AdminDegreeProgramSerializer
         elif user.role == User.Role.DPD:
-            return DegreeProgramSerializer
+            return serializers.DegreeProgramSerializer
         else:
             raise PermissionDenied("You do not have permission to access this resource.")
 

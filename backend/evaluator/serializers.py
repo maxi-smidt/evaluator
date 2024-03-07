@@ -1,13 +1,14 @@
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+from rest_framework.fields import SerializerMethodField
 from .models import DegreeProgram, CourseInstance, AssignmentInstance, Correction, Student, CourseEnrollment, \
     TutorAssignment, Assignment
 from collections import defaultdict
 # noinspection PyUnresolvedReferences
 from user.models import User, Tutor, DegreeProgramDirector
 # noinspection PyUnresolvedReferences
-from user.serializers import DegreeProgramDirectorSerializer
+from user.serializers import DegreeProgramDirectorSerializer, TutorSerializer
 
 
 class DegreeProgramSerializer(serializers.ModelSerializer):
@@ -113,40 +114,15 @@ class CourseInstanceEnrollmentsSerializer(serializers.ModelSerializer):
                 enrollment.group = group
                 enrollment.save()
 
+
 class GroupedStudentSerializer(serializers.Serializer):
     def get_grouped_students(self, course_instance, assignment_instance=None):
         enrollments = CourseEnrollment.objects.filter(course_instance=course_instance).exclude(group=-1)
-        serializer_choice = self.context.get('student_serializer')
         result = defaultdict(list)
         for enrollment in enrollments:
-            if serializer_choice == 'StudentSerializer':
-                students_data = StudentSerializer(enrollment.student)
-            else:
-                students_data = AssignmentInstanceStudentSerializer(enrollment.student, context={'assignment_instance': assignment_instance})
+            students_data = AssignmentInstanceStudentSerializer(enrollment.student, context={'assignment_instance': assignment_instance})
             result[enrollment.group].append(students_data.data)
         return result
-
-    def update(self, instance, validated_data):
-        print(instance)
-        print(validated_data)
-        return
-        for item in validated_data:
-            group = item.get('group')
-            students = item.get('students', [])
-
-            for student_data in students:
-                student_id = student_data.get('id')
-                enrollment = CourseEnrollment.objects.get(course_instance=instance, student_id=student_id)
-                enrollment.group = group
-                enrollment.save()
-
-        return instance
-
-    def validate(self, data):
-        print('x')
-        for key, value in data.items():
-            print(key, value)
-        return data
 
     def to_representation(self, instance):
         if self.context.get('student_serializer'):
@@ -186,12 +162,6 @@ class AdminDegreeProgramSerializer(DegreeProgramSerializer):
         degree_program.dp_director = DegreeProgramDirector.objects.get(username=dp_director['username'])
         degree_program.save()
         return degree_program
-
-
-class StudentSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Student
-        fields = ['id', 'first_name', 'last_name']
 
 
 class MiniAssignmentSerializer(serializers.ModelSerializer):
@@ -237,3 +207,66 @@ def make_base_correction_draft(assignment: Assignment):
         {'name': exc['name'], 'sub': [{'name': sub_exc['name'], 'points': sub_exc['points'], 'notes': []}
                                       for sub_exc in exc['distribution']]} for exc in assignment.draft]}
     return draft
+
+
+class TutorAIGroupsSerializer(serializers.ModelSerializer):
+    assignment_name = SerializerMethodField()
+    groups = SerializerMethodField()
+
+    class Meta:
+        model = AssignmentInstance
+        fields = ['id', 'assignment_name', 'groups']
+
+    def get_assignment_name(self, obj):
+        return obj.assignment.name
+
+    def get_groups(self, obj):
+        tutor = self.context.get('tutor')
+        try:
+            groups = TutorAssignment.objects.get(tutor=tutor, assignment_instance=obj).groups
+        except TutorAssignment.DoesNotExist:
+            groups = []
+        return groups
+
+
+class TutorCoursePartitionSerializer(serializers.ModelSerializer):
+    groups = SerializerMethodField()
+    partition = SerializerMethodField()
+
+    class Meta:
+        model = CourseInstance
+        fields = ['partition', 'groups']
+
+    def get_groups(self, obj):
+        return list(CourseEnrollment.objects.filter(course_instance_id=obj).exclude(group=-1)
+                    .values_list('group', flat=True).distinct().order_by('group'))
+
+    def get_partition(self, obj):
+        partition = []
+        for tutor in obj.tutors.all():
+            data = {'tutor': TutorSerializer(tutor).data, 'assignments': []}
+            for assignment in obj.assignment_instances.all():
+                data['assignments'].append(TutorAIGroupsSerializer(assignment, context={'tutor': tutor}).data)
+            partition.append(data)
+        return partition
+
+    def update(self, instance, validated_data):
+        partition = self.context.get('request').data.get('partition', None)
+        if partition:
+            self.update_partition(partition)
+        return super().update(instance, validated_data)
+
+    def update_partition(self, partition):
+        for part in partition:
+            tutor = Tutor.objects.get(username=part['tutor']['username'])
+            for assignment in part['assignments']:
+                groups = assignment['groups']
+                if not groups:
+                    continue
+                ai = AssignmentInstance.objects.get(id=assignment['id'])
+                try:
+                    ta = TutorAssignment.objects.get(tutor=tutor, assignment_instance=ai)
+                except TutorAssignment.DoesNotExist:
+                    ta = TutorAssignment(tutor=tutor, assignment_instance=ai)
+                ta.groups = groups
+                ta.save()

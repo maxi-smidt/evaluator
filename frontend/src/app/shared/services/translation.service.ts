@@ -11,9 +11,9 @@ export class TranslationService {
   constructor(private http: HttpClient) {
   }
 
-  loadLanguage(language: string): Observable<any> {
+  loadLanguage(language: string): Observable<unknown> {
     return this.http.get(`assets/i18n/${language}.json`).pipe(
-      tap((translations: any) => {
+      tap((translations) => {
         this.translations = translations;
       })
     );
@@ -23,21 +23,21 @@ export class TranslationService {
     const keys = key.split('.');
     let result = this.translations;
 
-    for (let k of keys) {
+    for (const k of keys) {
       result = result[k];
 
       if (result === undefined) {
         return key;
       }
     }
-    return result;
+    return result as string;
   }
 
   getArray(key: string): string[] {
     const keys = key.split('.');
     let result = this.translations;
 
-    for (let k of keys) {
+    for (const k of keys) {
       result = result[k];
 
       if (result === undefined) {

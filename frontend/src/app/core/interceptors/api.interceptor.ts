@@ -6,9 +6,9 @@ import {environment} from "../../../environments/environment";
 @Injectable({providedIn: "root"})
 export class ApiInterceptor implements HttpInterceptor {
   intercept(
-    req: HttpRequest<any>,
+    req: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     const url = req.url.includes('assets/') ? req.url : `${environment.apiUrl}/${req.url}`;
     const apiReq = req.clone({url: url});
     return next.handle(apiReq);

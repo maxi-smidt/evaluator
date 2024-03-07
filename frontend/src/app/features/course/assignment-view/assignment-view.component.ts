@@ -31,7 +31,7 @@ import {NgForOf, NgIf} from "@angular/common";
 })
 export class AssignmentViewComponent implements OnInit {
   assignment: Assignment;
-  cols: any[];
+  cols: {field: string, header: string}[];
   groups: string[];
   assignmentId: number;
   courseId: number;
@@ -111,7 +111,7 @@ export class AssignmentViewComponent implements OnInit {
     const status = 'NOT_SUBMITTED';
     this.correctionService.createCorrection(studentId, this.assignmentId, status).subscribe({
       next: () => {
-        let student = this.assignment.groupedStudents[group].find(student => student.id === studentId)!;
+        const student = this.assignment.groupedStudents[group].find(student => student.id === studentId)!;
         student.status = status;
       }
     });
@@ -130,10 +130,10 @@ export class AssignmentViewComponent implements OnInit {
       result => {
         if (result) {
           this.correctionService.deleteCorrection(correctionId).subscribe({
-            next: test => {
-              let student = this.assignment.groupedStudents[group].find(student => student.correctionId === correctionId)!;
-              student.correctionId = null as any;
-              student.points = null as any;
+            next: () => {
+              const student = this.assignment.groupedStudents[group].find(student => student.correctionId === correctionId)!;
+              student.correctionId = null as unknown as number;
+              student.points = null as unknown as number;
               student.status = 'UNDEFINED';
             },
             error: err => {

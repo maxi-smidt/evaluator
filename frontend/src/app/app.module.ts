@@ -14,7 +14,7 @@ import {ApiInterceptor} from "./core/interceptors/api.interceptor";
 import {TranslatePipe} from "./shared/pipes/translate.pipe";
 import {HomeComponent} from "./features/home/home.component";
 
-function loadTranslations(translationService: TranslationService): Function {
+function loadTranslations(translationService: TranslationService) {
   return () => new Promise<void>((resolve, reject) => {
     translationService.loadLanguage('de').subscribe({
       next: () => {

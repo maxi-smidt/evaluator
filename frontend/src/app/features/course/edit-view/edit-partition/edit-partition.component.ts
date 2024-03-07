@@ -1,7 +1,8 @@
 import {Component, computed, input} from '@angular/core';
-import {EditAssignment, EditPartition, EditTutor} from "../../models/edit-partition.model";
+import {EditAssignment, EditPartition} from "../../models/edit-partition.model";
 import {MultiSelectModule} from "primeng/multiselect";
 import {FormsModule} from "@angular/forms";
+import {SimpleUser} from "../../../../core/models/user.models";
 
 @Component({
   selector: 'ms-edit-partition',
@@ -15,45 +16,29 @@ import {FormsModule} from "@angular/forms";
 export class EditPartitionComponent {
 
   partition = input.required<EditPartition[]>();
-  tutors = computed(() => {
-    const allTutors = this.partition().map(partition => partition.tutor);
-    const distinctTutors: EditTutor[] = [];
-    allTutors.forEach(tutor => {
-      if (!distinctTutors.some(distinctTutor => distinctTutor.id === tutor.id)) {
-        distinctTutors.push(tutor);
-      }
-    });
-    return distinctTutors;
-  });
-
   groups = input<number[]>();
 
-  tableHeader = computed(() => {
-    let header: EditTutor[] = [{name: '', id: ''}];
-    this.tutors().forEach(tutor => {
-      header.push(tutor);
-    });
-    return header;
-  });
-
   assignments = computed(() => {
-    const allAssignments = this.partition().map(partition => partition.assignment);
-    const distinctAssignments: EditAssignment[] = [];
-    allAssignments.forEach(assignment => {
-      if (!distinctAssignments.some(distinctAssignment => distinctAssignment.id === assignment.id)) {
-        distinctAssignments.push(assignment);
-      }
-    });
-    return distinctAssignments;
+    if (this.partition() === undefined || this.partition().length === 0) {
+      return [] as EditAssignment[];
+    }
+    return this.partition()[0].assignments;
   });
 
-  getGroupByTutorAndAssignment(tutorId: string, assignmentId: string) {
-    const partition = this.partition().find(p => p.tutor.id === tutorId && p.assignment.id === assignmentId);
-    return partition!.groups;
+  headers = computed(() => {
+    const empty: SimpleUser = {firstName: '', lastName: '', username: ''};
+    const headers = [empty];
+    this.partition().forEach(p => headers.push(p.tutor));
+    return headers
+  })
+
+  getGroupByTutorAndAssignment(username: string, assignmentId: string) {
+    const partition = this.partition().find(p => p.tutor.username === username);
+    return partition!.assignments.find(a => a.id === assignmentId)!.groups
   }
 
-  setGroupByTutorAndAssignment(tutorId: string, assignmentId: string, groupValue: number[]) {
-    const partition = this.partition().find(p => p.tutor.id === tutorId && p.assignment.id === assignmentId);
-    partition!.groups = groupValue;
+  setGroupByTutorAndAssignment(username: string, assignmentId: string, groupValue: number[]) {
+    const partition = this.partition().find(p => p.tutor.username === username);
+    partition!.assignments.find(a => a.id === assignmentId)!.groups = groupValue;
   }
 }

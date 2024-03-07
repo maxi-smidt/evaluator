@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Correction} from "../models/correction.model";
-import {HttpClient, HttpResponse} from "@angular/common/http";
+import {HttpClient} from "@angular/common/http";
 import {FileDownloadService} from "../../../shared/services/file-download.service";
 
 @Injectable({
@@ -12,12 +12,12 @@ export class CorrectionService {
               private fileDownloadService: FileDownloadService) {
   }
 
-  patchCorrection(correctionId: number, patch: any) {
+  patchCorrection(correctionId: number, patch: unknown) {
     return this.http.patch<Correction>(`correction/${correctionId}/`, patch)
   }
 
   createCorrection(studentId: number, assignmentId: number, status: string | undefined = undefined) {
-    const body: any = {
+    const body: {studentId: number, assignmentId: number, status?: string} = {
       studentId: studentId,
       assignmentId: assignmentId
     }
@@ -36,12 +36,12 @@ export class CorrectionService {
   }
 
   downloadCorrection(correctionId: number) {
-    return this.http.get<HttpResponse<Blob>>(`correction/download/${correctionId}/`, {
+    return this.http.get<Blob>(`correction/download/${correctionId}/`, {
       observe: 'response',
       responseType: 'blob' as 'json'
     }).subscribe({
       next: value => {
-        this.fileDownloadService.download(value.body, value.headers.get('filename')!);
+        this.fileDownloadService.download(value.body!, value.headers.get('filename')!);
       }
     });
   }

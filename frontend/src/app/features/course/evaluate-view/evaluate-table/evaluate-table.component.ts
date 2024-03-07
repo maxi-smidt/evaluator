@@ -1,4 +1,4 @@
-import {Component, computed, EventEmitter, input, Output} from '@angular/core';
+import {Component, EventEmitter, input, Output} from '@angular/core';
 import {Entry} from "../../models/correction.model";
 import {EditorModule} from "primeng/editor";
 import {InputNumberModule} from "primeng/inputnumber";

@@ -13,13 +13,13 @@ import {AuthService} from "../services/auth.service";
 export class JwtInterceptor implements HttpInterceptor {
 
   private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+  private refreshTokenSubject: BehaviorSubject<string | null> = new BehaviorSubject<string | null>(null);
 
   constructor(private jwtService: JwtService,
               private authService: AuthService) {
   }
 
-  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     request = this.addToken(request, this.jwtService.getAccessToken()!);
     return next.handle(request).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
@@ -30,7 +30,7 @@ export class JwtInterceptor implements HttpInterceptor {
     }));
   }
 
-  private addToken(request: HttpRequest<any>, token: string) {
+  private addToken(request: HttpRequest<unknown>, token: string) {
     return request.clone({
       setHeaders: {
         'Authorization': `Bearer ${token}`
@@ -38,7 +38,7 @@ export class JwtInterceptor implements HttpInterceptor {
     });
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+  private handle401Error(request: HttpRequest<unknown>, next: HttpHandler) {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
       this.refreshTokenSubject.next(null);
