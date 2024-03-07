@@ -1,0 +1,28 @@
+<h2>{{ 'home.adminHome.degreeProgramList.title' | translate }}</h2>
+<table class="table table-bordered table-responsive">
+  <thead>
+  <tr>
+    @for (header of tableHeader; track header) {
+      <th>{{ header }}</th>
+    }
+  </tr>
+  </thead>
+  <tbody>
+    @for (program of degreePrograms; track program.abbreviation) {
+      <tr>
+        <td>{{ program.name }}</td>
+        <td>{{ program.abbreviation }}</td>
+        <td>
+          @if (program.dpDirector) {
+            {{ program.dpDirector.lastName }} {{ program.dpDirector.firstName }}
+          } @else {
+            &lt;null&gt;
+          }
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+<div class="text-center">
+  <p-button label="{{ 'home.adminHome.degreeProgramList.btn-save' | translate }}" size="small"></p-button>
+</div>

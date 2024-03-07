@@ -1,0 +1,25 @@
+<table class="table table-bordered table-responsive m-2">
+  <thead>
+  <tr>
+    @for (tutor of headers(); track tutor) {
+      <th>{{ tutor.lastName }} {{ tutor.firstName }}</th>
+    }
+  </tr>
+  </thead>
+  <tbody>
+    @for (assignment of assignments(); track assignment.id;) {
+      <tr>
+        <th>{{ assignment.assignmentName }}</th>
+        @for (part of partition(); track part) {
+          <td>
+            <p-multiSelect [showHeader]="false"
+                           [options]="groups()"
+                           [ngModel]="getGroupByTutorAndAssignment(part.tutor.username, assignment.id)"
+                           (ngModelChange)="setGroupByTutorAndAssignment(part.tutor.username, assignment.id, $event)">
+            </p-multiSelect>
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>

@@ -1,5 +1,4 @@
 from io import BytesIO
-
 from weasyprint import HTML, CSS
 from yattag import Doc
 from datetime import datetime
@@ -34,7 +33,7 @@ class PdfMaker:
         self.assignment = correction.assignment_instance.assignment.name
         self.tutor = correction.tutor.full_name
         self.student = correction.student.full_name
-        self.date = datetime.now().strftime('%m.%d.%Y')
+        self.date = datetime.now().strftime('%d.%m.%Y')
         self.points = float(correction.points)
         self.draft = correction.draft
 

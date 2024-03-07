@@ -1,0 +1,29 @@
+<form class="row g-3" [formGroup]="adminDegreeProgramForm" (ngSubmit)="onSubmit()">
+  <h2>{{ 'home.adminHome.degreeProgramForm.title' | translate }}</h2>
+  <div class="col-md-4">
+    <label for="name" class="form-label">{{ 'home.adminHome.degreeProgramForm.lbl-name' | translate }}</label>
+    <input type="text" class="form-control" id="name" formControlName="name" required>
+  </div>
+
+  <div class="col-md-4">
+    <label for="abbreviation"
+           class="form-label">{{ 'home.adminHome.degreeProgramForm.lbl-abbreviation' | translate }}</label>
+    <input type="text" class="form-control" id="abbreviation" formControlName="abbreviation" required>
+  </div>
+
+  <div class="col-md-4">
+    <label for="dpDirector" class="form-label">{{ 'home.adminHome.degreeProgramForm.lbl-director' | translate }}</label>
+    <select class="form-select" id="dpDirector" formControlName="dpDirector" required>
+      <option selected disabled
+              value="">{{ 'home.adminHome.degreeProgramForm.lbl-director-disabled' | translate }}
+      </option>
+      @for (choice of degreeProgramDirectorChoices; track choice) {
+        <option [ngValue]="choice">{{ choice.lastName }} {{ choice.firstName }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="col-12 text-center">
+    <p-button label="{{ 'home.adminHome.degreeProgramForm.btn-submit' | translate }}" size="small" type="submit"></p-button>
+  </div>
+</form>

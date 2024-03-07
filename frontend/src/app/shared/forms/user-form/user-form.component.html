@@ -1,0 +1,41 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<form class="row g-3" [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
+  <h2>{{ 'shared.forms.userForm.title' | translate }}</h2>
+  <div class="col-md-4">
+    <label for="first_name" class="form-label">{{ 'shared.forms.userForm.lbl-firstname' | translate }}</label>
+    <input type="text" class="form-control" id="first_name" formControlName="first_name" required>
+  </div>
+
+  <div class="col-md-4">
+    <label for="last_name" class="form-label">{{ 'shared.forms.userForm.lbl-lastname' | translate }}</label>
+    <input type="text" class="form-control" id="last_name" formControlName="last_name" required>
+  </div>
+
+  <div class="col-md-4">
+    <label for="username" class="form-label">{{ 'shared.forms.userForm.lbl-username' | translate }}</label>
+    <div class="input-group has-validation">
+      <input type="text" class="form-control" id="username" formControlName="username" required>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <label for="password" class="form-label">{{ 'shared.forms.userForm.lbl-password' | translate }}</label>
+    <input type="password" class="form-control" id="password" formControlName="password">
+  </div>
+
+  <div class="col-md-4">
+    <label for="role" class="form-label">{{ 'shared.forms.userForm.lbl-role' | translate }}</label>
+    <select class="form-select" id="role" formControlName="role" required>
+      <option selected disabled value="">{{ 'shared.forms.userForm.lbl-role-disabled' | translate }}</option>
+      @for (choice of roleChoices(); track choice) {
+        <option [value]="choice">{{ choice }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="col-12 text-center">
+    <p-button label="{{ 'shared.forms.userForm.btn-submit' | translate }}" size="small" type="submit"></p-button>
+  </div>
+</form>

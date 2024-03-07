@@ -1,0 +1,15 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="row">
+  <div class="col-6">
+    <ms-edit-group [groupedStudents]="groupedStudents"></ms-edit-group>
+  </div>
+
+  <div class="col-6">
+    <ms-edit-partition [partition]="partition" [groups]="groups"></ms-edit-partition>
+  </div>
+</div>
+<div class="text-center">
+  <p-button label="{{ 'course.editView.btn-save' | translate }}" class="mt-2 mb-5 m-1" (click)="onSaveBtnClick()" size="small"></p-button>
+</div>

@@ -1,0 +1,23 @@
+<div class="container-fluid">
+  <div class="justify-content-center mt-5 mb-5">
+    <div class="col text-center">
+      <h2>{{ 'home.title' | translate }} {{ user.firstName }}</h2>
+    </div>
+  </div>
+  <div class="justify-content-center mt-3">
+    @switch (user.role) {
+      @case ('TUTOR') {
+        <ms-tutor-home/>
+      }
+      @case ('DEGREE_PROGRAM_DIRECTOR') {
+        <ms-dpd-home/>
+      }
+      @case ('COURSE_LEADER') {
+        <h2>COURSE_LEADER</h2>
+      }
+      @case ('ADMIN') {
+        <ms-admin-home/>
+      }
+    }
+  </div>
+</div>

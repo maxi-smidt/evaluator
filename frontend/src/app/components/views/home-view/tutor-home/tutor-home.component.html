@@ -1,6 +1,0 @@
-<h3>{{ 'homeView.courses' | translate }}</h3>
-<div class="d-flex flex-row border rounded row row-cols-md-4 row-cols-sm-3 row-cols-2">
-  @for (baseCourse of baseCourses; track baseCourse.id) {
-    <ms-course-card [baseCourse]="baseCourse"></ms-course-card>
-  }
-</div>

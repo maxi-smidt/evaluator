@@ -1,7 +1,7 @@
 {
   "header": {
     "btn-home": "Home",
-    "btn-todo": "Todo",
+    "btn-plagscan": "PlagScan",
     "btn-settings": "Settings",
     "btn-logout": "Logout"
   },
@@ -10,6 +10,22 @@
     "lbl-password": "Passwort",
     "title": "Evaluator Login",
     "submit": "Submit"
+  },
+  "shared": {
+    "forms": {
+      "userForm": {
+        "title": "User Form",
+        "btn-submit": "Submit",
+        "lbl-firstname": "Firstname",
+        "lbl-lastname": "Lastname",
+        "lbl-username": "Username",
+        "lbl-password": "Password",
+        "lbl-role": "Role",
+        "lbl-role-disabled": "Choose Role",
+        "error-500": "User already exists",
+        "error-else": "Could not create user"
+      }
+    }
   },
   "course": {
     "courseView": {
@@ -40,7 +56,7 @@
       "setExpense": "Zeitaufwand in Stunden"
     }
   },
-  "homeView": {
+  "home": {
     "title": "Willkommen",
     "courses": "Deine Kurse",
     "adminHome": {
@@ -58,24 +74,6 @@
         "active": "active",
         "inactive": "inactive"
       },
-      "userForm": {
-        "title": "User Form",
-        "btn-submit": "Submit",
-        "lbl-firstname": "Firstname",
-        "lbl-lastname": "Lastname",
-        "lbl-username": "Username",
-        "lbl-password": "Password",
-        "lbl-role": "Role",
-        "lbl-role-disabled": "Choose Role",
-        "role-choices": [
-          "ADMIN",
-          "DEGREE_PROGRAM_DIRECTOR",
-          "COURSE_LEADER",
-          "TUTOR"
-        ],
-        "error-500": "User already exists",
-        "error-else": "Could not create user"
-      },
       "degreeProgramForm": {
         "title": "Degree Program Form",
         "btn-submit": "Submit",
@@ -83,8 +81,8 @@
         "lbl-abbreviation": "Abbreviation",
         "lbl-director": "Director",
         "lbl-director-disabled": "Choose Director",
-        "error-500": "User already exists",
-        "error-else": "Could not create user"
+        "error-500": "Degree Program already exists",
+        "error-else": "Could not create Degree Program"
       },
       "degreeProgramList": {
         "title": "Degree Programs",
@@ -94,7 +92,23 @@
           "Director"
         ],
         "btn-save": "Save"
-      }
+      },
+      "role-choices": [
+        "ADMIN",
+        "DEGREE_PROGRAM_DIRECTOR",
+        "COURSE_LEADER",
+        "TUTOR"
+      ]
+    },
+    "dpdHome": {
+      "users": "User",
+      "courses": "Kurse",
+      "role-choices": [
+        "COURSE_LEADER",
+        "TUTOR"
+      ],
+      "programs": "Studiengänge",
+      "empty": "Keine Studiengänge verfügbar"
     }
   }
 }

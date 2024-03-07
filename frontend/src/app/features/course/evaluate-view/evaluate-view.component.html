@@ -1,0 +1,46 @@
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+@if (!displayLock) {
+  <p-contextMenu [model]="contextMenuItems" [global]="true"></p-contextMenu>
+}
+<p-blockUI [blocked]="displayLock">
+  <i class="pi pi-lock" style="font-size: 3rem"></i>
+</p-blockUI>
+
+<h3>{{ correction.assignment.name }} - {{ correction.student.firstName }} {{ correction.student.lastName }} | {{ totalPoints }}</h3>
+
+<h4>{{ 'course.evaluateView.annotations' | translate }}</h4>
+
+<ms-evaluate-table [tableData]="correction.draft.annotations"
+                   [defaultPoints]="0"
+                   [readOnly]="readOnly"
+                   (totalPoints)="updateAnnotationPoints($event)">
+</ms-evaluate-table>
+
+@for (exercise of correction.draft.exercise; track exercise.name) {
+  <h4> {{ exercise.name }} | ({{ currentExercisePoints(exercise.name) }} / {{ getTotalExercisePoints(exercise.name) }}
+    ) </h4>
+
+  @for (sub_exercise of exercise.sub; track sub_exercise.name) {
+    <h6> {{ sub_exercise.name }} | ({{ pointsDistribution[exercise.name][sub_exercise.name] }}
+      / {{ sub_exercise.points }})</h6>
+    <ms-evaluate-table [tableData]="sub_exercise.notes"
+                       [defaultPoints]="sub_exercise.points"
+                       [readOnly]="readOnly"
+                       (totalPoints)="updateSubExercisePoints($event, sub_exercise.name, exercise.name)">
+    </ms-evaluate-table>
+  }
+}
+
+<p-dialog [(visible)]="expenseDialogVisible">
+  <ng-template pTemplate="header">
+    <label for="expense" class="form-label">{{ 'course.evaluateView.setExpense' | translate }}</label>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <input type="number" class="form-control mb-3" id="expense" [(ngModel)]="correction.expense">
+    <p-button icon="pi pi-check" (click)="expenseDialogVisible = false;
+      messageService.add({severity: 'info', summary: 'Info', detail: 'Gespeichert'})" label="Speichern">
+    </p-button>
+  </ng-template>
+</p-dialog>
+

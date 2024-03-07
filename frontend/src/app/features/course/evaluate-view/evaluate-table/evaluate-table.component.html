@@ -1,0 +1,51 @@
+<div class="border border-3 rounded-3">
+  <table class="table table-borderless">
+    <thead>
+    <tr class="border border-bottom-1">
+      <th class="text">{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
+      <th class="points">{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
+      <th class="action"></th>
+    </tr>
+    </thead>
+    <tbody>
+      @for (entry of tableData(); track entry; let idx = $index) {
+        <tr>
+          <td class="text">
+            <p-editor [(ngModel)]="entry.text"
+                      [readonly]="readOnly()!">
+            </p-editor>
+          </td>
+          <td>
+            <p-inputNumber [size]="1"
+                           [min]="defaultPoints() !== 0 ? defaultPoints()! * -1 : undefined"
+                           [ngModel]="entry.points"
+                           (ngModelChange)="entry.points = $event ? + $event : 0"
+                           [showButtons]="true" buttonLayout="horizontal"
+                           [step]="1"
+                           [disabled]="readOnly()!"
+                           decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success"
+                           incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
+                           (onInput)="onInputChange()">
+            </p-inputNumber>
+          </td>
+          <td>
+            <p-button icon="pi pi-times"
+                      [rounded]="true"
+                      [text]="true" severity="danger"
+                      [disabled]="readOnly()"
+                      (click)="deleteRow(idx)">
+            </p-button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</div>
+
+<div class="row text-center mt-2">
+  <p-button icon="pi pi-plus"
+            [rounded]="true"
+            [disabled]="readOnly()"
+            (click)="addRow()">
+  </p-button>
+</div>

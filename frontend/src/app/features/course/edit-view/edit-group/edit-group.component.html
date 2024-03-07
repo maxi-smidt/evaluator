@@ -1,0 +1,25 @@
+@for (group of groupNrs; track group) {
+  <ul class="list-group m-2"
+      pDroppable
+      (onDrop)="drop(group)">
+
+    @if (group === '-1') {
+      <li class="list-group-item list-group-item-primary">{{ 'course.editView.inactive' | translate }}</li>
+    } @else {
+      <li class="list-group-item list-group-item-primary">{{ 'course.editView.group' | translate }} {{ group }}</li>
+    }
+
+    @for (student of groupedStudents()[group]; track student.id) {
+      <li class="list-group-item list-group-item-secondary"
+          pDraggable
+          (onDragStart)="dragStart(student, group)"
+          (onDragEnd)="dragEnd()">
+        {{ student.lastName }} {{ student.firstName }}
+      </li>
+    }
+  </ul>
+}
+
+<div class="text-center">
+  <p-button label="{{ 'course.editView.btn-addGroup' | translate }}" (click)="onAddGroupBtnClick()" size="small"></p-button>
+</div>

@@ -1,0 +1,36 @@
+<div class="row align-items-center justify-content-between">
+  <h3 class="mb-3 col">{{ courseInstance?.course?.name }} {{ courseInstance?.year }}</h3>
+  <div class="col-auto">
+    <p-button [rounded]="true" [text]="true" severity="secondary" (click)="onEditBtnClick()">
+      <i class="pi pi-cog" style="font-size: 2rem"></i>
+    </p-button>
+  </div>
+</div>
+
+<div class="row gx-5">
+  <div class="col-md-6 col-sm-12">
+    <h4>{{ 'course.courseView.title-assignments' | translate }}</h4>
+    <ul class="list-group">
+      @for (assignment of courseInstance?.assignments; track assignment.id) {
+        <li
+          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
+          tabindex="0"
+          [ngClass]="getExerciseStateClass(assignment)"
+          (click)="onAssignmentClick(assignment)"
+          (keydown.enter)="onAssignmentClick(assignment)">
+          {{ assignment.name }}
+          @if (assignment.status !== 'INACTIVE' && (assignment.maxParticipants - assignment.correctedParticipants) !== 0) {
+            <span>
+              <p-badge [value]="(assignment.maxParticipants - assignment.correctedParticipants).toString()"></p-badge>
+            </span>
+          }
+        </li>
+      }
+    </ul>
+
+  </div>
+  <div class="col-lg-6 col-sm-12">
+    <h4>{{ 'course.courseView.title-ranking' | translate }}</h4>
+    <!--TODO ranks-->
+  </div>
+</div>
