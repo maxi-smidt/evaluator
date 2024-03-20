@@ -1,14 +1,19 @@
-FROM node:18
+FROM node:latest as build-stage
 
 WORKDIR /app
 
 COPY package*.json /app/
 
-RUN npm install -g @angular/cli && npm install
+RUN npm install
 
-COPY . /app/
+COPY ./ /app/
 
-EXPOSE 4200
+RUN npm run build -- --output-path=./dist/out --configuration=production
 
-CMD ["ng", "serve", "--host", "0.0.0.0", "--disable-host-check"]
+FROM nginx:alpine as production-stage
 
+COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]

@@ -8,6 +8,8 @@ services:
       POSTGRES_DB: ${PG_DB}
       POSTGRES_USER: ${PG_DB_USER}
       POSTGRES_PASSWORD: ${PG_DB_PW}
+    ports:
+      - "5432:5432"
 
   backend:
     build:
@@ -26,7 +28,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "4200:4200"
+      - "80:80"
     depends_on:
       - backend
 
