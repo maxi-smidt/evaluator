@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {FieldsetModule} from "primeng/fieldset";
 import {TranslatePipe} from "../../shared/pipes/translate.pipe";
 import {UserFormComponent} from "../../shared/forms/user-form/user-form.component";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'ms-degree-program',
@@ -14,4 +15,6 @@ import {UserFormComponent} from "../../shared/forms/user-form/user-form.componen
   templateUrl: './degree-program.component.html'
 })
 export class DegreeProgramComponent {
+  constructor(private router: Router) {
+  }
 }

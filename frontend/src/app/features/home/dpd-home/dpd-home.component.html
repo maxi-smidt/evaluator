@@ -4,7 +4,10 @@
     @for (dp of degreePrograms; track dp) {
       <li class="list-group-item d-flex justify-content-between align-items-center">
         <span class="fs-4">{{ dp.name }}</span>
-        <p-button icon="pi pi-arrow-right" styleClass="p-button-warning"></p-button>
+        <p-button icon="pi pi-arrow-right"
+                  styleClass="p-button-warning"
+                  (click)="onDegreeProgramClick(dp)"
+        ></p-button>
       </li>
     } @empty {
       <li class="list-group-item">{{ 'home.dpdHome.empty' | translate }}</li>

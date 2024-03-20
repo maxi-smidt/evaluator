@@ -23,6 +23,9 @@ export class JwtInterceptor implements HttpInterceptor {
     request = this.addToken(request, this.jwtService.getAccessToken()!);
     return next.handle(request).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
+        if (this.isRefreshing && request.url === 'token/refresh/') {
+          this.authService.logout();
+        }
         return this.handle401Error(request, next);
       } else {
         return throwError(() => error);
