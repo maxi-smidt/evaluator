@@ -2,28 +2,30 @@ import {Component, OnInit} from '@angular/core';
 import {ConfirmationService} from "primeng/api";
 import {TranslationService} from "../../../../shared/services/translation.service";
 import {AdminService} from "../../services/admin.service";
-import {RegisteredUser} from "../../../../core/models/user.models";
+import {DetailUser} from "../../../../core/models/user.models";
 import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
 import {FormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
+import {UserService} from "../../../../core/services/user.service";
 
 
 @Component({
   selector: 'ms-user-list',
   templateUrl: './user-list.component.html',
   standalone: true,
-    imports: [
-        TranslatePipe,
-        FormsModule,
-        ButtonModule
-    ]
+  imports: [
+    TranslatePipe,
+    FormsModule,
+    ButtonModule
+  ]
 })
 export class UserListComponent implements OnInit {
   tableHeader: string[];
-  users: RegisteredUser[] = [];
-  usersChangeSet: RegisteredUser[] = [];
+  users: DetailUser[] = [];
+  usersChangeSet: DetailUser[] = [];
 
   constructor(private adminService: AdminService,
+              private userService: UserService,
               private confirmationService: ConfirmationService,
               private translationService: TranslationService) {
     this.tableHeader = this.translationService.getArray('home.adminHome.userList.table-header');
@@ -31,14 +33,14 @@ export class UserListComponent implements OnInit {
 
 
   ngOnInit() {
-    this.adminService.getAllUsers().subscribe({
+    this.userService.getUsers().subscribe({
       next: value => {
         this.users = value;
       }
     });
   }
 
-  onActivityChange(user: RegisteredUser) {
+  onActivityChange(user: DetailUser) {
     const idx = this.usersChangeSet.findIndex(u => u.username === user.username);
     if (idx === -1) {
       this.usersChangeSet.push(user);

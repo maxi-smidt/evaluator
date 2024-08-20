@@ -3,7 +3,7 @@ import {RouterOutlet} from "@angular/router";
 
 @Component({
   template: `
-    <div class="container-fluid mt-2">
+    <div class="container-fluid">
       <router-outlet></router-outlet>
     </div>`,
   standalone: true,

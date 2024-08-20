@@ -21,17 +21,12 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class DpdHomeComponent implements OnInit {
   degreePrograms: DegreeProgram[] = [];
-  userFormChoices: string[] = [];
-
 
   constructor(private dpdService: DpdService,
-              private translationService: TranslationService,
-              private router: Router,
-              private route: ActivatedRoute) {
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.userFormChoices = this.translationService.getArray('home.dpdHome.role-choices');
     this.dpdService.getDegreePrograms().subscribe({
       next: value => {
         this.degreePrograms = value;
@@ -40,6 +35,6 @@ export class DpdHomeComponent implements OnInit {
   }
 
   onDegreeProgramClick(dp: DegreeProgram) {
-    this.router.navigate(['degree-program', dp.abbreviation]).then();
+    this.router.navigate(['degree-program', dp.abbreviation, 'staff', 'all']).then();
   }
 }

@@ -1,0 +1,51 @@
+<div class="mb-4">
+  <p>{{ 'edit.due-dates.set-all' | translate }}</p>
+
+  <div class="d-flex gap-2 align-items-center">
+
+    <p-calendar
+      [(ngModel)]="equalTime"
+      [iconDisplay]="'input'"
+      [showIcon]="true"
+      [timeOnly]="true">
+    </p-calendar>
+
+    <p-button
+      icon="pi pi-check"
+      severity="success"
+      (onClick)="setDefaultDate()"
+      label="{{ 'edit.due-dates.set' | translate}}"
+      size="small"/>
+  </div>
+</div>
+
+<p-accordion [multiple]="true" [activeIndex]="[0]">
+  @for (assignment of courseInstance().assignments; track assignment.id) {
+    <p-accordionTab header="{{ assignment.name }}">
+      <div class="d-flex flex-column">
+        <label for="date" class="mb-2">{{ 'edit.due-dates.due-date' | translate }}</label>
+        <div class="d-flex">
+          <p-calendar
+            [(ngModel)]="assignment.dueTo"
+            [iconDisplay]="'input'"
+            [showIcon]="true"
+            [showTime]="true"
+            [hourFormat]="'24'"
+            [dateFormat]="'dd.mm.yy'"
+            id="date"/>
+
+          <div class="ms-auto">
+            <p-button
+              icon="pi pi-times"
+              severity="danger"
+              (onClick)="onDeleteAssignmentInstance($event, assignment.id)"
+              label="{{ 'common.delete' | translate }}"
+              size="small"/>
+          </div>
+        </div>
+      </div>
+    </p-accordionTab>
+  } @empty {
+    <p>{{ 'common.no-data' | translate }}</p>
+  }
+</p-accordion>

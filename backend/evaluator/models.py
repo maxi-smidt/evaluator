@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from enum import Enum
+
 # noinspection PyUnresolvedReferences
 from user.models import DegreeProgramDirector, CourseLeader, Tutor, User
 
@@ -47,12 +48,13 @@ class Assignment(models.Model):
     nr = models.IntegerField(null=False)
     name = models.CharField(max_length=50,
                             null=False)
-    draft = models.JSONField(null=False)
+    draft = models.JSONField(null=False,
+                             default=list)
     course = models.ForeignKey(Course,
                                on_delete=models.CASCADE,
                                null=False)
     points = models.IntegerField(null=False,
-                                 default=100)
+                                 default=0)
 
     class Meta:
         constraints = [
@@ -267,3 +269,20 @@ class Report(models.Model):
 
     def __str__(self):
         return f"T{self.type}-Report: {self.title} ({self.submitter})"
+
+
+class UserDegreeProgram(models.Model):
+    user = models.ForeignKey(User,
+                             on_delete=models.CASCADE,
+                             related_name='udp_user',
+                             null=False)
+    degree_program = models.ForeignKey(DegreeProgram,
+                                       on_delete=models.CASCADE,
+                                       related_name='udp_degree_program',
+                                       null=False)
+
+    class Meta:
+        unique_together = ('user', 'degree_program')
+
+    def __str__(self):
+        return f"{self.degree_program} - {self.user}"

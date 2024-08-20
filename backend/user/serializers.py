@@ -1,30 +1,39 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from .models import User, DegreeProgramDirector, Tutor
+# noinspection PyUnresolvedReferences
+from evaluator.models import CourseLeader, UserDegreeProgram
 
 
-class UserSerializer(serializers.ModelSerializer):
+class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['username', 'first_name', 'last_name', 'role', 'is_active', 'password']
-
-    def __init__(self, *args, **kwargs):
-        super(UserSerializer, self).__init__(*args, **kwargs)
-        include_password = self.context.get('include_password', False)
-        if not include_password:
-            self.fields.pop('password', None)
+        fields = ['username', 'first_name', 'last_name']
 
 
-class DegreeProgramDirectorSerializer(serializers.ModelSerializer):
-    class Meta:
+class UserSerializer(SimpleUserSerializer):
+    class Meta(SimpleUserSerializer.Meta):
+        fields = SimpleUserSerializer.Meta.fields + ['role']
+
+
+class DetailUserSerializer(UserSerializer):
+    class Meta(UserSerializer.Meta):
+        fields = UserSerializer.Meta.fields + ['is_active']
+
+
+class PasswordUserSerializer(DetailUserSerializer):
+    class Meta(DetailUserSerializer.Meta):
+        fields = DetailUserSerializer.Meta.fields + ['password']
+
+
+class DegreeProgramDirectorSerializer(SimpleUserSerializer):
+    class Meta(SimpleUserSerializer.Meta):
         model = DegreeProgramDirector
-        fields = ['username', 'first_name', 'last_name']
 
 
-class TutorSerializer(serializers.ModelSerializer):
-    class Meta:
+class TutorSerializer(SimpleUserSerializer):
+    class Meta(SimpleUserSerializer.Meta):
         model = Tutor
-        fields = ['username', 'first_name', 'last_name']
 
 
 class ChangePasswordSerializer(serializers.Serializer):

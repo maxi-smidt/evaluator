@@ -7,7 +7,6 @@ import {InputTextModule} from "primeng/inputtext";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {ButtonModule} from "primeng/button";
 import {ReportService} from "./services/report.service";
-import {ToastModule} from "primeng/toast";
 import {TranslationService} from "../../shared/services/translation.service";
 
 @Component({
@@ -20,7 +19,6 @@ import {TranslationService} from "../../shared/services/translation.service";
     InputTextModule,
     InputTextareaModule,
     ButtonModule,
-    ToastModule
   ],
   templateUrl: './report.component.html'
 })

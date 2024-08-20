@@ -8,14 +8,10 @@ export interface User extends SimpleUser {
   role: string
 }
 
-export interface RegisteredUser extends User {
+export interface DetailUser extends User {
   isActive: boolean
 }
 
-export interface NewUser {
-  firstName: string,
-  lastName: string,
-  username: string,
+export interface PasswordUser extends User {
   password: string,
-  role: string
 }
