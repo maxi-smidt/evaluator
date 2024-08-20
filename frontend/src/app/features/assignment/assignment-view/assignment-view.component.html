@@ -1,0 +1,37 @@
+<h2>{{ 'assignment.title' | translate }} {{ assignmentBefore.name }}</h2>
+
+<p>{{ 'assignment.info' | translate }}</p>
+
+<div class="d-flex mt-5 gap-3">
+  <p-floatLabel>
+    <input id="name" type="text" pInputText [(ngModel)]="assignment.name"/>
+    <label for="name">{{ 'common.designation' | translate }}</label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <input id="number" type="number" pInputText [(ngModel)]="assignment.nr"/>
+    <label for="number">{{ 'assignment.number' | translate }}</label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <input id="points" type="number" pInputText [(ngModel)]="assignment.points" readonly disabled/>
+    <label for="points">{{ 'assignment.points' | translate }}</label>
+  </p-floatLabel>
+</div>
+
+<div class="row mt-4">
+  <div class="col-6">
+    <h3>{{ 'assignment.draft' | translate }}</h3>
+    <json-editor [options]="editorOptions" [data]="shownDraft" (jsonChange)="getData($event)"></json-editor>
+
+    <div class="mt-3 text-center">
+      <p-button label="{{ 'common.btn-submit' | translate }}" (onClick)="onSubmit()"/>
+    </div>
+  </div>
+  <div class="col-6">
+    <h3>{{ 'assignment.example-draft' | translate }}</h3>
+    <json-editor [options]="editorOptions" [data]="exampleData"></json-editor>
+  </div>
+</div>
+
+

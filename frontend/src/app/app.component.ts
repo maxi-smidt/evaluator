@@ -2,7 +2,10 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'ms-root',
-  template: `<router-outlet/>`
+  template: `
+    <router-outlet/>
+    <p-toast></p-toast>
+  `
 })
 export class AppComponent{
   title = 'frontend';

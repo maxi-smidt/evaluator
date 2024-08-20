@@ -1,0 +1,82 @@
+<h2>{{ 'degree-program.staff-view.full-user-list.title' | translate }}</h2>
+
+<p-table
+  [value]="users"
+  dataKey="username"
+  [rows]="5"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  [paginator]="true"
+  [globalFilterFields]="['username', 'lastName', 'firstName']"
+  [tableStyle]="{ 'min-width': '75rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width:26%">{{ 'common.username' | translate }}</th>
+      <th style="width:26%">{{ 'common.lastname' | translate }}</th>
+      <th style="width:26%">{{ 'common.firstname' | translate }}</th>
+      <th style="width:18%">{{ 'common.role' | translate }}</th>
+      <th style="width:4%">{{ 'degree-program.staff-view.full-user-list.add' | translate }}</th>
+    </tr>
+    <tr>
+      <th>
+        <p-columnFilter
+          type="text"
+          field="username"
+          placeholder="{{ 'degree-program.staff-view.filter-username' | translate }}"
+          aria-label="Filter Username"/>
+      </th>
+      <th>
+        <p-columnFilter
+          type="text"
+          field="lastName"
+          placeholder="{{ 'degree-program.staff-view.filter-lastname' | translate }}"
+          aria-label="Filter Lastname"/>
+      </th>
+      <th>
+        <p-columnFilter
+          type="text"
+          field="firstName"
+          placeholder="{{ 'degree-program.staff-view.filter-firstname' | translate }}"
+          aria-label="Filter Firstname"/>
+      </th>
+      <th>
+        <p-columnFilter field="role" matchMode="equals" [showMenu]="false">
+          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+            <p-dropdown
+              [(ngModel)]="value!"
+              [options]="userRoles"
+              (onChange)="filter($event.value)"
+              placeholder="{{ 'common.choose-role' | translate }}"
+              [showClear]="true">
+            </p-dropdown>
+          </ng-template>
+        </p-columnFilter>
+      </th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-user>
+    <tr>
+      <td>
+        {{ user.username }}
+      </td>
+      <td>
+        {{ user.lastName }}
+      </td>
+      <td>
+        {{ user.firstName }}
+      </td>
+      <td>
+        {{ user.role }}
+      </td>
+      <td>
+        <p-button icon="pi pi-plus" severity="success" (onClick)="onAddToDegreeProgramClick(user.username)" size="small"/>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5">{{ 'common.no-data' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>

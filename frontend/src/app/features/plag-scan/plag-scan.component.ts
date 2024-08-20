@@ -8,13 +8,13 @@ import {BadgeModule} from "primeng/badge";
 import * as JSZip from "jszip";
 import {PlagScanService} from "./services/plag-scan.service";
 import {MenuItem, MessageService} from "primeng/api";
-import {ToastModule} from "primeng/toast";
 import {TranslationService} from "../../shared/services/translation.service";
 import {TranslatePipe} from "../../shared/pipes/translate.pipe";
 import {BlockUIModule} from "primeng/blockui";
 import {ProgressSpinnerModule} from "primeng/progressspinner";
 import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
+import {FileDownloadService} from "../../shared/services/file-download.service";
 
 @Component({
   selector: 'ms-plag-scan',
@@ -25,7 +25,6 @@ import {FormsModule} from "@angular/forms";
     BadgeModule,
     NgForOf,
     NgIf,
-    ToastModule,
     TranslatePipe,
     BlockUIModule,
     ProgressSpinnerModule,
@@ -49,7 +48,8 @@ export class PlagScanComponent {
 
   constructor(private plagScanService: PlagScanService,
               private messageService: MessageService,
-              protected translationService: TranslationService) {
+              protected translationService: TranslationService,
+              private fileDownloadService: FileDownloadService) {
     this.extensionExcludes.push('.csv', '.jpeg', '.jpg', '.png', '.pdf', '.xlsx', '.user', '.filters', '.vcxproj', '.sln');
     this.inclusionExcludes.push('__MACOSX');
 
@@ -78,7 +78,7 @@ export class PlagScanComponent {
       next: value => {
         const blob = new Blob([value.body], {type: 'application/zip'});
         window.open(this.translationService.translate('plag-scan.jplag-url'), '_blank');
-        this.download(blob);
+        this.fileDownloadService.download(blob, this.translationService.translate('plag-scan.result'));
         this.messageService.add({
           severity: 'info',
           summary: "Info",
@@ -143,18 +143,5 @@ export class PlagScanComponent {
       isNotValid = isNotValid || path.includes(inc);
     });
     return !isNotValid;
-  }
-
-
-  private download(content: any) {
-    const url = window.URL.createObjectURL(content);
-    const a = document.createElement('a');
-    document.body.appendChild(a);
-    a.style.display = 'none';
-    a.href = url;
-    a.download = this.translationService.translate('plag-scan.result');
-    a.click();
-    window.URL.revokeObjectURL(url);
-    a.remove();
   }
 }

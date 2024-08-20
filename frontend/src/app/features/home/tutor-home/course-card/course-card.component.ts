@@ -14,6 +14,6 @@ export class CourseCardComponent {
   }
 
   onCourseClick(courseId: number) {
-    this.router.navigate(['course', courseId]).then();
+    this.router.navigate(['course', 'instance', courseId]).then();
   }
 }

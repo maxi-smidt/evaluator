@@ -1,0 +1,15 @@
+<div class="d-flex gap-3 justify-content-center">
+  <div class="col-6 border border-3 rounded-3 p-2">
+    <ms-staff-control [selectableUsers]="selectableCourseLeaders"
+                      [(selectedUsers)]="selectedCourseLeaders"
+                      [title]="translate('edit.staff.title-cl')"
+                      [placeHolder]="translate('edit.staff.placeholder')"/>
+  </div>
+
+  <div class="col-6 border border-3 rounded-3 p-2">
+    <ms-staff-control [selectableUsers]="selectableTutors"
+                      [(selectedUsers)]="selectedTutors"
+                      [title]="translate('edit.staff.title-tutor')"
+                      [placeHolder]="translate('edit.staff.placeholder')"/>
+  </div>
+</div>

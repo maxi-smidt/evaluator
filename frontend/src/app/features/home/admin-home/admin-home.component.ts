@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ToastModule} from "primeng/toast";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {DegreeProgramListComponent} from "./degree-program-list/degree-program-list.component";
 import {UserListComponent} from "./user-list/user-list.component";
@@ -12,7 +11,6 @@ import {TranslationService} from "../../../shared/services/translation.service";
   templateUrl: './admin-home.component.html',
   standalone: true,
   imports: [
-    ToastModule,
     ConfirmDialogModule,
     DegreeProgramListComponent,
     UserListComponent,

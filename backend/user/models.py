@@ -39,11 +39,6 @@ class User(AbstractUser):
     def full_name(self):
         return f"{self.last_name} {self.first_name}"
 
-    def save(self, *args, **kwargs):
-        if not self.pk:
-            self.role = self.base_role
-        super().save(*args, **kwargs)
-
 
 class CourseLeaderManager(BaseUserManager):
     def get_queryset(self, *args, **kwargs):

@@ -1,15 +1,29 @@
 {
   "common": {
     "noChangesInfo": "Keine Änderungen",
-    "lbl-username": "Username",
+    "username": "Nutzername",
+    "lastname": "Nachname",
+    "firstname": "Vorname",
+    "role": "Rolle",
+    "choose-role": "Wähle Rolle",
     "lbl-password": "Passwort",
-    "btn-submit": "Abschicken",
+    "btn-submit": "Speichern",
     "btn-save": "Speichern",
     "confirmDialog": {
       "message": "Es gibt nicht gespeicherte Änderungen. Trotzdem fortfahren?",
       "header": "Bestätigung"
     },
-    "saved": "Gespeichert"
+    "saved": "Gespeichert",
+    "delete": "Löschen",
+    "cancel": "Abbrechen",
+    "no-data": "Keine Daten verfügbar",
+    "abbreviation": "Abkürzung",
+    "designation": "Bezeichnung",
+    "confirmation": {
+      "message": "Wollen sie das Objekt wirklich löschen?",
+      "accept": "Ja",
+      "reject": "Nein"
+    }
   },
   "header": {
     "btn-home": "Home",
@@ -26,22 +40,31 @@
   "shared": {
     "forms": {
       "userForm": {
-        "title": "User Form",
-        "lbl-firstname": "Firstname",
-        "lbl-lastname": "Lastname",
-        "lbl-role": "Role",
-        "lbl-role-disabled": "Choose Role",
-        "error-500": "User already exists",
-        "error-else": "Could not create user"
+        "title": "Nutzer anlegen",
+        "error-500": "Nutzer existiert bereits",
+        "error-else": "Nutzer konnte nicht erstellt werden"
+      },
+      "course-form": {
+        "title": "Kurs anlegen",
+        "error-500": "Kurs existiert bereits",
+        "error-else": "Kurs konnte nicht erstellt werden",
+        "course-name": "Name",
+        "file-name": "Filename Template",
+        "redirect": "Kurs nach Erstellung direkt öffnen"
       }
     }
   },
   "course": {
     "courseView": {
+      "title": "Kurs:",
       "title-assignments": "Übungsaufgaben",
       "title-chart": "Statistiken",
       "chart-expense": "Zeitaufwand",
-      "chart-points": "Punkte"
+      "chart-points": "Punkte",
+      "new-assignment": "Neue Aufgabe",
+      "error-500": "Assignment existiert bereits",
+      "error-else": "Assignment konnte nicht erstellt werden",
+      "error": "Alle Felder müssen ausgefüllt werden"
     },
     "editView": {
       "group": "Gruppe",
@@ -50,8 +73,6 @@
     },
     "assignmentView": {
       "group": "Gruppe",
-      "last_name": "Nachname",
-      "first_name": "Vorname",
       "evaluation": "Bewertung",
       "status": "Status",
       "action": "Aktion",
@@ -85,7 +106,7 @@
           "Vorname",
           "Nachname",
           "Username",
-          "Role",
+          "Rolle",
           "Aktiv"
         ],
         "conf-header": "Changeset",
@@ -117,14 +138,11 @@
       ]
     },
     "dpdHome": {
-      "users": "User",
-      "courses": "Kurse",
       "role-choices": [
         "COURSE_LEADER",
         "TUTOR"
       ],
-      "programs": "Studiengänge",
-      "empty": "Keine Studiengänge verfügbar"
+      "programs": "Studiengänge"
     },
     "tutorHome": {
       "all": "Alle"
@@ -150,9 +168,21 @@
     "title-students": "Gruppeneinteilung",
     "title-partition": "Gruppenzuteilung",
     "title-general": "Allgemein",
+    "title-assignments": "Assignments",
+    "title-staff": "Personal",
     "allow-late-submission": "Verspätete Abgabe (Joker) erlaubt",
     "late-submission-penalty": "Abzug für verspätete Abgabe",
-    "step-size": "Punkt-Schritt bei Bewertung"
+    "step-size": "Punkt-Schritt bei Bewertung",
+    "due-dates": {
+      "due-date": "Abgabedatum",
+      "set-all": "Hier kann eine Uhrzeit gesetzt werden, die für alle Abgaben gesetzt wird.",
+      "set": "Setzen"
+    },
+    "staff": {
+      "title-tutor": "TutorInnen",
+      "title-cl": "KursleiterInnen",
+      "placeholder": "Hinzufügen"
+    }
   },
   "plag-scan": {
     "title": "Plagiat Scanner",
@@ -160,9 +190,53 @@
     "jplag-url": "https://jplag.github.io/JPlag/",
     "result": "JPlag_Scan.zip",
     "choose": "Auswählen",
-    "cancel": "Abbrechen",
     "success": "Ziehe das heruntergeladene File in den JPlag Report Viewer.",
     "language": "Wähle eine Sprache",
-    "info":  "Hier kann das von Moodle geladene Zip File (Alle Abgaben herunterladen) hochgeladen werden, um einen Plagiatscheck durchzuführen."
+    "info": "Hier kann das von Moodle geladene Zip File (Alle Abgaben herunterladen) hochgeladen werden, um einen Plagiatscheck durchzuführen."
+  },
+  "degree-program": {
+    "staff": "Personal",
+    "courses": "Kurse",
+    "classes": "Klassen",
+    "staff-view": {
+      "active-users": "Aktive Nutzer",
+      "all-users": "Alle Nutzer",
+      "new-user": "Neuen Nutzer anlegen",
+      "filter-username": "Suche nach Nutzernamen",
+      "filter-lastname": "Suche nach Nachnamen",
+      "filter-firstname": "Suche nach Vornamen",
+      "full-user-list": {
+        "title": "Benutzer Liste",
+        "role-choices": [
+          "COURSE_LEADER",
+          "TUTOR"
+        ],
+        "add": "Hinzufügen"
+      },
+      "staff-list": {
+        "title": "Personal Liste",
+        "remove": "Entfernen",
+        "active": "Aktiv"
+      }
+    },
+    "courses-view": {
+      "new-course": "Neuen Kurs anlegen",
+      "courses": "Alle Kurse",
+      "course-instances": "Kursinstanzen",
+      "course-list": {
+        "error": "Das Jahr muss mindestens diesem oder dem letzten Jahr entsprechen.",
+        "new-instance": "Neue Instanz",
+        "new-instance-info": "Trage das Jahr ein, in dem das Semester des Kurses beginnt.",
+        "year": "Jahr"
+      }
+    }
+  },
+  "assignment": {
+    "info": "Änderungen hier betreffen lediglich zukünftige Kursinstanzen.",
+    "title": "Assignment:",
+    "number": "Folgenummer",
+    "points": "Punkte",
+    "draft": "Draft",
+    "example-draft": "Beispiel Draft"
   }
 }

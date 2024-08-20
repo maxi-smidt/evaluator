@@ -1,22 +1,23 @@
-<div class="row">
-  <ul class="list-group">
-    <li class="list-group-item active" aria-current="true">{{ 'home.dpdHome.programs' | translate }}</li>
-    @for (dp of degreePrograms; track dp) {
-      <li class="list-group-item d-flex justify-content-between align-items-center">
-        <span class="fs-4">{{ dp.name }}</span>
-        <p-button icon="pi pi-arrow-right"
-                  styleClass="p-button-warning"
-                  (click)="onDegreeProgramClick(dp)"
-        ></p-button>
-      </li>
-    } @empty {
-      <li class="list-group-item">{{ 'home.dpdHome.empty' | translate }}</li>
-    }
-  </ul>
-</div>
-
-<div class="row mt-3">
-  <div class="border border-3 rounded-3 p-2">
-    <ms-user-form [roleChoices]="userFormChoices"></ms-user-form>
+<div class="grid grid-nogutter border border-2 rounded-1">
+  <div class="col-12 border border-1 bg-primary">
+    <div class="d-flex align-items-center w-100 p-2 gap-3">
+      <h5 class="ms-1 mb-0 text-white">{{ 'home.dpdHome.programs' | translate }}</h5>
+    </div>
   </div>
+  @for (dp of degreePrograms; track dp) {
+    <div class="col-12 hover border border-1">
+      <div class="d-flex align-items-center w-100 p-2 gap-3">
+        <h5 class="ms-1 mb-0">{{ dp.name }}</h5>
+        <div class="ms-auto">
+          <p-button icon="pi pi-arrow-right" styleClass="p-button-secondary" (click)="onDegreeProgramClick(dp)"/>
+        </div>
+      </div>
+    </div>
+  } @empty {
+    <div class="col-12 border border-1">
+      <div class="d-flex align-items-center w-100 p-2 gap-3">
+        <p>{{ 'common.no-data' | translate }}</p>
+      </div>
+    </div>
+  }
 </div>
