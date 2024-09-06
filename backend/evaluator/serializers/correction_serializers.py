@@ -5,7 +5,6 @@ from rest_framework.exceptions import ValidationError
 from ..models import Correction, Student, AssignmentInstance, Assignment
 from .assignment_serializers import MiniAssignmentSerializer
 from .basic_serializers import StudentSerializer
-# noinspection PyUnresolvedReferences
 from user.models import Tutor
 
 
@@ -44,8 +43,10 @@ class CorrectionSerializer(serializers.ModelSerializer):
         student = get_object_or_404(Student, pk=student_id)
         ai = get_object_or_404(AssignmentInstance, pk=assignment_id)
         status = validated_data['status']
-        if ('draft' not in validated_data or not validated_data['draft']) and status != Correction.Status.NOT_SUBMITTED:
-            validated_data['draft'] = make_base_correction_draft(ai.assignment)
+        if status != Correction.Status.NOT_SUBMITTED:
+            validated_data['points'] = AssignmentInstance.objects.get(pk=assignment_id).assignment.points
+            if 'draft' not in validated_data or not validated_data['draft']:
+                validated_data['draft'] = make_base_correction_draft(ai.assignment)
 
         return Correction.objects.create(tutor=tutor, student=student, assignment_instance=ai, **validated_data)
 

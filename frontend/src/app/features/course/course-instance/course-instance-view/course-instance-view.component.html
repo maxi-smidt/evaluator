@@ -10,35 +10,63 @@
 <div class="row gx-5">
   <div class="col-md-5 col-sm-12">
     <h4>{{ 'course.courseView.title-assignments' | translate }}</h4>
-    <ul class="list-group">
-      @for (assignment of courseInstance?.assignments; track assignment.id) {
-        <li
-          class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
-          tabindex="0"
-          [ngClass]="getExerciseStateClass(assignment)"
-          (click)="routeToAssignmentInstance(assignment)"
-          (keydown.enter)="routeToAssignmentInstance(assignment)">
-          {{ assignment.name }}
-          @if (assignment.status !== 'INACTIVE' && assignment.participantsLeft > 0) {
-            <span>
-              <p-badge [value]="assignment.participantsLeft.toString()"></p-badge>
-            </span>
-          }
-        </li>
-      }
-    </ul>
 
+    <div class="grid grid-nogutter border border-1 rounded-2 border-secondary-subtle">
+      @for (assignment of courseInstance?.assignments; track assignment.id) {
+        <div class="col-12 border border-1 list-group-item border-secondary-subtle py-1"
+             [ngClass]="getExerciseStateClass(assignment)">
+          <div class="d-flex align-items-center w-100 px-2 gap-3">
+            <h6 class="ms-1 mb-0">
+              <p-button label="{{ assignment.name }}" [link]="true" (click)="routeToAssignmentInstance(assignment)"/>
+            </h6>
+            <div class="ms-auto">
+              @if (assignment.status !== AssignmentStatus.INACTIVE && assignment.participantsLeft > 0) {
+                <span>
+                  <p-badge [value]="assignment.participantsLeft.toString()"/>
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="d-flex mt-4 gap-1 justify-content-center">
+      <p-button [style]="{'background': '#E2E3E5', 'border-color': '#E2E3E5'}"
+                pTooltip="{{ 'course.courseView.tt-inactive' | translate }}"
+                tooltipPosition="top">
+        <i class="pi pi-info-circle" style="font-size: 1.5rem; color: grey"></i>
+      </p-button>
+      <p-button [style]="{'background': '#F8D7DA', 'border-color': '#F8D7DA'}"
+                pTooltip="{{ 'course.courseView.tt-expired' | translate }}"
+                tooltipPosition="top">
+        <i class="pi pi-info-circle" style="font-size: 1.5rem; color: grey"></i>
+      </p-button>
+      <p-button [style]="{'background': '#CEE2FF', 'border-color': '#CEE2FF'}"
+                pTooltip="{{ 'course.courseView.tt-in-progress' | translate }}"
+                tooltipPosition="top">
+        <i class="pi pi-info-circle" style="font-size: 1.5rem; color: grey"></i>
+      </p-button>
+      <p-button [style]="{'background': '#CEE7DD', 'border-color': '#CEE7DD'}"
+                pTooltip="{{ 'course.courseView.tt-finished' | translate }}"
+                tooltipPosition="top">
+        <i class="pi pi-info-circle" style="font-size: 1.5rem; color: grey"></i>
+      </p-button>
+    </div>
   </div>
+
   <div class="col-lg-7 col-sm-12">
     <h4>{{ 'course.courseView.title-chart' | translate }}</h4>
 
-    <p-tabView>
-      <p-tabPanel header="{{ 'course.courseView.chart-expense' | translate }}">
-        <p-chart type="line" [data]="expenseChartData" [options]="options"/>
-      </p-tabPanel>
-      <p-tabPanel header="{{ 'course.courseView.chart-points' | translate }}">
-        <p-chart type="line" [data]="pointsChartData" [options]="options"/>
-      </p-tabPanel>
-    </p-tabView>
+    <div class="border border-2 rounded-2">
+      <p-tabView>
+        <p-tabPanel header="{{ 'course.courseView.chart-expense' | translate }}">
+          <p-chart type="bar" [data]="expenseChartData" [options]="options"/>
+        </p-tabPanel>
+        <p-tabPanel header="{{ 'course.courseView.chart-points' | translate }}">
+          <p-chart type="bar" [data]="pointsChartData" [options]="options"/>
+        </p-tabPanel>
+      </p-tabView>
+    </div>
   </div>
 </div>

@@ -1,9 +1,7 @@
 from rest_framework import serializers
 
 from ..models import DegreeProgram, UserDegreeProgram
-# noinspection PyUnresolvedReferences
 from user.models import DegreeProgramDirector
-# noinspection PyUnresolvedReferences
 from user.serializers import DegreeProgramDirectorSerializer
 
 

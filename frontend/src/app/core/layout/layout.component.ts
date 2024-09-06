@@ -1,19 +1,14 @@
-import {Component} from '@angular/core';
-import {HeaderComponent} from "./header/header.component";
-import {RouterOutlet} from "@angular/router";
-import {FooterComponent} from "./footer/footer.component";
+import { Component } from '@angular/core';
+import { HeaderComponent } from './header/header.component';
+import { RouterOutlet } from '@angular/router';
+import { FooterComponent } from './footer/footer.component';
 
 @Component({
   selector: 'ms-layout',
   templateUrl: './layout.component.html',
   standalone: true,
-  imports: [
-    HeaderComponent,
-    RouterOutlet,
-    FooterComponent,
-  ]
+  imports: [HeaderComponent, RouterOutlet, FooterComponent],
 })
 export class LayoutComponent {
-  constructor() {
-  }
+  constructor() {}
 }

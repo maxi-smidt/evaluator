@@ -4,9 +4,7 @@ from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_40
 from rest_framework.response import Response
 
 from ..models import DegreeProgram, UserDegreeProgram
-# noinspection PyUnresolvedReferences
 from user.models import User
-# noinspection PyUnresolvedReferences
 from user.permissions import IsAdmin, IsDpdOrAdmin, IsDegreeProgramDirector
 from ..serializers import degree_program_serializers
 

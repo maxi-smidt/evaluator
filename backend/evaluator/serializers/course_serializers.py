@@ -10,9 +10,7 @@ from ..models import CourseInstance, CourseEnrollment, AssignmentInstance, Tutor
 from .assignment_serializers import (AssignmentInstanceSerializer, TutorAIGroupsSerializer, SimpleAssignmentSerializer,
                                      SimpleAssignmentInstanceSerializer)
 from .basic_serializers import StudentSerializer
-# noinspection PyUnresolvedReferences
 from user.serializers import TutorSerializer
-# noinspection PyUnresolvedReferences
 from user.models import Tutor, CourseLeader
 
 
@@ -90,8 +88,7 @@ class CourseInstanceEnrollmentsSerializer(serializers.ModelSerializer):
         return grouped
 
     def update(self, instance, validated_data):
-        grouped_students = self.context.get('request').data.get('grouped_students')
-        if grouped_students:
+        if grouped_students := self.context.get('request').data.get('grouped_students'):
             self.update_groups(grouped_students, instance)
         return super().update(instance, validated_data)
 
@@ -126,7 +123,7 @@ class CourseInstanceChartSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def make_general_dataset(course_instance: CourseInstance, col: str):
-        dataset = {'label': 'Gesamt', 'fill': False, 'tension': 0.4, 'borderDash': [5, 5], 'borderColor': 'grey'}
+        dataset = {'label': 'Gesamt', 'backgroundColor': 'lightgray'}
         data = []
         for assignment in course_instance.course.assignment_set.all().order_by('nr'):
             total_average = []
@@ -142,7 +139,7 @@ class CourseInstanceChartSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def make_specific_dataset(course_instance: CourseInstance, col: str):
-        dataset = {'label': 'Dieser Jahrgang', 'fill': False, 'tension': 0.4, 'borderColor': 'orange'}
+        dataset = {'label': 'Dieser Jahrgang', 'backgroundColor': 'lightblue'}
         data = []
         for ai in course_instance.assignment_instances.all().order_by('assignment__nr'):
             average = ai.co_assignment_instance.all().aggregate(Avg(col))[f'{col}__avg']
@@ -181,8 +178,7 @@ class TutorCoursePartitionSerializer(serializers.ModelSerializer):
         return partition
 
     def update(self, instance, validated_data):
-        partition = self.context.get('request').data.get('partition', None)
-        if partition:
+        if partition := self.context.get('request').data.get('partition', None):
             self.update_partition(partition)
         return super().update(instance, validated_data)
 
@@ -191,8 +187,7 @@ class TutorCoursePartitionSerializer(serializers.ModelSerializer):
         for part in partition:
             tutor = Tutor.objects.get(username=part['tutor']['username'])
             for assignment in part['assignments']:
-                groups = assignment['groups']
-                if not groups:
+                if not (groups := assignment['groups']):
                     continue
                 ai = AssignmentInstance.objects.get(id=assignment['id'])
                 try:

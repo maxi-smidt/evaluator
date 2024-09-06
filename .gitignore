@@ -1,6 +1,7 @@
 # General
 .env.*
 .env*
+.DS_Store
 
 ## IDEs and editors
 .idea/
@@ -15,6 +16,8 @@
 .venv
 backend/db.sqlite3
 backend/initial_data.json
+__pycache__/
+*.pyc
 
 # Frontend
 

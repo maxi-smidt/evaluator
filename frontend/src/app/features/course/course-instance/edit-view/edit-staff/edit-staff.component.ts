@@ -1,12 +1,12 @@
-import {Component, input, model, OnInit} from '@angular/core';
-import {User} from "../../../../../core/models/user.models";
-import {MultiSelectModule} from "primeng/multiselect";
-import {FormsModule} from "@angular/forms";
-import {UserService} from "../../../../../core/services/user.service";
-import {Button} from "primeng/button";
-import {TranslatePipe} from "../../../../../shared/pipes/translate.pipe";
-import {StaffControlComponent} from "./staff-control/staff-control.component";
-import {TranslationService} from "../../../../../shared/services/translation.service";
+import { Component, input, model, OnInit } from '@angular/core';
+import { User } from '../../../../../core/models/user.models';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { FormsModule } from '@angular/forms';
+import { UserService } from '../../../../../core/services/user.service';
+import { Button } from 'primeng/button';
+import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
+import { StaffControlComponent } from './staff-control/staff-control.component';
+import { TranslationService } from '../../../../../shared/services/translation.service';
 
 @Component({
   selector: 'ms-edit-staff',
@@ -16,9 +16,9 @@ import {TranslationService} from "../../../../../shared/services/translation.ser
     FormsModule,
     Button,
     TranslatePipe,
-    StaffControlComponent
+    StaffControlComponent,
   ],
-  templateUrl: './edit-staff.component.html'
+  templateUrl: './edit-staff.component.html',
 })
 export class EditStaffComponent implements OnInit {
   user = input.required<User>();
@@ -30,24 +30,27 @@ export class EditStaffComponent implements OnInit {
   selectableTutors: User[] = [];
   selectedTutors = model.required<User[]>();
 
-  constructor(private userService: UserService,
-              private translationService: TranslationService) {
-  }
+  constructor(
+    private userService: UserService,
+    private translationService: TranslationService,
+  ) {}
 
   ngOnInit() {
     if (this.user().role === 'TUTOR') {
       return;
     }
 
-    this.userService.getUsers([`course=${this.courseInstanceId()}`, 'get-dp=true']).subscribe({
-      next: value => {
-        this.pushUsersSeparated(value);
-      }
-    });
+    this.userService
+      .getUsers([`course=${this.courseInstanceId()}`, 'get-dp=true'])
+      .subscribe({
+        next: (value) => {
+          this.pushUsersSeparated(value);
+        },
+      });
   }
 
   pushUsersSeparated(users: User[]) {
-    users.forEach(user => {
+    users.forEach((user) => {
       if (user.role === 'TUTOR') {
         this.selectableTutors.push(user);
       } else if (user.role === 'COURSE_LEADER') {

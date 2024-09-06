@@ -22,7 +22,9 @@
 <div class="row mt-4">
   <div class="col-6">
     <h3>{{ 'assignment.draft' | translate }}</h3>
-    <json-editor [options]="editorOptions" [data]="shownDraft" (jsonChange)="getData($event)"></json-editor>
+    @if (shownDraft) {
+      <json-editor [options]="editorOptions" [data]="shownDraft" (jsonChange)="getData($event)"></json-editor>
+    }
 
     <div class="mt-3 text-center">
       <p-button label="{{ 'common.btn-submit' | translate }}" (onClick)="onSubmit()"/>

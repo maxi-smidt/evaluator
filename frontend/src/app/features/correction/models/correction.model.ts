@@ -1,21 +1,21 @@
-import {Student} from "../../course/models/student.model";
+import { Student } from '../../course/models/student.model';
 
 export interface Correction {
-  id: number,
-  tutorUsername: string,
-  student: Student,
-  assignment: CorrectionAssignment,
+  id: number;
+  tutorUsername: string;
+  student: Student;
+  assignment: CorrectionAssignment;
   courseInstanceId: number;
-  expense: string | null,
-  points: number,
-  status: string,
-  draft: CorrectionDraft,
-  lateSubmittedDays: number
+  expense: string | null;
+  points: number;
+  status: CorrectionStatus;
+  draft: CorrectionDraft;
+  lateSubmittedDays: number;
 }
 
 interface CorrectionAssignment {
-  name: string,
-  points: number
+  name: string;
+  points: number;
 }
 
 export interface CorrectionDraft {
@@ -35,6 +35,13 @@ interface SubExercise {
 }
 
 export interface Entry {
-  text: string,
-  points: number
+  text: string;
+  points: number;
+}
+
+export enum CorrectionStatus {
+  NOT_SUBMITTED = 'NOT_SUBMITTED',
+  CORRECTED = 'CORRECTED',
+  IN_PROGRESS = 'IN_PROGRESS',
+  UNDEFINED = 'UNDEFINED',
 }

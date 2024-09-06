@@ -1,0 +1,28 @@
+@import "jsoneditor/dist/jsoneditor.min.css";
+
+@import "bootstrap/dist/css/bootstrap.min.css" layer(bootstrap-reboot);
+@import "bootstrap/dist/css/bootstrap-reboot.css" layer(bootstrap-reboot);
+
+@import "primeng/resources/themes/lara-light-blue/theme.css" layer(primeng);
+@import "primeng/resources/primeng.min.css" layer(primeng);
+@import "primeicons/primeicons.css" layer(primeng);
+
+@import "quill/dist/quill.core.css" layer(quill);
+@import "quill/dist/quill.snow.css" layer(quill);
+
+@layer bootstrap-reboot, primeng, quill;
+
+.hover:hover {
+  background-color: #E4E6EA;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hover-transparent:hover {
+  filter: brightness(0.9);
+}
+
+ms-evaluate-table .p-editor-container .p-editor-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options .ql-picker-item {
+    width: 16px !important;
+    height: 16px !important;
+    padding: 2px !important;
+}

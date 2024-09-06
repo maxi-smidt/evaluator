@@ -1,4 +1,4 @@
-<p-confirmDialog></p-confirmDialog>
+<p-confirmDialog/>
 
 <h3 class="mb-3">{{ assignment.name }}</h3>
 
@@ -13,56 +13,89 @@
                [tableStyle]="{ 'min-width': '50rem' }">
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th *ngFor="let col of columns">
-              {{ col.header }}
-            </th>
+            @for (column of columns; track column.header) {
+              <th [style.width]="column.width + '%'">{{ column.header }}</th>
+            }
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-columns="columns">
-          <tr (dblclick)="onStudentClick(rowData['id'], rowData['status'], rowData['correctionId'])">
-            <td *ngFor="let col of columns">
-              <ng-container *ngIf="col.field === 'status'; else actionField">
-                <p-tag [severity]="getSeverity(rowData[col.field])">{{ rowData[col.field] }}</p-tag>
-              </ng-container>
-
-              <ng-template #actionField>
-                <ng-container *ngIf="col.field === 'action'; else lateSubmissionField">
-                  @if (rowData['status'] === 'UNDEFINED') {
-                    <p-button icon="pi pi-file-excel" [rounded]="true" [text]="true" severity="secondary"
-                              (click)="notSubmittedAction(rowData['id'], group)"></p-button>
+          <tr>
+            @for (column of columns; track column) {
+              <td>
+                @if (column.field === 'status') {
+                  <p-tag [severity]="getSeverity(rowData[column.field])">{{ rowData[column.field] }}</p-tag>
+                } @else if (column.field === 'action') {
+                  @if (rowData['status'] === CorrectionStatus.UNDEFINED || rowData['status'] === CorrectionStatus.IN_PROGRESS) {
+                    <p-button icon="pi pi-caret-right"
+                              [rounded]="true"
+                              [text]="true"
+                              severity="success"
+                              pTooltip="{{ 'course.assignmentView.tt-start' | translate }}"
+                              tooltipPosition="top"
+                              showDelay="500"
+                              (click)="onStartOrResumeAction(rowData['id'], rowData['status'], rowData['correctionId'])"/>
                   }
 
-                  @if (rowData['status'] === 'CORRECTED') {
-                    <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" severity="secondary"
-                              (click)="editAction(rowData['correctionId'])"></p-button>
-                    <p-button icon="pi pi-download" [rounded]="true" [text]="true" severity="secondary"
-                              (click)="downloadAction(rowData['correctionId'])"></p-button>
+                  @if (rowData['status'] === CorrectionStatus.UNDEFINED) {
+                    <p-button icon="pi pi-file-excel"
+                              [rounded]="true"
+                              [text]="true"
+                              severity="secondary"
+                              pTooltip="{{ 'course.assignmentView.tt-not-submitted' | translate }}"
+                              tooltipPosition="top"
+                              showDelay="500"
+                              (click)="notSubmittedAction(rowData['id'], group)"/>
                   }
 
-                  @if (rowData['status'] !== 'UNDEFINED') {
-                    <p-button icon="pi pi-trash" [rounded]="true" [text]="true" severity="danger"
-                              (click)="deleteAction(rowData['correctionId'], group)"></p-button>
+                  @if (rowData['status'] === CorrectionStatus.CORRECTED) {
+                    <p-button icon="pi pi-pencil"
+                              [rounded]="true"
+                              [text]="true"
+                              severity="secondary"
+                              pTooltip="{{ 'course.assignmentView.tt-edit' | translate }}"
+                              tooltipPosition="top"
+                              showDelay="500"
+                              (onClick)="editAction(rowData['correctionId'])"/>
+                    <p-button icon="pi pi-download"
+                              [rounded]="true"
+                              [text]="true"
+                              severity="secondary"
+                              pTooltip="{{ 'course.assignmentView.tt-download' | translate }}"
+                              tooltipPosition="top"
+                              showDelay="500"
+                              (onClick)="downloadAction(rowData['correctionId'])"/>
+                    <p-button icon="pi pi-eye"
+                              [rounded]="true"
+                              [text]="true"
+                              severity="secondary"
+                              pTooltip="{{ 'course.assignmentView.tt-view' | translate }}"
+                              tooltipPosition="top"
+                              showDelay="500"
+                              (onClick)="viewOnlyAction(rowData['correctionId'])"/>
                   }
-                </ng-container>
 
-                <ng-template #lateSubmissionField>
-                  <ng-container *ngIf="col.field === 'lateSubmission'; else defaultFields">
-                    @if (rowData['lateSubmission']) {
-                      <i class="pi pi-flag-fill" style="color: red"></i>
-                    }
-                  </ng-container>
-                </ng-template>
-
-                <ng-template #defaultFields>
-                  {{ rowData[col.field] }}
-                </ng-template>
-              </ng-template>
-            </td>
+                  @if (rowData['status'] !== CorrectionStatus.UNDEFINED) {
+                    <p-button icon="pi pi-trash"
+                              [rounded]="true"
+                              [text]="true"
+                              severity="danger"
+                              pTooltip="{{ 'course.assignmentView.tt-delete' | translate }}"
+                              tooltipPosition="top"
+                              showDelay="500"
+                              (click)="deleteAction(rowData['correctionId'], group)"/>
+                  }
+                } @else if (column.field === 'lateSubmission') {
+                  @if (rowData['lateSubmission']) {
+                    <i class="pi pi-flag-fill" style="color: red"></i>
+                  }
+                } @else {
+                  {{ rowData[column.field] }}
+                }
+              </td>
+            }
           </tr>
         </ng-template>
       </p-table>
     </p-accordionTab>
   }
 </p-accordion>
-
-<router-outlet></router-outlet>

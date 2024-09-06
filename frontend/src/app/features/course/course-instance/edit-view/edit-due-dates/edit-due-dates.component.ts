@@ -1,13 +1,13 @@
-import {Component, model} from '@angular/core';
-import {CalendarModule} from "primeng/calendar";
-import {FormsModule} from "@angular/forms";
-import {DueDateCourseInstance} from "../../../models/course.model";
-import {AccordionModule} from "primeng/accordion";
-import {TranslatePipe} from "../../../../../shared/pipes/translate.pipe";
-import {AssignmentService} from "../../../../assignment/services/assignment.service";
-import {ConfirmPopupModule} from "primeng/confirmpopup";
-import {ConfirmationService} from "primeng/api";
-import {TranslationService} from "../../../../../shared/services/translation.service";
+import { Component, model } from '@angular/core';
+import { CalendarModule } from 'primeng/calendar';
+import { FormsModule } from '@angular/forms';
+import { DueDateCourseInstance } from '../../../models/course.model';
+import { AccordionModule } from 'primeng/accordion';
+import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
+import { AssignmentService } from '../../../../assignment/services/assignment.service';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ConfirmationService } from 'primeng/api';
+import { TranslationService } from '../../../../../shared/services/translation.service';
 
 @Component({
   selector: 'ms-edit-due-dates',
@@ -17,25 +17,26 @@ import {TranslationService} from "../../../../../shared/services/translation.ser
     FormsModule,
     AccordionModule,
     TranslatePipe,
-    ConfirmPopupModule
+    ConfirmPopupModule,
   ],
-  templateUrl: './edit-due-dates.component.html'
+  templateUrl: './edit-due-dates.component.html',
 })
 export class EditDueDatesComponent {
   courseInstance = model.required<DueDateCourseInstance>();
 
   equalTime: Date | undefined;
 
-  constructor(private assignmentService: AssignmentService,
-              private confirmationService: ConfirmationService,
-              private translationService: TranslationService) {
-  }
+  constructor(
+    private assignmentService: AssignmentService,
+    private confirmationService: ConfirmationService,
+    private translationService: TranslationService,
+  ) {}
 
   setDefaultDate() {
     if (this.equalTime === undefined) {
       return;
     }
-    this.courseInstance().assignments.forEach(assignment => {
+    this.courseInstance().assignments.forEach((assignment) => {
       const dueTo = new Date(assignment.dueTo);
       dueTo.setHours(this.equalTime!.getHours());
       dueTo.setMinutes(this.equalTime!.getMinutes());
@@ -48,17 +49,29 @@ export class EditDueDatesComponent {
   onDeleteAssignmentInstance(event: Event, assignmentInstanceId: number) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: this.translationService.translate('common.confirmation.message'),
+      header: this.translationService.translate('common.confirmation.header'),
+      message: this.translationService.translate(
+        'common.confirmation.message-delete',
+      ),
       icon: 'pi pi-exclamation-triangle',
-      acceptLabel: this.translationService.translate('common.confirmation.accept'),
-      rejectLabel: this.translationService.translate('common.confirmation.reject'),
+      acceptLabel: this.translationService.translate(
+        'common.confirmation.accept',
+      ),
+      rejectLabel: this.translationService.translate(
+        'common.confirmation.reject',
+      ),
       accept: () => {
-        this.assignmentService.deleteAssignmentInstance(assignmentInstanceId).subscribe({
-          next: value => {
-            this.courseInstance().assignments = this.courseInstance().assignments.filter(assignment => assignmentInstanceId !== assignment.id);
-          }
-        });
-      }
+        this.assignmentService
+          .deleteAssignmentInstance(assignmentInstanceId)
+          .subscribe({
+            next: () => {
+              this.courseInstance().assignments =
+                this.courseInstance().assignments.filter(
+                  (assignment) => assignmentInstanceId !== assignment.id,
+                );
+            },
+          });
+      },
     });
   }
 }

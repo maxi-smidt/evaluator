@@ -1,9 +1,9 @@
-import {SimpleUser} from "../../../core/models/user.models";
+import { SimpleUser } from '../../../core/models/user.models';
 
 export interface EditAssignment {
-  id: string
-  assignmentName: string,
-  groups: number[]
+  id: string;
+  assignmentName: string;
+  groups: number[];
 }
 
 export interface EditPartition {

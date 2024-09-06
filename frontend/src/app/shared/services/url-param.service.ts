@@ -1,15 +1,15 @@
-import {Injectable} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import { Injectable } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UrlParamService {
-  findParam(paramName: string, route: ActivatedRoute): any | null {
+  findParam<T = string>(paramName: string, route: ActivatedRoute): T {
     let param: string | null = null;
     let r: ActivatedRoute | null = route;
 
-    while (r !== undefined || true) {
+    while (r !== undefined) {
       if (r!.snapshot.params[paramName] !== undefined) {
         param = r!.snapshot.params[paramName];
         break;
@@ -17,6 +17,10 @@ export class UrlParamService {
       r = r!.parent;
     }
 
-    return param;
+    if (!param) {
+      throw new Error('Url parameter not found');
+    }
+
+    return param as T;
   }
 }

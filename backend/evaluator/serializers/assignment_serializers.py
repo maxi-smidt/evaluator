@@ -5,7 +5,6 @@ from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
 from ..models import AssignmentInstance, Correction, Student, TutorAssignment, Assignment, CourseEnrollment
-# noinspection PyUnresolvedReferences
 from user.models import User, Tutor
 
 

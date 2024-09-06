@@ -9,10 +9,6 @@
     "lbl-password": "Passwort",
     "btn-submit": "Speichern",
     "btn-save": "Speichern",
-    "confirmDialog": {
-      "message": "Es gibt nicht gespeicherte Änderungen. Trotzdem fortfahren?",
-      "header": "Bestätigung"
-    },
     "saved": "Gespeichert",
     "delete": "Löschen",
     "cancel": "Abbrechen",
@@ -20,17 +16,19 @@
     "abbreviation": "Abkürzung",
     "designation": "Bezeichnung",
     "confirmation": {
-      "message": "Wollen sie das Objekt wirklich löschen?",
+      "header": "Bestätigung",
+      "message-unsaved": "Es gibt nicht gespeicherte Änderungen. Trotzdem fortfahren?",
+      "message-delete": "Wollen sie das Objekt wirklich löschen? Dieser Schritt kann nicht rückgängig gemacht werden!",
       "accept": "Ja",
       "reject": "Nein"
     }
   },
   "header": {
-    "btn-home": "Home",
+    "btn-home": "Startseite",
     "btn-plagscan": "PlagScan",
-    "btn-settings": "Settings",
-    "btn-report": "Report",
-    "btn-logout": "Logout"
+    "btn-settings": "Einstellungen",
+    "btn-report": "Feedback",
+    "btn-logout": "Ausloggen"
   },
   "login": {
     "title": "Evaluator Login",
@@ -64,7 +62,11 @@
       "new-assignment": "Neue Aufgabe",
       "error-500": "Assignment existiert bereits",
       "error-else": "Assignment konnte nicht erstellt werden",
-      "error": "Alle Felder müssen ausgefüllt werden"
+      "error": "Alle Felder müssen ausgefüllt werden",
+      "tt-inactive": "Abagbedatum liegt in der Zukunft",
+      "tt-expired": "Abgabedatum zwei Wochen überschritten (nicht fertig)",
+      "tt-finished": "Alle Abgaben korrigiert",
+      "tt-in-progress": "Abgabedatum weniger als zwei Wochen überschritten (nicht fertig)"
     },
     "editView": {
       "group": "Gruppe",
@@ -77,10 +79,17 @@
       "status": "Status",
       "action": "Aktion",
       "lateSubmission": "Joker",
-      "error-403": "You can only delete your own corrections"
+      "error-403": "You can only delete your own corrections",
+      "tt-not-submitted": "Assignment wurde nicht abgegeben",
+      "tt-start": "Korrektur starten oder fortsetzen",
+      "tt-edit": "Korrektur bearbeiten",
+      "tt-download": "Korrektur herunterladen",
+      "tt-view": "Korrektur ansehen (read only)",
+      "tt-delete": "Korrektur löschen"
     },
     "evaluateView": {
       "annotations": "Anmerkungen",
+      "redirect": "Zugriff auf Korrektur nicht möglich.",
       "evaluateTable": {
         "points": "Punkte",
         "annotation": "Anmerkung"
@@ -91,8 +100,8 @@
       "minutes": "Minuten",
       "expenseSet": "Zeitaufwand eingetragen",
       "expenseNotSet": "Zeitaufwand nicht eingetragen",
-      "lateSubmitted": "Joker eingelöst",
-      "notLateSubmitted": "Joker nicht eingelöst",
+      "tt-lateSubmitted": "Joker eingelöst",
+      "tt-notLateSubmitted": "Joker nicht eingelöst",
       "penalty": "Abzug"
     }
   },
@@ -171,7 +180,7 @@
     "title-assignments": "Assignments",
     "title-staff": "Personal",
     "allow-late-submission": "Verspätete Abgabe (Joker) erlaubt",
-    "late-submission-penalty": "Abzug für verspätete Abgabe",
+    "late-submission-penalty": "Abzug für verspätete Abgabe (pro Tag)",
     "step-size": "Punkt-Schritt bei Bewertung",
     "due-dates": {
       "due-date": "Abgabedatum",

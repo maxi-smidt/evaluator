@@ -1,27 +1,30 @@
-import {Injectable} from '@angular/core';
-import {map} from "rxjs";
-import {HttpClient} from "@angular/common/http";
-import {Router} from "@angular/router";
-import {JwtService} from "./jwt.service";
-import {User} from "../models/user.models";
-import {UserService} from "./user.service";
+import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { JwtService } from './jwt.service';
+import { User } from '../models/user.models';
+import { UserService } from './user.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  constructor(private http: HttpClient,
-              private router: Router,
-              private jwtService: JwtService,
-              private userService: UserService) {
-  }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private jwtService: JwtService,
+    private userService: UserService,
+  ) {}
 
   login(username: string, password: string) {
-    return this.http.post<{ token: string, user: User }>('login/', {username, password})
-      .pipe(map(value => {
-        this.setAuth(value.user, value.token);
-      }));
+    return this.http
+      .post<{ token: string; user: User }>('login/', { username, password })
+      .pipe(
+        map((value) => {
+          this.setAuth(value.user, value.token);
+        }),
+      );
   }
 
   setAuth(user: User, token: string): void {
@@ -34,10 +37,11 @@ export class AuthService {
     if (refToken === null) {
       this.logout();
     }
-    return this.http.post<string>('token/refresh/', {'refresh': refToken})
-      .pipe(map(value => {
+    return this.http.post<string>('token/refresh/', { refresh: refToken }).pipe(
+      map((value) => {
         this.jwtService.saveToken(value);
-      }));
+      }),
+    );
   }
 
   logout() {

@@ -1,15 +1,9 @@
-<p-confirmDialog></p-confirmDialog>
-@if (!displayLock) {
-  <p-contextMenu [model]="contextMenuItems" [global]="true"></p-contextMenu>
-}
-<p-blockUI [blocked]="displayLock">
-  <i class="pi pi-lock" style="font-size: 3rem"></i>
-</p-blockUI>
+<p-confirmDialog />
 
 <h3>{{ correction.assignment.name }} - {{ correction.student.firstName }} {{ correction.student.lastName }}
   | {{ totalPoints }}</h3>
 
-<div class="d-flex mb-3 mt-5 mb-3">
+<div class="d-flex mb-3 mt-3 mb-3 border border-3 rounded-3 pt-4 pb-2 px-2">
   <p-toggleButton class="me-2"
                   (onChange)="expenseToString()"
                   [(ngModel)]="expenseNotSet"
@@ -17,7 +11,9 @@
                   onLabel="{{'course.evaluateView.expenseNotSet' | translate }}"
                   offLabel="{{'course.evaluateView.expenseSet' | translate }}"/>
   <p-floatLabel>
-    <input id="hour" type="number"
+    <input id="hour"
+           type="number"
+           style="width: 85px"
            pInputText
            (change)="expenseToString()"
            [disabled]="expenseNotSet || readOnly"
@@ -29,6 +25,7 @@
   <p-floatLabel>
     <input id="minute"
            type="number"
+           style="width: 85px"
            pInputText
            (change)="expenseToString()"
            [disabled]="expenseNotSet || readOnly"
@@ -40,13 +37,16 @@
 
   @if (course.allowLateSubmission) {
     <div class="ms-auto d-flex">
-      <p-toggleButton
-        class="ms-5 me-2"
-        [(ngModel)]="hasLateSubmitted"
-        (click)="onHasLateSubmittedClick()"
-        [disabled]="readOnly"
-        onLabel="{{'course.evaluateView.lateSubmitted' | translate }}"
-        offLabel="{{'course.evaluateView.notLateSubmitted' | translate }}"/>
+      <div class="ms-5 me-2">
+          <p-button [severity]="hasLateSubmitted ? 'danger' : 'secondary'"
+                    [icon]="hasLateSubmitted ? 'pi pi-flag-fill' : 'pi pi-flag'"
+                    [disabled]="readOnly"
+                    (click)="onHasLateSubmittedClick()"
+                    [pTooltip]="translate('course.evaluateView.' + (hasLateSubmitted ? 'tt-lateSubmitted' : 'tt-notLateSubmitted'))"
+                    showDelay="500"
+                    tooltipPosition="bottom"
+          />
+      </div>
 
       <p-floatLabel>
         <input id="day"
@@ -55,6 +55,7 @@
                [disabled]="!hasLateSubmitted"
                (change)="calculateLateSubmission()"
                [(ngModel)]="correction.lateSubmittedDays"
+               style="width: 100px"
                min="1"
                max="25"/>
         <label for="minute">{{ 'course.evaluateView.days' | translate }}</label>
@@ -66,13 +67,25 @@
                pInputText
                [disabled]="true"
                [(ngModel)]="lateSubmissionPenalty"
-               min="-1000"
+               style="width: 100px"
+               min="-100"
                max="0"/>
         <label for="minute">{{ 'course.evaluateView.penalty' | translate }}</label>
       </p-floatLabel>
     </div>
   }
 </div>
+
+@if (!readOnly) {
+  <div class="sticky-top mt-3 mb-3 d-flex bg-white border border-3 rounded-3 p-2 gap-3">
+    <p-button label="Speichern" severity="primary" (onClick)="onSaveClick()"/>
+    <p-button label="Download" severity="success" (onClick)="onDownloadClick()"/>
+
+    <div class="ms-auto">
+      <p-button label="Zurück" severity="secondary" (onClick)="onBackButtonClick()"/>
+    </div>
+  </div>
+}
 
 <h4>{{ 'course.evaluateView.annotations' | translate }}</h4>
 

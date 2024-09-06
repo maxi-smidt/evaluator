@@ -25,9 +25,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/quill/dist/quill.core.css",
-              "node_modules/quill/dist/quill.snow.css"
+              "src/styles.css"
             ],
             "stylePreprocessorOptions": {
               "includePaths": [
@@ -117,8 +115,22 @@
               "node_modules/quill/dist/quill.js"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
+  },
+  "cli": {
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

@@ -1,15 +1,13 @@
-import {Injectable} from '@angular/core';
-import {DetailUser, SimpleUser} from "../../../core/models/user.models";
-import {HttpClient} from "@angular/common/http";
-import {AdminDegreeProgram} from "../../degree-program/models/degree-program.model";
+import { Injectable } from '@angular/core';
+import { DetailUser, SimpleUser } from '../../../core/models/user.models';
+import { HttpClient } from '@angular/common/http';
+import { AdminDegreeProgram } from '../../degree-program/models/degree-program.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AdminService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   registerDegreeProgram(degreeProgram: AdminDegreeProgram) {
     return this.http.post('degree-program/create/', degreeProgram);

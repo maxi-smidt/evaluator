@@ -1,11 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {User} from "../../core/models/user.models";
-import {UserService} from "../../core/services/user.service";
-import {TranslatePipe} from "../../shared/pipes/translate.pipe";
-import {TutorHomeComponent} from "./tutor-home/tutor-home.component";
-import {AdminHomeComponent} from "./admin-home/admin-home.component";
-import {DpdHomeComponent} from "./dpd-home/dpd-home.component";
-
+import { Component, OnInit } from '@angular/core';
+import { User } from '../../core/models/user.models';
+import { UserService } from '../../core/services/user.service';
+import { TranslatePipe } from '../../shared/pipes/translate.pipe';
+import { TutorHomeComponent } from './tutor-home/tutor-home.component';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { DpdHomeComponent } from './dpd-home/dpd-home.component';
 
 @Component({
   selector: 'ms-home',
@@ -15,21 +14,21 @@ import {DpdHomeComponent} from "./dpd-home/dpd-home.component";
     TranslatePipe,
     TutorHomeComponent,
     AdminHomeComponent,
-    DpdHomeComponent
-  ]
+    DpdHomeComponent,
+  ],
 })
 export class HomeComponent implements OnInit {
   user: User;
 
   constructor(private userService: UserService) {
-    this.user = {firstName: '', lastName: '', username: '', role: ''}
+    this.user = { firstName: '', lastName: '', username: '', role: '' };
   }
 
   ngOnInit() {
     this.userService.getUser().subscribe({
-      next: value => {
+      next: (value) => {
         this.user = value;
-      }
+      },
     });
   }
 }

@@ -1,0 +1,356 @@
+[
+  {
+    "name": "SKS Übung 01",
+    "draft": [
+      {
+        "name": "Aufgabe 1",
+        // 8P todo test floating comma point numbers
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 1
+          },
+          {
+            "name": "Quellcode",
+            "points": 5
+          },
+          {
+            "name": "Testfälle",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "name": "Aufgabe 2",
+        // 8P
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 1
+          },
+          {
+            "name": "Quellcode",
+            "points": 5
+          },
+          {
+            "name": "Testfälle",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "name": "Aufgabe 3",
+        // 8P
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 1
+          },
+          {
+            "name": "Quellcode",
+            "points": 5
+          },
+          {
+            "name": "Testfälle",
+            "points": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SKS Übung 02",
+    "draft": [
+      {
+        "name": "Aufgabe 1",
+        // 8P
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 1
+          },
+          {
+            "name": "Quellcode",
+            "points": 5
+          },
+          {
+            "name": "Testfälle",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "name": "Aufgabe 2",
+        // 10P
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 1
+          },
+          {
+            "name": "Quellcode",
+            "points": 7
+          },
+          {
+            "name": "Testfälle",
+            "points": 2
+          }
+        ]
+      },
+      {
+        "name": "Aufgabe 3",
+        // 6P
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 1
+          },
+          {
+            "name": "Quellcode",
+            "points": 4
+          },
+          {
+            "name": "Testfälle",
+            "points": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SKS Matlab",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        // 30
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 25
+          },
+          {
+            "name": "Testfälle",
+            "points": 12
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        // 40
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 15
+          },
+          {
+            "name": "Testfälle",
+            "points": 7
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 3",
+        // 30
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 15
+          },
+          {
+            "name": "Testfälle",
+            "points": 7
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SKS Übung 03",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 11
+          },
+          {
+            "name": "Testfälle",
+            "points": 6
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 11
+          },
+          {
+            "name": "Testfälle",
+            "points": 6
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 3",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 11
+          },
+          {
+            "name": "Testfälle",
+            "points": 6
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 4",
+        "distribution": [
+          {
+            "name": "Analyse",
+            "points": 40
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SKS Übung 04",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 4
+          },
+          {
+            "name": "Quellcode",
+            "points": 26
+          },
+          {
+            "name": "Testfälle",
+            "points": 10
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 2
+          },
+          {
+            "name": "Quellcode",
+            "points": 12
+          },
+          {
+            "name": "Testfälle",
+            "points": 6
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 3",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 4
+          },
+          {
+            "name": "Quellcode",
+            "points": 26
+          },
+          {
+            "name": "Testfälle",
+            "points": 10
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SKS Übung 05",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 5
+          },
+          {
+            "name": "Quellcode",
+            "points": 28
+          },
+          {
+            "name": "Testfälle",
+            "points": 17
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 14
+          },
+          {
+            "name": "Testfälle",
+            "points": 8
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 3",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 16
+          },
+          {
+            "name": "Testfälle",
+            "points": 6
+          }
+        ]
+      }
+    ]
+  }
+]

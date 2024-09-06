@@ -1,13 +1,10 @@
-import {Component} from '@angular/core';
-import {RouterOutlet} from "@angular/router";
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'ms-assignment',
-  template: `<router-outlet></router-outlet>`,
+  template: '<router-outlet />',
   standalone: true,
-  imports: [
-    RouterOutlet
-  ]
+  imports: [RouterOutlet],
 })
-export class AssignmentComponent {
-}
+export class AssignmentComponent {}
