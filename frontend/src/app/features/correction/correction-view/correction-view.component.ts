@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import {
   Correction,
   CorrectionDraft,
@@ -25,7 +25,7 @@ import {
   CourseInstance,
   SerializerType,
 } from '../../course/models/course.model';
-import { ToggleButtonModule } from 'primeng/togglebutton';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'ms-correction-view',
@@ -40,7 +40,6 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     FormsModule,
     FloatLabelModule,
     InputTextModule,
-    ToggleButtonModule,
   ],
 })
 export class CorrectionViewComponent implements OnInit, OnDestroy {
@@ -66,9 +65,9 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
 
   constructor(
     private correctionService: CorrectionService,
+    private toastService: ToastService,
     private route: ActivatedRoute,
     private confirmationService: ConfirmationService,
-    protected messageService: MessageService,
     private userService: UserService,
     private location: Location,
     private translationService: TranslationService,
@@ -146,11 +145,7 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
         tap({
           next: (response) => {
             if (triggered) {
-              this.messageService.add({
-                severity: 'info',
-                summary: 'Info',
-                detail: this.translate('common.saved'),
-              });
+              this.toastService.info('common.saved');
             }
             this.correction = response;
             this.parseExpense();
@@ -158,11 +153,7 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
             this.calculateLateSubmission();
           },
           error: (error) => {
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Error',
-              detail: this.translate('course.evaluateView.couldNotSave'),
-            });
+            this.toastService.error('course.evaluateView.couldNotSave');
             throw error;
           },
         }),
@@ -174,11 +165,7 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
       this.saveCorrection(triggered).subscribe();
     } else {
       if (triggered) {
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Info',
-          detail: this.translate('common.noChangesInfo'),
-        });
+        this.toastService.info('common.noChangesInfo');
       }
     }
   }
@@ -333,11 +320,24 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
   }
 
   onDownloadClick() {
-    this.saveCorrection().subscribe({
-      complete: () => {
-        this.correctionService.downloadCorrection(this.correctionId!);
-        this.location.back();
-      },
-    });
+    const downloadAndReturn = () => {
+      this.correctionService.downloadCorrection(this.correctionId!);
+      this.location.back();
+    };
+    if (!this.readOnly) {
+      this.saveCorrection().subscribe({
+        complete: () => {
+          downloadAndReturn();
+        },
+      });
+    } else {
+      downloadAndReturn();
+    }
+  }
+
+  onExpenseSetClick() {
+    this.expenseNotSet = !this.expenseNotSet;
+    this.expenseElement = { hour: 0, minute: 0 };
+    this.expenseToString();
   }
 }

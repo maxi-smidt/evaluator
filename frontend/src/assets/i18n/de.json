@@ -10,6 +10,8 @@
     "btn-submit": "Speichern",
     "btn-save": "Speichern",
     "saved": "Gespeichert",
+    "download": "Download",
+    "back": "Zurück",
     "delete": "Löschen",
     "cancel": "Abbrechen",
     "no-data": "Keine Daten verfügbar",
@@ -79,7 +81,7 @@
       "status": "Status",
       "action": "Aktion",
       "lateSubmission": "Joker",
-      "error-403": "You can only delete your own corrections",
+      "error-no-access": "Es können nur eigene Korrekturen editiert/gelöscht werden. Sollte es trotzdem erforderlich sein gib einen Report auf.",
       "tt-not-submitted": "Assignment wurde nicht abgegeben",
       "tt-start": "Korrektur starten oder fortsetzen",
       "tt-edit": "Korrektur bearbeiten",
@@ -102,6 +104,8 @@
       "expenseNotSet": "Zeitaufwand nicht eingetragen",
       "tt-lateSubmitted": "Joker eingelöst",
       "tt-notLateSubmitted": "Joker nicht eingelöst",
+      "tt-expenseNotSet": "Zeitaufwand nicht eingetragen",
+      "tt-expenseSet": "Zeitaufwand eingetragen",
       "penalty": "Abzug"
     }
   },
