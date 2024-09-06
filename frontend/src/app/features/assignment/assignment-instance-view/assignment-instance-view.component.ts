@@ -169,6 +169,9 @@ export class AssignmentInstanceViewComponent implements OnInit {
         next: () => {
           this.router.navigate(['correction', correctionId]).then();
         },
+        error: () => {
+          this.toastService.info('course.assignmentView.error-no-access');
+        },
       });
   }
 
@@ -184,10 +187,8 @@ export class AssignmentInstanceViewComponent implements OnInit {
             student.points = null as unknown as number;
             student.status = CorrectionStatus.UNDEFINED;
           },
-          error: (err) => {
-            if (err.status === 403) {
-              this.toastService.error('course.assignmentView.error-403');
-            }
+          error: () => {
+            this.toastService.info('course.assignmentView.error-no-access');
           },
         });
       }
