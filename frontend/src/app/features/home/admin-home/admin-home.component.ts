@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {ConfirmDialogModule} from "primeng/confirmdialog";
-import {DegreeProgramListComponent} from "./degree-program-list/degree-program-list.component";
-import {UserListComponent} from "./user-list/user-list.component";
-import {DegreeProgramFormComponent} from "./degree-program-form/degree-program-form.component";
-import {UserFormComponent} from "../../../shared/forms/user-form/user-form.component";
-import {TranslationService} from "../../../shared/services/translation.service";
+import { Component, OnInit } from '@angular/core';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { DegreeProgramListComponent } from './degree-program-list/degree-program-list.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { DegreeProgramFormComponent } from './degree-program-form/degree-program-form.component';
+import { UserFormComponent } from '../../../shared/forms/user-form/user-form.component';
+import { TranslationService } from '../../../shared/services/translation.service';
 
 @Component({
   selector: 'ms-admin-home',
@@ -15,17 +15,17 @@ import {TranslationService} from "../../../shared/services/translation.service";
     DegreeProgramListComponent,
     UserListComponent,
     DegreeProgramFormComponent,
-    UserFormComponent
-  ]
+    UserFormComponent,
+  ],
 })
 export class AdminHomeComponent implements OnInit {
   userFormChoices: string[] = [];
 
-  constructor(private translationService: TranslationService) {
-  }
-
+  constructor(private translationService: TranslationService) {}
 
   ngOnInit() {
-    this.userFormChoices = this.translationService.getArray('home.adminHome.role-choices');
+    this.userFormChoices = this.translationService.getArray(
+      'home.adminHome.role-choices',
+    );
   }
 }

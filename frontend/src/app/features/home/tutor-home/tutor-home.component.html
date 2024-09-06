@@ -6,10 +6,12 @@
     [(ngModel)]="selectedYear"/>
 </div>
 
-<div class="d-flex flex-row border rounded row row-cols-md-4 row-cols-sm-3 row-cols-2 mt-3">
+<div class="row border border-2 rounded mt-3 g-2 pb-2 px-1">
   @for (courseInstance of courseInstances; track courseInstance) {
     @if (selectedYear === allString || courseInstance.year.toString() === selectedYear) {
-      <ms-course-card [courseInstance]="courseInstance"></ms-course-card>
+      <div class="col-md-3 col-sm-4 col-6">
+        <ms-course-card [courseInstance]="courseInstance" />
+      </div>
     }
   }
 </div>

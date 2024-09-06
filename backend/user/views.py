@@ -9,7 +9,6 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
 from .models import User, DegreeProgramDirector
-# noinspection PyUnresolvedReferences
 from evaluator.models import DegreeProgram, CourseInstance
 from . import serializers
 from .permissions import IsClOrDpdOrAdmin, IsAdmin, IsDpdOrAdmin

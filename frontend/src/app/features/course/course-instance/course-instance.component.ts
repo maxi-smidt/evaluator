@@ -1,14 +1,10 @@
-import {Component} from '@angular/core';
-import {RouterOutlet} from "@angular/router";
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'ms-course-instance',
-  template: `
-    <router-outlet></router-outlet>`,
+  template: ' <router-outlet />',
   standalone: true,
-  imports: [
-    RouterOutlet
-  ]
+  imports: [RouterOutlet],
 })
-export class CourseInstanceComponent {
-}
+export class CourseInstanceComponent {}

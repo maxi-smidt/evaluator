@@ -1,10 +1,10 @@
-import {Component, EventEmitter, input, Output} from '@angular/core';
-import {Entry} from "../../models/correction.model";
-import {EditorModule} from "primeng/editor";
-import {InputNumberModule} from "primeng/inputnumber";
-import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
-import {ButtonModule} from "primeng/button";
-import {FormsModule} from "@angular/forms";
+import { Component, EventEmitter, input, Output } from '@angular/core';
+import { Entry } from '../../models/correction.model';
+import { EditorModule } from 'primeng/editor';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { ButtonModule } from 'primeng/button';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'ms-evaluate-table',
@@ -16,8 +16,8 @@ import {FormsModule} from "@angular/forms";
     InputNumberModule,
     TranslatePipe,
     ButtonModule,
-    FormsModule
-  ]
+    FormsModule,
+  ],
 })
 export class EvaluateTableComponent {
   defaultPoints = input.required<number>();
@@ -36,7 +36,7 @@ export class EvaluateTableComponent {
   }
 
   protected addRow() {
-    this.tableData().push({text: '', points: 0});
+    this.tableData().push({ text: '', points: 0 });
   }
 
   protected onInputChange() {
@@ -44,7 +44,9 @@ export class EvaluateTableComponent {
   }
 
   private updatePointsAndEmit() {
-    this.currentPoints = this.defaultPoints() + this.tableData().reduce((acc, entry) => acc + entry.points, 0);
+    this.currentPoints =
+      this.defaultPoints() +
+      this.tableData().reduce((acc, entry) => acc + entry.points, 0);
     this.totalPoints.emit(this.currentPoints);
   }
 }

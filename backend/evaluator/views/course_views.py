@@ -1,9 +1,7 @@
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 
-# noinspection PyUnresolvedReferences
 from user.models import User, Tutor
-# noinspection PyUnresolvedReferences
 from user.permissions import IsDegreeProgramDirector, IsDpdOrCl
 from ..models import Course, CourseInstance
 from ..serializers import course_serializers

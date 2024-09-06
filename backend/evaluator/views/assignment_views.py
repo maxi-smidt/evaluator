@@ -1,8 +1,6 @@
 from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView, RetrieveDestroyAPIView
 
-# noinspection PyUnresolvedReferences
 from user.models import User, Tutor
-# noinspection PyUnresolvedReferences
 from user.permissions import IsDpdOrCl
 from ..models import AssignmentInstance, Assignment
 from ..serializers import assignment_serializers

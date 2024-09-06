@@ -1,14 +1,13 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'ms-root',
   template: `
-    <router-outlet/>
-    <p-toast></p-toast>
-  `
+    <router-outlet />
+    <p-toast />
+  `,
 })
-export class AppComponent{
+export class AppComponent {
   title = 'frontend';
-  constructor() {
-  }
+  constructor() {}
 }

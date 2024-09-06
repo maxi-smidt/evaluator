@@ -1,9 +1,9 @@
-import {Component} from '@angular/core';
-import {AuthService} from "../../services/auth.service";
-import {ButtonModule} from "primeng/button";
-import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
-import {RouterLink, RouterLinkActive} from "@angular/router";
-import {ImageModule} from "primeng/image";
+import { Component } from '@angular/core';
+import { AuthService } from '../../services/auth.service';
+import { ButtonModule } from 'primeng/button';
+import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
+import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ImageModule } from 'primeng/image';
 
 @Component({
   selector: 'ms-header',
@@ -15,14 +15,13 @@ import {ImageModule} from "primeng/image";
     TranslatePipe,
     RouterLink,
     RouterLinkActive,
-    ImageModule
-  ]
+    ImageModule,
+  ],
 })
 export class HeaderComponent {
   toggleButton: boolean = true;
 
-  constructor(private authService: AuthService) {
-  }
+  constructor(private authService: AuthService) {}
 
   onLogoutBtnClick() {
     this.authService.logout();

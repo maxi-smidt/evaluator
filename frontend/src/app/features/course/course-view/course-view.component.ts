@@ -1,21 +1,22 @@
-import {Component, OnInit} from '@angular/core';
-import {CourseService} from "../services/course.service";
-import {ActivatedRoute, Router} from "@angular/router";
-import {TranslatePipe} from "../../../shared/pipes/translate.pipe";
-import {DetailCourse} from "../models/course.model";
-import {Button} from "primeng/button";
-import {DataViewModule} from "primeng/dataview";
-import {ConfirmationService, MessageService} from "primeng/api";
-import {FloatLabelModule} from "primeng/floatlabel";
-import {InputTextModule} from "primeng/inputtext";
-import {TranslationService} from "../../../shared/services/translation.service";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {InputGroupAddonModule} from "primeng/inputgroupaddon";
-import {InputGroupModule} from "primeng/inputgroup";
-import {AssignmentService} from "../../assignment/services/assignment.service";
-import {DialogModule} from "primeng/dialog";
-import {InputOtpModule} from "primeng/inputotp";
-import {ConfirmPopupModule} from "primeng/confirmpopup";
+import { Component, OnInit } from '@angular/core';
+import { CourseService } from '../services/course.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
+import { DetailCourse } from '../models/course.model';
+import { Button } from 'primeng/button';
+import { DataViewModule } from 'primeng/dataview';
+import { ConfirmationService } from 'primeng/api';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextModule } from 'primeng/inputtext';
+import { TranslationService } from '../../../shared/services/translation.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { InputGroupModule } from 'primeng/inputgroup';
+import { AssignmentService } from '../../assignment/services/assignment.service';
+import { DialogModule } from 'primeng/dialog';
+import { InputOtpModule } from 'primeng/inputotp';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'ms-course-view',
@@ -32,9 +33,9 @@ import {ConfirmPopupModule} from "primeng/confirmpopup";
     ReactiveFormsModule,
     DialogModule,
     InputOtpModule,
-    ConfirmPopupModule
+    ConfirmPopupModule,
   ],
-  templateUrl: './course-view.component.html'
+  templateUrl: './course-view.component.html',
 })
 export class CourseViewComponent implements OnInit {
   course: DetailCourse = {} as DetailCourse;
@@ -48,23 +49,24 @@ export class CourseViewComponent implements OnInit {
   newAssignmentName: string | undefined;
   newAssignmentNr: number | undefined;
 
-  constructor(private courseService: CourseService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private messageService: MessageService,
-              private translationService: TranslationService,
-              private assignmentService: AssignmentService,
-              private confirmationService: ConfirmationService) {
-  }
+  constructor(
+    private courseService: CourseService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private translationService: TranslationService,
+    private assignmentService: AssignmentService,
+    private confirmationService: ConfirmationService,
+    private toastService: ToastService,
+  ) {}
 
   ngOnInit() {
     const courseId = this.route.snapshot.params['courseId'];
     this.courseService.getDetailCourse(courseId).subscribe({
-      next: value => {
+      next: (value) => {
         this.course = value;
         this.courseBefore = JSON.parse(JSON.stringify(value));
         this.parseFileName(value.fileName);
-      }
+      },
     });
   }
 
@@ -72,7 +74,8 @@ export class CourseViewComponent implements OnInit {
     fileName = fileName.replace(/_{lastname}_/, ';');
     fileName = fileName.replace(/{nr}_/, ';');
     fileName = fileName.replace('.pdf', '');
-    [this.fileNamePre, this.fileNameMid, this.fileNamePost] = fileName.split(';');
+    [this.fileNamePre, this.fileNameMid, this.fileNamePost] =
+      fileName.split(';');
   }
 
   makeFileName(): string {
@@ -85,80 +88,82 @@ export class CourseViewComponent implements OnInit {
 
   hasChanged(): boolean {
     const transform = (detailCourse: DetailCourse) => {
-      let {assignments, ...course} = detailCourse;
-      return course;
+      const courseCopy = JSON.parse(JSON.stringify(detailCourse));
+      delete courseCopy.assignments;
+      return courseCopy;
     };
     this.course.fileName = this.makeFileName();
-    return JSON.stringify(transform(this.course)) !== JSON.stringify(transform(this.courseBefore));
+    return (
+      JSON.stringify(transform(this.course)) !==
+      JSON.stringify(transform(this.courseBefore))
+    );
   }
 
   onSubmit() {
     if (!this.hasChanged()) {
-      this.messageService.add({
-        severity: 'info',
-        summary: 'Info',
-        detail: this.translationService.translate('common.noChangesInfo')
-      });
+      this.toastService.error('common.noChangesInfo');
       return;
     }
 
-    let {assignments, id, ...course} = this.course;
-    this.courseService.patchCourse(this.course.id, {...course}).subscribe({
-      next: value => {
+    const { assignments, id, ...course } = this.course;
+    this.courseService.patchCourse(this.course.id, { ...course }).subscribe({
+      next: (value) => {
         this.course = value;
         this.courseBefore = JSON.parse(JSON.stringify(value));
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: this.translationService.translate('common.saved')
-        });
-      }
+        this.toastService.success('common.saved');
+      },
     });
   }
 
   onSaveNewAssignment() {
     if (!this.newAssignmentName || !this.newAssignmentNr) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: this.translationService.translate('course.courseView.error')
-      });
+      this.toastService.error('course.courseView.error');
       return;
     }
 
-    this.assignmentService.createAssignment(this.course.id, this.newAssignmentNr, this.newAssignmentName).subscribe({
-      next: value => {
-        this.routeToAssignment(value.id);
-        this.newAssignmentNr = undefined;
-        this.newAssignmentName = undefined;
-        this.dialogVisible = false;
-      },
-      error: err => {
-        const messageKey = `course.courseView.error-${err.status === 500 ? '500' : 'else'}`;
-
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Error',
-          detail: this.translationService.translate(messageKey)
-        });
-      }
-    });
+    this.assignmentService
+      .createAssignment(
+        this.course.id,
+        this.newAssignmentNr,
+        this.newAssignmentName,
+      )
+      .subscribe({
+        next: (value) => {
+          this.routeToAssignment(value.id);
+          this.newAssignmentNr = undefined;
+          this.newAssignmentName = undefined;
+          this.dialogVisible = false;
+        },
+        error: (err) => {
+          const messageKey = `course.courseView.error-${err.status === 500 ? '500' : 'else'}`;
+          this.toastService.error(messageKey);
+        },
+      });
   }
 
   onDeleteAssignment(event: Event, assignmentId: number) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
-      message: this.translationService.translate('common.confirmation.message'),
+      header: this.translationService.translate('common.confirmation.header'),
+      message: this.translationService.translate(
+        'common.confirmation.message-delete',
+      ),
       icon: 'pi pi-exclamation-triangle',
-      acceptLabel: this.translationService.translate('common.confirmation.accept'),
-      rejectLabel: this.translationService.translate('common.confirmation.reject'),
+      acceptLabel: this.translationService.translate(
+        'common.confirmation.accept',
+      ),
+      rejectLabel: this.translationService.translate(
+        'common.confirmation.reject',
+      ),
       accept: () => {
         this.assignmentService.deleteAssignment(assignmentId).subscribe({
           next: () => {
-            this.course.assignments = this.course.assignments.filter(assignment => assignment.id !== assignmentId);
-          }
+            this.course.assignments = this.course.assignments.filter(
+              (assignment) => assignment.id !== assignmentId,
+            );
+          },
         });
-      }
+      },
     });
   }
 }

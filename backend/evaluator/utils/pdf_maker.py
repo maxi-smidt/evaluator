@@ -63,7 +63,8 @@ class PdfMaker:
     def make_body(self):
         doc, tag, text = Doc().tagtext()
         with tag('div', klass='exercises'):
-            doc.asis(self.make_annotations(self.draft['annotations']))
+            if self.draft['annotations']:
+                doc.asis(self.make_annotations(self.draft['annotations']))
             doc.asis(self.make_exercises(self.draft['exercise']))
 
         return doc.getvalue()
@@ -90,8 +91,9 @@ class PdfMaker:
         doc, tag, text = Doc().tagtext()
         with tag('h4'):
             text(f'{sub_exercise["name"]}: {self.calculate_sub_exercise_points(sub_exercise)}/{sub_exercise["points"]}')
-        with tag('div'):
-            doc.asis(self.make_table(sub_exercise['notes']))
+        if sub_exercise['notes']:
+            with tag('div'):
+                doc.asis(self.make_table(sub_exercise['notes']))
         return doc.getvalue()
 
     def make_table(self, data):

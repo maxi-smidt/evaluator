@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
-import {RouterOutlet} from "@angular/router";
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   template: `
     <div class="container-fluid">
-      <router-outlet></router-outlet>
-    </div>`,
+      <router-outlet />
+    </div>
+  `,
   standalone: true,
-  imports: [
-    RouterOutlet
-  ]
+  imports: [RouterOutlet],
 })
-export class CourseComponent {
-}
+export class CourseComponent {}

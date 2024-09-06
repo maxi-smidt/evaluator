@@ -1,14 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {DegreeProgram} from "../../degree-program/models/degree-program.model";
+import { HttpClient } from '@angular/common/http';
+import { DegreeProgram } from '../../degree-program/models/degree-program.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DpdService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   getDegreePrograms() {
     return this.http.get<DegreeProgram[]>('degree-programs/');

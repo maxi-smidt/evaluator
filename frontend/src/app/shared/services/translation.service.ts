@@ -1,49 +1,46 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
-import {Observable, tap} from "rxjs";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class TranslationService {
-  private translations: any = {};
+  private translations: unknown;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   loadLanguage(language: string): Observable<unknown> {
     return this.http.get(`assets/i18n/${language}.json`).pipe(
       tap((translations) => {
         this.translations = translations;
-      })
+      }),
     );
   }
 
   translate(key: string): string {
     const keys = key.split('.');
-    let result = this.translations;
+    let result: unknown = this.translations;
 
     for (const k of keys) {
-      result = result[k];
-
-      if (result === undefined) {
-        return key;
+      if (typeof result === 'object' && result !== null && k in result) {
+        result = (result as Record<string, unknown>)[k];
       }
     }
-    return result as string;
+
+    return typeof result === 'string' ? result : key;
   }
 
   getArray(key: string): string[] {
     const keys = key.split('.');
-    let result = this.translations;
+    let result: unknown = this.translations;
 
     for (const k of keys) {
-      result = result[k];
-
-      if (result === undefined) {
-        return [key];
+      if (typeof result === 'object' && result !== null && k in result) {
+        result = (result as Record<string, unknown>)[k];
       }
     }
-    return result;
+
+    return Array.isArray(result) ? (result as string[]) : [key];
   }
 }

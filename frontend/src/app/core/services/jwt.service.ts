@@ -1,10 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class JwtService {
-
   getAccessToken(): string | null {
     return this.getToken('access');
   }
@@ -14,7 +13,7 @@ export class JwtService {
   }
 
   getToken(type: string | null = null) {
-    const token = window.localStorage["jwtToken"]
+    const token = window.localStorage['jwtToken'];
     if (type) {
       return token ? JSON.parse(token)[type] : null;
     }
@@ -22,10 +21,10 @@ export class JwtService {
   }
 
   saveToken(token: string): void {
-    window.localStorage["jwtToken"] = JSON.stringify(token);
+    window.localStorage['jwtToken'] = JSON.stringify(token);
   }
 
   destroyToken(): void {
-    window.localStorage.removeItem("jwtToken");
+    window.localStorage.removeItem('jwtToken');
   }
 }

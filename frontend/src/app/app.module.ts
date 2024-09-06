@@ -1,38 +1,37 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {JwtInterceptor} from "./core/interceptors/jwt.interceptor";
-import {HeaderComponent} from './core/layout/header/header.component';
-import {SettingsViewComponent} from './features/user/settings-view/settings-view.component';
-import {ConfirmationService, MessageService} from "primeng/api";
-import {TranslationService} from "./shared/services/translation.service";
-import {ApiInterceptor} from "./core/interceptors/api.interceptor";
-import {TranslatePipe} from "./shared/pipes/translate.pipe";
-import {HomeComponent} from "./features/home/home.component";
-import {ToastModule} from "primeng/toast";
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
+import { HeaderComponent } from './core/layout/header/header.component';
+import { SettingsViewComponent } from './features/user/settings-view/settings-view.component';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { TranslationService } from './shared/services/translation.service';
+import { ApiInterceptor } from './core/interceptors/api.interceptor';
+import { TranslatePipe } from './shared/pipes/translate.pipe';
+import { HomeComponent } from './features/home/home.component';
+import { ToastModule } from 'primeng/toast';
 
 function loadTranslations(translationService: TranslationService) {
-  return () => new Promise<void>((resolve, reject) => {
-    translationService.loadLanguage('de').subscribe({
-      next: () => {
-        resolve();
-      },
-      error: (err) => {
-        reject(err);
-      },
+  return () =>
+    new Promise<void>((resolve, reject) => {
+      translationService.loadLanguage('de').subscribe({
+        next: () => {
+          resolve();
+        },
+        error: (err) => {
+          reject(err);
+        },
+      });
     });
-  });
 }
 
 @NgModule({
   bootstrap: [AppComponent],
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -42,21 +41,20 @@ function loadTranslations(translationService: TranslationService) {
     HeaderComponent,
     HomeComponent,
     SettingsViewComponent,
-    ToastModule
+    ToastModule,
   ],
   providers: [
     {
       provide: APP_INITIALIZER,
       useFactory: loadTranslations,
       deps: [TranslationService],
-      multi: true
+      multi: true,
     },
-    {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-    {provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptor, multi: true },
     ConfirmationService,
     MessageService,
-    TranslationService
-  ]
+    TranslationService,
+  ],
 })
-export class AppModule {
-}
+export class AppModule {}

@@ -1,18 +1,16 @@
-import {Injectable} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PlagScanService {
-
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) {}
 
   scanZipFile(file: FormData, language: string) {
     return this.http.post<any>(`jplag/?lang=${language}`, file, {
       observe: 'response',
-      responseType: 'blob' as 'json'
+      responseType: 'blob' as 'json',
     });
   }
 }

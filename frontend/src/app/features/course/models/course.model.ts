@@ -1,15 +1,14 @@
 import {
   DueDateAssignmentInstance,
   SimpleAssignment,
-  SimpleAssignmentInstance
-} from "../../assignment/models/assignment.model";
-
+  SimpleAssignmentInstance,
+} from '../../assignment/models/assignment.model';
 
 export interface Course {
-  id: number,
-  name: string,
-  abbreviation: string
-  fileName: string
+  id: number;
+  name: string;
+  abbreviation: string;
+  fileName: string;
 }
 
 /**
@@ -20,9 +19,9 @@ export interface DetailCourse extends Course {
 }
 
 export interface SimpleCourseInstance {
-  id: number,
-  year: number,
-  course: Course
+  id: number;
+  year: number;
+  course: Course;
 }
 
 export interface CourseInstance extends SimpleCourseInstance {
@@ -44,5 +43,5 @@ export enum SerializerType {
   DETAIL = 'detail',
   SIMPLE = 'simple',
   STAFF = 'staff', // a serializer, that adds cl / tutors to a course instance
-  DUE_DATE = 'due_date' // a serializer, that contains all the assignment instances with their due date
+  DUE_DATE = 'due_date', // a serializer, that contains all the assignment instances with their due date
 }

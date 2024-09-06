@@ -1,23 +1,28 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {ConfirmationService, MenuItem, MessageService} from 'primeng/api';
-import {Student} from "../../models/student.model";
-import {EditPartition} from "../../models/edit-partition.model";
-import {CourseService} from "../../services/course.service";
-import {ConfirmDialogModule} from "primeng/confirmdialog";
-import {EditGroupComponent} from "./edit-group/edit-group.component";
-import {EditPartitionComponent} from "./edit-partition/edit-partition.component";
-import {TranslatePipe} from "../../../../shared/pipes/translate.pipe";
-import {TranslationService} from "../../../../shared/services/translation.service";
-import {TabMenuModule} from "primeng/tabmenu";
-import {EditGeneralComponent} from "./edit-general/edit-general.component";
-import {CourseInstance, DueDateCourseInstance, SerializerType} from "../../models/course.model";
-import {AssignmentService} from "../../../assignment/services/assignment.service";
-import {UrlParamService} from "../../../../shared/services/url-param.service";
-import {UserService} from "../../../../core/services/user.service";
-import {User} from "../../../../core/models/user.models";
-import {EditStaffComponent} from "./edit-staff/edit-staff.component";
-import {EditDueDatesComponent} from "./edit-due-dates/edit-due-dates.component";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService, MenuItem } from 'primeng/api';
+import { Student } from '../../models/student.model';
+import { EditPartition } from '../../models/edit-partition.model';
+import { CourseService } from '../../services/course.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { EditGroupComponent } from './edit-group/edit-group.component';
+import { EditPartitionComponent } from './edit-partition/edit-partition.component';
+import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { TranslationService } from '../../../../shared/services/translation.service';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { EditGeneralComponent } from './edit-general/edit-general.component';
+import {
+  CourseInstance,
+  DueDateCourseInstance,
+  SerializerType,
+} from '../../models/course.model';
+import { AssignmentService } from '../../../assignment/services/assignment.service';
+import { UrlParamService } from '../../../../shared/services/url-param.service';
+import { UserService } from '../../../../core/services/user.service';
+import { User } from '../../../../core/models/user.models';
+import { EditStaffComponent } from './edit-staff/edit-staff.component';
+import { EditDueDatesComponent } from './edit-due-dates/edit-due-dates.component';
+import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'ms-edit-view',
@@ -31,8 +36,8 @@ import {EditDueDatesComponent} from "./edit-due-dates/edit-due-dates.component";
     TabMenuModule,
     EditGeneralComponent,
     EditStaffComponent,
-    EditDueDatesComponent
-  ]
+    EditDueDatesComponent,
+  ],
 })
 export class EditViewComponent implements OnInit {
   user: User = {} as User;
@@ -56,7 +61,8 @@ export class EditViewComponent implements OnInit {
 
   // due dates
   dueDateCourseInstance: DueDateCourseInstance = {} as DueDateCourseInstance;
-  dueDateCourseInstanceBefore: DueDateCourseInstance = {} as DueDateCourseInstance;
+  dueDateCourseInstanceBefore: DueDateCourseInstance =
+    {} as DueDateCourseInstance;
 
   // staff (should only be queried when role is higher than tutor)
   selectedCourseLeaders: User[] = [];
@@ -64,89 +70,132 @@ export class EditViewComponent implements OnInit {
   selectedTutors: User[] = [];
   selectedTutorsBefore: User[] = [];
 
-  constructor(private courseService: CourseService,
-              private route: ActivatedRoute,
-              private confirmationService: ConfirmationService,
-              private messageService: MessageService,
-              private translationService: TranslationService,
-              private assignmentService: AssignmentService,
-              private urlParamService: UrlParamService,
-              private userService: UserService) {
+  constructor(
+    private courseService: CourseService,
+    private route: ActivatedRoute,
+    private confirmationService: ConfirmationService,
+    private translationService: TranslationService,
+    private assignmentService: AssignmentService,
+    private urlParamService: UrlParamService,
+    private userService: UserService,
+    private router: Router,
+    private toastService: ToastService,
+  ) {
     this.menuItems = [
-      {label: this.translationService.translate('edit.title-students')},
-      {label: this.translationService.translate('edit.title-partition')},
-      {label: this.translationService.translate('edit.title-general')},
-      {label: this.translationService.translate('edit.title-assignments')}
+      { label: this.translationService.translate('edit.title-students') },
+      { label: this.translationService.translate('edit.title-partition') },
+      { label: this.translationService.translate('edit.title-general') },
+      { label: this.translationService.translate('edit.title-assignments') },
     ];
 
-    this.activeItem = this.menuItems[3];
+    this.activeItem = this.menuItems[0];
   }
 
   ngOnInit() {
+    this.route.queryParamMap.subscribe((params) => {
+      const tab = params.get('tab');
+      this.activeItem = tab
+        ? this.menuItems.find((item) => item.label === tab)
+        : this.menuItems[0];
+    });
+
     this.courseId = this.urlParamService.findParam('courseId', this.route);
 
     this.userService.getUser().subscribe({
-      next: value => {
+      next: (value) => {
         this.user = value;
-        if (value.role !== 'DEGREE_PROGRAM_DIRECTOR' && value.role !== 'COURSE_LEADER') {
+        if (
+          value.role !== 'DEGREE_PROGRAM_DIRECTOR' &&
+          value.role !== 'COURSE_LEADER'
+        ) {
           return;
         }
-        this.menuItems.push({label: this.translationService.translate('edit.title-staff')});
-        this.activeItem = this.menuItems[3]
+        this.menuItems.push({
+          label: this.translationService.translate('edit.title-staff'),
+        });
+        this.activeItem = this.menuItems[3];
 
         this.userService.getUsers([`course=${this.courseId}`]).subscribe({
-          next: value => {
+          next: (value) => {
             this.pushUsersSeparated(value);
-            this.selectedTutorsBefore = JSON.parse(JSON.stringify(this.selectedTutors));
-            this.selectedCourseLeadersBefore = JSON.parse(JSON.stringify(this.selectedCourseLeaders));
-          }
+            this.selectedTutorsBefore = JSON.parse(
+              JSON.stringify(this.selectedTutors),
+            );
+            this.selectedCourseLeadersBefore = JSON.parse(
+              JSON.stringify(this.selectedCourseLeaders),
+            );
+          },
         });
-      }
+      },
     });
 
     // grouped students
     this.courseService.getStudentsInGroupsByCourse(this.courseId).subscribe({
-      next: students => {
+      next: (students) => {
         this.groupedStudents = students.groupedStudents;
         this.adjustInactiveGroup();
-        this.groupedStudentsBefore = JSON.parse(JSON.stringify(students.groupedStudents));
-      }
+        this.groupedStudentsBefore = JSON.parse(
+          JSON.stringify(students.groupedStudents),
+        );
+      },
     });
 
     // group partition
-    this.assignmentService.getTutorAssignmentPartition(this.courseId).subscribe({
-      next: partition => {
-        this.partition = partition.partition;
-        this.partitionBefore = JSON.parse(JSON.stringify(partition.partition));
-        this.groups = partition.groups;
-      }
-    });
+    this.assignmentService
+      .getTutorAssignmentPartition(this.courseId)
+      .subscribe({
+        next: (partition) => {
+          this.partition = partition.partition;
+          this.partitionBefore = JSON.parse(
+            JSON.stringify(partition.partition),
+          );
+          this.groups = partition.groups;
+        },
+      });
 
     // general
-    this.courseService.getCourseInstance<CourseInstance>(this.courseId, SerializerType.NORMAL).subscribe({
-      next: course => {
-        this.course = course;
-        this.courseBefore = JSON.parse(JSON.stringify(course));
-      }
-    });
+    this.courseService
+      .getCourseInstance<CourseInstance>(this.courseId, SerializerType.NORMAL)
+      .subscribe({
+        next: (course) => {
+          this.course = course;
+          this.courseBefore = JSON.parse(JSON.stringify(course));
+        },
+      });
 
     // due dates
-    this.courseService.getCourseInstance<DueDateCourseInstance>(this.courseId, SerializerType.DUE_DATE).subscribe({
-      next: value => {
-        this.dueDateCourseInstance = value;
-        this.dueDateCourseInstance.assignments = value.assignments.map(assignment => {
-          return {
-            ...assignment,
-            dueTo: new Date(assignment.dueTo) // iso string has to be instantiated as date
-          };
-        });
-        this.dueDateCourseInstanceBefore = JSON.parse(JSON.stringify(this.dueDateCourseInstance));
-      }
-    })
+    this.courseService
+      .getCourseInstance<DueDateCourseInstance>(
+        this.courseId,
+        SerializerType.DUE_DATE,
+      )
+      .subscribe({
+        next: (value) => {
+          this.dueDateCourseInstance = value;
+          this.dueDateCourseInstance.assignments = value.assignments.map(
+            (assignment) => {
+              return {
+                ...assignment,
+                dueTo: new Date(assignment.dueTo), // iso string has to be instantiated as date
+              };
+            },
+          );
+          this.dueDateCourseInstanceBefore = JSON.parse(
+            JSON.stringify(this.dueDateCourseInstance),
+          );
+        },
+      });
   }
 
   onActiveItemChange(event: MenuItem) {
     this.activeItem = event;
+    this.router
+      .navigate([], {
+        relativeTo: this.route,
+        queryParams: { tab: event.label },
+        queryParamsHandling: 'merge',
+      })
+      .then();
   }
 
   adjustInactiveGroup() {
@@ -156,19 +205,26 @@ export class EditViewComponent implements OnInit {
   }
 
   private hasChanged() {
-    return this.groupHasChanged()
-      || this.partitionHasChanged()
-      || this.courseHasChanged()
-      || this.staffHasChanged()
-      || this.dueDatesHaveChanged();
+    return (
+      this.groupHasChanged() ||
+      this.partitionHasChanged() ||
+      this.courseHasChanged() ||
+      this.staffHasChanged() ||
+      this.dueDatesHaveChanged()
+    );
   }
 
   private groupHasChanged() {
-    return JSON.stringify(this.groupedStudents) !== JSON.stringify(this.groupedStudentsBefore);
+    return (
+      JSON.stringify(this.groupedStudents) !==
+      JSON.stringify(this.groupedStudentsBefore)
+    );
   }
 
   private partitionHasChanged() {
-    return JSON.stringify(this.partition) !== JSON.stringify(this.partitionBefore);
+    return (
+      JSON.stringify(this.partition) !== JSON.stringify(this.partitionBefore)
+    );
   }
 
   private courseHasChanged() {
@@ -176,129 +232,158 @@ export class EditViewComponent implements OnInit {
   }
 
   private staffHasChanged() {
-    return JSON.stringify(this.selectedTutors) !== JSON.stringify(this.selectedTutorsBefore) ||
-      JSON.stringify(this.selectedCourseLeaders) !== JSON.stringify(this.selectedCourseLeadersBefore);
+    return (
+      JSON.stringify(this.selectedTutors) !==
+        JSON.stringify(this.selectedTutorsBefore) ||
+      JSON.stringify(this.selectedCourseLeaders) !==
+        JSON.stringify(this.selectedCourseLeadersBefore)
+    );
   }
 
   private dueDatesHaveChanged() {
-    return JSON.stringify(this.dueDateCourseInstance) !== JSON.stringify(this.dueDateCourseInstanceBefore);
+    return (
+      JSON.stringify(this.dueDateCourseInstance) !==
+      JSON.stringify(this.dueDateCourseInstanceBefore)
+    );
   }
 
   checkChanges() {
     if (!this.hasChanged()) {
       return true;
     }
-    return this.confirmDialog().then(
-      result => {
-        return result;
-      }
-    )
+    return this.confirmDialog().then((result) => {
+      return result;
+    });
   }
 
   private confirmDialog(): Promise<boolean> {
     return new Promise((resolve) => {
       this.confirmationService.confirm({
-        message: this.translationService.translate('common.confirmDialog.message'),
-        header: this.translationService.translate('common.confirmDialog.header'),
+        message: this.translationService.translate(
+          'common.confirmation.message-unsaved',
+        ),
+        header: this.translationService.translate('common.confirmation.header'),
         icon: 'pi pi-exclamation-triangle',
-        acceptIcon: "none",
-        rejectIcon: "none",
-        rejectButtonStyleClass: "p-button-text",
+        rejectButtonStyleClass: 'p-button-text',
+        acceptLabel: this.translationService.translate(
+          'common.confirmation.accept',
+        ),
+        rejectLabel: this.translationService.translate(
+          'common.confirmation.reject',
+        ),
         accept: () => {
           resolve(true);
         },
         reject: () => {
           resolve(false);
-        }
+        },
       });
     });
   }
 
   onSaveBtnClick() {
     if (!this.hasChanged()) {
-      this.showInfoMessage('common.noChangesInfo');
+      this.toastService.info('common.noChangesInfo');
       return;
     }
 
     if (this.groupHasChanged()) {
-      this.courseService.patchStudentsCourseGroup(this.courseId, this.groupedStudents).subscribe({
-        next: groupedStudents => {
-          this.groupedStudents = groupedStudents.groupedStudents;
-          this.groupedStudentsBefore = JSON.parse(JSON.stringify(this.groupedStudents));
-          this.showInfoMessage('common.saved');
-        }
-      });
+      this.courseService
+        .patchStudentsCourseGroup(this.courseId, this.groupedStudents)
+        .subscribe({
+          next: (groupedStudents) => {
+            this.groupedStudents = groupedStudents.groupedStudents;
+            this.adjustInactiveGroup();
+            this.groupedStudentsBefore = JSON.parse(
+              JSON.stringify(this.groupedStudents),
+            );
+            this.toastService.info('common.saved');
+          },
+        });
     }
 
     if (this.partitionHasChanged()) {
-      this.assignmentService.putAssignmentPartition(this.courseId, this.partition).subscribe({
-        next: partition => {
-          this.partition = partition.partition;
-          this.partitionBefore = JSON.parse(JSON.stringify(partition.partition));
-          this.groups = partition.groups;
-          this.showInfoMessage('common.saved');
-        }
-      });
+      this.assignmentService
+        .putAssignmentPartition(this.courseId, this.partition)
+        .subscribe({
+          next: (partition) => {
+            this.partition = partition.partition;
+            this.partitionBefore = JSON.parse(
+              JSON.stringify(partition.partition),
+            );
+            this.groups = partition.groups;
+            this.toastService.info('common.saved');
+          },
+        });
     }
 
     if (this.courseHasChanged()) {
-      this.courseService.patchCourseInstance<CourseInstance>(this.courseId, SerializerType.NORMAL, {
-        allowLateSubmission: this.course.allowLateSubmission,
-        lateSubmissionPenalty: this.course.lateSubmissionPenalty,
-        pointStepSize: this.course.pointStepSize
-      }).subscribe({
-        next: course => {
-          this.course = course;
-          this.courseBefore = JSON.parse(JSON.stringify(course));
-          this.showInfoMessage('common.saved');
-        }
-      });
+      this.courseService
+        .patchCourseInstance<CourseInstance>(
+          this.courseId,
+          SerializerType.NORMAL,
+          {
+            allowLateSubmission: this.course.allowLateSubmission,
+            lateSubmissionPenalty: this.course.lateSubmissionPenalty,
+            pointStepSize: this.course.pointStepSize,
+          },
+        )
+        .subscribe({
+          next: (course) => {
+            this.course = course;
+            this.courseBefore = JSON.parse(JSON.stringify(course));
+            this.toastService.info('common.saved');
+          },
+        });
     }
 
     if (this.staffHasChanged()) {
       const patch = {
-        courseLeaders: this.selectedCourseLeaders.map(user => user.username),
-        tutors: this.selectedTutors.map(user => user.username)
+        courseLeaders: this.selectedCourseLeaders.map((user) => user.username),
+        tutors: this.selectedTutors.map((user) => user.username),
       };
-      this.courseService.patchCourseInstance(this.courseId, SerializerType.STAFF, patch).subscribe({
-        next: () => {
-          this.selectedTutorsBefore = JSON.parse(JSON.stringify(this.selectedTutors));
-          this.selectedCourseLeaders = JSON.parse(JSON.stringify(this.selectedCourseLeaders));
-          this.showInfoMessage('common.saved');
-        }
-      });
+      this.courseService
+        .patchCourseInstance(this.courseId, SerializerType.STAFF, patch)
+        .subscribe({
+          next: () => {
+            this.selectedTutorsBefore = JSON.parse(
+              JSON.stringify(this.selectedTutors),
+            );
+            this.selectedCourseLeaders = JSON.parse(
+              JSON.stringify(this.selectedCourseLeaders),
+            );
+            this.toastService.info('common.saved');
+          },
+        });
     }
 
     if (this.dueDatesHaveChanged()) {
       const patch = {
         ...this.dueDateCourseInstance,
-        assignments: this.dueDateCourseInstance.assignments.map(assignment => {
-          return {
-            ...assignment,
-            dueTo: assignment.dueTo.toISOString() // iso string has to be instantiated as date
-          };
-        })
-      }
-      this.courseService.patchCourseInstance(this.courseId, SerializerType.DUE_DATE, patch).subscribe({
-        next: () => {
-          this.dueDateCourseInstanceBefore = JSON.parse(JSON.stringify(this.dueDateCourseInstance));
-          this.showInfoMessage('common.saved');
-        }
-      });
+        assignments: this.dueDateCourseInstance.assignments.map(
+          (assignment) => {
+            return {
+              ...assignment,
+              dueTo: assignment.dueTo.toISOString(), // iso string has to be instantiated as date
+            };
+          },
+        ),
+      };
+      this.courseService
+        .patchCourseInstance(this.courseId, SerializerType.DUE_DATE, patch)
+        .subscribe({
+          next: () => {
+            this.dueDateCourseInstanceBefore = JSON.parse(
+              JSON.stringify(this.dueDateCourseInstance),
+            );
+            this.toastService.info('common.saved');
+          },
+        });
     }
   }
 
-  showInfoMessage(key: string) {
-    const text = this.translationService.translate(key);
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Info',
-      detail: text
-    });
-  }
-
   pushUsersSeparated(users: User[]) {
-    users.forEach(user => {
+    users.forEach((user) => {
       if (user.role === 'TUTOR') {
         this.selectedTutors.push(user);
       } else if (user.role === 'COURSE_LEADER') {

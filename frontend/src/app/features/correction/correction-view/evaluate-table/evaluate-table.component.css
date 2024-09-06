@@ -27,3 +27,9 @@ th {
   font-weight: normal;
   color: #999;
 }
+
+.group {
+  margin-right: 25px;
+  padding-right: 25px;
+  border-right: 1px solid #ccc;
+}

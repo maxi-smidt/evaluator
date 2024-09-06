@@ -1,0 +1,426 @@
+[
+  {
+    "name": "FDS Übung 01",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 14
+          },
+          {
+            "name": "Testfälle",
+            "points": 8
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 14
+          },
+          {
+            "name": "Testfälle",
+            "points": 8
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 3",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 14
+          },
+          {
+            "name": "Testfälle",
+            "points": 8
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 4",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 14
+          },
+          {
+            "name": "Testfälle",
+            "points": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FDS Übung 02",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 10
+          },
+          {
+            "name": "Quellcode",
+            "points": 57
+          },
+          {
+            "name": "Testfälle",
+            "points": 33
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FDS Übung 03",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 6
+          },
+          {
+            "name": "Quellcode",
+            "points": 34
+          },
+          {
+            "name": "Testfälle",
+            "points": 20
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 4
+          },
+          {
+            "name": "Quellcode",
+            "points": 23
+          },
+          {
+            "name": "Testfälle",
+            "points": 13
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FDS Übung 04",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 2
+          },
+          {
+            "name": "Quellcode",
+            "points": 11
+          },
+          {
+            "name": "Testfälle",
+            "points": 7
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 2
+          },
+          {
+            "name": "Quellcode",
+            "points": 11
+          },
+          {
+            "name": "Testfälle",
+            "points": 7
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 3",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 2
+          },
+          {
+            "name": "Quellcode",
+            "points": 11
+          },
+          {
+            "name": "Testfälle",
+            "points": 7
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 4",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 2
+          },
+          {
+            "name": "Quellcode",
+            "points": 11
+          },
+          {
+            "name": "Testfälle",
+            "points": 7
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 5",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 2
+          },
+          {
+            "name": "Quellcode",
+            "points": 10
+          },
+          {
+            "name": "Testfälle",
+            "points": 8
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FDS Übung 05",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 14
+          },
+          {
+            "name": "Testfälle",
+            "points": 8
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 14
+          },
+          {
+            "name": "Testfälle",
+            "points": 8
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 3",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 3
+          },
+          {
+            "name": "Quellcode",
+            "points": 17
+          },
+          {
+            "name": "Testfälle",
+            "points": 10
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 4",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 2
+          },
+          {
+            "name": "Quellcode",
+            "points": 11
+          },
+          {
+            "name": "Testfälle",
+            "points": 7
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FDS Übung 06",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 10
+          },
+          {
+            "name": "Quellcode",
+            "points": 57
+          },
+          {
+            "name": "Testfälle",
+            "points": 33
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FDS Übung 07",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 10
+          },
+          {
+            "name": "Quellcode",
+            "points": 57
+          },
+          {
+            "name": "Testfälle",
+            "points": 33
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FDS Übung 08",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 10
+          },
+          {
+            "name": "Quellcode",
+            "points": 57
+          },
+          {
+            "name": "Testfälle",
+            "points": 33
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FDS Übung 09",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 6
+          },
+          {
+            "name": "Quellcode",
+            "points": 12
+          },
+          {
+            "name": "Testfälle",
+            "points": 22
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 6
+          },
+          {
+            "name": "Quellcode",
+            "points": 14
+          },
+          {
+            "name": "Testfälle",
+            "points": 40
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "FDS Übung 10",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 10
+          },
+          {
+            "name": "Quellcode",
+            "points": 55
+          },
+          {
+            "name": "Testfälle",
+            "points": 35
+          }
+        ]
+      }
+    ]
+  }
+]

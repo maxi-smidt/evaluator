@@ -6,7 +6,6 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 from enum import Enum
 
-# noinspection PyUnresolvedReferences
 from user.models import DegreeProgramDirector, CourseLeader, Tutor, User
 
 
@@ -177,6 +176,7 @@ class AssignmentInstance(models.Model):
 
     class Meta:
         unique_together = ('assignment', 'course_instance')
+        ordering = ['assignment__nr']
 
     def save(self, *args, **kwargs):
         if self.assignment.course != self.course_instance.course:

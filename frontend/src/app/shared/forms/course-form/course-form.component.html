@@ -1,4 +1,4 @@
-<p-confirmDialog></p-confirmDialog>
+<p-confirmDialog />
 
 <h2>{{ 'shared.forms.course-form.title' | translate }}</h2>
 
@@ -8,22 +8,21 @@
 </div>
 
 <form class="row g-3" [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
-
   <div class="col-md-4">
     <label for="name" class="form-label">{{ 'shared.forms.course-form.course-name' | translate }}</label>
     <input type="text" class="form-control" id="name" formControlName="name">
-    <div *ngIf="submitted && f.name.errors" style="color: red">
-      Name ist erforderlich.
-    </div>
+    @if (submitted && f.name.errors) {
+      <div style="color: red">Name ist erforderlich.</div>
+    }
   </div>
 
   <div class="col-md-1">
     <label for="abbreviation"
            class="form-label">{{ 'common.abbreviation' | translate }}</label>
     <input type="text" class="form-control" id="abbreviation" formControlName="abbreviation">
-    <div *ngIf="submitted && f.abbreviation.errors" style="color: red">
-      Abkürzung ist erforderlich.
-    </div>
+    @if (submitted && f.abbreviation.errors) {
+      <div style="color: red">Abkürzung ist erforderlich.</div>
+    }
   </div>
 
   <div class="col-md-7">
@@ -36,12 +35,12 @@
       <input type="text" pInputText placeholder="" formControlName="text3"/>
       <p-inputGroupAddon>.pdf</p-inputGroupAddon>
     </p-inputGroup>
-    <div *ngIf="submitted && f.text1.errors" style="color: red">
-      Erster Teil ist erforderlich.
-    </div>
+    @if (submitted && f.text1.errors) {
+      <div style="color: red">Erster Teil ist erforderlich.</div>
+    }
   </div>
 
   <div class="col-12 text-center">
-    <p-button label="{{ 'common.btn-submit' | translate }}" size="small" type="submit"></p-button>
+    <p-button label="{{ 'common.btn-submit' | translate }}" size="small" type="submit" />
   </div>
 </form>
