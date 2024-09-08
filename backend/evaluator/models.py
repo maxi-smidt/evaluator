@@ -65,20 +65,16 @@ class Assignment(models.Model):
 
 
 class PreviousDeduction(models.Model):
-    exercise_name = models.CharField(max_length=50,
-                                     null=False)
-    message = models.CharField(max_length=200,
-                               null=False)
-    points = models.DecimalField(decimal_places=2,
-                                 max_digits=4)
-    assignment = models.ForeignKey(Assignment,
-                                   on_delete=models.CASCADE)
+    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    draft = models.JSONField(null=True)
+
 
 
 class ClassGroup(models.Model):
     start_year = models.IntegerField(null=False)
     degree_program = models.ForeignKey(DegreeProgram,
                                        on_delete=models.CASCADE)
+
     # TODO unique constraint
 
     def __str__(self):

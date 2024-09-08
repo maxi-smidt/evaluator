@@ -77,10 +77,19 @@
 </div>
 
 <div class="sticky-top mt-3 mb-3 d-flex bg-white border border-3 rounded-3 p-2 gap-2">
-  <p-button icon="pi pi-save" label="{{ 'common.btn-save' | translate }}" severity="primary"
-            (onClick)="onSaveClick()" [disabled]="readOnly"/>
-  <p-button icon="pi pi-download" label="{{ 'common.download' | translate }}" severity="success"
+  <p-button icon="pi pi-save"
+            label="{{ 'common.btn-save' | translate }}"
+            severity="primary"
+            (onClick)="onSaveClick()"
+            [disabled]="readOnly"/>
+  <p-button icon="pi pi-download"
+            label="{{ 'common.download' | translate }}"
+            severity="success"
             (onClick)="onDownloadClick()"/>
+  <p-button [icon]="showPreviousDeductions ? 'pi pi-eye' : 'pi pi-eye-slash'"
+            label="{{ 'course.evaluateView.deductions' | translate }}"
+            severity="warning"
+            (onClick)="onToggleShowPreviousDeductionClick()"/>
 
   <div class="ms-auto">
     <p-button icon="pi pi-arrow-left" label="{{ 'common.back' | translate }}" severity="secondary"
@@ -94,8 +103,9 @@
                    [defaultPoints]="0"
                    [readOnly]="readOnly"
                    [pointStepSize]="course.pointStepSize"
-                   (totalPoints)="updateAnnotationPoints($event)">
-</ms-evaluate-table>
+                   [showDeduction]="showPreviousDeductions"
+                   [previousDeductions]="previousDeductions?.annotations"
+                   (totalPoints)="updateAnnotationPoints($event)"/>
 
 @for (exercise of correction.draft.exercise; track exercise.name) {
   <h4> {{ exercise.name }} | ({{ currentExercisePoints(exercise.name) }} / {{ getTotalExercisePoints(exercise.name) }}
@@ -108,7 +118,8 @@
                        [defaultPoints]="sub_exercise.points"
                        [readOnly]="readOnly"
                        [pointStepSize]="course.pointStepSize"
-                       (totalPoints)="updateSubExercisePoints($event, sub_exercise.name, exercise.name)">
-    </ms-evaluate-table>
+                       [previousDeductions]="previousDeductions?.exercises?.[exercise.name]?.[sub_exercise.name]"
+                       [showDeduction]="showPreviousDeductions"
+                       (totalPoints)="updateSubExercisePoints($event, sub_exercise.name, exercise.name)"/>
   }
 }

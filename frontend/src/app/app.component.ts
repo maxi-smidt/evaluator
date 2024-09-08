@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'ms-root',
   template: `
     <router-outlet />
-    <p-toast />
+    <p-toast [life]="5000" />
   `,
 })
 export class AppComponent {

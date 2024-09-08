@@ -33,3 +33,16 @@ th {
   padding-right: 25px;
   border-right: 1px solid #ccc;
 }
+
+.fs {
+  font-size: 13px;
+}
+
+.description {
+  width: 78%;
+}
+
+.deduction {
+  text-align: center;
+  width: 22%;
+}

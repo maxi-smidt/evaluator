@@ -96,6 +96,8 @@
         "points": "Punkte",
         "annotation": "Anmerkung"
       },
+      "deductions": "Bisherige Abzüge",
+      "error-no-deductions": "Es gibt noch keine gespeicherten Abzüge für dieses Assignment.",
       "couldNotSave": "Korrektur konnte nicht gespeichert werden",
       "days": "Tage",
       "hours": "Stunden",

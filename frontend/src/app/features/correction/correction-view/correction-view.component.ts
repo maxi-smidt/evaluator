@@ -26,6 +26,8 @@ import {
   SerializerType,
 } from '../../course/models/course.model';
 import { ToastService } from '../../../shared/services/toast.service';
+import { PreviousDeductionsService } from '../../previous-deductions/services/previous-deductions.service';
+import { PreviousDeductions } from '../../previous-deductions/models/previous-deduction.model';
 
 @Component({
   selector: 'ms-correction-view',
@@ -63,6 +65,9 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
   hasLateSubmitted: boolean = false;
   lateSubmissionPenalty: number = 0;
 
+  showPreviousDeductions: boolean = false;
+  previousDeductions: PreviousDeductions | undefined;
+
   constructor(
     private correctionService: CorrectionService,
     private toastService: ToastService,
@@ -72,6 +77,7 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
     private location: Location,
     private translationService: TranslationService,
     private courseService: CourseService,
+    private previousDeductionsService: PreviousDeductionsService,
   ) {
     this.correction = {
       draft: {} as CorrectionDraft,
@@ -339,5 +345,27 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
     this.expenseNotSet = !this.expenseNotSet;
     this.expenseElement = { hour: 0, minute: 0 };
     this.expenseToString();
+  }
+
+  onToggleShowPreviousDeductionClick() {
+    this.showPreviousDeductions = !this.showPreviousDeductions;
+
+    if (!this.previousDeductions) {
+      this.previousDeductionsService
+        .getPreviousDeductions(this.correctionId)
+        .subscribe({
+          next: (value) => {
+            this.previousDeductions = value.draft;
+          },
+          error: (err) => {
+            if (err.status === 404) {
+              this.toastService.error(
+                'course.evaluateView.error-no-deductions',
+              );
+              this.showPreviousDeductions = false;
+            }
+          },
+        });
+    }
   }
 }
