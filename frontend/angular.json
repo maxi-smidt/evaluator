@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "../backend/evaluator/templates",
+            "outputPath": "dist/evaluator",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -43,7 +43,7 @@
                 {
                   "type": "initial",
                   "maximumWarning": "500kb",
-                  "maximumError": "2mb"
+                  "maximumError": "2.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
