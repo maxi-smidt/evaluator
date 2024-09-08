@@ -1,10 +1,10 @@
-<div class="border border-3 rounded-3">
+<div class="border border-3" [ngClass]="showDeduction() ? 'rounded-top-3' : 'rounded-3'">
   <table class="table table-borderless">
     <thead>
     <tr class="border border-bottom-1">
-      <th class="text">{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
-      <th class="points">{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
-      <th class="action"></th>
+      <th class="text" [style.width]="'78%'">{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
+      <th class="points" [style.width]="'17%'">{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
+      <th class="action" [style.width]="'5%'"></th>
     </tr>
     </thead>
     <tbody>
@@ -64,6 +64,17 @@
     </tbody>
   </table>
 </div>
+
+@if (showDeductionTableExtension()) {
+  <div class="border border-3 rounded-bottom-3 border-top-0 px-2 pt-2">
+    @for (deduction of previousDeductions(); track $index) {
+      <div class="d-flex gap-2 mb-2">
+        <input class="description fs" type="text" pInputText [(ngModel)]="deduction.description" disabled="true"/>
+        <input class="deduction fs" type="text" pInputText [(ngModel)]="deduction.deduction" disabled="true"/>
+      </div>
+    }
+  </div>
+}
 
 <div class="row text-center mt-2">
   <p-button icon="pi pi-plus"

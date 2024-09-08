@@ -5,6 +5,12 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
+import { Deduction } from '../../../previous-deductions/models/previous-deduction.model';
+import { InputTextModule } from 'primeng/inputtext';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { TooltipModule } from 'primeng/tooltip';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'ms-evaluate-table',
@@ -17,6 +23,11 @@ import { FormsModule } from '@angular/forms';
     TranslatePipe,
     ButtonModule,
     FormsModule,
+    InputTextModule,
+    TableModule,
+    TagModule,
+    TooltipModule,
+    NgClass,
   ],
 })
 export class EvaluateTableComponent {
@@ -24,6 +35,8 @@ export class EvaluateTableComponent {
   tableData = input.required<Entry[]>();
   readOnly = input.required<boolean>();
   pointStepSize = input.required<number>();
+  showDeduction = input.required<boolean>();
+  previousDeductions = input<Deduction[] | undefined>();
 
   @Output()
   totalPoints = new EventEmitter<number>();
@@ -48,5 +61,10 @@ export class EvaluateTableComponent {
       this.defaultPoints() +
       this.tableData().reduce((acc, entry) => acc + entry.points, 0);
     this.totalPoints.emit(this.currentPoints);
+  }
+
+  protected showDeductionTableExtension(): boolean {
+    const len = this.previousDeductions()?.length;
+    return len !== undefined && len > 0 && this.showDeduction();
   }
 }

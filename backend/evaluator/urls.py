@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import course_views as cv, report_views as rv, degree_program_views as dpv, jplag_views as jv, \
-    correction_views as cov, assignment_views as av, basic_views as bv
+    correction_views as cov, assignment_views as av, basic_views as bv, previous_deductions_view as pdv
 
 
 urlpatterns = [
@@ -27,4 +27,5 @@ urlpatterns = [
     path('jplag/', jv.JplagRetrieveView.as_view(), name="jplag"),
     path('user-degree-program/create/', dpv.UserDegreeProgramCreateView.as_view(), name="user_degree_program_create"),
     path('user-degree-program/<str:username>&<str:abbreviation>/', dpv.UserDegreeProgramDeleteView.as_view(), name="user_degree_program_delete"),
+    path('deductions/<int:pk>/', pdv.PreviousDeductionsRetrieveView.as_view(), name="deduction"),
 ]
