@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "explore": "source-map-explorer dist/**/*.js"
   },
   "private": true,
   "dependencies": {
@@ -53,7 +54,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "prettier": "^3.3.3",
-    "typescript": "~5.3.3",
-    "webpack": "^5.93.0"
+    "source-map-explorer": "^2.5.3",
+    "typescript": "~5.3.3"
   }
 }
