@@ -86,7 +86,12 @@
                   }
                 } @else if (column.field === 'lateSubmission') {
                   @if (rowData['lateSubmission']) {
-                    <i class="pi pi-flag-fill" style="color: red"></i>
+                    <p-button icon="pi pi-flag-fill"
+                              pTooltip="{{ 'course.assignmentView.tt-late-flag' | translate }}"
+                              tooltipPosition="bottom"
+                              [rounded]="true"
+                              [text]="true"
+                              severity="danger" />
                   }
                 } @else {
                   {{ rowData[column.field] }}
