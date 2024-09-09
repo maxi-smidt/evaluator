@@ -61,11 +61,13 @@
       "title-chart": "Statistiken",
       "chart-expense": "Zeitaufwand",
       "chart-points": "Punkte",
+      "course-settings": "Kurseinstellungen",
+      "remaining-corrections": "Verbleibende Aufgaben",
       "new-assignment": "Neue Aufgabe",
       "error-500": "Assignment existiert bereits",
       "error-else": "Assignment konnte nicht erstellt werden",
       "error": "Alle Felder müssen ausgefüllt werden",
-      "tt-inactive": "Abagbedatum liegt in der Zukunft",
+      "tt-inactive": "Abgabedatum liegt in der Zukunft",
       "tt-expired": "Abgabedatum zwei Wochen überschritten (nicht fertig)",
       "tt-finished": "Alle Abgaben korrigiert",
       "tt-in-progress": "Abgabedatum weniger als zwei Wochen überschritten (nicht fertig)"
@@ -87,7 +89,8 @@
       "tt-edit": "Korrektur bearbeiten",
       "tt-download": "Korrektur herunterladen",
       "tt-view": "Korrektur ansehen (read only)",
-      "tt-delete": "Korrektur löschen"
+      "tt-delete": "Korrektur löschen",
+      "tt-late-flag": "Für diesen Kurs hat diese Person schon mindestens eine verspätete Abgabe"
     },
     "evaluateView": {
       "annotations": "Anmerkungen",

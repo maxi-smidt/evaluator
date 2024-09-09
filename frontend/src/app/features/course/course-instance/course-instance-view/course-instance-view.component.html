@@ -1,8 +1,14 @@
 <div class="row align-items-center justify-content-between">
   <h3 class="mb-3 col">{{ courseInstance?.course?.name }} {{ courseInstance?.year }}</h3>
   <div class="col-auto">
-    <p-button [rounded]="true" [text]="true" severity="secondary" (click)="routeToEdit()">
-      <i class="pi pi-cog" style="font-size: 2rem"></i>
+    <p-button icon="pi pi-cog"
+              size="large"
+              [rounded]="true"
+              [text]="true"
+              tooltipPosition="bottom"
+              pTooltip="{{ 'course.courseView.course-settings' | translate }}"
+              severity="secondary"
+              (click)="routeToEdit()">
     </p-button>
   </div>
 </div>
@@ -22,7 +28,9 @@
             <div class="ms-auto">
               @if (assignment.status !== AssignmentStatus.INACTIVE && assignment.participantsLeft > 0) {
                 <span>
-                  <p-badge [value]="assignment.participantsLeft.toString()"/>
+                  <p-badge pTooltip="{{ 'course.courseView.remaining-corrections' | translate }}"
+                           [value]="assignment.participantsLeft.toString()"
+                           tooltipPosition="top"/>
                 </span>
               }
             </div>
