@@ -28,8 +28,8 @@ class Correction(models.Model):
                               choices=Status,
                               null=False,
                               default=Status.UNDEFINED)
-    points = models.DecimalField(decimal_places=2,
-                                 max_digits=5,
+    points = models.DecimalField(decimal_places=3,
+                                 max_digits=6,
                                  null=True)
     draft = models.JSONField(null=True)
     late_submitted_days = models.IntegerField(null=False,
