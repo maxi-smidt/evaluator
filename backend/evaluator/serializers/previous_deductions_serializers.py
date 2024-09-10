@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from evaluator.models import PreviousDeduction
+from ..models import PreviousDeduction
 
 
 class PreviousDeductionsSerializer(serializers.ModelSerializer):

@@ -1,10 +1,9 @@
 from collections import defaultdict
-
 from django.db.models import Count, Q
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from ..models import AssignmentInstance, Correction, Student, TutorAssignment, Assignment, CourseEnrollment
+from ..models import Assignment, AssignmentInstance, Correction, CourseEnrollment, Student, TutorAssignment
 from user.models import User, Tutor
 
 

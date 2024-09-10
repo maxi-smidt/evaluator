@@ -9,7 +9,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
 from .models import User, DegreeProgramDirector
-from evaluator.models import DegreeProgram, CourseInstance
+from evaluator.models.degree_program_model import DegreeProgram
+from evaluator.models.course_instance_model import CourseInstance
 from . import serializers
 from .permissions import IsClOrDpdOrAdmin, IsAdmin, IsDpdOrAdmin
 

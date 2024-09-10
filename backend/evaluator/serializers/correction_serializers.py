@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-from ..models import Correction, Student, AssignmentInstance, Assignment
+from ..models import Assignment, AssignmentInstance, Correction, Student
 from .assignment_serializers import MiniAssignmentSerializer
 from .basic_serializers import StudentSerializer
 from user.models import Tutor

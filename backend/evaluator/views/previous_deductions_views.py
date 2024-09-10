@@ -1,8 +1,8 @@
 from django.core.exceptions import PermissionDenied
 from rest_framework.generics import RetrieveAPIView, get_object_or_404
 
-from evaluator.models import PreviousDeduction, Correction
-from evaluator.serializers.previous_deductions_serializer import PreviousDeductionsSerializer
+from ..models import Correction, PreviousDeduction
+from ..serializers.previous_deductions_serializers import PreviousDeductionsSerializer
 
 
 class PreviousDeductionsRetrieveView(RetrieveAPIView):
