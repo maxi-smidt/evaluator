@@ -2,7 +2,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView, CreateAPIView, RetrieveUpdateDestroyAPIView
 
 from user.models import User, Tutor
-from user.permissions import IsDegreeProgramDirector, IsDpdOrCl
+from user.permissions import IsDegreeProgramDirector
 from ..models import Course, CourseInstance
 from ..serializers import course_serializers
 

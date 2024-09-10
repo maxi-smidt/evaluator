@@ -1,8 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from .models import User, DegreeProgramDirector, Tutor
-from evaluator.models import CourseLeader, UserDegreeProgram
-
 
 class SimpleUserSerializer(serializers.ModelSerializer):
     class Meta:

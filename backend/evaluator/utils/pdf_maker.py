@@ -2,6 +2,7 @@ from io import BytesIO
 from weasyprint import HTML, CSS
 from yattag import Doc
 from datetime import datetime
+
 from ..models import Correction
 
 

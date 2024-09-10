@@ -7,7 +7,6 @@ from rest_framework.generics import RetrieveAPIView, CreateAPIView, RetrieveUpda
 from ..serializers import correction_serializers
 from ..models import Correction
 from ..utils.pdf_maker import PdfMaker
-from user.models import User
 from user.permissions import IsTutor
 
 

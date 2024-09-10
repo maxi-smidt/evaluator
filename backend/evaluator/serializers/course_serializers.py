@@ -1,12 +1,12 @@
 import datetime
+
 from collections import defaultdict
 from datetime import datetime
-
 from django.db.models import Avg
 from rest_framework import serializers
 from rest_framework.fields import SerializerMethodField
 
-from ..models import CourseInstance, CourseEnrollment, AssignmentInstance, TutorAssignment, Course
+from ..models import AssignmentInstance, Course, CourseInstance, CourseEnrollment, TutorAssignment
 from .assignment_serializers import (AssignmentInstanceSerializer, TutorAIGroupsSerializer, SimpleAssignmentSerializer,
                                      SimpleAssignmentInstanceSerializer)
 from .basic_serializers import StudentSerializer

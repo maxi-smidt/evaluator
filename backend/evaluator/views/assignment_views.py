@@ -2,7 +2,7 @@ from rest_framework.generics import RetrieveUpdateDestroyAPIView, CreateAPIView,
 
 from user.models import User, Tutor
 from user.permissions import IsDpdOrCl
-from ..models import AssignmentInstance, Assignment
+from ..models import Assignment, AssignmentInstance
 from ..serializers import assignment_serializers
 
 
