@@ -6,12 +6,20 @@
 
 <p>{{ 'plag-scan.info' | translate }}</p>
 
-<div class="mb-3">
+<div class="d-flex gap-3 mb-3">
   <p-dropdown
+    [style]="{'width': '230px'}"
     [options]="languages"
     [(ngModel)]="selectedLanguage"
     optionLabel="title"
     placeholder="{{'plag-scan.language' | translate }}"/>
+
+  <input
+    type="text"
+    [(ngModel)]="extensionString"
+    pInputText
+    placeholder="{{ 'plag-scan.extension-placeholder' | translate }}"
+    variant="filled"/>
 </div>
 
 <p-fileUpload
@@ -20,9 +28,8 @@
   [chooseLabel]="translationService.translate('plag-scan.choose')"
   [cancelLabel]="translationService.translate('common.cancel')"
   [customUpload]="true"
-  [showUploadButton]="selectedLanguage !== undefined"
-  (uploadHandler)="onUpload()"
-  (onSelect)="processZipFile($event)"
+  (uploadHandler)="onUpload($event)"
+  [showUploadButton]="extensionString && selectedLanguage"
   [multiple]="false"
   accept=".zip"
   [maxFileSize]="100000000"/>
