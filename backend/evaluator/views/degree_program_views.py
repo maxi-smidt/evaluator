@@ -32,6 +32,7 @@ class DegreeProgramListView(ListAPIView):
 class DegreeProgramCreateView(CreateAPIView):
     permission_classes = [IsAdmin]
     serializer_class = degree_program_serializers.AdminDegreeProgramSerializer
+    queryset = DegreeProgram.objects.all()
 
 
 class UserDegreeProgramCreateView(CreateAPIView):
