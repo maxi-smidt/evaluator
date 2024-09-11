@@ -1,11 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import {
-  FileSelectEvent,
   FileUpload,
+  FileUploadHandlerEvent,
   FileUploadModule,
 } from 'primeng/fileupload';
-import { NgClass } from '@angular/common';
-import { BadgeModule } from 'primeng/badge';
 import * as JSZip from 'jszip';
 import { PlagScanService } from './services/plag-scan.service';
 import { MenuItem } from 'primeng/api';
@@ -17,34 +15,32 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { FileDownloadService } from '../../shared/services/file-download.service';
 import { ToastService } from '../../shared/services/toast.service';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'ms-plag-scan',
   standalone: true,
   imports: [
     FileUploadModule,
-    NgClass,
-    BadgeModule,
     TranslatePipe,
     BlockUIModule,
     ProgressSpinnerModule,
     DropdownModule,
     FormsModule,
+    InputTextModule,
   ],
   templateUrl: './plag-scan.component.html',
 })
 export class PlagScanComponent {
   @ViewChild('fileUpload', { static: false }) fileUpload!: FileUpload;
 
-  selectedFile: File | undefined;
-
-  extensionExcludes: string[] = [];
-  inclusionExcludes: string[] = [];
-
   isLoading: boolean = false;
 
   languages: MenuItem[] = [];
   selectedLanguage: MenuItem | undefined;
+
+  extensionString: string | undefined;
+  validExtensions: string[] = [];
 
   constructor(
     private plagScanService: PlagScanService,
@@ -52,20 +48,6 @@ export class PlagScanComponent {
     private fileDownloadService: FileDownloadService,
     private toastService: ToastService,
   ) {
-    this.extensionExcludes.push(
-      '.csv',
-      '.jpeg',
-      '.jpg',
-      '.png',
-      '.pdf',
-      '.xlsx',
-      '.user',
-      '.filters',
-      '.vcxproj',
-      '.sln',
-    );
-    this.inclusionExcludes.push('__MACOSX');
-
     this.languages.push({ title: 'C++', label: 'cpp' });
     this.languages.push({ title: 'Python', label: 'python3' });
     this.languages.push({ title: 'Java', label: 'java' });
@@ -79,13 +61,39 @@ export class PlagScanComponent {
     this.languages.push({ title: 'Scala', label: 'scala' });
   }
 
-  onUpload() {
-    if (this.selectedFile === undefined) {
+  parseExtensions() {
+    if (this.extensionString) {
+      const extensions = this.extensionString.split(',');
+      this.validExtensions = extensions
+        .map((extension) => extension.trim())
+        .filter((extension) => extension.length !== 0);
+    }
+  }
+
+  async onUpload(event: FileUploadHandlerEvent) {
+    this.isLoading = true;
+
+    this.parseExtensions();
+
+    if (this.validExtensions.length === 0) {
+      this.toastService.info('plag-scan.error-extension');
+      this.isLoading = false;
       return;
     }
-    this.isLoading = true;
+
+    const file = event.files[0];
+    const zip = await JSZip.loadAsync(file);
+
+    if (!zip) {
+      this.toastService.info('plag-scan.error-zip');
+      this.isLoading = false;
+      return;
+    }
+
+    const processedFile: File = <File>await this.cleanFile(zip);
+
     const formData = new FormData();
-    formData.append('zipfile', this.selectedFile, this.selectedFile.name);
+    formData.append('zipfile', processedFile, processedFile.name);
 
     this.plagScanService
       .scanZipFile(formData, this.selectedLanguage!.label!)
@@ -102,26 +110,19 @@ export class PlagScanComponent {
           );
           this.toastService.info('plag-scan.success');
           this.fileUpload.clear();
-          this.isLoading = false;
         },
         error: () => {
-          this.toastService.error('plag-scan.error');
+          this.toastService.error('plag-scan.error-general');
+        },
+        complete: () => {
           this.isLoading = false;
         },
       });
   }
 
-  async processZipFile(event: FileSelectEvent) {
-    this.isLoading = true;
-    const file = event.currentFiles[0];
-    const zip = await JSZip.loadAsync(file);
-    this.selectedFile = <File>await this.unZipAndReZip(zip);
-    this.isLoading = false;
-  }
-
-  async unZipAndReZip(zipContent: JSZip) {
+  async cleanFile(zip: JSZip) {
     const newZip = new JSZip();
-    await this.processZip(zipContent, newZip);
+    await this.processZip(zip, newZip);
     return await newZip.generateAsync({ type: 'blob' });
   }
 
@@ -148,13 +149,10 @@ export class PlagScanComponent {
   }
 
   protected shouldInclude(path: string): boolean {
-    let isNotValid = false;
-    this.extensionExcludes.forEach((ext) => {
-      isNotValid = isNotValid || path.endsWith(ext);
-    });
-    this.inclusionExcludes.forEach((inc) => {
-      isNotValid = isNotValid || path.includes(inc);
-    });
-    return !isNotValid;
+    let isValidExtension: boolean = false;
+    for (const extension of this.validExtensions) {
+      isValidExtension = isValidExtension || path.endsWith(`.${extension}`);
+    }
+    return isValidExtension;
   }
 }

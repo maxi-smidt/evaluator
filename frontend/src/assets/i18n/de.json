@@ -204,13 +204,16 @@
   },
   "plag-scan": {
     "title": "Plagiat Scanner",
-    "error": "JPlag funktioniert gerade nicht :(",
+    "error-general": "JPlag funktioniert gerade nicht :(",
+    "error-extension": "Überprüfe nochmal die File Endungen",
+    "error-zip": "Das Zip File scheint Probleme zu haben",
+    "extension-placeholder": "cpp,c,py...",
     "jplag-url": "https://jplag.github.io/JPlag/",
     "result": "JPlag_Scan.zip",
     "choose": "Auswählen",
     "success": "Ziehe das heruntergeladene File in den JPlag Report Viewer.",
     "language": "Wähle eine Sprache",
-    "info": "Hier kann das von Moodle geladene Zip File (Alle Abgaben herunterladen) hochgeladen werden, um einen Plagiatscheck durchzuführen."
+    "info": "Hier kann das von Moodle geladene Zip File (Alle Abgaben herunterladen) hochgeladen werden, um einen Plagiatscheck durchzuführen. Wähle eine Sprache und gib die File Extensions derer Files an, die überprüft werden sollen (Komma getrennt)."
   },
   "degree-program": {
     "staff": "Personal",
