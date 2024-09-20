@@ -30,7 +30,12 @@ export class DegreeProgramComponent implements OnInit {
   ) {
     const staff = this.translationService.translate('degree-program.staff');
     const courses = this.translationService.translate('degree-program.courses');
-    const classes = this.translationService.translate('degree-program.classes');
+    const classes = this.translationService.translate(
+      'degree-program.class-groups',
+    );
+    const students = this.translationService.translate(
+      'degree-program.students',
+    );
 
     this.items = [
       {
@@ -103,7 +108,55 @@ export class DegreeProgramComponent implements OnInit {
       },
       {
         label: classes,
-        command: () => this.setActiveItem(classes),
+        command: () => {
+          this.setActiveItem(classes);
+        },
+        items: [
+          {
+            label: this.translationService.translate(
+              'degree-program.class-groups-view.all-class-groups',
+            ),
+            command() {
+              router.navigate(['class', 'list'], { relativeTo: route }).then();
+            },
+          },
+          {
+            label: this.translationService.translate(
+              'degree-program.class-groups-view.new-class-group',
+            ),
+            command() {
+              router.navigate(['class', 'form'], { relativeTo: route }).then();
+            },
+          },
+        ],
+      },
+      {
+        label: students,
+        command: () => {
+          this.setActiveItem(students);
+        },
+        items: [
+          {
+            label: this.translationService.translate(
+              'degree-program.students-view.all-students',
+            ),
+            command() {
+              router
+                .navigate(['student', 'list'], { relativeTo: route })
+                .then();
+            },
+          },
+          {
+            label: this.translationService.translate(
+              'degree-program.students-view.new-student',
+            ),
+            command() {
+              router
+                .navigate(['student', 'form'], { relativeTo: route })
+                .then();
+            },
+          },
+        ],
       },
     ];
     this.activeItem = this.items[1];

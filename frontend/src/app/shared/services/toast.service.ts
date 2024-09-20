@@ -6,31 +6,31 @@ import { TranslationService } from './translation.service';
   providedIn: 'root',
 })
 export class ToastService {
+  private readonly ERROR = 'Error';
+  private readonly INFO = 'Info';
+  private readonly SUCCESS = 'Success';
+
   constructor(
     private messageService: MessageService,
     private translationService: TranslationService,
   ) {}
 
   error(key: string) {
-    this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: this.translationService.translate(key),
-    });
+    this.showMessage(this.ERROR, key);
   }
 
   success(key: string) {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: this.translationService.translate(key),
-    });
+    this.showMessage(this.SUCCESS, key);
   }
 
   info(key: string) {
+    this.showMessage(this.INFO, key);
+  }
+
+  private showMessage(summary: string, key: string) {
     this.messageService.add({
-      severity: 'info',
-      summary: 'Info',
+      severity: summary.toLowerCase(),
+      summary: summary,
       detail: this.translationService.translate(key),
     });
   }

@@ -1,5 +1,6 @@
+<h2>{{ 'shared.forms.userForm.title' | translate }}</h2>
+
 <form class="row g-3" [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
-  <h2>{{ 'shared.forms.userForm.title' | translate }}</h2>
   <div class="col-md-4">
     <label for="first_name" class="form-label">{{ 'common.firstname' | translate }}</label>
     <input type="text" class="form-control" id="first_name" formControlName="first_name" required>

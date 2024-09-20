@@ -24,6 +24,7 @@
     "bootstrap": "5.3.3",
     "chart.js": "^4.4.3",
     "jszip": "^3.10.1",
+    "ngx-papaparse": "^8.0.0",
     "primeicons": "^6.0.1",
     "primeng": "^17.9.0",
     "quill": "2.0.2",

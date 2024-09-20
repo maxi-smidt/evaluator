@@ -1,0 +1,11 @@
+<p-tabMenu [model]="items"
+           [activeItem]="activeItem"
+           (activeItemChange)="onActiveItemChange($event)"/>
+
+<div class="mt-3">
+  @if (items && activeItem === items[0]) {
+    <ms-multi-student-form/>
+  } @else if (items && activeItem === items[1]) {
+    <ms-single-student-form/>
+  }
+</div>

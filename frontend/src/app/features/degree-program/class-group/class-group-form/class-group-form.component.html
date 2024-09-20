@@ -1,0 +1,17 @@
+<h2>{{ 'degree-program.class-groups-view.new-class-group' | translate }}</h2>
+
+<p>{{ 'degree-program.class-groups-view.choose-year' | translate }}</p>
+
+<div class="d-flex gap-3">
+  <p-calendar
+    id="calendar"
+    [style]="{'width': '100px'}"
+    [(ngModel)]="date"
+    view="year"
+    dateFormat="yy"
+    [minDate]="minDate"
+    [maxDate]="maxDate"
+  />
+
+  <p-button severity="success" label="{{ 'common.btn-submit' | translate }}" (onClick)="onSubmit()"/>
+</div>

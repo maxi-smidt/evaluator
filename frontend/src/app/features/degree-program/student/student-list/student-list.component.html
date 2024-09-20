@@ -1,0 +1,72 @@
+<h2>{{ 'degree-program.students-view.all-students' | translate }}</h2>
+
+<p-table
+  [value]="students"
+  dataKey="id"
+  [rows]="10"
+  [rowsPerPageOptions]="[10, 25, 50]"
+  [paginator]="true"
+  [globalFilterFields]="['id', 'lastName', 'firstName', 'startYear']"
+  [tableStyle]="{ 'min-width': '75rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width:20%">{{ 'common.student-id' | translate }}</th>
+      <th style="width:20%">{{ 'common.lastname' | translate }}</th>
+      <th style="width:20%">{{ 'common.firstname' | translate }}</th>
+      <th style="width:20%">{{ 'common.class-group' | translate }}</th>
+      <th style="width:20%">{{ 'common.action' | translate }}</th>
+    </tr>
+    <tr>
+      <th>
+        <p-columnFilter
+          type="text"
+          field="id"
+          placeholder="{{ 'degree-program.students-view.filter-student-id' | translate }}"/>
+      </th>
+      <th>
+        <p-columnFilter
+          type="text"
+          field="lastName"
+          placeholder="{{ 'degree-program.staff-view.filter-lastname' | translate }}"/>
+      </th>
+      <th>
+        <p-columnFilter
+          type="text"
+          field="firstName"
+          placeholder="{{ 'degree-program.staff-view.filter-firstname' | translate }}"/>
+      </th>
+      <th>
+        <p-columnFilter
+          type="text"
+          field="startYear"
+          placeholder="{{ 'degree-program.students-view.filter-class-group' | translate }}"/>
+      </th>
+      <th></th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-student>
+    <tr>
+      <td>
+        {{ student.id }}
+      </td>
+      <td>
+        {{ student.lastName }}
+      </td>
+      <td>
+        {{ student.firstName }}
+      </td>
+      <td>
+        {{ student.startYear }}
+      </td>
+      <td>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5">{{ 'common.no-data' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>

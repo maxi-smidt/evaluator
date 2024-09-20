@@ -1,0 +1,83 @@
+<p-confirmDialog/>
+
+<h6>{{ 'degree-program.students-view.file-hint' | translate }}</h6>
+
+<div class="d-flex gap-3">
+  <p-dropdown
+    id="dropdown"
+    [style]="{'width': '220px'}"
+    [options]="classGroups"
+    [(ngModel)]="selectedClassGroup"
+    optionLabel="startYear"
+    placeholder="{{ 'common.choose-class-group' | translate }}"/>
+
+  @if (selectedClassGroup) {
+    <p-fileUpload
+      #fileUpload
+      mode="basic"
+      chooseLabel="{{ 'common.choose-file' | translate }}"
+      chooseIcon="pi pi-upload"
+      accept=".csv"
+      (onSelect)="onSelect($event)"/>
+  }
+
+  @if (selectedClassGroup && students.length > 0) {
+    <p-button severity="warning"
+              label="{{ 'degree-program.students-view.clear-students' | translate }}"
+              (onClick)="clearStudents()"/>
+
+    <p-button severity="success" label="{{ 'common.btn-submit' | translate }}" (onClick)="onSubmit()"/>
+  }
+</div>
+
+@if (students.length > 0) {
+  <div class="mt-3">
+    <p-table
+      [value]="students"
+      [rows]="25"
+      [rowsPerPageOptions]="[5, 10, 25, 50]"
+      [paginator]="true"
+      [tableStyle]="{ 'min-width': '75rem' }">
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width:20%">{{ 'common.student-id' | translate }}</th>
+          <th style="width:30%">{{ 'common.lastname' | translate }}</th>
+          <th style="width:30%">{{ 'common.firstname' | translate }}</th>
+          <th style="width:20%">{{ 'common.action' | translate }}</th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-student>
+        <tr [ngClass]="{'bg-transparent-danger': isInErrorList(student.id)}">
+          <td>
+            {{ student.id }}
+          </td>
+          <td>
+            {{ student.lastName }}
+          </td>
+          <td>
+            {{ student.firstName }}
+          </td>
+          <td>
+            <div class="d-flex gap-2">
+              <p-button icon="pi pi-trash"
+                        severity="danger"
+                        pTooltip="{{ 'degree-program.class-groups-view.tt-delete' | translate }}"
+                        tooltipPosition="top"
+                        showDelay="500"
+                        [text]="true"
+                        [rounded]="true"
+                        (onClick)="removeStudentFromSelection(student.id)"/>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="5">{{ 'common.no-data' | translate }}</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+}

@@ -8,7 +8,8 @@ class ClassGroup(models.Model):
     degree_program = models.ForeignKey(DegreeProgram,
                                        on_delete=models.CASCADE)
 
-    # TODO unique constraint
+    class Meta:
+        unique_together = ('start_year', 'degree_program',)
 
     def __str__(self):
         return f"{self.degree_program} ({self.start_year})"

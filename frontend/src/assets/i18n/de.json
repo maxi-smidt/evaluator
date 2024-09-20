@@ -23,7 +23,12 @@
       "message-delete": "Wollen sie das Objekt wirklich löschen? Dieser Schritt kann nicht rückgängig gemacht werden!",
       "accept": "Ja",
       "reject": "Nein"
-    }
+    },
+    "student-id": "Matrikelnummer",
+    "action": "Aktion",
+    "class-group": "Jahrgang",
+    "choose-file": "File auswählen",
+    "choose-class-group": "Jahrgang wählen"
   },
   "header": {
     "btn-home": "Startseite",
@@ -81,7 +86,6 @@
       "group": "Gruppe",
       "evaluation": "Bewertung",
       "status": "Status",
-      "action": "Aktion",
       "lateSubmission": "Joker",
       "error-no-access": "Es können nur eigene Korrekturen editiert/gelöscht werden. Sollte es trotzdem erforderlich sein gib einen Report auf.",
       "tt-not-submitted": "Assignment wurde nicht abgegeben",
@@ -210,7 +214,6 @@
     "extension-placeholder": "cpp,c,py...",
     "jplag-url": "https://jplag.github.io/JPlag/",
     "result": "JPlag_Scan.zip",
-    "choose": "Auswählen",
     "success": "Ziehe das heruntergeladene File in den JPlag Report Viewer.",
     "language": "Wähle eine Sprache",
     "info": "Hier kann das von Moodle geladene Zip File (Alle Abgaben herunterladen) hochgeladen werden, um einen Plagiatscheck durchzuführen. Wähle eine Sprache und gib die File Extensions derer Files an, die überprüft werden sollen (Komma getrennt)."
@@ -218,7 +221,18 @@
   "degree-program": {
     "staff": "Personal",
     "courses": "Kurse",
-    "classes": "Klassen",
+    "class-groups": "Jahrgänge",
+    "students": "Studierende",
+    "class-groups-view": {
+      "all-class-groups": "Alle Jahrgänge",
+      "new-class-group": "Neuen Jahrgang anlegen",
+      "count-students": "Anzahl Studenten",
+      "choose-year": "Wähle einen Jahrgang",
+      "confirmation-message": "Wollen Sie die Person wirklich aus dem Jahrgang entfernen?",
+      "error-500": "Jahrgang existiert bereits",
+      "tt-switch": "Jahrgang ändern",
+      "tt-delete": "Aus Jahrgang entfernen"
+    },
     "staff-view": {
       "active-users": "Aktive Nutzer",
       "all-users": "Alle Nutzer",
@@ -250,6 +264,19 @@
         "new-instance-info": "Trage das Jahr ein, in dem das Semester des Kurses beginnt.",
         "year": "Jahr"
       }
+    },
+    "students-view": {
+      "all-students": "Alle Studierenden",
+      "new-student": "Neue Studierende anlegen",
+      "multi": "Mehrere Studierende anlegen",
+      "single": "Einen Studierenden anlegen",
+      "file-hint": "Hier kann ein Jahrgang gewählt und ein .csv File hochgeladen werden, das dem Format 'MatNr,Name,Vorname' folgt.",
+      "clear-students": "Alle Studierenden entfernen",
+      "student-error": "Die rot hinterlegten Studierenden existieren bereits. Vor dem Upload müssen alle Fehler behoben werden.",
+      "parse-error": "Das File konnte nicht gelesen werden.",
+      "header-error": "Der Header des Files entspricht nicht 'MatNr,Name,Vorname'.",
+      "filter-student-id": "Suche nach Matrikelnummer",
+      "filter-class-group": "Suche nach Jahrgang"
     }
   },
   "assignment": {

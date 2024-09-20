@@ -65,7 +65,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
       },
       {
         field: 'action',
-        header: this.translate('course.assignmentView.action'),
+        header: this.translate('common.action'),
         width: 20,
       },
       {
@@ -209,7 +209,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
         message: this.translate('common.confirmation.message-delete'),
         acceptLabel: this.translate('common.confirmation.accept'),
         rejectLabel: this.translate('common.confirmation.reject'),
-        header: this.translationService.translate('common.confirmation.header'),
+        header: this.translate('common.confirmation.header'),
         icon: 'pi pi-exclamation-triangle',
         rejectButtonStyleClass: 'p-button-text',
         accept: () => {
