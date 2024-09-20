@@ -7,7 +7,7 @@ export interface DueDateAssignmentInstance {
 }
 
 export interface SimpleAssignmentInstance extends DueDateAssignmentInstance {
-  status: string;
+  status: AssignmentStatus;
   participantsLeft: number;
 }
 
@@ -38,6 +38,7 @@ interface SubExercise {
 }
 
 export enum AssignmentStatus {
-  INACTIVE = 'INACTIVE',
+  ACTIVE = 'ACTIVE',
   EXPIRED = 'EXPIRED',
+  INACTIVE = 'INACTIVE',
 }

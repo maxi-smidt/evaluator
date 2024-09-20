@@ -71,17 +71,17 @@ export class CourseInstanceViewComponent implements OnInit {
   }
 
   getExerciseStateClass(simpleAssignment: SimpleAssignmentInstance) {
-    if (simpleAssignment.participantsLeft === 0) {
-      return 'list-group-item-primary';
-    }
-
     switch (simpleAssignment.status) {
       case AssignmentStatus.EXPIRED:
-        return 'list-group-item-danger';
+        return simpleAssignment.participantsLeft === 0
+          ? 'list-group-item-success'
+          : 'list-group-item-danger';
       case AssignmentStatus.INACTIVE:
         return 'list-group-item-secondary';
-      default:
-        return 'list-group-item-success';
+      case AssignmentStatus.ACTIVE:
+        return simpleAssignment.participantsLeft === 0
+          ? 'list-group-item-success'
+          : 'list-group-item-primary';
     }
   }
 
