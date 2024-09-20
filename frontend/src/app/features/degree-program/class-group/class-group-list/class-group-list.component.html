@@ -1,0 +1,39 @@
+<h2>{{ 'degree-program.class-groups' | translate }}</h2>
+
+<p-table
+  [value]="classes"
+  [rows]="5"
+  [rowsPerPageOptions]="[5, 10, 20]"
+  [paginator]="true"
+  [tableStyle]="{ 'min-width': '75rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width:45%">{{ 'common.class-group' | translate }}</th>
+      <th style="width:45%">{{ 'degree-program.class-groups-view.count-students' | translate }}</th>
+      <th style="width:10%"></th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-classGroup>
+    <tr>
+      <td>
+        {{ classGroup.startYear }}
+      </td>
+      <td>
+        {{ classGroup.participantCount }}
+      </td>
+      <td>
+        <div class="text-end">
+          <p-button icon="pi pi-arrow-right" (onClick)="routeToClass(classGroup.id)"
+                    size="small"/>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="5">{{ 'common.no-data' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>

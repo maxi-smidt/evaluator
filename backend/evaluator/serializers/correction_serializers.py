@@ -4,7 +4,7 @@ from rest_framework.exceptions import ValidationError
 
 from ..models import Assignment, AssignmentInstance, Correction, Student
 from .assignment_serializers import MiniAssignmentSerializer
-from .basic_serializers import StudentSerializer
+from .student_serializers import StudentSerializer
 from user.models import Tutor
 
 

@@ -9,7 +9,7 @@ from rest_framework.fields import SerializerMethodField
 from ..models import AssignmentInstance, Course, CourseInstance, CourseEnrollment, TutorAssignment
 from .assignment_serializers import (AssignmentInstanceSerializer, TutorAIGroupsSerializer, SimpleAssignmentSerializer,
                                      SimpleAssignmentInstanceSerializer)
-from .basic_serializers import StudentSerializer
+from .student_serializers import StudentSerializer
 from user.serializers import TutorSerializer
 from user.models import Tutor, CourseLeader
 

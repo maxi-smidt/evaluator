@@ -1,0 +1,98 @@
+<p-confirmDialog/>
+
+<h2>{{ 'common.class-group' | translate }} {{ classGroup?.startYear }}</h2>
+
+@if (classGroup) {
+  <p-table
+    [value]="classGroup.students"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [paginator]="true"
+    [tableStyle]="{ 'min-width': '75rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:20%">{{ 'common.student-id' | translate }}</th>
+        <th style="width:30%">{{ 'common.lastname' | translate }}</th>
+        <th style="width:30%">{{ 'common.firstname' | translate }}</th>
+        <th style="width:20%">{{ 'common.action' | translate }}</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-student>
+      <tr>
+        <td>
+          {{ student.id }}
+        </td>
+        <td>
+          {{ student.lastName }}
+        </td>
+        <td>
+          {{ student.firstName }}
+        </td>
+        <td>
+          <div class="d-flex gap-2">
+            <p-button icon="pi pi-arrow-right-arrow-left"
+                      severity="secondary"
+                      pTooltip="{{ 'degree-program.class-groups-view.tt-switch' | translate }}"
+                      tooltipPosition="top"
+                      showDelay="500"
+                      [text]="true"
+                      [rounded]="true"
+                      (onClick)="setSelectedStudent(student.id)"/>
+            <p-button icon="pi pi-trash"
+                      severity="danger"
+                      pTooltip="{{ 'degree-program.class-groups-view.tt-delete' | translate }}"
+                      tooltipPosition="top"
+                      showDelay="500"
+                      [text]="true"
+                      [rounded]="true"
+                      (onClick)="removeStudentFromClass(student.id)"/>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">{{ 'common.no-data' | translate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+}
+
+<p-dialog header="{{ 'common.choose-class-group' | translate }}" [modal]="true"
+          [(visible)]="modalVisibility" [style]="{ width: '30rem' }">
+  <p-table
+    [value]="classGroups"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [paginator]="true">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:70%">{{ 'common.class-group' | translate }}</th>
+        <th style="width:30%"></th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-classGroup>
+      <tr>
+        <td>
+          {{ classGroup.startYear }}
+        </td>
+        <td>
+          <p-button icon="pi pi-check"
+                    severity="success"
+                    [text]="true"
+                    [rounded]="true"
+                    (onClick)="setSelectedClassGroup(classGroup.id)"/>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="5">{{ 'common.no-data' | translate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-dialog>

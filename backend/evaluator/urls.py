@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import course_views as cv, report_views as rv, degree_program_views as dpv, jplag_views as jv, \
-    correction_views as cov, assignment_views as av, basic_views as bv, previous_deductions_views as pdv
+    correction_views as cov, assignment_views as av, basic_views as bv, previous_deductions_views as pdv, \
+    student_views as sv
 
 
 urlpatterns = [
@@ -20,12 +21,18 @@ urlpatterns = [
     path('correction/<int:pk>/', cov.CorrectionRetrieveUpdateDestroyView.as_view(), name="correction"),
     path('correction/download/<int:pk>/', cov.CorrectionDownloadRetrieveView.as_view(), name="correction_download"),
     path('student-group/<int:pk>/', bv.StudentGroupRetrieveUpdateView.as_view(), name="student_group"),
+    path('degree-program/create/', dpv.DegreeProgramCreateView.as_view(), name="degree_program_create"),
     path('degree-program/<str:abbreviation>/', dpv.DegreeProgramRetrieveView.as_view(), name="degree_program"),
-    path('degreeprogram/create/', dpv.DegreeProgramCreateView.as_view(), name="degree_program_create"),
     path('degree-programs/', dpv.DegreeProgramListView.as_view(), name="degree_programs"),
     path('report/', rv.ReportCreateView.as_view(), name="report"),
     path('jplag/', jv.JplagRetrieveView.as_view(), name="jplag"),
     path('user-degree-program/create/', dpv.UserDegreeProgramCreateView.as_view(), name="user_degree_program_create"),
     path('user-degree-program/<str:username>&<str:abbreviation>/', dpv.UserDegreeProgramDeleteView.as_view(), name="user_degree_program_delete"),
     path('deductions/<int:pk>/', pdv.PreviousDeductionsRetrieveView.as_view(), name="deduction"),
+    path('class-groups/<str:abbreviation>/', dpv.ClassGroupListView.as_view(), name="class_groups"),
+    path('class-group/create/', dpv.ClassGroupCreateView.as_view(), name="class_group_create"),
+    path('class-group/<int:pk>/', dpv.ClassGroupRetrieveView.as_view(), name="class_group"),
+    path('student/create/', sv.StudentCreateView.as_view(), name="student_create"),
+    path('student/<str:pk>/', sv.StudentRetrieveUpdateDestroyView.as_view(), name="student"),
+    path('students/<str:abbreviation>/', sv.StudentListView.as_view(), name="student_list"),
 ]

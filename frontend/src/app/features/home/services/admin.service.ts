@@ -10,7 +10,7 @@ export class AdminService {
   constructor(private http: HttpClient) {}
 
   registerDegreeProgram(degreeProgram: AdminDegreeProgram) {
-    return this.http.post('degreeprogram/create/', degreeProgram);
+    return this.http.post('degree-program/create/', degreeProgram);
   }
 
   changeUserActivityState(users: DetailUser[]) {

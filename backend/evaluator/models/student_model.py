@@ -14,6 +14,9 @@ class Student(models.Model):
                                     on_delete=models.SET_NULL,
                                     null=True)
 
+    class Meta:
+        ordering = ['id']
+
     @property
     def full_name(self):
         return f"{self.last_name} {self.first_name}"

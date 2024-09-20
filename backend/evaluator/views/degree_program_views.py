@@ -3,8 +3,8 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView, CreateAPIView, get_object_or_404, RetrieveAPIView, DestroyAPIView
 from rest_framework.response import Response
 
-from ..models import DegreeProgram, UserDegreeProgram
-from user.models import User
+from ..models import DegreeProgram, UserDegreeProgram, ClassGroup
+from user.models import User, DegreeProgramDirector
 from user.permissions import IsAdmin, IsDpdOrAdmin, IsDegreeProgramDirector
 from ..serializers import degree_program_serializers
 
@@ -73,3 +73,25 @@ class UserDegreeProgramDeleteView(DestroyAPIView):
         username = self.kwargs.get('username')
         abbreviation = self.kwargs.get('abbreviation')
         return get_object_or_404(UserDegreeProgram, user__username=username, degree_program__abbreviation=abbreviation)
+
+
+class ClassGroupListView(ListAPIView):
+    permission_classes = [IsDegreeProgramDirector]
+    serializer_class = degree_program_serializers.ClassGroupListSerializer
+
+    def get_queryset(self):
+        dpd = get_object_or_404(DegreeProgramDirector, pk=self.request.user.id)
+        degree_program = get_object_or_404(DegreeProgram, abbreviation=self.kwargs.get('abbreviation'), dp_director=dpd)
+        return degree_program.classgroup_set.order_by('-start_year')
+
+
+class ClassGroupRetrieveView(RetrieveAPIView):
+    permission_classes = [IsDegreeProgramDirector]
+    serializer_class = degree_program_serializers.ClassGroupDetailSerializer
+    queryset = ClassGroup.objects.all()
+
+
+class ClassGroupCreateView(CreateAPIView):
+    permission_classes = [IsDegreeProgramDirector]
+    serializer_class = degree_program_serializers.ClassGroupSerializer
+    queryset = ClassGroup.objects.all()
