@@ -25,6 +25,10 @@ export class StudentService {
     return this.http.post('student/create/', students);
   }
 
+  createStudent(student: Student) {
+    return this.http.post('student/create/', student);
+  }
+
   getStudents(degreeProgramAbbreviation: string) {
     return this.http.get<Student[]>(`students/${degreeProgramAbbreviation}/`);
   }
