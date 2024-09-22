@@ -35,8 +35,13 @@ export class ReportComponent {
   protected onSubmit() {
     this.reportService
       .submitReport(this.title, this.description, this.selection)
-      .subscribe(() => {
-        this.toastService.info('report.message');
+      .subscribe({
+        next: () => {
+          this.toastService.info('report.message');
+        },
+        error: () => {
+          this.toastService.error('report.error');
+        },
       });
     this.selection = '';
     this.title = '';

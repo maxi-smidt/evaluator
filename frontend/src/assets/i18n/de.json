@@ -184,7 +184,8 @@
     "title": "Feature-Requests & Bug Report",
     "txt-title": "Titel",
     "area-text": "Beschreibung",
-    "message": "Danke für das Feedback!"
+    "message": "Danke für das Feedback!",
+    "error": "Feedback konnte nicht gespeichert werden."
   },
   "edit": {
     "title-students": "Gruppeneinteilung",
