@@ -6,7 +6,7 @@
   <p-dropdown
     id="dropdown"
     [style]="{'width': '220px'}"
-    [options]="classGroups"
+    [options]="classGroups()"
     [(ngModel)]="selectedClassGroup"
     optionLabel="startYear"
     placeholder="{{ 'common.choose-class-group' | translate }}"/>

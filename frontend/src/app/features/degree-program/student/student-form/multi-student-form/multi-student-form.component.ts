@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, input, ViewChild } from '@angular/core';
 import { Button } from 'primeng/button';
 import {
   FileSelectEvent,
@@ -16,9 +16,6 @@ import {
   SimpleClassGroup,
 } from '../../../models/class-group.model';
 import { ConfirmationService } from '../../../../../shared/services/confirmation.service';
-import { UrlParamService } from '../../../../../shared/services/url-param.service';
-import { ActivatedRoute } from '@angular/router';
-import { DegreeProgramService } from '../../../services/degree-program.service';
 import { NgClass } from '@angular/common';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
@@ -49,37 +46,20 @@ import { HttpErrorResponse } from '@angular/common/http';
     `,
   ],
 })
-export class MultiStudentFormComponent implements OnInit {
+export class MultiStudentFormComponent {
+  classGroups = input.required<ClassGroup[]>();
   @ViewChild('fileUpload', { static: false }) fileUpload!: FileUpload;
   expectedHeader = JSON.stringify(['MatNr', 'Name', 'Vorname']);
   students: Student[] = [];
   errorStudents: string[] = [];
-  classGroups: ClassGroup[] = [];
   selectedClassGroup: SimpleClassGroup | undefined;
 
   constructor(
     private papa: Papa,
     private confirmationService: ConfirmationService,
-    private urlParamService: UrlParamService,
-    private route: ActivatedRoute,
-    private degreeProgramService: DegreeProgramService,
     private studentService: StudentService,
     private toastService: ToastService,
   ) {}
-
-  ngOnInit() {
-    const degreeProgramAbbreviation = this.urlParamService.findParam(
-      'abbreviation',
-      this.route,
-    );
-    this.degreeProgramService
-      .getClassGroups(degreeProgramAbbreviation)
-      .subscribe({
-        next: (value) => {
-          this.classGroups = value;
-        },
-      });
-  }
 
   removeStudentFromSelection(studentId: string) {
     this.confirmationService
@@ -159,7 +139,7 @@ export class MultiStudentFormComponent implements OnInit {
         this.errorStudents = [];
       },
       error: (err) => {
-        this.toastService.error('degree-program.students-view.student-error');
+        this.toastService.error('degree-program.students-view.students-error');
         (err as HttpErrorResponse).error.forEach(
           (obj: object, index: number) => {
             if (Object.keys(obj).length !== 0) {

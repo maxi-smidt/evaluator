@@ -4,8 +4,8 @@
 
 <div class="mt-3">
   @if (items && activeItem === items[0]) {
-    <ms-multi-student-form/>
+    <ms-multi-student-form [classGroups]="classGroups" />
   } @else if (items && activeItem === items[1]) {
-    <ms-single-student-form/>
+    <ms-single-student-form [classGroups]="classGroups" />
   }
 </div>
