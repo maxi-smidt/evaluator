@@ -184,3 +184,5 @@ LOGGING = {
 LOGGING = None
 
 JPLAG_PATH = os.environ.get('PATH_TO_JPLAG')
+GITLAB_AUTH_TOKEN = os.environ.get('GITLAB_AUTH_TOKEN')
+GITLAB_POST_URL = os.environ.get('GITLAB_POST_URL')
