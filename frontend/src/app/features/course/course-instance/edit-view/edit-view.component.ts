@@ -23,6 +23,9 @@ import { User } from '../../../../core/models/user.models';
 import { EditStaffComponent } from './edit-staff/edit-staff.component';
 import { EditDueDatesComponent } from './edit-due-dates/edit-due-dates.component';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { EditStudentsComponent } from './edit-students/edit-students.component';
+import { StudentService } from '../../../degree-program/services/student.service';
+import { DegreeProgramService } from '../../../degree-program/services/degree-program.service';
 
 @Component({
   selector: 'ms-edit-view',
@@ -37,6 +40,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
     EditGeneralComponent,
     EditStaffComponent,
     EditDueDatesComponent,
+    EditStudentsComponent,
   ],
 })
 export class EditViewComponent implements OnInit {
@@ -69,6 +73,8 @@ export class EditViewComponent implements OnInit {
   selectedCourseLeadersBefore: User[] = [];
   selectedTutors: User[] = [];
   selectedTutorsBefore: User[] = [];
+  students: Student[] = [];
+  studentsBefore: Student[] = [];
 
   constructor(
     private courseService: CourseService,
@@ -80,9 +86,11 @@ export class EditViewComponent implements OnInit {
     private userService: UserService,
     private router: Router,
     private toastService: ToastService,
+    private studentService: StudentService,
+    private degreeProgramService: DegreeProgramService,
   ) {
     this.menuItems = [
-      { label: this.translationService.translate('edit.title-students') },
+      { label: this.translationService.translate('edit.title-groups') },
       { label: this.translationService.translate('edit.title-partition') },
       { label: this.translationService.translate('edit.title-general') },
       { label: this.translationService.translate('edit.title-assignments') },
@@ -92,13 +100,6 @@ export class EditViewComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.route.queryParamMap.subscribe((params) => {
-      const tab = params.get('tab');
-      this.activeItem = tab
-        ? this.menuItems.find((item) => item.label === tab)
-        : this.menuItems[0];
-    });
-
     this.courseId = this.urlParamService.findParam('courseId', this.route);
 
     this.userService.getUser().subscribe({
@@ -110,10 +111,10 @@ export class EditViewComponent implements OnInit {
         ) {
           return;
         }
-        this.menuItems.push({
-          label: this.translationService.translate('edit.title-staff'),
-        });
-        this.activeItem = this.menuItems[3];
+        this.menuItems.push(
+          { label: this.translationService.translate('edit.title-staff') },
+          { label: this.translationService.translate('edit.title-students') },
+        );
 
         this.userService.getUsers([`course=${this.courseId}`]).subscribe({
           next: (value) => {
@@ -126,6 +127,15 @@ export class EditViewComponent implements OnInit {
             );
           },
         });
+
+        this.studentService
+          .getStudents('course_instance_id', this.courseId)
+          .subscribe({
+            next: (value) => {
+              this.students = value;
+              this.studentsBefore = JSON.parse(JSON.stringify(this.students));
+            },
+          });
       },
     });
 
@@ -185,6 +195,13 @@ export class EditViewComponent implements OnInit {
           );
         },
       });
+
+    this.route.queryParamMap.subscribe((params) => {
+      const tab = params.get('tab');
+      this.activeItem = tab
+        ? this.menuItems.find((item) => item.label === tab)
+        : this.menuItems[0];
+    });
   }
 
   onActiveItemChange(event: MenuItem) {
@@ -210,7 +227,8 @@ export class EditViewComponent implements OnInit {
       this.partitionHasChanged() ||
       this.courseHasChanged() ||
       this.staffHasChanged() ||
-      this.dueDatesHaveChanged()
+      this.dueDatesHaveChanged() ||
+      this.studentsHaveChanged()
     );
   }
 
@@ -244,6 +262,12 @@ export class EditViewComponent implements OnInit {
     return (
       JSON.stringify(this.dueDateCourseInstance) !==
       JSON.stringify(this.dueDateCourseInstanceBefore)
+    );
+  }
+
+  private studentsHaveChanged() {
+    return (
+      JSON.stringify(this.students) !== JSON.stringify(this.studentsBefore)
     );
   }
 
@@ -379,6 +403,25 @@ export class EditViewComponent implements OnInit {
             this.toastService.info('common.saved');
           },
         });
+    }
+
+    if (this.studentsHaveChanged()) {
+      const studentsToRemove = this.studentsBefore.filter(
+        (student) =>
+          !this.students.some(
+            (currentStudent) => currentStudent.id === student.id,
+          ),
+      );
+      studentsToRemove.forEach((student) => {
+        this.degreeProgramService
+          .unEnrollStudent(this.courseId, student)
+          .subscribe({
+            next: () => {
+              this.toastService.info('common.saved');
+              this.studentsBefore = JSON.parse(JSON.stringify(this.students));
+            },
+          });
+      });
     }
   }
 

@@ -28,7 +28,8 @@
     "action": "Aktion",
     "class-group": "Jahrgang",
     "choose-file": "File auswählen",
-    "choose-class-group": "Jahrgang wählen"
+    "choose-class-group": "Jahrgang wählen",
+    "index": "Nummer"
   },
   "header": {
     "btn-home": "Startseite",
@@ -188,17 +189,18 @@
     "error": "Feedback konnte nicht gespeichert werden."
   },
   "edit": {
-    "title-students": "Gruppeneinteilung",
+    "title-groups": "Gruppeneinteilung",
     "title-partition": "Gruppenzuteilung",
     "title-general": "Allgemein",
     "title-assignments": "Assignments",
     "title-staff": "Personal",
+    "title-students": "Studierende",
     "allow-late-submission": "Verspätete Abgabe (Joker) erlaubt",
     "late-submission-penalty": "Abzug für verspätete Abgabe (pro Tag)",
     "step-size": "Punkt-Schritt bei Bewertung",
     "due-dates": {
       "due-date": "Abgabedatum",
-      "set-all": "Hier kann eine Uhrzeit gesetzt werden, die für alle Abgaben gesetzt wird.",
+      "set-all": "Hier kann eine Uhrzeit gesetzt werden, die für alle Abgaben eingestellt wird.",
       "set": "Setzen"
     },
     "staff": {
@@ -224,6 +226,7 @@
     "courses": "Kurse",
     "class-groups": "Jahrgänge",
     "students": "Studierende",
+    "enrollments": "Einschreibungen",
     "class-groups-view": {
       "all-class-groups": "Alle Jahrgänge",
       "new-class-group": "Neuen Jahrgang anlegen",
@@ -279,6 +282,15 @@
       "header-error": "Der Header des Files entspricht nicht 'MatNr,Name,Vorname'.",
       "filter-student-id": "Suche nach Matrikelnummer",
       "filter-class-group": "Suche nach Jahrgang"
+    },
+    "enrollment-view": {
+      "choose-course": "Kurs auswählen",
+      "enroll-students": "Studierende einschreiben",
+      "load-students": "Studierende laden",
+      "load-student": "Studierenden laden",
+      "error-student-exists": "Dieser Studierende existiert bereits",
+      "error-student-untraceable": "Dieser Studierende existiert bereits",
+      "error-enrollment": "Dieser Studierende existiert bereits"
     }
   },
   "assignment": {

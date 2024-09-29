@@ -29,7 +29,11 @@ export class StudentService {
     return this.http.post('student/create/', student);
   }
 
-  getStudents(degreeProgramAbbreviation: string) {
-    return this.http.get<Student[]>(`students/${degreeProgramAbbreviation}/`);
+  getStudent(studentId: string) {
+    return this.http.get<Student>(`student/${studentId}/`);
+  }
+
+  getStudents(queryParam: string, value: string | number) {
+    return this.http.get<Student[]>(`students/?${queryParam}=${value}`);
   }
 }

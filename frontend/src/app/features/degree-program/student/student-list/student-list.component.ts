@@ -37,10 +37,12 @@ export class StudentListComponent implements OnInit {
       'abbreviation',
       this.route,
     );
-    this.studentService.getStudents(degreeProgramAbbreviation).subscribe({
-      next: (value) => {
-        this.students = value;
-      },
-    });
+    this.studentService
+      .getStudents('abbreviation', degreeProgramAbbreviation)
+      .subscribe({
+        next: (value) => {
+          this.students = value;
+        },
+      });
   }
 }

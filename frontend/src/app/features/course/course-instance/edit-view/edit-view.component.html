@@ -25,6 +25,9 @@
         <ms-edit-staff [courseInstanceId]="courseId" [(selectedTutors)]="selectedTutors"
                        [user]="user" [(selectedCourseLeaders)]="selectedCourseLeaders"/>
       }
+      @case ('Studierende') {
+        <ms-edit-students [(students)]="students" />
+      }
     }
   </div>
 </div>

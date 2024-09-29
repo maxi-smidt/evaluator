@@ -1,0 +1,47 @@
+<p-table
+  [value]="students()"
+  dataKey="id"
+  [rows]="30"
+  [rowsPerPageOptions]="[15, 30, 50]"
+  [paginator]="true"
+  [tableStyle]="{ 'min-width': '75rem' }">
+  <ng-template pTemplate="header">
+    <tr>
+      <th style="width:5%">{{ 'common.index' | translate }}</th>
+      <th style="width:20%">{{ 'common.student-id' | translate }}</th>
+      <th style="width:20%">{{ 'common.lastname' | translate }}</th>
+      <th style="width:20%">{{ 'common.firstname' | translate }}</th>
+      <th style="width:20%">{{ 'common.class-group' | translate }}</th>
+      <th style="width:15%">{{ 'common.action' | translate }}</th>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="body" let-student let-i="rowIndex">
+    <tr>
+      <td>
+        {{ i + 1 }}
+      </td>
+      <td>
+        {{ student.id }}
+      </td>
+      <td>
+        {{ student.lastName }}
+      </td>
+      <td>
+        {{ student.firstName }}
+      </td>
+      <td>
+        {{ student.startYear }}
+      </td>
+      <td>
+        <p-button icon="pi pi-times" severity="danger" size="small" (onClick)="onRemoveClick(student)"/>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6">{{ 'common.no-data' | translate }}</td>
+    </tr>
+  </ng-template>
+</p-table>

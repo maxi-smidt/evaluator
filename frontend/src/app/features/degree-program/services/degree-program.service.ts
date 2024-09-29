@@ -6,6 +6,7 @@ import {
   DetailClassGroup,
   SimpleClassGroup,
 } from '../models/class-group.model';
+import { Student } from '../../course/models/student.model';
 
 @Injectable({
   providedIn: 'root',
@@ -41,5 +42,19 @@ export class DegreeProgramService {
       startYear,
       degreeProgramAbbreviation: abbreviation,
     });
+  }
+
+  enrollStudents(courseInstanceId: number, students: Student[]) {
+    const transformedStudents = students.map((student) => ({
+      student: student.id,
+      courseInstance: courseInstanceId,
+    }));
+    return this.http.post('course_enrollment/create/', transformedStudents);
+  }
+
+  unEnrollStudent(courseInstanceId: number, student: Student) {
+    return this.http.delete(
+      `course_enrollment/?student_id=${student.id}&course_instance_id=${courseInstanceId}`,
+    );
   }
 }
