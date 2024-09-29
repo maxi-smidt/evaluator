@@ -1,5 +1,5 @@
 import { Component, OnInit, Type } from '@angular/core';
-import { User } from '../../core/models/user.models';
+import { Role, User } from '../../core/models/user.models';
 import { UserService } from '../../core/services/user.service';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 import { NgComponentOutlet } from '@angular/common';
@@ -20,7 +20,12 @@ export class HomeComponent implements OnInit {
   user: User;
 
   constructor(private userService: UserService) {
-    this.user = { firstName: '', lastName: '', username: '', role: '' };
+    this.user = {
+      firstName: '',
+      lastName: '',
+      username: '',
+      role: Role.UNDEFINED,
+    };
   }
 
   ngOnInit() {
@@ -34,21 +39,21 @@ export class HomeComponent implements OnInit {
 
   async loadHomeComponent() {
     switch (this.user.role) {
-      case 'TUTOR': {
+      case Role.TUTOR: {
         const { TutorHomeComponent } = await import(
           './tutor-home/tutor-home.component'
         );
         this.homeComponent = TutorHomeComponent;
         break;
       }
-      case 'DEGREE_PROGRAM_DIRECTOR': {
+      case Role.DEGREE_PROGRAM_DIRECTOR: {
         const { DpdHomeComponent } = await import(
           './dpd-home/dpd-home.component'
         );
         this.homeComponent = DpdHomeComponent;
         break;
       }
-      case 'ADMIN': {
+      case Role.ADMIN: {
         const { AdminHomeComponent } = await import(
           './admin-home/admin-home.component'
         );

@@ -1,5 +1,5 @@
 import { Component, input, model, OnInit } from '@angular/core';
-import { User } from '../../../../../core/models/user.models';
+import { Role, User } from '../../../../../core/models/user.models';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../../../core/services/user.service';
@@ -36,7 +36,7 @@ export class EditStaffComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (this.user().role === 'TUTOR') {
+    if (this.user().role === Role.TUTOR) {
       return;
     }
 
@@ -51,9 +51,9 @@ export class EditStaffComponent implements OnInit {
 
   pushUsersSeparated(users: User[]) {
     users.forEach((user) => {
-      if (user.role === 'TUTOR') {
+      if (user.role === Role.TUTOR) {
         this.selectableTutors.push(user);
-      } else if (user.role === 'COURSE_LEADER') {
+      } else if (user.role === Role.COURSE_LEADER) {
         this.selectableCourseLeaders.push(user);
       }
     });

@@ -19,7 +19,7 @@ import {
 import { AssignmentService } from '../../../assignment/services/assignment.service';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { UserService } from '../../../../core/services/user.service';
-import { User } from '../../../../core/models/user.models';
+import { Role, User } from '../../../../core/models/user.models';
 import { EditStaffComponent } from './edit-staff/edit-staff.component';
 import { EditDueDatesComponent } from './edit-due-dates/edit-due-dates.component';
 import { ToastService } from '../../../../shared/services/toast.service';
@@ -106,8 +106,8 @@ export class EditViewComponent implements OnInit {
       next: (value) => {
         this.user = value;
         if (
-          value.role !== 'DEGREE_PROGRAM_DIRECTOR' &&
-          value.role !== 'COURSE_LEADER'
+          value.role !== Role.DEGREE_PROGRAM_DIRECTOR &&
+          value.role !== Role.COURSE_LEADER
         ) {
           return;
         }
@@ -427,9 +427,9 @@ export class EditViewComponent implements OnInit {
 
   pushUsersSeparated(users: User[]) {
     users.forEach((user) => {
-      if (user.role === 'TUTOR') {
+      if (user.role === Role.TUTOR) {
         this.selectedTutors.push(user);
-      } else if (user.role === 'COURSE_LEADER') {
+      } else if (user.role === Role.COURSE_LEADER) {
         this.selectedCourseLeaders.push(user);
       }
     });
