@@ -16,8 +16,11 @@ export class EditGroupComponent {
 
   onAddGroupBtnClick() {
     const highestGroupNumber = Math.max(
+      1,
       ...Object.keys(this.groupedStudents()).map(Number),
     );
+
+    console.log(highestGroupNumber);
     for (let i = 1; i <= highestGroupNumber + 1; ++i) {
       if (!(i in this.groupedStudents())) {
         this.groupedStudents()[i] = [];
