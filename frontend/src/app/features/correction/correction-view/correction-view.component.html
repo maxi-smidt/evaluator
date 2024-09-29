@@ -108,8 +108,7 @@
                    (totalPoints)="updateAnnotationPoints($event)"/>
 
 @for (exercise of correction.draft.exercise; track exercise.name) {
-  <h4> {{ exercise.name }} | ({{ currentExercisePoints(exercise.name) }} / {{ getTotalExercisePoints(exercise.name) }}
-    ) </h4>
+  <h4> {{ exercise.name }} | ({{ currentExercisePoints(exercise.name) }} / {{ getTotalExercisePoints(exercise.name) }}) </h4>
 
   @for (sub_exercise of exercise.sub; track sub_exercise.name) {
     <h6> {{ sub_exercise.name }} | ({{ pointsDistribution[exercise.name][sub_exercise.name] }}
