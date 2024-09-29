@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import course_views as cv, report_views as rv, degree_program_views as dpv, jplag_views as jv, \
     correction_views as cov, assignment_views as av, basic_views as bv, previous_deductions_views as pdv, \
-    student_views as sv
+    student_views as sv, course_enrollment_views as cev
 
 
 urlpatterns = [
@@ -34,5 +34,7 @@ urlpatterns = [
     path('class-group/<int:pk>/', dpv.ClassGroupRetrieveView.as_view(), name="class_group"),
     path('student/create/', sv.StudentCreateView.as_view(), name="student_create"),
     path('student/<str:pk>/', sv.StudentRetrieveUpdateDestroyView.as_view(), name="student"),
-    path('students/<str:abbreviation>/', sv.StudentListView.as_view(), name="student_list"),
+    path('students/', sv.StudentListView.as_view(), name="student_list"),
+    path('course_enrollment/create/', cev.CourseEnrollmentCreateView.as_view(), name="course_enrollment_create" ),
+    path('course_enrollment/', cev.CourseEnrollmentDestroyView.as_view(), name="course_enrollment" ),
 ]

@@ -1,0 +1,89 @@
+<div class="d-flex flex-column gap-3">
+  <div class="d-flex gap-2">
+    <p-dropdown
+      [style]="{'width': '250px'}"
+      [options]="courseInstances"
+      [(ngModel)]="selectedCourseInstance"
+      placeholder="{{ 'degree-program.enrollment-view.choose-course' | translate }}">
+
+      <ng-template let-course pTemplate="item">
+        {{ buildCourseInstanceLabel(course) }}
+      </ng-template>
+      <ng-template let-course pTemplate="selectedItem">
+        {{ buildCourseInstanceLabel(course) }}
+      </ng-template>
+    </p-dropdown>
+
+    <p-button label="{{ 'degree-program.enrollment-view.enroll-students' | translate }}" [disabled]="students.length === 0 || !selectedCourseInstance"
+              (onClick)="onEnrollStudentsClick()" severity="success"/>
+  </div>
+
+  <div class="d-flex gap-2">
+    <p-multiSelect
+      [style]="{'width': '250px'}"
+      [options]="classGroups"
+      [(ngModel)]="selectedClassGroups"
+      optionLabel="startYear"
+      placeholder="{{ 'common.choose-class-group' | translate }}"/>
+
+    <p-button label="{{ 'degree-program.enrollment-view.load-students' | translate }}" (onClick)="onLoadStudentsClick()"/>
+  </div>
+
+  <div class="d-flex gap-2">
+    <input [style]="{'width': '250px'}" type="text" pInputText [(ngModel)]="selectedStudent"
+           placeholder="{{ 'common.student-id' | translate }}"/>
+    <p-button label="{{ 'degree-program.enrollment-view.load-student' | translate }}" [disabled]="!selectedStudent"
+              (onClick)="onLoadStudentClick()"/>
+  </div>
+
+  <p-table
+    [value]="students"
+    dataKey="id"
+    [rows]="30"
+    [rowsPerPageOptions]="[15, 30, 50]"
+    [paginator]="true"
+    [globalFilterFields]="['id', 'lastName', 'firstName', 'startYear']"
+    [tableStyle]="{ 'min-width': '75rem' }">
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:5%">{{ 'common.index' | translate }}</th>
+        <th style="width:20%">{{ 'common.student-id' | translate }}</th>
+        <th style="width:20%">{{ 'common.lastname' | translate }}</th>
+        <th style="width:20%">{{ 'common.firstname' | translate }}</th>
+        <th style="width:20%">{{ 'common.class-group' | translate }}</th>
+        <th style="width:15%">{{ 'common.action' | translate }}</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-student let-i="rowIndex">
+      <tr>
+        <td>
+          {{ i + 1 }}
+        </td>
+        <td>
+          {{ student.id }}
+        </td>
+        <td>
+          {{ student.lastName }}
+        </td>
+        <td>
+          {{ student.firstName }}
+        </td>
+        <td>
+          {{ student.startYear }}
+        </td>
+        <td>
+          <p-button icon="pi pi-times" severity="danger" size="small" (onClick)="onRemoveClick(student)"/>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="6">{{ 'common.no-data' | translate }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+

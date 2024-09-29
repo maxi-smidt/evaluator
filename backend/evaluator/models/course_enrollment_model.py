@@ -7,7 +7,7 @@ from .student_model import Student
 class CourseEnrollment(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     course_instance = models.ForeignKey(CourseInstance, on_delete=models.CASCADE)
-    group = models.IntegerField(null=False, default=0)
+    group = models.IntegerField(null=False, default=1, max_length=2)
 
     class Meta:
         constraints = [

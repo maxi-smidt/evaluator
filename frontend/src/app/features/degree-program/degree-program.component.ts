@@ -36,6 +36,9 @@ export class DegreeProgramComponent implements OnInit {
     const students = this.translationService.translate(
       'degree-program.students',
     );
+    const enrollments = this.translationService.translate(
+      'degree-program.enrollments',
+    );
 
     this.items = [
       {
@@ -157,6 +160,12 @@ export class DegreeProgramComponent implements OnInit {
             },
           },
         ],
+      },
+      {
+        label: enrollments,
+        command: () => {
+          router.navigate(['enrollment'], { relativeTo: route }).then();
+        },
       },
     ];
     this.activeItem = this.items[1];

@@ -12,6 +12,7 @@ import { ClassGroupDetailComponent } from './class-group/class-group-detail/clas
 import { ClassGroupFormComponent } from './class-group/class-group-form/class-group-form.component';
 import { StudentListComponent } from './student/student-list/student-list.component';
 import { StudentFormComponent } from './student/student-form/student-form.component';
+import { EnrollmentComponent } from './enrollment/enrollment.component';
 
 export const dpRoutes: Routes = [
   {
@@ -50,6 +51,10 @@ export const dpRoutes: Routes = [
           { path: 'list', component: StudentListComponent },
           { path: 'form', component: StudentFormComponent },
         ],
+      },
+      {
+        path: 'enrollment',
+        component: EnrollmentComponent,
       },
     ],
   },

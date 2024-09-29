@@ -32,5 +32,10 @@ class StudentListView(ListAPIView):
     queryset = Student.objects.all()
 
     def get_queryset(self):
-        abbreviation = self.kwargs['abbreviation']
-        return Student.objects.filter(class_group__degree_program__abbreviation=abbreviation)
+        if abbreviation := self.request.query_params.get('abbreviation'):
+            return Student.objects.filter(class_group__degree_program__abbreviation=abbreviation)
+        if ids := self.request.query_params.get('ids'):
+            class_group_ids = ids.split(',') if ids else []
+            return Student.objects.filter(class_group__id__in=class_group_ids)
+        if course_instance_id := self.request.query_params.get('course_instance_id'):
+            return Student.objects.filter(courseenrollment__course_instance_id=course_instance_id)
