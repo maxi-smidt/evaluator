@@ -4,5 +4,5 @@ from .assignment_model import Assignment
 
 
 class PreviousDeduction(models.Model):
-    assignment = models.ForeignKey(Assignment, on_delete=models.CASCADE)
+    assignment = models.OneToOneField(Assignment, on_delete=models.CASCADE)
     draft = models.JSONField(null=True)
