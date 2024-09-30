@@ -352,10 +352,10 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
 
     if (!this.previousDeductions) {
       this.previousDeductionsService
-        .getPreviousDeductions(this.correctionId)
+        .getPreviousDeductions(this.correctionId, 'correction')
         .subscribe({
           next: (value) => {
-            this.previousDeductions = value.draft;
+            this.previousDeductions = value;
           },
           error: (err) => {
             if (err.status === 404) {

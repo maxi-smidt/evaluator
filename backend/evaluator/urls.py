@@ -28,6 +28,7 @@ urlpatterns = [
     path('jplag/', jv.JplagRetrieveView.as_view(), name="jplag"),
     path('user-degree-program/create/', dpv.UserDegreeProgramCreateView.as_view(), name="user_degree_program_create"),
     path('user-degree-program/<str:username>&<str:abbreviation>/', dpv.UserDegreeProgramDeleteView.as_view(), name="user_degree_program_delete"),
+    path('deductions/create/', pdv.PreviousDeductionsCreateView.as_view(), name="deduction_create"),
     path('deductions/<int:pk>/', pdv.PreviousDeductionsRetrieveView.as_view(), name="deduction"),
     path('class-groups/<str:abbreviation>/', dpv.ClassGroupListView.as_view(), name="class_groups"),
     path('class-group/create/', dpv.ClassGroupCreateView.as_view(), name="class_group_create"),

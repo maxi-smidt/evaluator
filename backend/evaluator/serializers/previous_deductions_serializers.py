@@ -6,4 +6,4 @@ from ..models import PreviousDeduction
 class PreviousDeductionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreviousDeduction
-        fields = ['draft']
+        fields = ['draft', 'id']

@@ -104,7 +104,7 @@
                    [readOnly]="readOnly"
                    [pointStepSize]="course.pointStepSize"
                    [showDeduction]="showPreviousDeductions"
-                   [previousDeductions]="previousDeductions?.annotations"
+                   [previousDeductions]="previousDeductions?.draft?.annotations"
                    (totalPoints)="updateAnnotationPoints($event)"/>
 
 @for (exercise of correction.draft.exercise; track exercise.name) {
@@ -117,7 +117,7 @@
                        [defaultPoints]="sub_exercise.points"
                        [readOnly]="readOnly"
                        [pointStepSize]="course.pointStepSize"
-                       [previousDeductions]="previousDeductions?.exercises?.[exercise.name]?.[sub_exercise.name]"
+                       [previousDeductions]="previousDeductions?.draft?.exercises?.[exercise.name]?.[sub_exercise.name]"
                        [showDeduction]="showPreviousDeductions"
                        (totalPoints)="updateSubExercisePoints($event, sub_exercise.name, exercise.name)"/>
   }

@@ -1,4 +1,9 @@
 export interface PreviousDeductions {
+  id: number;
+  draft: Deductions;
+}
+
+interface Deductions {
   annotations?: Deduction[];
   exercises: { [key: string]: PartialDeduction };
 }
