@@ -66,7 +66,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
       {
         field: 'action',
         header: this.translate('common.action'),
-        width: 20,
+        width: 17,
       },
       {
         field: 'lateSubmission',
