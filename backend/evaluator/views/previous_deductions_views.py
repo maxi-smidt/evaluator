@@ -3,7 +3,7 @@ from rest_framework.generics import get_object_or_404, CreateAPIView, RetrieveUp
 
 from user.permissions import IsDpdOrCl
 from ..models import Correction, PreviousDeduction
-from ..serializers.previous_deductions_serializers import PreviousDeductionsSerializer
+from ..serializers.previous_deductions_serializers import PreviousDeductionsSerializer, PreviousDeductionsCreateSerializer
 
 
 class PreviousDeductionsRetrieveView(RetrieveUpdateAPIView):
@@ -27,4 +27,4 @@ class PreviousDeductionsRetrieveView(RetrieveUpdateAPIView):
 
 class PreviousDeductionsCreateView(CreateAPIView):
     queryset = PreviousDeduction.objects.all()
-    serializer_class = PreviousDeductionsSerializer
+    serializer_class = PreviousDeductionsCreateSerializer
