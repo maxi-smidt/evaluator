@@ -19,6 +19,7 @@ class Assignment(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['nr', 'course'], name='assignment_pk')
         ]
+        ordering = ['nr']
 
     def __str__(self):
         return f"{self.name}"
