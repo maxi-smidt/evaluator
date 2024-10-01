@@ -27,6 +27,7 @@ pyphen==0.16.0
 python-dotenv==1.0.1
 pytz==2024.2
 reportlab==4.2.2
+requests>=2.0.0
 six==1.16.0
 soupsieve==2.6
 sqlparse==0.5.1

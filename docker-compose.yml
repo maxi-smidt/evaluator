@@ -19,6 +19,10 @@ services:
       - "8080:8080"
     volumes:
       - ./backend:/app
+      - ${PATH_TO_JPLAG_SERVER}:${PATH_TO_JPLAG}
+      - /usr/bin/java:/usr/bin/java
+      - /usr/lib/jvm:/usr/lib/jvm
+      - ./backend/temp:/app/temp
     env_file:
       - .env
     environment:

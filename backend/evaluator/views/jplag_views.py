@@ -17,6 +17,7 @@ class JplagRetrieveView(GenericAPIView):
     TEMP_DIR = 'temp'
 
     def post(self, request, *args, **kwargs):
+        success = True  # Track if the process is successful
         try:
             self.pre_conditions(request.user.id)
             file = request.data['zipfile']
@@ -25,20 +26,31 @@ class JplagRetrieveView(GenericAPIView):
 
             if not self.jplag_is_installed():
                 Report.objects.create(title='Internal', description='JPlag Error').save()
-                self.post_conditions()
+                success = False  # Set success to False
                 return Response({'message': 'JPlag is not installed or the command failed.'}, status=500)
 
-            subprocess.run(['java', '-jar', os.path.join(JPLAG_PATH, 'jplag.jar'), '-l', language,
-                            self.source_file_path, '-r', self.result_file_path], capture_output=True, text=True,
-                           check=True)
+            subprocess.run(
+                ['java', '-jar', os.path.join(JPLAG_PATH, 'jplag.jar'), '-l', language,
+                 self.source_file_path, '-r', self.result_file_path],
+                capture_output=True, text=True, check=True
+            )
+
+            if not os.path.exists(f'{self.result_file_path}.zip'):
+                success = False
+                return Response({'message': 'JPlag did not produce the expected output.'}, status=500)
+
             with open(f'{self.result_file_path}.zip', 'rb') as f:
                 response = HttpResponse(f.read(), content_type='application/zip')
                 response['Content-Disposition'] = f'attachment; filename=result.zip'
             return response
         except subprocess.CalledProcessError as e:
+            success = False
             return Response({'message': e.output}, status=e.returncode)
         finally:
-            self.post_conditions()
+            if success:
+                self.post_conditions()
+            else:
+                print("Process failed; skipping cleanup.")
 
     def load_and_unzip(self, file):
         content = file.read()
