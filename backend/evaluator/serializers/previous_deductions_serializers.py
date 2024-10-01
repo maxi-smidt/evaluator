@@ -7,3 +7,8 @@ class PreviousDeductionsSerializer(serializers.ModelSerializer):
     class Meta:
         model = PreviousDeduction
         fields = ['draft', 'id']
+
+
+class PreviousDeductionsCreateSerializer(PreviousDeductionsSerializer):
+    class Meta(PreviousDeductionsSerializer.Meta):
+        fields = PreviousDeductionsSerializer.Meta.fields + ['assignment']
