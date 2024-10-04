@@ -1,4 +1,5 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:8080/api',
+  djangoApiUrl: 'http://localhost:8080/api',
+  springApiUrl: 'http://localhost:8000/api2',
 };

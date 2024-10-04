@@ -49,16 +49,9 @@ export class PlagScanComponent {
     private toastService: ToastService,
   ) {
     this.languages.push({ title: 'C++', label: 'cpp' });
-    this.languages.push({ title: 'Python', label: 'python3' });
-    this.languages.push({ title: 'Java', label: 'java' });
-    this.languages.push({ title: 'c', label: 'c' });
     this.languages.push({ title: 'C#', label: 'csharp' });
-    this.languages.push({ title: 'JavaScript', label: 'javascript' });
-    this.languages.push({ title: 'TypeScript', label: 'typescript' });
-    this.languages.push({ title: 'R', label: 'rlang' });
-    this.languages.push({ title: 'Rust', label: 'rust' });
-    this.languages.push({ title: 'Kotlin', label: 'kotlin' });
-    this.languages.push({ title: 'Scala', label: 'scala' });
+    this.languages.push({ title: 'Java', label: 'java' });
+    this.languages.push({ title: 'Python', label: 'python3' });
   }
 
   parseExtensions() {
@@ -92,11 +85,8 @@ export class PlagScanComponent {
 
     const processedFile: File = <File>await this.cleanFile(zip);
 
-    const formData = new FormData();
-    formData.append('zipfile', processedFile, processedFile.name);
-
     this.plagScanService
-      .scanZipFile(formData, this.selectedLanguage!.label!)
+      .scanZipFile(processedFile, this.selectedLanguage!.label!)
       .subscribe({
         next: (value) => {
           const blob = new Blob([value.body], { type: 'application/zip' });

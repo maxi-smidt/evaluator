@@ -1,8 +1,7 @@
 from django.urls import path
-from .views import course_views as cv, report_views as rv, degree_program_views as dpv, jplag_views as jv, \
-    correction_views as cov, assignment_views as av, basic_views as bv, previous_deductions_views as pdv, \
-    student_views as sv, course_enrollment_views as cev
-
+from .views import course_views as cv, report_views as rv, degree_program_views as dpv, correction_views as cov, \
+    assignment_views as av, basic_views as bv, previous_deductions_views as pdv, student_views as sv, \
+    course_enrollment_views as cev
 
 urlpatterns = [
     path('health/', bv.health_check, name='health'),
@@ -25,7 +24,6 @@ urlpatterns = [
     path('degree-program/<str:abbreviation>/', dpv.DegreeProgramRetrieveView.as_view(), name="degree_program"),
     path('degree-programs/', dpv.DegreeProgramListView.as_view(), name="degree_programs"),
     path('report/', rv.ReportCreateView.as_view(), name="report"),
-    path('jplag/', jv.JplagRetrieveView.as_view(), name="jplag"),
     path('user-degree-program/create/', dpv.UserDegreeProgramCreateView.as_view(), name="user_degree_program_create"),
     path('user-degree-program/<str:username>&<str:abbreviation>/', dpv.UserDegreeProgramDeleteView.as_view(), name="user_degree_program_delete"),
     path('deductions/create/', pdv.PreviousDeductionsCreateView.as_view(), name="deduction_create"),
@@ -36,6 +34,6 @@ urlpatterns = [
     path('student/create/', sv.StudentCreateView.as_view(), name="student_create"),
     path('student/<str:pk>/', sv.StudentRetrieveUpdateDestroyView.as_view(), name="student"),
     path('students/', sv.StudentListView.as_view(), name="student_list"),
-    path('course_enrollment/create/', cev.CourseEnrollmentCreateView.as_view(), name="course_enrollment_create" ),
-    path('course_enrollment/', cev.CourseEnrollmentDestroyView.as_view(), name="course_enrollment" ),
+    path('course_enrollment/create/', cev.CourseEnrollmentCreateView.as_view(), name="course_enrollment_create"),
+    path('course_enrollment/', cev.CourseEnrollmentDestroyView.as_view(), name="course_enrollment"),
 ]

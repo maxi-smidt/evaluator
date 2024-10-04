@@ -7,8 +7,11 @@ import { HttpClient } from '@angular/common/http';
 export class PlagScanService {
   constructor(private http: HttpClient) {}
 
-  scanZipFile(file: FormData, language: string) {
-    return this.http.post<any>(`jplag/?lang=${language}`, file, {
+  scanZipFile(file: File, language: string) {
+    const formData = new FormData();
+    formData.append('zip', file, file.name);
+
+    return this.http.post<any>(`spring/jplag/?lang=${language}`, formData, {
       observe: 'response',
       responseType: 'blob' as 'json',
     });

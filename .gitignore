@@ -1,9 +1,10 @@
-# General
+### General ###
 .env.*
 .env*
 .DS_Store
+Thumbs.db
 
-## IDEs and editors
+### IDEs and editors ###
 .idea/
 .project
 .classpath
@@ -12,14 +13,14 @@
 .settings/
 *.sublime-workspace
 
-# Backend
+### Backend ###
 .venv
 backend/db.sqlite3
 backend/initial_data.json
 __pycache__/
 *.pyc
 
-# Frontend
+### Frontend ###
 
 ## Compiled output
 frontend/dist
@@ -49,7 +50,3 @@ frontend/coverage
 frontend/libpeerconnection.log
 frontend/testem.log
 frontend/typings
-
-## System files
-.DS_Store
-Thumbs.db
