@@ -14,10 +14,19 @@ export class ApiInterceptor implements HttpInterceptor {
     req: HttpRequest<unknown>,
     next: HttpHandler,
   ): Observable<HttpEvent<unknown>> {
-    const url = req.url.includes('assets/')
-      ? req.url
-      : `${environment.apiUrl}/${req.url}`;
+    const url = this.getUrl(req.url);
     const apiReq = req.clone({ url: url });
     return next.handle(apiReq);
+  }
+
+  getUrl(url: string): string {
+    if (url.includes('assets/')) return url;
+
+    if (url.includes('spring/')) {
+      const newUrl = url.replace('spring/', '');
+      return `${environment.springApiUrl}/${newUrl}`;
+    }
+
+    return `${environment.djangoApiUrl}/${url}`;
   }
 }

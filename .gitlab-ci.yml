@@ -34,8 +34,6 @@ deploy_job:
     - echo "DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE" >> .env
     - echo "CORS_ALLOWED_ORIGINS=$CORS_ALLOWED_ORIGINS" >> .env
     - echo "ALLOWED_HOSTS=$ALLOWED_HOSTS" >> .env
-    - echo "PATH_TO_JPLAG=$PATH_TO_JPLAG" >> .env
-    - echo "PATH_TO_JPLAG_SERVER=$PATH_TO_JPLAG_SERVER" >> .env
     - echo "GITLAB_AUTH_TOKEN=$GITLAB_AUTH_TOKEN" >> .env
     - echo "GITLAB_POST_URL=$GITLAB_POST_URL" >> .env
 
