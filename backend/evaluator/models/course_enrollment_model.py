@@ -13,6 +13,7 @@ class CourseEnrollment(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['student', 'course_instance'], name='course_enrollment_pk')
         ]
+        ordering = ['student__last_name', 'student__first_name']
 
     def __str__(self):
         return f"{self.student} - {self.course_instance}"

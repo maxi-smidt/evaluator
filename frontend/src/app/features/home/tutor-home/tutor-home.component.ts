@@ -36,7 +36,14 @@ export class TutorHomeComponent implements OnInit {
   }
 
   private fillItems() {
-    this.yearItems = this.courseInstances.map((ci) => ci.year.toString());
+    const years = this.courseInstances.map((ci) => ci.year.toString());
+
+    this.yearItems = years.filter(
+      (oldYear, index, self) =>
+        index ===
+        self.findIndex((newYear) => newYear === oldYear && newYear === oldYear),
+    );
+
     this.yearItems.push(this.allString);
     this.selectedYear = this.allString;
   }

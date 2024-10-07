@@ -13,7 +13,7 @@ class CourseInstanceListView(ListAPIView):
     def get_queryset(self):
         user = self.request.user
         if user.role == User.Role.TUTOR:
-            return Tutor.objects.get(id=user.id).ci_tutors.all()
+            return Tutor.objects.get(id=user.id).ci_tutors.all().order_by('-year', 'course__name')
         elif user.role == User.Role.DPD:
             abbreviation = self.request.query_params.get('dp')
             return (CourseInstance.objects.filter(course__degree_program__abbreviation=abbreviation)
