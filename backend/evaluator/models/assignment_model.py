@@ -12,8 +12,15 @@ class Assignment(models.Model):
     course = models.ForeignKey(Course,
                                on_delete=models.CASCADE,
                                null=False)
-    points = models.IntegerField(null=False,
-                                 default=0)
+
+    @property
+    def points(self):
+        sum_points = 0
+        for exercise in self.draft:
+            for sub_exercise in exercise['distribution']:
+                sum_points += sub_exercise['points']
+        return sum_points
+
 
     class Meta:
         constraints = [

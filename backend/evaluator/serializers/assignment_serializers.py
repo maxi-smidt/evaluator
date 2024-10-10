@@ -7,6 +7,14 @@ from ..models import Assignment, AssignmentInstance, Correction, CourseEnrollmen
 from user.models import User, Tutor
 
 
+class PointsMixin(serializers.ModelSerializer):
+    points = serializers.SerializerMethodField()
+
+    @staticmethod
+    def get_points(obj):
+        return obj.points
+
+
 class SimpleAssignmentInstanceSerializer(serializers.ModelSerializer):
     name = serializers.CharField(source='assignment.name')
 
@@ -138,13 +146,13 @@ class CreateAssignmentSerializer(serializers.ModelSerializer):
         fields = ['id', 'nr', 'name', 'course']
 
 
-class SimpleAssignmentSerializer(serializers.ModelSerializer):
+class SimpleAssignmentSerializer(PointsMixin, serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = ['id', 'name', 'points']
 
 
-class AssignmentSerializer(serializers.ModelSerializer):
+class AssignmentSerializer(PointsMixin, serializers.ModelSerializer):
     class Meta:
         model = Assignment
         fields = '__all__'
