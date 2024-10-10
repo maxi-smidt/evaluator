@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { JwtService } from './jwt.service';
 import { User } from '../models/user.models';
 import { UserService } from './user.service';
+import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class AuthService {
     private router: Router,
     private jwtService: JwtService,
     private userService: UserService,
+    private localStorageService: LocalStorageService,
   ) {}
 
   login(username: string, password: string) {
@@ -46,6 +48,7 @@ export class AuthService {
 
   logout() {
     this.purgeAuth();
+    this.localStorageService.clear();
     this.router.navigate(['login']).then();
   }
 

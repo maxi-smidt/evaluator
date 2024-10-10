@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService, MenuItem } from 'primeng/api';
 import { Student } from '../../models/student.model';
 import { EditPartition } from '../../models/edit-partition.model';
@@ -26,6 +26,7 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { EditStudentsComponent } from './edit-students/edit-students.component';
 import { StudentService } from '../../../degree-program/services/student.service';
 import { DegreeProgramService } from '../../../degree-program/services/degree-program.service';
+import { LocalStorageService } from '../../../../core/services/local-storage.service';
 
 @Component({
   selector: 'ms-edit-view',
@@ -84,10 +85,10 @@ export class EditViewComponent implements OnInit {
     private assignmentService: AssignmentService,
     private urlParamService: UrlParamService,
     private userService: UserService,
-    private router: Router,
     private toastService: ToastService,
     private studentService: StudentService,
     private degreeProgramService: DegreeProgramService,
+    private localStorageService: LocalStorageService,
   ) {
     this.menuItems = [
       { label: this.translationService.translate('edit.title-groups') },
@@ -196,23 +197,16 @@ export class EditViewComponent implements OnInit {
         },
       });
 
-    this.route.queryParamMap.subscribe((params) => {
-      const tab = params.get('tab');
-      this.activeItem = tab
-        ? this.menuItems.find((item) => item.label === tab)
-        : this.menuItems[0];
-    });
+    const tabLabel: string | null =
+      this.localStorageService.getItem('editViewTabIndex');
+    this.activeItem = tabLabel
+      ? this.menuItems.find((item) => item.label === tabLabel)
+      : this.menuItems[0];
   }
 
   onActiveItemChange(event: MenuItem) {
     this.activeItem = event;
-    this.router
-      .navigate([], {
-        relativeTo: this.route,
-        queryParams: { tab: event.label },
-        queryParamsHandling: 'merge',
-      })
-      .then();
+    this.localStorageService.setItem('editViewTabIndex', this.activeItem.label);
   }
 
   adjustInactiveGroup() {
