@@ -1,0 +1,207 @@
+[
+  {
+    "name": "SWE Übung 01",
+    "draft": [
+      {
+        "name": "Aufgabe 1 - Heap Sort Dokumentation",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 12
+          },
+          {
+            "name": "Quellcode",
+            "points": 8
+          },
+          {
+            "name": "Testfälle",
+            "points": 20
+          }
+        ]
+      },
+      {
+        "name": "Aufgabe 2 - Heap Sort Komplexität",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 12
+          },
+          {
+            "name": "Quellcode",
+            "points": 25
+          },
+          {
+            "name": "Testfälle",
+            "points": 23
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWE Übung 02",
+    "draft": [
+      {
+        "name": "Beispiel 1 - Mergesort Dokumentation",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 12
+          },
+          {
+            "name": "Quellcode",
+            "points": 8
+          },
+          {
+            "name": "Testfälle",
+            "points": 20
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2 - Mergesort Komplexität",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 12
+          },
+          {
+            "name": "Quellcode",
+            "points": 25
+          },
+          {
+            "name": "Testfälle",
+            "points": 23
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWE Übung 03",
+    "draft": [
+      {
+        "name": "Beispiel 1 - Klasse Rational",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 20
+          },
+          {
+            "name": "Quellcode",
+            "points": 50
+          },
+          {
+            "name": "Testfälle",
+            "points": 30
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWE Übung 05",
+    "draft": [
+      {
+        "name": "Beispiel 1 -  Klasse rational_t erweitern",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 20
+          },
+          {
+            "name": "Quellcode",
+            "points": 50
+          },
+          {
+            "name": "Testfälle",
+            "points": 30
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWE Übung 05",
+    "draft": [
+      {
+        "name": "Beispiel 1 - Flugreisen",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 5
+          },
+          {
+            "name": "Quellcode",
+            "points": 15
+          },
+          {
+            "name": "Testfälle",
+            "points": 10
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2 - Stücklistenverwaltung",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 15
+          },
+          {
+            "name": "Quellcode",
+            "points": 35
+          },
+          {
+            "name": "Testfälle",
+            "points": 20
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWE Übung 06",
+    "draft": [
+      {
+        "name": "Beispiel 1 - Iteratoren",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 20
+          },
+          {
+            "name": "Quellcode",
+            "points": 50
+          },
+          {
+            "name": "Testfälle",
+            "points": 30
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWE Übung 07",
+    "draft": [
+      {
+        "name": "Beispiel 1 - Ausdrucksbaum erweitern",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 20
+          },
+          {
+            "name": "Quellcode",
+            "points": 50
+          },
+          {
+            "name": "Testfälle",
+            "points": 30
+          }
+        ]
+      }
+    ]
+  }
+]
