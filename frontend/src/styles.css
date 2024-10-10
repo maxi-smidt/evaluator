@@ -26,3 +26,7 @@ ms-evaluate-table .p-editor-container .p-editor-toolbar.ql-snow .ql-picker.ql-ex
     height: 16px !important;
     padding: 2px !important;
 }
+
+html {
+  overflow-y: scroll;
+}
