@@ -153,9 +153,12 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
             if (triggered) {
               this.toastService.info('common.saved');
             }
-            this.correction = response;
+            this.correction.expense = response.expense;
+            this.correction.lateSubmittedDays = response.lateSubmittedDays;
+            this.correction.status = response.status;
+            this.correction.points = response.points;
             this.parseExpense();
-            this.correctionBefore = JSON.parse(JSON.stringify(this.correction));
+            this.correctionBefore = JSON.parse(JSON.stringify(response));
             this.calculateLateSubmission();
           },
           error: (error) => {
