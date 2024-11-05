@@ -34,15 +34,19 @@ th {
   border-right: 1px solid #ccc;
 }
 
-.fs {
+.previous-deduction-fs {
   font-size: 13px;
 }
 
 .description {
-  width: 78%;
+  width: 79.5%;
 }
 
 .deduction {
   text-align: center;
-  width: 22%;
+  width: 16.5%;
+}
+
+.add-deduction {
+  width: 4%
 }
