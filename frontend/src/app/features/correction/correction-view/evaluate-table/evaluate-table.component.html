@@ -1,16 +1,16 @@
 <div class="border border-3" [ngClass]="showDeduction() ? 'rounded-top-3' : 'rounded-3'">
   <table class="table table-borderless">
     <thead>
-    <tr class="border border-bottom-1">
-      <th class="text" [style.width]="'78%'">{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
-      <th class="points" [style.width]="'17%'">{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
-      <th class="action" [style.width]="'5%'"></th>
+    <tr class="border-bottom">
+      <th class="text">{{ 'course.evaluateView.evaluateTable.annotation' | translate }}</th>
+      <th class="points">{{ 'course.evaluateView.evaluateTable.points' | translate }}</th>
+      <th class="action"></th>
     </tr>
     </thead>
     <tbody>
       @for (entry of tableData(); track entry; let idx = $index) {
         <tr>
-          <td class="text">
+          <td>
             <p-editor [(ngModel)]="entry.text"
                       [readonly]="readOnly()">
               <ng-template pTemplate="header">
@@ -68,10 +68,16 @@
 @if (showDeductionTableExtension()) {
   <div class="border border-3 rounded-bottom-3 border-top-0 px-2 pt-2">
     @for (deduction of previousDeductions(); track $index) {
-      <div class="d-flex gap-2 mb-2">
-        <input class="description fs" type="text" pInputText [(ngModel)]="deduction.description" disabled="true"/>
-        <input class="deduction fs" type="text" pInputText [(ngModel)]="deduction.deduction" disabled="true"/>
-      </div>
+      @if (!tableHasDeduction(deduction.description)) {
+        <div class="d-flex gap-3 mb-2">
+          <input class="description previous-deduction-fs" type="text" pInputText [(ngModel)]="deduction.description"
+                 disabled="true"/>
+          <input class="deduction previous-deduction-fs" type="text" pInputText [(ngModel)]="deduction.deduction"
+                 disabled="true"/>
+          <p-button icon="pi pi-plus" class="add-deduction" text rounded severity="success"
+                    (onClick)="addPreviousDeduction(deduction)"/>
+        </div>
+      }
     }
   </div>
 }

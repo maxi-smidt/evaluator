@@ -67,4 +67,21 @@ export class EvaluateTableComponent {
     const len = this.previousDeductions()?.length;
     return len !== undefined && len > 0 && this.showDeduction();
   }
+
+  protected tableHasDeduction(description: string): boolean {
+    const stripHtml = (text: string): string => {
+      return text.replace(/<[^>]*>/g, '').trim();
+    };
+    return this.tableData().some(
+      (entry) => entry.text === stripHtml(description), // the entry.text is rendered as pdf because of the editor
+    );
+  }
+
+  addPreviousDeduction(deduction: Deduction) {
+    const points: number = Number.parseFloat(deduction.deduction);
+    this.tableData().push({
+      text: deduction.description,
+      points: Number.isNaN(points) ? 0 : points,
+    });
+  }
 }
