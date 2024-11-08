@@ -9,7 +9,7 @@
   mode="decimal"
   [min]="0"
   [max]="100"
-  [size]="1"
+  [size]="5"
   [showButtons]="true"
   [maxFractionDigits]="3"
   [step]="0.125"
@@ -22,7 +22,16 @@
   mode="decimal"
   [min]="0"
   [max]="100"
-  [size]="1"
+  [size]="5"
   [showButtons]="true"
   [maxFractionDigits]="3"
   [step]="0.125"/>
+
+<h4 class="mt-4">{{ 'common.file-name' | translate }}</h4>
+
+<div class="d-flex gap-1">
+  <input type="text" pInputText [(ngModel)]="course().fileName" [size]="60" [maxlength]="60"/>
+
+  <p-button icon="pi pi-info-circle" text rounded severity="secondary"
+            [pTooltip]="translationService.translate('common.file_name_wc')"/>
+</div>

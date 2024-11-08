@@ -9,7 +9,7 @@ class Course(models.Model):
                                     unique=True)
     degree_program = models.ForeignKey(DegreeProgram,
                                        on_delete=models.CASCADE)
-    file_name = models.CharField(max_length=50)
+    file_name = models.CharField(max_length=255)
 
     class Meta:
         constraints = [

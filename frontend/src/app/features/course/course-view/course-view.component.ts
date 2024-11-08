@@ -17,6 +17,9 @@ import { DialogModule } from 'primeng/dialog';
 import { InputOtpModule } from 'primeng/inputotp';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastService } from '../../../shared/services/toast.service';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'ms-course-view',
@@ -34,16 +37,15 @@ import { ToastService } from '../../../shared/services/toast.service';
     DialogModule,
     InputOtpModule,
     ConfirmPopupModule,
+    IconFieldModule,
+    InputIconModule,
+    TooltipModule,
   ],
   templateUrl: './course-view.component.html',
 })
 export class CourseViewComponent implements OnInit {
   course: DetailCourse = {} as DetailCourse;
   courseBefore: DetailCourse = {} as DetailCourse;
-
-  fileNamePre: string = '';
-  fileNameMid: string = '';
-  fileNamePost: string = '';
 
   dialogVisible: boolean = false;
   newAssignmentName: string | undefined;
@@ -53,7 +55,7 @@ export class CourseViewComponent implements OnInit {
     private courseService: CourseService,
     private route: ActivatedRoute,
     private router: Router,
-    private translationService: TranslationService,
+    protected translationService: TranslationService,
     private assignmentService: AssignmentService,
     private confirmationService: ConfirmationService,
     private toastService: ToastService,
@@ -65,21 +67,8 @@ export class CourseViewComponent implements OnInit {
       next: (value) => {
         this.course = value;
         this.courseBefore = JSON.parse(JSON.stringify(value));
-        this.parseFileName(value.fileName);
       },
     });
-  }
-
-  parseFileName(fileName: string) {
-    fileName = fileName.replace(/_{lastname}_/, ';');
-    fileName = fileName.replace(/{nr}_/, ';');
-    fileName = fileName.replace('.pdf', '');
-    [this.fileNamePre, this.fileNameMid, this.fileNamePost] =
-      fileName.split(';');
-  }
-
-  makeFileName(): string {
-    return `${this.fileNamePre}_{lastname}_${this.fileNameMid}{nr}_${this.fileNamePost}.pdf`;
   }
 
   routeToAssignment(assignmentId: number) {
@@ -92,7 +81,7 @@ export class CourseViewComponent implements OnInit {
       delete courseCopy.assignments;
       return courseCopy;
     };
-    this.course.fileName = this.makeFileName();
+
     return (
       JSON.stringify(transform(this.course)) !==
       JSON.stringify(transform(this.courseBefore))

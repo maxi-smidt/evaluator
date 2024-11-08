@@ -25,6 +25,7 @@ export interface SimpleCourseInstance {
 }
 
 export interface CourseInstance extends SimpleCourseInstance {
+  fileName: string;
   allowLateSubmission: boolean;
   lateSubmissionPenalty: number | null;
   pointStepSize: number;

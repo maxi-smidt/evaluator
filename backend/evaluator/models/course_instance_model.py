@@ -32,10 +32,17 @@ class CourseInstance(models.Model):
                                           null=False,
                                           default=1)
 
+    file_name = models.CharField(max_length=255)
+
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['year', 'course'], name='course_instance_pk')
         ]
+
+    def save(self, *args, **kwargs):
+        if not self.file_name and self.course:
+            self.file_name = self.course.file_name
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.course} ({self.year})"
