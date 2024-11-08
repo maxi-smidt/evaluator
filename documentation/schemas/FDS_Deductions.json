@@ -1,0 +1,1226 @@
+[
+  {
+    // FDS Ue01
+    "annotations": [
+      {
+        "description": "Eingaben nicht oder schlecht überprüft (kein cin.fail verwendet)",
+        "deduction": "-1 pro Bsp"
+      },
+      {
+        "description": "Eingabeüberprüfung mit asserts (nicht ideal)",
+        "deduction": "Kommentar"
+      },
+      {
+        "description": "Gar keine Headerfiles verwendet",
+        "deduction": "-6"
+      },
+      {
+        "description": "Alle Funktionen im .h-File (nichts 'versteckt')",
+        "deduction": "Kommentar"
+      },
+      {
+        "description": "Codeverdopplung",
+        "deduction": "-3"
+      },
+      {
+        "description": "Random-Seed wird in Methode gesetzt und nicht main",
+        "deduction": "-3"
+      },
+      {
+        "description": "Keine Verwendung von const oder by reference",
+        "deduction": "-1 (max. -2 pro Bsp)"
+      },
+      {
+        "description": "Keine Kommentare",
+        "deduction": "-3"
+      }
+    ],
+    "exercises": {
+      "Beispiel 1": {
+        "Lösungsidee": [
+          {
+            "description": "Keine Angabe von idealem Spielzug",
+            "deduction": "-1"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Bei ungültiger Eingabe wird trotzdem ein Stein entnommen",
+            "deduction": "-3"
+          },
+          {
+            "description": "Es können zwei Stapel der größe 0 angelegt werden",
+            "deduction": "-2"
+          },
+          {
+            "description": "Anzahl Steine zu Beginn zufällig ausgewählt (nicht durch User wie lt. Angabe)",
+            "deduction": "-2"
+          },
+          {
+            "description": "Negative Stapelgröße möglich",
+            "deduction": "-1 bis -2"
+          },
+          {
+            "description": "Benutzer kann nicht wählen wer beginnt",
+            "deduction": "-2"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Kein Test wo User gewinnt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test mit Buchstaben als ungültige Eingabe, wenn Zahl gefordert ist",
+            "deduction": "-1"
+          },
+          {
+            "description": "Ungültige Anzahl Steine nicht getestet (beide 0 oder negative Zahlen)",
+            "deduction": "-1"
+          }
+        ]
+      },
+      "Beispiel 2": {
+        "Lösungsidee": [
+          {
+            "description": "Keine Angabe des Dateiformats",
+            "deduction": "-1"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Keine Reaktion auf leeres File oder Buchstaben im File",
+            "deduction": "-3"
+          },
+          {
+            "description": "User kann Reihe auswählen mit 0 Steinen",
+            "deduction": "-2"
+          },
+          {
+            "description": "User kann 0 Steine entnehmen oder eine negative Anzahl (= Steine hinzufügen)",
+            "deduction": "-3"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Kein Test mit leerem File oder Buchstaben (oder neg. Zahlen) im File",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test mit nicht vorhandenem File",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test wo Spieler/Computer gewinnt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test mit fehlerhaften User-Eingaben",
+            "deduction": "-2"
+          }
+        ]
+      },
+      "Beispiel 3": {
+        "Lösungsidee": [
+          {
+            "description": "Nicht alle möglichen Fälle beschrieben (Index = Klammer auf/zu oder Punkt)",
+            "deduction": "-1"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Keine Prüfung ob Struktur valide ist (Klammeranzahl, Zeichen , ...)",
+            "deduction": "-3"
+          },
+          {
+            "description": "Nur Prüfung Klammeranzahl fehlt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Reihenfolge der Klammern (close nie > open) nicht geprüft",
+            "deduction": "-1"
+          },
+          {
+            "description": "Nur Punkte wird als ungültige Struktur erkannt",
+            "deduction": "-1"
+          },
+          {
+            "description": "Start-Index out of Bound nicht abgefangen",
+            "deduction": "-2"
+          },
+          {
+            "description": "Falsche Ausgabe bei einem Spezialfall (Start-Index auf Punkt oder Klammer zu/auf)",
+            "deduction": "-3"
+          },
+          {
+            "description": "Delete wird nie aufgerufen",
+            "deduction": "-3"
+          },
+          {
+            "description": "Null-Pointer setzen nach delete vergessen",
+            "deduction": "-1"
+          },
+          {
+            "description": "Fehler, wenn StartIndex nicht innerhalb von Klammern ist (u.a. nur Punkte)",
+            "deduction": "-2 bis -3"
+          },
+          {
+            "description": "Pointer nicht const (nur char const * statt char const * const)",
+            "deduction": "-1 (wenn zu oft)"
+          },
+          {
+            "description": "Es wird nie ein C-String mit new erstellt",
+            "deduction": "-2"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Keine Testfunktionen (wenn schon in Ue gemacht)",
+            "deduction": "-4"
+          },
+          {
+            "description": "Fehlerhafte Eingaben fehlen (Start-Pos oder PK-Notation)",
+            "deduction": "-4"
+          },
+          {
+            "description": "Ungültige Struktur nicht getestet",
+            "deduction": "-2"
+          },
+          {
+            "description": "Ungültige Start-Pos nicht getestet",
+            "deduction": "-1"
+          }
+        ]
+      },
+      "Beispiel 4": {
+        "Lösungsidee": [
+          {
+            "description": "Wie wird sortiert? Selection Sort, ...",
+            "deduction": "-1"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Pointer nicht const (nur char const * statt char const * const)",
+            "deduction": "-1"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Kein Test mit nullptr in Liste",
+            "deduction": "-1"
+          },
+          {
+            "description": "Kein Test wo nur ein Bereich sortiert wird (nur wenn in Übung gemacht)",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test mit leerem Vektor",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test bei dem unterschiedliche Zeichen gezeigt werden (min. Groß- vs. Kleinschreibung)",
+            "deduction": "-2"
+          }
+        ]
+      }
+    }
+  },
+  {
+    // FDS Ue02
+    "annotations": [
+      {
+        "description": "Abgabename falsch",
+        "deduction": "-2"
+      }
+    ],
+    "exercises": {
+      "Beispiel 1": {
+        "Lösungsidee": [
+          {
+            "description": "Detect Edges nicht erklärt",
+            "deduction": "-2"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Generierung von Bitmap aus Bitmap ist nur shallow copy",
+            "deduction": "-3"
+          },
+          {
+            "description": "Kein Speicher bei der Erstellung von Bitmaps reserviert (kein new bitmap)",
+            "deduction": "-5"
+          },
+          {
+            "description": "Read_From() nicht implementiert",
+            "deduction": "-3"
+          },
+          {
+            "description": "Bei read from wird eingelesenes Bitmap nicht geprüft",
+            "deduction": "-2"
+          },
+          {
+            "description": "Überladene Funktion umbenannt, statt Überladung zu verwenden",
+            "deduction": "-3"
+          },
+          {
+            "description": "Oft Codeverdopplung",
+            "deduction": "-3"
+          },
+          {
+            "description": "Bei leerer Bitmap wird trotzdem auf Pixel zugegriffen",
+            "deduction": "-3"
+          },
+          {
+            "description": "Width und height in Schleife verwechselt",
+            "deduction": "-1"
+          },
+          {
+            "description": "Bei detect edges komische Normalisierung (mit magic numbers)",
+            "deduction": "-2"
+          },
+          {
+            "description": "Bei detect edges wird eine Richtung nicht richtig berechnet",
+            "deduction": "-3"
+          },
+          {
+            "description": "Detect edges fehlt komplett",
+            "deduction": "-6"
+          },
+          {
+            "description": "Pointer nach delete nicht auf nullptr gesetzt",
+            "deduction": "-3"
+          },
+          {
+            "description": "Streams oft nicht/nie geschlossen",
+            "deduction": "-1"
+          },
+          {
+            "description": "Oft unnötig clear(), da es später durch generate() sowieso aufgerufen wird",
+            "deduction": "-1"
+          },
+          {
+            "description": "Werte über 255 mit Modulo oder abschneiden? (Kommentieren, Lösungsidee)",
+            "deduction": "-1"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Ein Test wirft eine Exception und keine Erklärung dabei",
+            "deduction": "-3"
+          },
+          {
+            "description": "Kein delete auf die bitmaps aufgerufen",
+            "deduction": "-4"
+          },
+          {
+            "description": "Input Dateien nicht abgegeben ",
+            "deduction": "-5"
+          },
+          {
+            "description": "Kein Test mit nicht vorhanden File",
+            "deduction": "-4"
+          },
+          {
+            "description": "get_width, height, image und co. nicht getestet",
+            "deduction": "-4"
+          },
+          {
+            "description": "Kein Test mit falschem Dateiformat",
+            "deduction": "-2"
+          }
+        ]
+      }
+    }
+  },
+  {
+    // FDS Ue03
+    "annotations": [
+      {
+        "description": "Abgabename falsch",
+        "deduction": "-5"
+      },
+      {
+        "description": "Aufwand fehlt",
+        "deduction": "-2"
+      },
+      {
+        "description": "Methode umbenannt",
+        "deduction": "-1"
+      },
+      {
+        "description": "Alle main-Files main.cpp",
+        "deduction": "-1"
+      },
+      {
+        "description": "DT nicht oder kaum erklärt",
+        "deduction": "-2"
+      },
+      {
+        "description": "DTs nur grob beschrieben, nicht auf Fkt. eingegangen",
+        "deduction": "-3"
+      }
+    ],
+    "exercises": {
+      "Beispiel 1": {
+        "Lösungsidee": [
+          {
+            "description": "Kein apply() in Lösungsidee",
+            "deduction": "-1"
+          },
+          {
+            "description": "Keine richtige Lösungsidee (while Schleife, Counter erhöht, ...)",
+            "deduction": "-2"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "at() nicht implementiert",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kopierkonstruktor erstellt nur shallow copy",
+            "deduction": "-2"
+          },
+          {
+            "description": "Vorletzten Wert statt letzten gelöscht (pop_back)",
+            "deduction": "-1"
+          },
+          {
+            "description": "Zu weit iteriert bei pop_back",
+            "deduction": "-2"
+          },
+          {
+            "description": "remove_all() nicht ganz richtig/geht nicht",
+            "deduction": "-2"
+          },
+          {
+            "description": "apply() geht nicht/falsch ",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kopierkonstruktor die Werte kopiert eingefügt",
+            "deduction": "-1"
+          },
+          {
+            "description": "equals() komplett falscher Ansatz",
+            "deduction": "-2"
+          },
+          {
+            "description": "In pop_back wird nie delete aufgerufen, dadurch memory leaks",
+            "deduction": "-3"
+          },
+          {
+            "description": "Funktion geht nicht/nicht gemacht/falsch",
+            "deduction": "-1 bis -2"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "at() nicht getestet",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein delete auf die Listen aufgerufen - memory leaks entstehen",
+            "deduction": "-3"
+          },
+          {
+            "description": "Beim Copy-Konstruktor nicht getestet, ob es nicht doch eine shallow copy ist",
+            "deduction": "-1"
+          },
+          {
+            "description": "Kopierkonstruktor nicht getestet",
+            "deduction": "-2"
+          }
+        ]
+      },
+      "Beispiel 2": {
+        "Lösungsidee": [
+          {
+            "description": "Nur drei Methoden erklärt",
+            "deduction": "-2"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "set() -  speicher sollte kann mit at() angelegt werden und danach gesetzt",
+            "deduction": "-1"
+          },
+          {
+            "description": "Kein out-of-bound Check bei den Zugriffsmethoden ",
+            "deduction": "-3"
+          },
+          {
+            "description": "Delete statt delete[]",
+            "deduction": "-2"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "at/set/get nicht getestet",
+            "deduction": "-2 je"
+          },
+          {
+            "description": "Keine Spezialfälle getestet",
+            "deduction": "-3"
+          }
+        ]
+      }
+    }
+  },
+  {
+    // FDS Ue04
+    "annotations": [
+      {
+        "description": "Keine Verwendung von const oder by ref",
+        "deduction": "-1 je"
+      },
+      {
+        "description": "Alle Bsp sind einem File",
+        "deduction": "-3"
+      },
+      {
+        "description": "Abgabename falsch",
+        "deduction": "-5"
+      },
+      {
+        "description": "Aufwand fehlt",
+        "deduction": "-2"
+      },
+      {
+        "description": "Alle main-Files gleich benannt (main.cpp)",
+        "deduction": "-2"
+      },
+      {
+        "description": "Überhaupt keine Kommentare",
+        "deduction": "-1 bis -5"
+      }
+    ],
+    "exercises": {
+      "Beispiel 1": {
+        "Quellcode": [
+          {
+            "description": "Keine Wrapper-Funktion",
+            "deduction": "-1"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Gezeigt, dass gleiche Zahlen als unterschiedlich betrachtet werden",
+            "deduction": "+1"
+          },
+          {
+            "description": "Kein Test mit leerem Vektor",
+            "deduction": "-2"
+          }
+        ]
+      },
+      "Beispiel 2": {
+        "Quellcode": [
+          {
+            "description": "srand in shuffle (nicht in main)",
+            "deduction": "-2"
+          },
+          {
+            "description": "Keine Wrapper-Funktion",
+            "deduction": "-1"
+          },
+          {
+            "description": "Nicht rekursiv gemacht",
+            "deduction": "-8"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Kein Test mit leerem Vektor",
+            "deduction": "-2"
+          }
+        ]
+      },
+      "Beispiel 3": {
+        "Lösungsidee": [
+          {
+            "description": "Keine Erwähnung was indirekt rekursiv ist",
+            "deduction": "-1"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Negative Werte nicht geprüft",
+            "deduction": "-2"
+          },
+          {
+            "description": "Nicht indirekt rekursiv",
+            "deduction": "-6"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Nur zwei Tests (einmal Primzahl einmal nicht)",
+            "deduction": "-4"
+          },
+          {
+            "description": "Keine negativen Zahlen",
+            "deduction": "-1"
+          }
+        ]
+      },
+      "Beispiel 4": {
+        "Lösungsidee": [
+          {
+            "description": "Keine Erwähnung das die Zahlen in Blöcken und einer Liste gespeichert werden",
+            "deduction": "-1"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Listengröße wird nicht überprüft (z.B.: 3000 < 400)",
+            "deduction": "-3"
+          },
+          {
+            "description": "Listengröße wird bei jedem rek. Aufruf geprüft.",
+            "deduction": "-1"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Kein Test mit leerer Liste",
+            "deduction": "-2"
+          },
+          {
+            "description": "Selbe Größe aber nicht gleiche Zahlen fehlt",
+            "deduction": "-1"
+          },
+          {
+            "description": "Kein Test mit unterschiedlich langen Zahlen",
+            "deduction": "-2"
+          }
+        ]
+      },
+      "Beispiel 5": {
+        "Quellcode": [
+          {
+            "description": "Kein Check ob a > b (abs oder swap...)",
+            "deduction": "-2"
+          },
+          {
+            "description": "Nicht fähig, die Funktion aus der Angabe abzutippen",
+            "deduction": "-1"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Funktionen der Angabe nicht getestet (laut Angabe 'zumindest' die)",
+            "deduction": "-4"
+          },
+          {
+            "description": "Nur ein Intervall pro Funktion",
+            "deduction": "-2"
+          },
+          {
+            "description": "Bei keinem Test wird eine Nullstelle gefunden.",
+            "deduction": "-2"
+          },
+          {
+            "description": "Ergebnisse validiert mit Graphen",
+            "deduction": "+1"
+          }
+        ]
+      }
+    }
+  },
+  {
+    // FDS Ue05
+    "annotations": [
+      {
+        "description": "Keine Kommentare - nicht als FF gewertet (am besten je Bsp)",
+        "deduction": "-4"
+      },
+      {
+        "description": "Keine Verwendung von const (am besten pro Bsp)",
+        "deduction": "-5"
+      },
+      {
+        "description": "Memory leak (Bsp2 & 3)",
+        "deduction": "-3"
+      }
+    ],
+    "exercises": {
+      "Beispiel 1": {
+        "Lösungsidee": [
+          {
+            "description": "Stack nicht erklärt",
+            "deduction": "-1"
+          },
+          {
+            "description": "Entrekursivieren nicht erklärt",
+            "deduction": "-1"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Stack und Fibonacci-Algorithmen in gleichem File",
+            "deduction": "Kommentar"
+          },
+          {
+            "description": "Eigener Stack fehlt",
+            "deduction": "-4"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Diagramm nicht vollständig Beschriftet (Titel, Achsenbeschriftungen), je -1",
+            "deduction": "-2"
+          },
+          {
+            "description": "Keine graphische Auswertung",
+            "deduction": "-4"
+          },
+          {
+            "description": "Zeitmessung fehlt (Abzug für keine graphische Auswertung gibts extra)",
+            "deduction": "-2"
+          },
+          {
+            "description": "Zeitvergleich nicht kommentiert (was war schneller?)",
+            "deduction": "-2"
+          }
+        ]
+      },
+      "Beispiel 2": {
+        "Quellcode": [
+          {
+            "description": "print_reverse dreht die Liste um und macht print_forward Aufruf / Kopie von Liste erstellt und Elemente eingefügt",
+            "deduction": "-5"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Kein Test mit nur einem Element in der Liste (bei print_rev und reverse selbst)",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test mit leerer Liste (bei print_rev und reverse selbst)",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test mit nur einem Element in der Liste (bei nur einem)",
+            "deduction": "-1"
+          },
+          {
+            "description": "Kein Test mit leerer Liste (bei nur einem)",
+            "deduction": "-1"
+          }
+        ]
+      },
+      "Beispiel 3": {
+        "Lösungsidee": [
+          {
+            "description": "Entrekursivierte Variante nicht erklärt",
+            "deduction": "-1"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Keine entrekursivierte Variante (Abzug nur für Code, Lsgidee und TF extra)",
+            "deduction": "-10"
+          },
+          {
+            "description": "Escape - Pfad zum Ausgang wird nicht angezeigt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Wenn nicht Escape: versuchte Pfade nicht angezeigt",
+            "deduction": "Kommentar"
+          },
+          {
+            "description": "Beim Lesen überprüfen, ob so viele Zeilen existieren und die Zeilenlänge passt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Bei at() nicht überprüft, ob die Position im Labyrinth ist",
+            "deduction": "-1"
+          },
+          {
+            "description": "Start-Position nicht ausgegeben",
+            "deduction": "-2"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Keine Tests wo ein Fehler in der Datei vorliegt und dadurch das Labyrinth nicht gelesen werden kann",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test, wo es keinen Ausgang gibt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Input Dateien nicht abgegeben ",
+            "deduction": "-2"
+          },
+          {
+            "description": "Keine Tests, wo der Startpunkt in der Mauer oder außerhalb liegt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Keine Testfälle mit Entrekursivierung",
+            "deduction": "-3"
+          }
+        ]
+      },
+      "Beispiel 4": {
+        "Quellcode": [
+          {
+            "description": "Start-Pfad nicht ausgegeben",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Wrapper (in main muss indent mit angegeben werden)",
+            "deduction": "-2"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Kein Test mit leerem Verzeichnis",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Test mit Datei als Pfad (z.B. Directory-Listing für 'test.txt')",
+            "deduction": "-1"
+          }
+        ]
+      }
+    }
+  },
+  {
+    // FDS Ue06
+    "annotations": [
+      {
+        "description": "Zeitaufwand fehlt",
+        "deduction": "-2"
+      }
+    ],
+    "exercises": {
+      "Beispiel 1": {
+        "Lösungsidee": [
+          {
+            "description": "Etwas ungenau, nur Funktionen beschrieben",
+            "deduction": "-4"
+          },
+          {
+            "description": "Keine Lösungsidee, sondern eine Codebeschreibung",
+            "deduction": "bis -8"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Solve wird zweimal ausgeführt",
+            "deduction": "-3"
+          },
+          {
+            "description": "Kein Destruktor führt zu Memory-Leaks",
+            "deduction": "-5"
+          },
+          {
+            "description": "Keine check_sudoku Funktion",
+            "deduction": "-7"
+          },
+          {
+            "description": "Schnittstelle umbenannt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Funktioniert nur für 3x3",
+            "deduction": "-10"
+          },
+          {
+            "description": "Fehler beim Einlesen einer leeren Datei oder Zahl größer n*n",
+            "deduction": "-3"
+          },
+          {
+            "description": "check_sudoku() Methode ruft nicht read(), simplify(), solve() und print() auf",
+            "deduction": "-3"
+          },
+          {
+            "description": "Ausgabe entspricht nicht der Ausgabe in der Angabe Datei",
+            "deduction": "Kommentar"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Kein Test mit unlösbarem Sudoku",
+            "deduction": "-3"
+          },
+          {
+            "description": "Kein 4x4 oder 5x5 getestet/beide nicht getestet",
+            "deduction": "-1 / -3"
+          },
+          {
+            "description": "Input-Dateien nicht abgegeben ",
+            "deduction": "-4"
+          },
+          {
+            "description": "Keine Testfunktionen",
+            "deduction": "-4"
+          },
+          {
+            "description": "Kein Test auf valide Files (pauschal)",
+            "deduction": "-10"
+          },
+          {
+            "description": "Nur ein Testfall mit ungültigem File",
+            "deduction": "-5"
+          },
+          {
+            "description": "Kein Test, wo eine zu große bzw. zu kleine Zahl im Sudoku steht",
+            "deduction": ""
+          },
+          {
+            "description": "Kein Test, wo die Zeilenanzahl fehlt oder Datei ist leer",
+            "deduction": ""
+          },
+          {
+            "description": "Kein Test mit ungültigen Zeichen (statt Zahlen)",
+            "deduction": ""
+          },
+          {
+            "description": "Kein Test mit nicht existierender Datei",
+            "deduction": ""
+          }
+        ]
+      }
+    }
+  },
+  {
+    // FDS Ue07
+    "annotations": [
+      {
+        "description": "Keine Kommentare beim neuen Code",
+        "deduction": "-2"
+      }
+    ],
+    "exercises": {
+      "Beispiel 1": {
+        "Lösungsidee": [
+          {
+            "description": "Was wird bei sehr großen Objekte gemacht? (Stack Overflow)",
+            "deduction": "-3"
+          },
+          {
+            "description": "Wie wird Objekt von Hintergrund unterschieden (Threshold erwähnen!)",
+            "deduction": "-3"
+          },
+          {
+            "description": "Wenn Funktionen vom ÜZ2 kopiert wurden, sollte erwähnt wer von wem was übernommen hat",
+            "deduction": "Kommentar"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Keine Prüfung auf Gültigkeit des Thresholdwertes",
+            "deduction": "-3"
+          },
+          {
+            "description": "Ursprungsbild wird verändert",
+            "deduction": "-4"
+          },
+          {
+            "description": "floodfill ist nicht rekursiv",
+            "deduction": "-5"
+          },
+          {
+            "description": "deletes fehlen",
+            "deduction": "-3"
+          },
+          {
+            "description": "Keine Testfunktionen",
+            "deduction": "-3"
+          },
+          {
+            "description": "Objekte werden nicht gezählt",
+            "deduction": "-3"
+          },
+          {
+            "description": "Keine Klasse verwendet",
+            "deduction": "-3"
+          },
+          {
+            "description": "Wahl zwischen 4N oder 8N ",
+            "deduction": "+1"
+          },
+          {
+            "description": "Hilfsstrukturen wie eine Matrix verwendet, um abzuspeichern wo man schon war",
+            "deduction": "-1"
+          },
+          {
+            "description": "Beim Hintergrund bleiben ursprüngliche Graustufen erhalten (sollten weiß sein!)",
+            "deduction": "-4"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Keine unterschiedlichen Thresholdwerte getestet",
+            "deduction": "-3"
+          },
+          {
+            "description": "Kein Test bei dem kein oder das gesamte Bild als ein Objekt erkannt wird",
+            "deduction": "-3"
+          },
+          {
+            "description": "Anzahl Objekte nicht gezeigt",
+            "deduction": "-3"
+          },
+          {
+            "description": "Kein Test mit ungültigem Threshold-Wert",
+            "deduction": "-2"
+          }
+        ]
+      }
+    }
+  },
+  {
+    // FDS Ue08
+    "annotations": [
+      {
+        "description": "Testmethoden in gleichem cpp-File wie Code",
+        "deduction": "-3"
+      }
+    ],
+    "exercises": {
+      "Beispiel 1": {
+        "Lösungsidee": [
+          {
+            "description": "Eine Methode nicht beschrieben",
+            "deduction": "-1"
+          },
+          {
+            "description": "Nicht erklärt, was ein binärer Suchbaum ist.",
+            "deduction": "-2"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Bei den Print 2D ist die Einrückung komisch, man erkennt nicht wirklich die die Baumstruktur",
+            "deduction": "-2"
+          },
+          {
+            "description": "Eine Methode fehlt",
+            "deduction": "-3"
+          },
+          {
+            "description": "print 2D Upright fehlt / beide Print 2D fehlen",
+            "deduction": "-3 / -5"
+          },
+          {
+            "description": "Print 2D Baumstruktur kaum erkennbar",
+            "deduction": "-2"
+          },
+          {
+            "description": "-1 bei Rückgabetyp size_t",
+            "deduction": "-1"
+          },
+          {
+            "description": "Grober Fehler in Methode, aber Algorithmus grundsätzlich ok",
+            "deduction": "-2"
+          },
+          {
+            "description": "Shallow copy statt deep copy",
+            "deduction": "-3"
+          },
+          {
+            "description": "Keine Testfunktionen / alles in main-Funktion",
+            "deduction": "-4 / -2"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Test von einer Methode fehlt (auch Copy-Konstruktor)",
+            "deduction": "-2"
+          },
+          {
+            "description": "Test mit leerem Baum fehlt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Out of Bound Zugriff nicht getestet",
+            "deduction": "-2"
+          },
+          {
+            "description": "Gleiche Zahl mehrfach in Baum nicht getestet.",
+            "deduction": "-2"
+          }
+        ]
+      }
+    }
+  },
+  {
+    // FDS Ue09
+    "annotations": [
+      {
+        "description": "Grafiken nicht beschriftet und keine Einheiten",
+        "deduction": "-3"
+      }
+    ],
+    "exercises": {
+      "Beispiel 1": {
+        "Lösungsidee": [
+          {
+            "description": "Hardwarebeschreibung fehlt",
+            "deduction": "-1"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Programm schreibt nicht in eine csv Datei",
+            "deduction": "-3"
+          },
+          {
+            "description": "Alles in der main.cpp",
+            "deduction": "-2"
+          },
+          {
+            "description": "Kein Code in den IFs beim Compare, weshalb Compiler alle IFs entfernt",
+            "deduction": "-2"
+          },
+          {
+            "description": "Falsche Berechnung",
+            "deduction": "-1"
+          },
+          {
+            "description": "Einzeiler bei einer Funktion in Schleife (oder ähnliches was der Compiler sicher wegoptimiert)",
+            "deduction": "-2 je"
+          },
+          {
+            "description": "Falsche Messung bei mehreren Operationen, aber 'guter Versuch' den Compiler auszutricksen",
+            "deduction": "-3"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Keine Diskussion der Messergebnisse, Vergleiche, ...",
+            "deduction": "-14"
+          },
+          {
+            "description": "Keine Grafiken",
+            "deduction": "-4 je"
+          },
+          {
+            "description": "Negative Geschwindigkeit und keine Diskussion dazu",
+            "deduction": "-4"
+          }
+        ]
+      },
+      "Beispiel 2": {
+        "Lösungsidee": [
+          {
+            "description": "HW-Beschreibung fehlt",
+            "deduction": "-1"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Keine Tests ob die Suchalgorithmen auch wirklich stimmen",
+            "deduction": "-3"
+          },
+          {
+            "description": "Nur Vergleich ob die erhaltenen Wert mit den erwarteten Übereinstimmen fehlt",
+            "deduction": "-5"
+          },
+          {
+            "description": "Keine Feinanalyse",
+            "deduction": "-20"
+          },
+          {
+            "description": "Keine Diskussion der Messergebnisse, Vergleiche, Darstellungen, ...",
+            "deduction": "-10"
+          },
+          {
+            "description": "Vorgehen beim Messen nicht beschrieben",
+            "deduction": "-3"
+          },
+          {
+            "description": "Keine verschiedenen Größen getestet",
+            "deduction": "-4"
+          },
+          {
+            "description": "Keine graphische Auswertung",
+            "deduction": "-3"
+          }
+        ]
+      }
+    }
+  },
+  {
+    // FDS Ue10
+    "exercises": {
+      "Beispiel 1": {
+        "Lösungsidee": [
+          {
+            "description": "Keine Beschreibung der jeweiligen Algorithmen",
+            "deduction": "-4"
+          },
+          {
+            "description": "Zwar Algorithmen irgendwo beschrieben, aber nicht was gemessen wird (DataCollector erwähnen!)",
+            "deduction": "-2"
+          }
+        ],
+        "Quellcode": [
+          {
+            "description": "Funktion heißt nicht search sondern irgendwie anders",
+            "deduction": "-3"
+          },
+          {
+            "description": "Keine Kommentare",
+            "deduction": "-2"
+          },
+          {
+            "description": "Datacollector fehlt (weil der Rest im Unterricht implementiert wurde)",
+            "deduction": "-20"
+          },
+          {
+            "description": "Code in .h geschrieben statt in .cpp",
+            "deduction": "-1"
+          },
+          {
+            "description": "Datacollector zählt nicht für jedes Zeichen individuell, wie oft matched und miss-matched",
+            "deduction": "-3"
+          },
+          {
+            "description": "Start-Parameter fehlt",
+            "deduction": "-2"
+          }
+        ],
+        "Testfälle": [
+          {
+            "description": "Kein Vergleich mit zufällig generierten Texten (generell keinen Zufallsgenerator gemacht)",
+            "deduction": "-4"
+          },
+          {
+            "description": "Worst case Szenarien wurden nicht getestet oder angesprochen",
+            "deduction": "-6"
+          },
+          {
+            "description": "Keine graphische Auswertung",
+            "deduction": "-6"
+          },
+          {
+            "description": "Pro Alphabet nur ein Test (somit auch kein Worst-Case und kein Best-Case, nur Pattern gefunden oder nicht)",
+            "deduction": "bis -10"
+          },
+          {
+            "description": "Keine Analyse, dafür einige Testfälle",
+            "deduction": "-50"
+          },
+          {
+            "description": "Nicht die Anzahl Zeichenvergleiche analysiert und verglichen, sondern welches Zeichen wie oft",
+            "deduction": "-8"
+          },
+          {
+            "description": "Ergebnisse nicht in geeigneter Form graphisch dargestellt",
+            "deduction": "-6"
+          }
+        ]
+      }
+    }
+  }
+]
