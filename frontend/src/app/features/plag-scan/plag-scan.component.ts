@@ -4,7 +4,7 @@ import {
   FileUploadHandlerEvent,
   FileUploadModule,
 } from 'primeng/fileupload';
-import * as JSZip from 'jszip';
+import JSZip from 'jszip';
 import { PlagScanService } from './services/plag-scan.service';
 import { MenuItem } from 'primeng/api';
 import { TranslationService } from '../../shared/services/translation.service';
