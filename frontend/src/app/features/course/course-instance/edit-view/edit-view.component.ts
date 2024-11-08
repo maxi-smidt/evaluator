@@ -336,6 +336,9 @@ export class EditViewComponent implements OnInit {
     }
 
     if (this.courseHasChanged()) {
+      const fn = this.course.fileName.endsWith('.pdf')
+        ? this.course.fileName
+        : `${this.course.fileName}.pdf`;
       this.courseService
         .patchCourseInstance<CourseInstance>(
           this.courseId,
@@ -344,6 +347,7 @@ export class EditViewComponent implements OnInit {
             allowLateSubmission: this.course.allowLateSubmission,
             lateSubmissionPenalty: this.course.lateSubmissionPenalty,
             pointStepSize: this.course.pointStepSize,
+            fileName: fn,
           },
         )
         .subscribe({

@@ -15,15 +15,14 @@
     <label for="abbreviation">{{ 'common.abbreviation' | translate }}</label>
   </p-floatLabel>
 
+  <div class="d-flex gap-1">
+    <p-floatLabel>
+      <input id="file_name" type="text" pInputText [(ngModel)]="course.fileName" [size]="50" [maxlength]="60"/>
+      <label for="file_name">{{ 'common.abbreviation' | translate }}</label>
+    </p-floatLabel>
 
-  <p-inputGroup id="fileName" class="w-full">
-    <input type="text" pInputText [(ngModel)]="fileNamePre"/>
-    <p-inputGroupAddon>_Nachname_</p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="fileNameMid"/>
-    <p-inputGroupAddon>Nr_</p-inputGroupAddon>
-    <input type="text" pInputText [(ngModel)]="fileNamePost"/>
-    <p-inputGroupAddon>.pdf</p-inputGroupAddon>
-  </p-inputGroup>
+    <p-button icon="pi pi-info-circle" text rounded severity="secondary" [pTooltip]="translationService.translate('common.file_name_wc')"/>
+  </div>
 </div>
 
 <div class="mt-3">

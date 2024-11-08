@@ -45,8 +45,16 @@ class CorrectionDownloadRetrieveView(RetrieveAPIView):
         pdf = PdfMaker(obj).make_pdf_stream()
         student = obj.student
         ai = obj.assignment_instance
-        filename = ai.assignment.course.file_name.format(lastname=student.last_name, nr="%02d" % ai.assignment.nr)
+        filename = self.__make_file_name(ai.course_instance.file_name, obj, ai.assignment, student)
         response = HttpResponse(io.BytesIO(pdf), content_type='application/pdf')
         response['filename'] = f'{filename}'
         response['Access-Control-Expose-Headers'] = 'filename'
         return response
+
+    @staticmethod
+    def __make_file_name(template, correction, assignment, student):
+        points = f"{correction.points:.10g}".replace('.', '_') if correction.points % 1 != 0 else str(int(correction.points))
+        lastname = student.last_name
+        firstname = student.first_name
+        nr = f"{assignment.nr:02}"
+        return template.format(lastname=lastname, nr=nr, firstname=firstname, points=points)

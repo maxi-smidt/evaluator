@@ -60,7 +60,7 @@ class CourseInstanceCreateSerializer(serializers.ModelSerializer):
 class CourseInstanceSerializer(SimpleCourseInstanceSerializer):
     class Meta(SimpleCourseInstanceSerializer.Meta):
         fields = SimpleCourseInstanceSerializer.Meta.fields + ['allow_late_submission', 'late_submission_penalty',
-                                                               'point_step_size']
+                                                               'point_step_size', 'file_name']
 
 
 class DetailCourseInstanceSerializer(CourseInstanceSerializer):
