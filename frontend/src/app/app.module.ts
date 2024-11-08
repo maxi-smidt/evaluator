@@ -4,7 +4,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { HeaderComponent } from './core/layout/header/header.component';
 import { SettingsViewComponent } from './features/user/settings-view/settings-view.component';
@@ -36,7 +40,6 @@ function loadTranslations(translationService: TranslationService) {
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule,
     TranslatePipe,
     HeaderComponent,
     HomeComponent,
@@ -55,6 +58,7 @@ function loadTranslations(translationService: TranslationService) {
     ConfirmationService,
     MessageService,
     TranslationService,
+    provideHttpClient(withInterceptorsFromDi()),
   ],
 })
 export class AppModule {}
