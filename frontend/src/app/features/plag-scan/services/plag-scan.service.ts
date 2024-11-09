@@ -11,7 +11,7 @@ export class PlagScanService {
     const formData = new FormData();
     formData.append('zip', file, file.name);
 
-    return this.http.post<any>(`spring/jplag/?lang=${language}`, formData, {
+    return this.http.post<Blob>(`spring/jplag/?lang=${language}`, formData, {
       observe: 'response',
       responseType: 'blob' as 'json',
     });

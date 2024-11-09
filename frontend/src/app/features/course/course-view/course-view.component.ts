@@ -94,7 +94,7 @@ export class CourseViewComponent implements OnInit {
       return;
     }
 
-    const { assignments, id, ...course } = this.course;
+    const { assignments: _assignment, id: _id, ...course } = this.course;
     this.courseService.patchCourse(this.course.id, { ...course }).subscribe({
       next: (value) => {
         this.course = value;

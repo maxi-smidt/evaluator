@@ -1,11 +1,10 @@
-import { Component, effect, input, OnInit } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { CourseInstance } from '../../../models/course.model';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { Button } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
 import { TranslationService } from '../../../../../shared/services/translation.service';
