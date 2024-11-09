@@ -1,36 +1,23 @@
-# Evaluator V2
+# Evaluator
 
-## Frontend (Angular)
+Evaluator is a web application designed to assist tutors in grading and evaluating submissions. By combining multiple features, such as tracking previous deductions, automatic PDF generation, and point calculation, it significantly reduces the workload on tutors.
 
-### Run 
+Initially developed by a student in the MBI department (S2210458016) during the summer of 2023, _Evaluator_ has since undergone significant improvements.
 
-![](documentation/images/frontend_run_config.png)
+The _Evaluator_ is beneficial for various roles within academic departments:
 
-## Backend (Django)
+### 1. Tutors
+The application primarily enhances the grading experience for tutors by automating tasks that a machine can handle efficiently. Tutors can correct assignments and track correction states. Additionally, _Evaluator_ saves previous deductions to help identify recurring mistakes and includes a file upload feature to check for plagiarism using _JPlag_.
 
-### Run
+### 2. Course Leaders
+Course leaders have an administrative role with permissions to manage courses in _Evaluator_. They can view grading progress and oversee course-level grading activities.
 
-![](documentation/images/backend_run_config.png)
+### 3. Degree Program Directors
+Degree program directors hold a higher-level administrative role than course leaders. They can monitor the status of corrections across multiple courses they oversee, providing a broader view of grading activities in their departments.
 
-## Database (Postgres)
 
-## Docker
+A deployed version can be found at [https://evaluator.projekte.fh-hagenberg.at](https://evaluator.projekte.fh-hagenberg.at/home), but an account is needed beforehand.
 
-On the server dangling docker images are stored and can fill up the disk space. Identify them 
-`docker images -f "dangling=true"`, you can see  the disk space with `docker system df`. Remove them with 
-`docker system prune`.
+## Contributing
 
-## Environment
-The _.env_ must include the following variables:
-- BUILD_MODE
-- PG_PATH
-- PG_DB
-- PG_DB_USER
-- PG_DB_PW
-- PG_HOST
-- PG_PORT
-- SECRET_KEY
-- DEBUG
-- DJANGO_SETTINGS_MODULE
-- CORS_ALLOWED_ORIGINS
-- ALLOWED_HOSTS
+If you want to contribute, you can find all the necessary information [here](doc/CONTRIBUTING.md).
