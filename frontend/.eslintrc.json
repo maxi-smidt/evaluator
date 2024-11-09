@@ -32,7 +32,7 @@
             "style": "kebab-case"
           }
         ],
-        "@typescript-eslint/no-unused-vars": "error",
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_" }],
         "quotes": ["error", "single"],
         "prettier/prettier": ["error", { "singleQuote": true, "endOfLine": "auto" }]
       }

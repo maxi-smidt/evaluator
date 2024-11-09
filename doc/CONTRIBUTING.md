@@ -18,4 +18,4 @@ e.g. [Feature #42] plagiarism site implementation, [NOISSUE] ci/cd workflow quic
 Commit messages are not further important, because all the commits are squashed anyway.
 
 ## Coding
-To retain a specific code quality, linting is used for both frontend (EsLint) and backend (pylint). Since this is not yet checked in the CI/CD workflow, it should be checked, before changes are merged.
+To retain a specific code quality, linting is used for both frontend (EsLint) and backend (pylint not yet). Since this is not yet checked in the CI/CD workflow, it should be checked, before changes are merged.

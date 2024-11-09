@@ -89,7 +89,9 @@ export class PlagScanComponent {
       .scanZipFile(processedFile, this.selectedLanguage!.label!)
       .subscribe({
         next: (value) => {
-          const blob = new Blob([value.body], { type: 'application/zip' });
+          const blob = new Blob(value.body ? [value.body] : [], {
+            type: 'application/zip',
+          });
           window.open(
             this.translationService.translate('plag-scan.jplag-url'),
             '_blank',
