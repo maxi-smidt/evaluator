@@ -29,7 +29,6 @@ import { ToastService } from '../../../shared/services/toast.service';
 })
 export class AssignmentInstanceViewComponent implements OnInit {
   assignment: AssignmentInstance;
-  cols: { field: string; header: string; width: number }[];
   groups: string[];
   assignmentId: number;
 
@@ -42,38 +41,6 @@ export class AssignmentInstanceViewComponent implements OnInit {
     private assignmentService: AssignmentService,
     private toastService: ToastService,
   ) {
-    this.cols = [
-      {
-        field: 'lastName',
-        header: this.translate('common.lastname'),
-        width: 25,
-      },
-      {
-        field: 'firstName',
-        header: this.translate('common.firstname'),
-        width: 25,
-      },
-      {
-        field: 'points',
-        header: this.translate('course.assignmentView.evaluation'),
-        width: 10,
-      },
-      {
-        field: 'status',
-        header: this.translate('course.assignmentView.status'),
-        width: 15,
-      },
-      {
-        field: 'action',
-        header: this.translate('common.action'),
-        width: 17,
-      },
-      {
-        field: 'lateSubmission',
-        header: this.translate('course.assignmentView.lateSubmission'),
-        width: 5,
-      },
-    ];
     this.groups = [];
     this.assignmentId = -1;
     this.assignment = {} as AssignmentInstance;
