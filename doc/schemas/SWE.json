@@ -59,7 +59,7 @@
         ]
       },
       {
-        "name": "Beispiel 2 - Mergesort Komplexität",
+        "name": "Beispiel 2 - External Merge Sort",
         "distribution": [
           {
             "name": "Lösungsidee",
