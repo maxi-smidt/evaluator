@@ -14,7 +14,8 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": {
-              "base": "dist/evaluator"
+              "base": "dist/evaluator",
+              "browser": ""
             },
             "index": "src/index.html",
             "polyfills": [
