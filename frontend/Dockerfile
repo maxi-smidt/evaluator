@@ -10,9 +10,9 @@ RUN npm install
 COPY ./ /app/
 
 RUN if [ "$BUILD_MODE" = "production" ]; then \
-      npm run build -- --output-path=./dist/out --configuration=production; \
+      npm run build -- --configuration=production; \
     else \
-      npm run build -- --output-path=./dist/out --configuration=development; \
+      npm run build -- --configuration=development; \
     fi
 
 
