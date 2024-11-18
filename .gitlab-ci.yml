@@ -38,7 +38,7 @@ deploy_job:
     - echo "GITLAB_POST_URL=$GITLAB_POST_URL" >> .env
 
     - echo "Building and starting Docker containers..."
-    - docker-compose build
+    - docker-compose build --no-cache
     - docker-compose up -d
 
     - echo "Applying Django migrations..."
