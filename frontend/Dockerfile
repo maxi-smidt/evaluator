@@ -18,7 +18,7 @@ RUN if [ "$BUILD_MODE" = "production" ]; then \
 
 FROM nginx:alpine as production-stage
 
-COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
+COPY --from=build-stage /app/dist/evaluator/ /usr/share/nginx/html
 
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 
