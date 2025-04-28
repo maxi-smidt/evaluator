@@ -119,15 +119,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 3
+            "points": 1
           },
           {
             "name": "Quellcode",
-            "points": 25
+            "points": 7
           },
           {
             "name": "Testfälle",
-            "points": 12
+            "points": 2
           }
         ]
       },
@@ -136,15 +136,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 3
+            "points": 1
           },
           {
             "name": "Quellcode",
-            "points": 15
+            "points": 7
           },
           {
             "name": "Testfälle",
-            "points": 7
+            "points": 2
           }
         ]
       },
@@ -153,15 +153,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 3
+            "points": 1
           },
           {
             "name": "Quellcode",
-            "points": 15
+            "points": 7
           },
           {
             "name": "Testfälle",
-            "points": 7
+            "points": 2
           }
         ]
       }
@@ -175,15 +175,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 3
+            "points": 2
           },
           {
             "name": "Quellcode",
-            "points": 11
+            "points": 8
           },
           {
             "name": "Testfälle",
-            "points": 6
+            "points": 2
           }
         ]
       },
@@ -192,41 +192,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 3
+            "points": 2
           },
           {
             "name": "Quellcode",
-            "points": 11
+            "points": 8
           },
           {
             "name": "Testfälle",
-            "points": 6
-          }
-        ]
-      },
-      {
-        "name": "Beispiel 3",
-        "distribution": [
-          {
-            "name": "Lösungsidee",
-            "points": 3
-          },
-          {
-            "name": "Quellcode",
-            "points": 11
-          },
-          {
-            "name": "Testfälle",
-            "points": 6
-          }
-        ]
-      },
-      {
-        "name": "Beispiel 4",
-        "distribution": [
-          {
-            "name": "Analyse",
-            "points": 40
+            "points": 2
           }
         ]
       }
@@ -240,49 +214,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 4
+            "points": 3
           },
           {
             "name": "Quellcode",
-            "points": 26
-          },
-          {
-            "name": "Testfälle",
-            "points": 10
-          }
-        ]
-      },
-      {
-        "name": "Beispiel 2",
-        "distribution": [
-          {
-            "name": "Lösungsidee",
-            "points": 2
-          },
-          {
-            "name": "Quellcode",
-            "points": 12
+            "points": 15
           },
           {
             "name": "Testfälle",
             "points": 6
-          }
-        ]
-      },
-      {
-        "name": "Beispiel 3",
-        "distribution": [
-          {
-            "name": "Lösungsidee",
-            "points": 4
-          },
-          {
-            "name": "Quellcode",
-            "points": 26
-          },
-          {
-            "name": "Testfälle",
-            "points": 10
           }
         ]
       }
@@ -296,49 +236,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
+            "points": 4
+          },
+          {
+            "name": "Quellcode",
+            "points": 15
+          },
+          {
+            "name": "Testfälle",
             "points": 5
-          },
-          {
-            "name": "Quellcode",
-            "points": 28
-          },
-          {
-            "name": "Testfälle",
-            "points": 17
-          }
-        ]
-      },
-      {
-        "name": "Beispiel 2",
-        "distribution": [
-          {
-            "name": "Lösungsidee",
-            "points": 3
-          },
-          {
-            "name": "Quellcode",
-            "points": 14
-          },
-          {
-            "name": "Testfälle",
-            "points": 8
-          }
-        ]
-      },
-      {
-        "name": "Beispiel 3",
-        "distribution": [
-          {
-            "name": "Lösungsidee",
-            "points": 3
-          },
-          {
-            "name": "Quellcode",
-            "points": 16
-          },
-          {
-            "name": "Testfälle",
-            "points": 6
           }
         ]
       }
