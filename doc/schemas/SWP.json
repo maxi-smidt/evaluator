@@ -1,0 +1,207 @@
+[
+  {
+    "name": "SWP Übung 01",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 5
+          },
+          {
+            "name": "Quellcode",
+            "points": 33
+          },
+          {
+            "name": "Testfälle",
+            "points": 17
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 4
+          },
+          {
+            "name": "Quellcode",
+            "points": 27
+          },
+          {
+            "name": "Testfälle",
+            "points": 14
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWP Übung 02",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 10
+          },
+          {
+            "name": "Quellcode",
+            "points": 60
+          },
+          {
+            "name": "Testfälle",
+            "points": 30
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWP Übung 03",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 10
+          },
+          {
+            "name": "Quellcode",
+            "points": 60
+          },
+          {
+            "name": "Testfälle",
+            "points": 30
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWP Übung 04",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 10
+          },
+          {
+            "name": "Quellcode",
+            "points": 60
+          },
+          {
+            "name": "Testfälle",
+            "points": 30
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWP Übung 05",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 2
+          },
+          {
+            "name": "Quellcode",
+            "points": 12
+          },
+          {
+            "name": "Testfälle",
+            "points": 6
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 8
+          },
+          {
+            "name": "Quellcode",
+            "points": 48
+          },
+          {
+            "name": "Testfälle",
+            "points": 24
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWP Übung 06",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 2
+          },
+          {
+            "name": "Quellcode",
+            "points": 12
+          },
+          {
+            "name": "Testfälle",
+            "points": 6
+          }
+        ]
+      },
+      {
+        "name": "Beispiel 2",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 8
+          },
+          {
+            "name": "Quellcode",
+            "points": 48
+          },
+          {
+            "name": "Testfälle",
+            "points": 24
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "SWP Übung 07",
+    "draft": [
+      {
+        "name": "Beispiel 1",
+        "distribution": [
+          {
+            "name": "Lösungsidee",
+            "points": 10
+          },
+          {
+            "name": "Quellcode",
+            "points": 60
+          },
+          {
+            "name": "Testfälle",
+            "points": 30
+          }
+        ]
+      }
+    ]
+  }
+]
