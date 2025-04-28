@@ -1,0 +1,356 @@
+[
+  {
+    "name": "XML Übung 01",
+    "draft": [
+      {
+        "name": "Wohlgeformtheit",
+        "distribution": [
+          {
+            "name": "",
+            "points": 3
+          }
+        ]
+      },
+      {
+        "name": "Kontaktdaten als XML Dokument",
+        "distribution": [
+          {
+            "name": "",
+            "points": 7
+          }
+        ]
+      },
+      {
+        "name": "Erstellen einer Dokumenttyp-Definition (DTD)",
+        "distribution": [
+          {
+            "name": "",
+            "points": 6
+          }
+        ]
+      },
+      {
+        "name": "Kontakte um Länderdaten erweitern",
+        "distribution": [
+          {
+            "name": "",
+            "points": 3
+          }
+        ]
+      },
+      {
+        "name": "Verweise auf Länderinformationen",
+        "distribution": [
+          {
+            "name": "",
+            "points": 3
+          }
+        ]
+      },
+      {
+        "name": "",
+        "distribution": [
+          {
+            "name": "Extraktion Länderinformationen",
+            "points": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "XML Übung 02",
+    "draft": [
+      {
+        "name": "XML Schema",
+        "distribution": [
+          {
+            "name": "",
+            "points": 18
+          }
+        ]
+      },
+      {
+        "name": "XML Instanzdokument",
+        "distribution": [
+          {
+            "name": "",
+            "points": 6
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "XML Übung 03",
+    "draft": [
+      {
+        "name": "XPath booklist",
+        "distribution": [
+          {
+            "name": "1.1",
+            "points": 0.5
+          },
+          {
+            "name": "1.2",
+            "points": 0.5
+          },
+          {
+            "name": "1.3",
+            "points": 0.5
+          },
+          {
+            "name": "1.4",
+            "points": 0.5
+          },
+          {
+            "name": "1.5",
+            "points": 0.5
+          },
+          {
+            "name": "1.6",
+            "points": 0.5
+          },
+          {
+            "name": "1.7",
+            "points": 0.5
+          },
+          {
+            "name": "1.8",
+            "points": 0.5
+          },
+          {
+            "name": "1.9",
+            "points": 0.5
+          },
+          {
+            "name": "1.10",
+            "points": 0.5
+          },
+          {
+            "name": "1.11",
+            "points": 0.5
+          },
+          {
+            "name": "1.12",
+            "points": 0.5
+          },
+          {
+            "name": "1.13",
+            "points": 0.5
+          },
+          {
+            "name": "1.14",
+            "points": 0.5
+          },
+          {
+            "name": "1.15",
+            "points": 0.5
+          },
+          {
+            "name": "1.16",
+            "points": 0.5
+          },
+          {
+            "name": "1.17",
+            "points": 0.5
+          },
+          {
+            "name": "1.18",
+            "points": 0.5
+          },
+          {
+            "name": "1.19",
+            "points": 0.5
+          },
+          {
+            "name": "1.20",
+            "points": 0.5
+          },
+          {
+            "name": "1.21",
+            "points": 0.5
+          },
+          {
+            "name": "1.22",
+            "points": 0.5
+          },
+          {
+            "name": "1.23",
+            "points": 0.5
+          },
+          {
+            "name": "1.24",
+            "points": 0.5
+          }
+        ]
+      },
+      {
+        "name": "XQuery",
+        "distribution": [
+          {
+            "name": "2.1",
+            "points": 1
+          },
+          {
+            "name": "2.2",
+            "points": 1
+          },
+          {
+            "name": "2.3",
+            "points": 2
+          },
+          {
+            "name": "2.4",
+            "points": 1
+          },
+          {
+            "name": "2.5",
+            "points": 2
+          },
+          {
+            "name": "2.6",
+            "points": 2.5
+          },
+          {
+            "name": "2.7",
+            "points": 1
+          },
+          {
+            "name": "2.8",
+            "points": 1.5
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "XML Übung 04",
+    "draft": [
+      {
+        "name": "XML to XML Transformation",
+        "distribution": [
+          {
+            "name": "Medical Subject Headings",
+            "points": 8
+          },
+          {
+            "name": "Gruppierte Ausgabe",
+            "points": 1
+          },
+          {
+            "name": "Annotation",
+            "points": 1
+          }
+        ]
+      },
+      {
+        "name": "XML to JSON Transformation",
+        "distribution": [
+          {
+            "name": "Selbststudium",
+            "points": 2
+          },
+          {
+            "name": "Person XML to JSON",
+            "points": 8
+          }
+        ]
+      },
+      {
+        "name": "XSLT Template Rules",
+        "distribution": [
+          {
+            "name": "",
+            "points": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "XML Übung 05",
+    "draft": [
+      {
+        "name": "Programmatische Verarbeitung von XML",
+        "distribution": [
+          {
+            "name": "DrugBankParser",
+            "points": 32
+          },
+          {
+            "name": "Ausgabe im XML Format",
+            "points": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "XML Übung 06",
+    "draft": [
+      {
+        "name": "JSON Schema",
+        "distribution": [
+          {
+            "name": "",
+            "points": 12
+          }
+        ]
+      },
+      {
+        "name": "JQ",
+        "distribution": [
+          {
+            "name": "2.1",
+            "points": 1
+          },
+          {
+            "name": "2.2",
+            "points": 1
+          },
+          {
+            "name": "2.3",
+            "points": 1
+          },
+          {
+            "name": "2.4",
+            "points": 1
+          },
+          {
+            "name": "2.5",
+            "points": 1
+          },
+          {
+            "name": "2.6",
+            "points": 1
+          },
+          {
+            "name": "2.7",
+            "points": 1
+          },
+          {
+            "name": "2.8",
+            "points": 1
+          },
+          {
+            "name": "2.9",
+            "points": 1
+          },
+          {
+            "name": "2.10",
+            "points": 1
+          },
+          {
+            "name": "2.11",
+            "points": 1
+          },
+          {
+            "name": "2.12",
+            "points": 1
+          }
+        ]
+      }
+    ]
+  }
+]
