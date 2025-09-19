@@ -7,15 +7,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 5
+            "points": 11
           },
           {
             "name": "Quellcode",
-            "points": 33
+            "points": 22
           },
           {
             "name": "Testfälle",
-            "points": 17
+            "points": 22
           }
         ]
       },
@@ -24,15 +24,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 4
+            "points": 9
           },
           {
             "name": "Quellcode",
-            "points": 27
+            "points": 18
           },
           {
             "name": "Testfälle",
-            "points": 14
+            "points": 18
           }
         ]
       }
@@ -46,15 +46,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 10
+            "points": 20
           },
           {
             "name": "Quellcode",
-            "points": 60
+            "points": 40
           },
           {
             "name": "Testfälle",
-            "points": 30
+            "points": 40
           }
         ]
       }
@@ -68,15 +68,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 10
+            "points": 20
           },
           {
             "name": "Quellcode",
-            "points": 60
+            "points": 40
           },
           {
             "name": "Testfälle",
-            "points": 30
+            "points": 40
           }
         ]
       }
@@ -90,15 +90,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 10
+            "points": 20
           },
           {
             "name": "Quellcode",
-            "points": 60
+            "points": 40
           },
           {
             "name": "Testfälle",
-            "points": 30
+            "points": 40
           }
         ]
       }
@@ -112,15 +112,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 2
+            "points": 4
           },
           {
             "name": "Quellcode",
-            "points": 12
+            "points": 8
           },
           {
             "name": "Testfälle",
-            "points": 6
+            "points": 8
           }
         ]
       },
@@ -129,15 +129,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 8
+            "points": 16
           },
           {
             "name": "Quellcode",
-            "points": 48
+            "points": 32
           },
           {
             "name": "Testfälle",
-            "points": 24
+            "points": 32
           }
         ]
       }
@@ -151,15 +151,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 2
+            "points": 4
           },
           {
             "name": "Quellcode",
-            "points": 12
+            "points": 8
           },
           {
             "name": "Testfälle",
-            "points": 6
+            "points": 8
           }
         ]
       },
@@ -168,15 +168,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 8
+            "points": 16
           },
           {
             "name": "Quellcode",
-            "points": 48
+            "points": 32
           },
           {
             "name": "Testfälle",
-            "points": 24
+            "points": 32
           }
         ]
       }
@@ -190,15 +190,15 @@
         "distribution": [
           {
             "name": "Lösungsidee",
-            "points": 10
+            "points": 20
           },
           {
             "name": "Quellcode",
-            "points": 60
+            "points": 40
           },
           {
             "name": "Testfälle",
-            "points": 30
+            "points": 40
           }
         ]
       }
