@@ -1,0 +1,29 @@
+name: PR Title Format Check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  validate-title:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Validate PR title
+        run: |
+          TITLE="${{ github.event.pull_request.title }}"
+
+          if [[ "$TITLE" =~ ^release-[0-9]+\.[0-9]+\.[0-9]+$ \
+             || "$TITLE" =~ ^\[Feature\ #[0-9]+\]\ .+ \
+             || "$TITLE" =~ ^\[Bug\ #[0-9]+\]\ .+ \
+             || "$TITLE" =~ ^\[NOISSUE\]\ .+ ]]; then
+            echo "Title matches required format."
+          else
+              echo "Invalid PR title format."
+              echo "Allowed formats:"
+              echo "  release-x.x.x"
+              echo "  [Feature #123] description"
+              echo "  [Bug #123] description"
+              echo "  [NOISSUE] description"
+              exit 1
+          fi
