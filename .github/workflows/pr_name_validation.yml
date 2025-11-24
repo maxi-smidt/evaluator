@@ -17,6 +17,7 @@ jobs:
              || "$TITLE" =~ ^\[Feature\ #[0-9]+\]:\ .+ \
              || "$TITLE" =~ ^\[Bug\ #[0-9]+\]:\ .+ \
              || "$TITLE" =~ ^\[NOISSUE\]\ .+ ]]; then
+            echo "Title matches required format."
           else
               echo "Invalid PR title format."
               echo "Allowed formats:"
