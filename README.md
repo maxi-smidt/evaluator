@@ -1,7 +1,11 @@
+<!-- omit in toc -->
 # Evaluator
 
+<!-- omit in toc -->
+## Table of Contents
 <!-- TOC -->
 * [Evaluator](#evaluator)
+  * [Table of Contents](#table-of-contents)
   * [Linked Repositories](#linked-repositories)
   * [Contributing](#contributing)
 <!-- TOC -->
