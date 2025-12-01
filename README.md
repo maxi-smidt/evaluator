@@ -1,20 +1,10 @@
-<!-- omit in toc -->
 # Evaluator
-
-<!-- omit in toc -->
-## Table of Contents
-<!-- TOC -->
-* [Evaluator](#evaluator)
-  * [Table of Contents](#table-of-contents)
-  * [Linked Repositories](#linked-repositories)
-  * [Contributing](#contributing)
-<!-- TOC -->
 
 Evaluator is a web application designed to assist tutors in grading and evaluating submissions. By combining multiple features, such as tracking previous deductions, automatic PDF generation, and point calculation, it significantly reduces the workload on tutors.
 
 ## Linked Repositories
 
-Here are some GitHub repositories listed, that are closely related to the _Evaluator_ project.
+Here are some GitHub repositories listed that are closely related to the _Evaluator_ project.
 
 | Name              | Description                                                                           | Visibility | Link           |
 |-------------------|---------------------------------------------------------------------------------------|------------|----------------|
@@ -25,4 +15,4 @@ Here are some GitHub repositories listed, that are closely related to the _Evalu
 
 ## Contributing
 
-If you want to contribute, you can find all the necessary information in [CONTRIBUTING.md](.github/CONTRIBUTING.md).
+If you want to contribute, you can find all the necessary information in [CONTRIBUTING](.github/CONTRIBUTING.md).

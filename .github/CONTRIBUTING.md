@@ -40,7 +40,7 @@ Open a new [Issue](https://github.com/maxi-smidt/evaluator/issues/new) and descr
 
 ### Your First Code Contribution
 
-Look at the [Getting Started Guide](https://github.com/maxi-smidt/evaluator/main/.github/GETTING_STARTED.md) to see how to set up the application.
+Look at the [Getting Started Guide](.github/GETTING_STARTED.md) to see how to set up the application.
 
 ### Improving The Documentation
 
@@ -58,7 +58,7 @@ The _Short description_ should summarize the content of the issue. The content s
 
 ### Branches
 
-For branches you should follow the naming convention `<USER-ID>/<LABEL>/<Short description>` (e.g., _msmidt/bug/123-this-is-a-bug_). The _USER-ID_ can be, but not necessarily must be you GitHub username, the label is one of the options already mentioned in [Issues](#issues) **but in lowercase**. It is recommended that the _Short description> starts with issue number for easier navigation. 
+For branches you should follow the naming convention `<USER_ID>/<LABEL>/<Short description>` (e.g., _msmidt/bug/123-this-is-a-bug_). The _USER_ID_ can be, but not necessarily must be your GitHub username, the label is one of the options already mentioned in [Issues](#issues) **but in lowercase**. It is recommended that the _Short description> starts with issue number for easier navigation. 
 
 ### Pull Requests
 
