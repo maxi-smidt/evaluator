@@ -19,4 +19,4 @@ If you want to contribute, you can find all the necessary information in [CONTRI
 
 ## Setup
 
-If you want to run the project locally, you can find a comprehensive setup guide in [GETTING_STARTED](.github/GETTING_STARTED.md).
+If you want to run the project locally, you can find a comprehensive setup guide in [GETTING_STARTED](https://github.com/maxi-smidt/evaluator/blob/main/.github/GETTING_STARTED.md).

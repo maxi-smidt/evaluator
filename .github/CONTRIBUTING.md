@@ -40,7 +40,7 @@ Open a new [Issue](https://github.com/maxi-smidt/evaluator/issues/new) and descr
 
 ### Your First Code Contribution
 
-Look at the [Getting Started Guide](./GETTING_STARTED.md) to see how to set up the application.
+Look at the [Getting Started Guide](https://github.com/maxi-smidt/evaluator/blob/main/.github/GETTING_STARTED.md) to see how to set up the application.
 
 ### Improving The Documentation
 
