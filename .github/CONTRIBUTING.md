@@ -67,4 +67,5 @@ PR's should be titles following the convention `[<LABEL> #<ISSUE_NUMBER>] <Short
 PR's always need to be approved by one of the code maintainers. Commits are squashed before merging - therefore the commit messages are not too important, but still give information about the contents. The branch is automatically deleted after the merge.
 
 ## Attribution
+
 This guide is based on the [contributing.md](https://contributing.md/generator)!
