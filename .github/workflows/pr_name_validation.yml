@@ -16,6 +16,7 @@ jobs:
           if [[ "$TITLE" =~ ^release-[0-9]+\.[0-9]+\.[0-9]+$ \
              || "$TITLE" =~ ^\[Feature\ #[0-9]+\]\ .+ \
              || "$TITLE" =~ ^\[Bug\ #[0-9]+\]\ .+ \
+             || "$TITLE" =~ ^\[Upgrade\]:\ .+ \
              || "$TITLE" =~ ^\[NOISSUE\]\ .+ ]]; then
             echo "Title matches required format."
           else
