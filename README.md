@@ -16,3 +16,7 @@ Here are some GitHub repositories listed that are closely related to the _Evalua
 ## Contributing
 
 If you want to contribute, you can find all the necessary information in [CONTRIBUTING](.github/CONTRIBUTING.md).
+
+## Setup
+
+If you want to run the project locally, you can find a comprehensive setup guide in [GETTING_STARTED](.github/GETTING_STARTED.md).
