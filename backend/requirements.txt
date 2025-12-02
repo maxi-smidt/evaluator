@@ -11,7 +11,7 @@ django-extensions==3.2.3
 djangorestframework==3.15.2
 djangorestframework-camel-case==1.4.2
 djangorestframework-simplejwt==5.3.1
-fonttools==4.54.1
+fonttools==4.61.0
 idna==3.10
 jsonschema==4.23.0
 jsonschema-specifications==2024.10.1
