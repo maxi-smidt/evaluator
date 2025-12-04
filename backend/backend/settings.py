@@ -198,4 +198,3 @@ LOGGING = None
 
 GITLAB_AUTH_TOKEN = os.environ.get('GITLAB_AUTH_TOKEN')
 GITLAB_POST_URL = os.environ.get('GITLAB_POST_URL')
-

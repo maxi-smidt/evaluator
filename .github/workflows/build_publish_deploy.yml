@@ -5,6 +5,13 @@ on:
 
 jobs:
   build-and-push-frontend:
+    if: |
+      github.event_name == 'push' &&
+      (
+        contains(toJson(github.event.commits.*.modified), 'frontend/**')  ||
+        contains(toJson(github.event.commits.*.added), 'frontend/**')     ||
+        contains(toJson(github.event.commits.*.removed), 'frontend/**')
+      )
     runs-on: ubuntu-latest
 
     env:
@@ -48,6 +55,13 @@ jobs:
           cache-to: type=gha,mode=max
 
   build-and-push-backend:
+    if: |
+      github.event_name == 'push' &&
+      (
+        contains(toJson(github.event.commits.*.modified), 'frontend/**')  ||
+        contains(toJson(github.event.commits.*.added), 'frontend/**')     ||
+        contains(toJson(github.event.commits.*.removed), 'frontend/**')
+      )
     runs-on: ubuntu-latest
 
     env:
