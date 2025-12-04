@@ -1,7 +1,7 @@
 name: Build, Publish and Deploy
 on:
   push:
-    branches: ["main"]
+    branches: ["msmidt/cicd-pipelin"]
 
 jobs:
   build-and-push-frontend:
