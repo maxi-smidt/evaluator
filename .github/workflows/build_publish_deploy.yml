@@ -94,7 +94,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
-    needs: [build-and-push-frontend, build-and-push-backend]
+    # needs: [build-and-push-frontend, build-and-push-backend]
     #if: |
     #  needs.build-and-push-frontend.result == 'success' ||
     #  needs.build-and-push-backend.result == 'success'
