@@ -1,5 +1,4 @@
 name: PR Title Format Check
-
 on:
   pull_request:
     types: [opened, edited, synchronize]
