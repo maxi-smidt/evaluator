@@ -6,7 +6,7 @@ on:
 jobs:
   build-and-push-frontend:
     runs-on: ubuntu-latest
-
+    environment: production
     env:
       IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/evaluator-frontend
 
@@ -49,7 +49,7 @@ jobs:
 
   build-and-push-backend:
     runs-on: ubuntu-latest
-
+    environment: production
     env:
       IMAGE_NAME: ${{ secrets.DOCKER_USERNAME }}/evaluator-backend
 
@@ -91,6 +91,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    environment: production
     needs: [build-and-push-frontend, build-and-push-backend]
     if: |
       needs.build-and-push-frontend.result == 'success' ||
