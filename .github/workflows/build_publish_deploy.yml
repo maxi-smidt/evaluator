@@ -114,4 +114,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/${{ secrets.SSH_USER }}/evaluator
+            git pull
             ./deploy.sh
