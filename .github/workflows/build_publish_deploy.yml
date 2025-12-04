@@ -100,11 +100,11 @@ jobs:
     #  needs.build-and-push-backend.result == 'success'
     steps:
       - name: Connect Tailscale
-        uses: tailscale/github-action@v3
+        uses: tailscale/github-action@v4
         with:
           oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
           oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:ci
+          tags: tag:deploy
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
