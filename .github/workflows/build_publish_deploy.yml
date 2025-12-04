@@ -5,7 +5,10 @@ on:
 
 jobs:
   build-and-push-frontend:
-    if: false
+    if: |
+      contains(toJson(github.event.commits.*.modified), 'frontend/') ||
+      contains(toJson(github.event.commits.*.added), 'frontend/')    ||
+      contains(toJson(github.event.commits.*.removed), 'frontend/')
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -49,7 +52,10 @@ jobs:
           cache-to: type=gha,mode=max
 
   build-and-push-backend:
-    if: false
+    if: |
+      contains(toJson(github.event.commits.*.modified), 'backend/') ||
+      contains(toJson(github.event.commits.*.added), 'backend/')    ||
+      contains(toJson(github.event.commits.*.removed), 'backend/')
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -94,10 +100,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: production
-    # needs: [build-and-push-frontend, build-and-push-backend]
-    #if: |
-    #  needs.build-and-push-frontend.result == 'success' ||
-    #  needs.build-and-push-backend.result == 'success'
+    needs: [build-and-push-frontend, build-and-push-backend]
+    if: |
+      needs.build-and-push-frontend.result == 'success' ||
+      needs.build-and-push-backend.result == 'success'
     steps:
       - name: Connect Tailscale
         uses: tailscale/github-action@v4
@@ -114,5 +120,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/${{ secrets.SSH_USER }}/evaluator
-            git pull
             ./deploy.sh
