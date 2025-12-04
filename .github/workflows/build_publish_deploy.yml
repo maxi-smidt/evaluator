@@ -5,6 +5,7 @@ on:
 
 jobs:
   build-and-push-frontend:
+    if: false
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -48,6 +49,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   build-and-push-backend:
+    if: false
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -93,16 +95,14 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     needs: [build-and-push-frontend, build-and-push-backend]
-    if: |
-      needs.build-and-push-frontend.result == 'success' ||
-      needs.build-and-push-backend.result == 'success'
+    #if: |
+    #  needs.build-and-push-frontend.result == 'success' ||
+    #  needs.build-and-push-backend.result == 'success'
     steps:
       - name: Connect Tailscale
         uses: tailscale/github-action@v4
         with:
-          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
-          oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
-          tags: tag:deploy
+          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
 
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
