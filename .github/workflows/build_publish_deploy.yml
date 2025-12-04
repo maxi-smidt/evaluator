@@ -1,11 +1,13 @@
 name: Build, Publish and Deploy
 on:
   push:
-    branches: ["msmidt/cicd-pipelin"]
+    branches: ["main"]
 
 jobs:
   changes:
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
     outputs:
       frontend: ${{ steps.filter.outputs.frontend }}
       backend: ${{ steps.filter.outputs.backend }}
