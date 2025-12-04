@@ -12,9 +12,7 @@ services:
     restart: always
 
   backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
+    image: maxismidt/evaluator-backend:latest
     ports:
       - "8080:8080"
     volumes:
@@ -29,11 +27,7 @@ services:
     restart: always
 
   frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-      args:
-        BUILD_MODE: ${BUILD_MODE}
+    image: maxismidt/evaluator-frontend:latest
     ports:
       - "4200:4200"
     depends_on:
