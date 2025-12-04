@@ -1,4 +1,0 @@
-name: Build and publish frontend image
-on:
-
-jobs:
