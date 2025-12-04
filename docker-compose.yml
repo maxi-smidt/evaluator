@@ -9,6 +9,7 @@ services:
       POSTGRES_PASSWORD: ${PG_DB_PW}
     ports:
       - "5432:5432"
+    restart: always
 
   backend:
     build:
@@ -25,6 +26,7 @@ services:
     depends_on:
       - db
       - jplag
+    restart: always
 
   frontend:
     build:
@@ -36,6 +38,7 @@ services:
       - "4200:4200"
     depends_on:
       - backend
+    restart: always
 
   jplag:
     image: maxismidt/evaluator-jplag:latest
@@ -44,6 +47,4 @@ services:
     environment:
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
       SPRING_PROFILES_ACTIVE: "prod"
-
-volumes:
-  postgres_data:
+    restart: always
