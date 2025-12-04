@@ -4,11 +4,24 @@ on:
     branches: ["msmidt/cicd-pipelin"]
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+      backend: ${{ steps.filter.outputs.backend }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            frontend:
+              - 'frontend/**'
+            backend:
+              - 'backend/**'
   build-and-push-frontend:
-    if: |
-      contains(toJson(github.event.commits.*.modified), 'frontend/') ||
-      contains(toJson(github.event.commits.*.added), 'frontend/')    ||
-      contains(toJson(github.event.commits.*.removed), 'frontend/')
+    needs: changes
+    if: ${{ needs.changes.outputs.frontend == 'true' }}
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -52,10 +65,8 @@ jobs:
           cache-to: type=gha,mode=max
 
   build-and-push-backend:
-    if: |
-      contains(toJson(github.event.commits.*.modified), 'backend/') ||
-      contains(toJson(github.event.commits.*.added), 'backend/')    ||
-      contains(toJson(github.event.commits.*.removed), 'backend/')
+    needs: changes
+    if: ${{ needs.changes.outputs.backend == 'true' }}
     runs-on: ubuntu-latest
     environment: production
     env:
