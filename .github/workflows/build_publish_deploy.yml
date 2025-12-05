@@ -22,6 +22,8 @@ jobs:
               - 'frontend/**'
             backend:
               - 'backend/**'
+            deploy_only:
+              - 'docker-compose.yml'
   build-and-push-frontend:
     needs: changes
     if: ${{ needs.changes.outputs.frontend == 'true' }}
@@ -104,7 +106,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy:
-    needs: [build-and-push-frontend, build-and-push-backend]
+    needs: [changes, build-and-push-frontend, build-and-push-backend]
     if: |
       always() &&
       (needs.build-and-push-frontend.result != 'failure') &&
@@ -114,6 +116,7 @@ jobs:
       (
         needs.build-and-push-frontend.result == 'success' || 
         needs.build-and-push-backend.result == 'success' ||
+        needs.changes.outputs.deploy_only == 'true' ||
         github.event_name == 'workflow_dispatch'
       )
     runs-on: ubuntu-latest
