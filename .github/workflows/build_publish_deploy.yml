@@ -2,6 +2,7 @@ name: Build, Publish and Deploy
 on:
   push:
     branches: ["main"]
+  workflow_dispatch:
 
 jobs:
   changes:
@@ -106,11 +107,15 @@ jobs:
     needs: [build-and-push-frontend, build-and-push-backend]
     if: |
       always() &&
-      (needs.build-and-push-frontend.result == 'success' || needs.build-and-push-backend.result == 'success') &&
       (needs.build-and-push-frontend.result != 'failure') &&
       (needs.build-and-push-backend.result != 'failure') &&
       (needs.build-and-push-frontend.result != 'cancelled') &&
-      (needs.build-and-push-backend.result != 'cancelled')
+      (needs.build-and-push-backend.result != 'cancelled') &&
+      (
+        needs.build-and-push-frontend.result == 'success' || 
+        needs.build-and-push-backend.result == 'success' ||
+        github.event_name == 'workflow_dispatch'
+      )
     runs-on: ubuntu-latest
     environment: production
     steps:
@@ -129,4 +134,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /home/${{ secrets.SSH_USER }}/evaluator
+            git fetch origin main
+            git reset --hard origin/main
+            chmod +x deploy.sh
             ./deploy.sh
