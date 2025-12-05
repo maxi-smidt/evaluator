@@ -42,3 +42,6 @@ services:
       CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
       SPRING_PROFILES_ACTIVE: "prod"
     restart: always
+
+volumes:
+  evaluator-postgres:
