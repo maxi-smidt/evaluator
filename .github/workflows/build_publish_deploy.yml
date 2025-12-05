@@ -33,9 +33,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -60,7 +57,6 @@ jobs:
           context: ./frontend
           build-args: "BUILD_MODE=production"
           push: true
-          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
@@ -77,9 +73,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -104,19 +97,22 @@ jobs:
         with:
           context: ./backend
           push: true
-          platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
   deploy:
-    runs-on: ubuntu-latest
-    environment: production
     needs: [build-and-push-frontend, build-and-push-backend]
     if: |
-      needs.build-and-push-frontend.result == 'success' ||
-      needs.build-and-push-backend.result == 'success'
+      always() &&
+      (needs.build-and-push-frontend.result == 'success' || needs.build-and-push-backend.result == 'success') &&
+      (needs.build-and-push-frontend.result != 'failure') &&
+      (needs.build-and-push-backend.result != 'failure') &&
+      (needs.build-and-push-frontend.result != 'cancelled') &&
+      (needs.build-and-push-backend.result != 'cancelled')
+    runs-on: ubuntu-latest
+    environment: production
     steps:
       - name: Connect Tailscale
         uses: tailscale/github-action@v4
