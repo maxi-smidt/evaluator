@@ -2,7 +2,7 @@ services:
   db:
     image: postgres:18
     volumes:
-      - evaluator-postgres:/var/lib/postgresql/data
+      - evaluator-postgres:/var/lib/postgresql/18/docker
     environment:
       POSTGRES_DB: ${PG_DB}
       POSTGRES_USER: ${PG_DB_USER}
