@@ -7,16 +7,15 @@ import { UserFormComponent } from '../../../shared/forms/user-form/user-form.com
 import { TranslationService } from '../../../shared/services/translation.service';
 
 @Component({
-  selector: 'ms-admin-home',
-  templateUrl: './admin-home.component.html',
-  standalone: true,
-  imports: [
-    ConfirmDialogModule,
-    DegreeProgramListComponent,
-    UserListComponent,
-    DegreeProgramFormComponent,
-    UserFormComponent,
-  ],
+    selector: 'ms-admin-home',
+    templateUrl: './admin-home.component.html',
+    imports: [
+        ConfirmDialogModule,
+        DegreeProgramListComponent,
+        UserListComponent,
+        DegreeProgramFormComponent,
+        UserFormComponent,
+    ]
 })
 export class AdminHomeComponent implements OnInit {
   userFormChoices: string[] = [];

@@ -14,18 +14,17 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationService } from '../../../../shared/services/confirmation.service';
 
 @Component({
-  selector: 'ms-class-group-detail',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    Button,
-    PrimeTemplate,
-    TableModule,
-    DialogModule,
-    ConfirmDialogModule,
-    TooltipModule,
-  ],
-  templateUrl: './class-group-detail.component.html',
+    selector: 'ms-class-group-detail',
+    imports: [
+        TranslatePipe,
+        Button,
+        PrimeTemplate,
+        TableModule,
+        DialogModule,
+        ConfirmDialogModule,
+        TooltipModule,
+    ],
+    templateUrl: './class-group-detail.component.html'
 })
 export class ClassGroupDetailComponent implements OnInit {
   classGroup: DetailClassGroup | undefined;

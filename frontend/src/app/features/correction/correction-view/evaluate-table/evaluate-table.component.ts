@@ -1,7 +1,7 @@
 import { Component, EventEmitter, input, Output } from '@angular/core';
 import { Entry } from '../../models/correction.model';
 import { EditorModule } from 'primeng/editor';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { InputNumber } from 'primeng/inputnumber';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
@@ -16,10 +16,9 @@ import { NgClass } from '@angular/common';
   selector: 'ms-evaluate-table',
   templateUrl: './evaluate-table.component.html',
   styleUrls: ['./evaluate-table.component.css'],
-  standalone: true,
   imports: [
     EditorModule,
-    InputNumberModule,
+    InputNumber,
     TranslatePipe,
     ButtonModule,
     FormsModule,

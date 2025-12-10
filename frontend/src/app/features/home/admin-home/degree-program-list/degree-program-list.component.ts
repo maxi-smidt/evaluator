@@ -6,10 +6,9 @@ import { ButtonModule } from 'primeng/button';
 import { AdminDegreeProgram } from '../../../degree-program/models/degree-program.model';
 
 @Component({
-  selector: 'ms-degree-program-list',
-  templateUrl: './degree-program-list.component.html',
-  standalone: true,
-  imports: [TranslatePipe, ButtonModule],
+    selector: 'ms-degree-program-list',
+    templateUrl: './degree-program-list.component.html',
+    imports: [TranslatePipe, ButtonModule]
 })
 export class DegreeProgramListComponent implements OnInit {
   tableHeader: string[];

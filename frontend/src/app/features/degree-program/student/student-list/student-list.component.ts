@@ -4,22 +4,19 @@ import { StudentService } from '../../services/student.service';
 import { Student } from '../../../course/models/student.model';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { ActivatedRoute } from '@angular/router';
-import { Button } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DropdownModule } from 'primeng/dropdown';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'ms-student-list',
-  standalone: true,
   imports: [
     TranslatePipe,
-    Button,
     CheckboxModule,
-    DropdownModule,
     PrimeTemplate,
     TableModule,
+    SelectModule,
   ],
   templateUrl: './student-list.component.html',
 })

@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'ms-assignment',
-  template: '<router-outlet />',
-  standalone: true,
-  imports: [RouterOutlet],
+    selector: 'ms-assignment',
+    template: '<router-outlet />',
+    imports: [RouterOutlet]
 })
 export class AssignmentComponent {}

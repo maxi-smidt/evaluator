@@ -1,25 +1,25 @@
-<p-confirmPopup/>
+<p-confirmpopup/>
 
 <h2>{{ 'course.courseView.title' | translate }} {{ courseBefore.name }}</h2>
 
 <p>{{ 'assignment.info' | translate }}</p>
 
 <div class="d-flex mt-5 gap-3">
-  <p-floatLabel>
+  <p-floatlabel>
     <input id="name" type="text" pInputText [(ngModel)]="course.name" [size]="35" [maxlength]="50"/>
     <label for="name">{{ 'common.designation' | translate }}</label>
-  </p-floatLabel>
+  </p-floatlabel>
 
-  <p-floatLabel>
+  <p-floatlabel>
     <input id="abbreviation" type="text" pInputText [(ngModel)]="course.abbreviation" [size]="4" [maxlength]="5"/>
     <label for="abbreviation">{{ 'common.abbreviation' | translate }}</label>
-  </p-floatLabel>
+  </p-floatlabel>
 
   <div class="d-flex gap-1">
-    <p-floatLabel>
+    <p-floatlabel>
       <input id="file_name" type="text" pInputText [(ngModel)]="course.fileName" [size]="50" [maxlength]="60"/>
       <label for="file_name">{{ 'common.abbreviation' | translate }}</label>
-    </p-floatLabel>
+    </p-floatlabel>
 
     <p-button icon="pi pi-info-circle" text rounded severity="secondary" [pTooltip]="translationService.translate('common.file_name_wc')"/>
   </div>
@@ -58,15 +58,15 @@
 
 <p-dialog header="{{ 'course.courseView.new-assignment' | translate }}" [modal]="true" [(visible)]="dialogVisible">
   <div class="d-flex justify-content-center gap-3 mt-3 mb-3 py-2">
-    <p-floatLabel>
+    <p-floatlabel>
       <input id="named" type="text" pInputText [(ngModel)]="newAssignmentName" [maxlength]="50"/>
       <label for="named">{{ 'common.designation' | translate }}</label>
-    </p-floatLabel>
+    </p-floatlabel>
 
-    <p-floatLabel>
+    <p-floatlabel>
       <input id="number" type="number" pInputText [(ngModel)]="newAssignmentNr" [maxlength]="4"/>
       <label for="number">{{ 'assignment.number' | translate }}</label>
-    </p-floatLabel>
+    </p-floatlabel>
   </div>
   <div class="d-flex gap-2 justify-content-center">
     <p-button label="{{ 'common.cancel' | translate }}" severity="secondary" (onClick)="dialogVisible = false"/>

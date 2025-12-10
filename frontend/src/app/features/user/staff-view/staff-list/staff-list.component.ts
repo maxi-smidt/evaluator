@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DetailUser } from '../../../../core/models/user.models';
 import { UserService } from '../../../../core/services/user.service';
 import { Button } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
@@ -14,10 +14,9 @@ import { UrlParamService } from '../../../../shared/services/url-param.service';
 
 @Component({
   selector: 'ms-staff-list',
-  standalone: true,
   imports: [
     Button,
-    DropdownModule,
+    SelectModule,
     PrimeTemplate,
     TableModule,
     TranslatePipe,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import {
   Course,
@@ -22,9 +22,8 @@ import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
   selector: 'ms-enrollment',
-  standalone: true,
   imports: [
-    DropdownModule,
+    SelectModule,
     TranslatePipe,
     FormsModule,
     MultiSelectModule,

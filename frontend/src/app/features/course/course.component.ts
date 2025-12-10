@@ -2,12 +2,11 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  template: `
+    template: `
     <div class="container-fluid">
       <router-outlet />
     </div>
   `,
-  standalone: true,
-  imports: [RouterOutlet],
+    imports: [RouterOutlet]
 })
 export class CourseComponent {}

@@ -1,6 +1,6 @@
 <h4 class="mt-4">{{ 'edit.allow-late-submission' | translate }}</h4>
 
-<p-inputSwitch [(ngModel)]="course().allowLateSubmission"/>
+<p-toggleswitch [(ngModel)]="course().allowLateSubmission" />
 
 <h4 class="mt-4">{{ 'edit.late-submission-penalty' | translate }}</h4>
 
@@ -9,11 +9,11 @@
   mode="decimal"
   [min]="0"
   [max]="100"
-  [size]="5"
   [showButtons]="true"
   [maxFractionDigits]="3"
   [step]="0.125"
-  [disabled]="!course().allowLateSubmission"/>
+  [disabled]="!course().allowLateSubmission"
+  [inputStyle]="{ width: '150px' }" />
 
 <h4 class="mt-4">{{ 'edit.step-size' | translate }}</h4>
 
@@ -22,10 +22,10 @@
   mode="decimal"
   [min]="0"
   [max]="100"
-  [size]="5"
   [showButtons]="true"
   [maxFractionDigits]="3"
-  [step]="0.125"/>
+  [step]="0.125"
+  [inputStyle]="{ width: '150px' }" />
 
 <h4 class="mt-4">{{ 'common.file-name' | translate }}</h4>
 

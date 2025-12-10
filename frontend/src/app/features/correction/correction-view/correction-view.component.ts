@@ -28,11 +28,12 @@ import {
 import { ToastService } from '../../../shared/services/toast.service';
 import { PreviousDeductionsService } from '../../previous-deductions/services/previous-deductions.service';
 import { PreviousDeductions } from '../../previous-deductions/models/previous-deduction.model';
+import { Button } from 'primeng/button';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'ms-correction-view',
   templateUrl: './correction-view.component.html',
-  standalone: true,
   imports: [
     EvaluateTableComponent,
     ContextMenuModule,
@@ -42,6 +43,8 @@ import { PreviousDeductions } from '../../previous-deductions/models/previous-de
     FormsModule,
     FloatLabelModule,
     InputTextModule,
+    Button,
+    Tooltip,
   ],
 })
 export class CorrectionViewComponent implements OnInit, OnDestroy {

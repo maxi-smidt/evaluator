@@ -67,14 +67,20 @@
     <h4>{{ 'course.courseView.title-chart' | translate }}</h4>
 
     <div class="border border-2 rounded-2">
-      <p-tabView>
-        <p-tabPanel header="{{ 'course.courseView.chart-expense' | translate }}">
-          <p-chart type="bar" [data]="expenseChartData" [options]="options"/>
-        </p-tabPanel>
-        <p-tabPanel header="{{ 'course.courseView.chart-points' | translate }}">
-          <p-chart type="bar" [data]="pointsChartData" [options]="options"/>
-        </p-tabPanel>
-      </p-tabView>
+      <p-tabs value="0">
+        <p-tablist>
+          <p-tab value="0">{{ 'course.courseView.chart-expense' | translate }}</p-tab>
+          <p-tab value="1">{{ 'course.courseView.chart-points' | translate }}</p-tab>
+        </p-tablist>
+        <p-tabpanels>
+          <p-tabpanel value="0">
+            <p-chart type="bar" [data]="expenseChartData" [options]="options"/>
+          </p-tabpanel>
+          <p-tabpanel value="1">
+            <p-chart type="bar" [data]="pointsChartData" [options]="options"/>
+          </p-tabpanel>
+        </p-tabpanels>
+      </p-tabs>
     </div>
   </div>
 </div>

@@ -5,17 +5,16 @@ import { TranslationService } from '../../shared/services/translation.service';
 import { MenubarModule } from 'primeng/menubar';
 
 @Component({
-  selector: 'ms-degree-program',
-  standalone: true,
-  imports: [RouterOutlet, MenubarModule],
-  template: `
+    selector: 'ms-degree-program',
+    imports: [RouterOutlet, MenubarModule],
+    template: `
     <div style="margin-top: -30px">
       <p-menubar [model]="items" />
     </div>
     <div class="container mt-4 border border-2 rounded-2 p-2">
       <router-outlet />
     </div>
-  `,
+  `
 })
 export class DegreeProgramComponent implements OnInit {
   items: MenuItem[];

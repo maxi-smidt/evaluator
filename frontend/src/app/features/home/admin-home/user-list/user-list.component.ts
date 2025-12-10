@@ -9,10 +9,9 @@ import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../../../core/services/user.service';
 
 @Component({
-  selector: 'ms-user-list',
-  templateUrl: './user-list.component.html',
-  standalone: true,
-  imports: [TranslatePipe, FormsModule, ButtonModule],
+    selector: 'ms-user-list',
+    templateUrl: './user-list.component.html',
+    imports: [TranslatePipe, FormsModule, ButtonModule]
 })
 export class UserListComponent implements OnInit {
   tableHeader: string[];

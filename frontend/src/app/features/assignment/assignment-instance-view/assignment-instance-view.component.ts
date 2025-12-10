@@ -13,11 +13,11 @@ import { AssignmentService } from '../services/assignment.service';
 import { CorrectionStatus } from '../../correction/models/correction.model';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastService } from '../../../shared/services/toast.service';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'ms-assignment-instance-view',
   templateUrl: './assignment-instance-view.component.html',
-  standalone: true,
   imports: [
     ConfirmDialogModule,
     AccordionModule,
@@ -25,11 +25,12 @@ import { ToastService } from '../../../shared/services/toast.service';
     TranslatePipe,
     TagModule,
     TooltipModule,
+    Button,
   ],
 })
 export class AssignmentInstanceViewComponent implements OnInit {
   assignment: AssignmentInstance;
-  groups: string[];
+  groups: number[];
   assignmentId: number;
 
   constructor(
@@ -48,26 +49,20 @@ export class AssignmentInstanceViewComponent implements OnInit {
 
   ngOnInit() {
     this.assignmentId = this.route.snapshot.params['assignmentId'];
-
     this.assignmentService
       .getFullAssignmentInstance(this.assignmentId)
       .subscribe({
         next: (value) => {
           this.assignment = value;
-          this.groups = Object.keys(this.assignment.groupedStudents);
-          this.adjustTargetGroupsToIndex();
+          this.groups = Object.keys(this.assignment.groupedStudents).map((v) =>
+            Number(v),
+          );
         },
       });
   }
 
   private translate(key: string) {
     return this.translationService.translate(key);
-  }
-
-  private adjustTargetGroupsToIndex() {
-    this.assignment?.targetGroups.forEach((value, index, arr) => {
-      arr[index] = value - 1;
-    });
   }
 
   getSeverity(status: CorrectionStatus) {
@@ -79,7 +74,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
       case CorrectionStatus.NOT_SUBMITTED:
         return 'danger';
       case CorrectionStatus.UNDEFINED:
-        return 'warning';
+        return 'warn';
     }
   }
 
@@ -111,7 +106,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
     }
   }
 
-  notSubmittedAction(studentId: string, group: string) {
+  notSubmittedAction(studentId: string, group: number) {
     this.correctionService
       .createCorrection(
         studentId,
@@ -142,7 +137,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
       });
   }
 
-  deleteAction(correctionId: number, group: string) {
+  deleteAction(correctionId: number, group: number) {
     this.confirmDialog().then((result) => {
       if (result) {
         this.correctionService.deleteCorrection(correctionId).subscribe({

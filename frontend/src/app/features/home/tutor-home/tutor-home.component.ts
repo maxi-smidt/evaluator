@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { CourseCardComponent } from './course-card/course-card.component';
 import { SimpleCourseInstance } from '../../course/models/course.model';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { CourseService } from '../../course/services/course.service';
@@ -10,8 +10,7 @@ import { CourseService } from '../../course/services/course.service';
 @Component({
   selector: 'ms-tutor-home',
   templateUrl: './tutor-home.component.html',
-  standalone: true,
-  imports: [TranslatePipe, CourseCardComponent, DropdownModule, FormsModule],
+  imports: [TranslatePipe, CourseCardComponent, SelectModule, FormsModule],
 })
 export class TutorHomeComponent implements OnInit {
   courseInstances: SimpleCourseInstance[] = [];

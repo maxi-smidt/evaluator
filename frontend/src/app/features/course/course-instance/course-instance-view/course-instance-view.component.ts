@@ -15,21 +15,24 @@ import {
 } from '../../../assignment/models/assignment.model';
 import { ChartData } from '../../models/chart-data.model';
 import { ChartModule } from 'primeng/chart';
-import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 
 @Component({
   selector: 'ms-course-instance-view',
   templateUrl: './course-instance-view.component.html',
-  standalone: true,
   imports: [
     ButtonModule,
     TranslatePipe,
     NgClass,
     BadgeModule,
     ChartModule,
-    TabViewModule,
     TooltipModule,
+    Tabs,
+    TabList,
+    TabPanels,
+    Tab,
+    TabPanel,
   ],
 })
 export class CourseInstanceViewComponent implements OnInit {

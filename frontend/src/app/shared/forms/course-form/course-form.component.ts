@@ -21,20 +21,19 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
-  selector: 'ms-course-form',
-  standalone: true,
-  imports: [
-    Button,
-    ConfirmDialogModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TranslatePipe,
-    InputGroupModule,
-    InputGroupAddonModule,
-    InputTextModule,
-    CheckboxModule,
-  ],
-  templateUrl: './course-form.component.html',
+    selector: 'ms-course-form',
+    imports: [
+        Button,
+        ConfirmDialogModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TranslatePipe,
+        InputGroupModule,
+        InputGroupAddonModule,
+        InputTextModule,
+        CheckboxModule,
+    ],
+    templateUrl: './course-form.component.html'
 })
 export class CourseFormComponent implements OnInit {
   degreeProgramAbbreviation: string | null = null;
