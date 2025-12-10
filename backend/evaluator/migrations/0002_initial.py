@@ -118,7 +118,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='course',
-            constraint=models.CheckConstraint(check=models.Q(('file_name__contains', '{lastname}'), ('file_name__contains', '{nr}')), name='Course.filename Check'),
+            constraint=models.CheckConstraint(condition=models.Q(('file_name__contains', '{lastname}'), ('file_name__contains', '{nr}')), name='Course.filename Check'),
         ),
         migrations.AddConstraint(
             model_name='courseinstance',

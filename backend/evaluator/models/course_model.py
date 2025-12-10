@@ -15,7 +15,7 @@ class Course(models.Model):
         constraints = [
             models.UniqueConstraint(fields=['name', 'degree_program'], name='course_pk'),
             models.CheckConstraint(
-                check=models.Q(file_name__contains='{lastname}') & models.Q(file_name__contains='{nr}'),
+                condition=models.Q(file_name__contains='{lastname}') & models.Q(file_name__contains='{nr}'),
                 name='Course.filename Check'
             )
         ]
