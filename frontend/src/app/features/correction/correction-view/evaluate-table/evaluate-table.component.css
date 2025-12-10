@@ -39,14 +39,14 @@ th {
 }
 
 .description {
-  width: 79.5%;
+  width: 80%;
 }
 
 .deduction {
   text-align: center;
-  width: 16.5%;
+  width: 160px;
 }
 
 .add-deduction {
-  width: 4%
+  width: 5%
 }

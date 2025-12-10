@@ -30,7 +30,7 @@ import { Button } from 'primeng/button';
 })
 export class AssignmentInstanceViewComponent implements OnInit {
   assignment: AssignmentInstance;
-  groups: string[];
+  groups: number[];
   assignmentId: number;
 
   constructor(
@@ -49,26 +49,22 @@ export class AssignmentInstanceViewComponent implements OnInit {
 
   ngOnInit() {
     this.assignmentId = this.route.snapshot.params['assignmentId'];
-
+    console.log('test');
     this.assignmentService
       .getFullAssignmentInstance(this.assignmentId)
       .subscribe({
         next: (value) => {
           this.assignment = value;
-          this.groups = Object.keys(this.assignment.groupedStudents);
-          this.adjustTargetGroupsToIndex();
+          this.groups = Object.keys(this.assignment.groupedStudents).map((v) =>
+            Number(v),
+          );
+          console.log(this.groups);
         },
       });
   }
 
   private translate(key: string) {
     return this.translationService.translate(key);
-  }
-
-  private adjustTargetGroupsToIndex() {
-    this.assignment?.targetGroups.forEach((value, index, arr) => {
-      arr[index] = value - 1;
-    });
   }
 
   getSeverity(status: CorrectionStatus) {
@@ -112,7 +108,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
     }
   }
 
-  notSubmittedAction(studentId: string, group: string) {
+  notSubmittedAction(studentId: string, group: number) {
     this.correctionService
       .createCorrection(
         studentId,
@@ -143,7 +139,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
       });
   }
 
-  deleteAction(correctionId: number, group: string) {
+  deleteAction(correctionId: number, group: number) {
     this.confirmDialog().then((result) => {
       if (result) {
         this.correctionService.deleteCorrection(correctionId).subscribe({
