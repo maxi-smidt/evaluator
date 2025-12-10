@@ -20,6 +20,6 @@
 
 <p-button type="submit"
           label="{{ 'common.btn-submit' | translate }}"
-          [disabled]="title === '' || description === '' || selection === ''"
+          [disabled]="!isValid()"
           size="small"
           (onClick)="onSubmit()" />
