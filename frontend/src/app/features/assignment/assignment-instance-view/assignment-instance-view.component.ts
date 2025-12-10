@@ -49,7 +49,6 @@ export class AssignmentInstanceViewComponent implements OnInit {
 
   ngOnInit() {
     this.assignmentId = this.route.snapshot.params['assignmentId'];
-    console.log('test');
     this.assignmentService
       .getFullAssignmentInstance(this.assignmentId)
       .subscribe({
@@ -58,7 +57,6 @@ export class AssignmentInstanceViewComponent implements OnInit {
           this.groups = Object.keys(this.assignment.groupedStudents).map((v) =>
             Number(v),
           );
-          console.log(this.groups);
         },
       });
   }
