@@ -15,14 +15,14 @@
       <label for="lastName">{{ 'common.lastname' | translate }}</label>
     </p-floatlabel>
 
-    <p-dropdown
+    <p-select
       id="dropdown"
       [style]="{'width': '220px'}"
       [options]="classGroups()"
       formControlName="classGroup"
       optionLabel="startYear"
       optionValue="id"
-      placeholder="{{ 'common.choose-class-group' | translate }}"/>
+      placeholder="{{ 'common.choose-class-group' | translate }}" />
   </div>
 
   <p-button type="submit" label="{{ 'common.btn-submit' | translate }}" [disabled]="checkoutForm.invalid"/>

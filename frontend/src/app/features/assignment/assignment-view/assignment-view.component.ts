@@ -11,7 +11,6 @@ import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { ToastService } from '../../../shared/services/toast.service';
 import { PreviousDeductions } from '../../previous-deductions/models/previous-deduction.model';
 import { PreviousDeductionsService } from '../../previous-deductions/services/previous-deductions.service';
-import { MessagesModule } from 'primeng/messages';
 import { Textarea } from 'primeng/textarea';
 import { Message } from 'primeng/message';
 
@@ -24,7 +23,6 @@ import { Message } from 'primeng/message';
     InputTextModule,
     Button,
     TranslatePipe,
-    MessagesModule,
     Textarea,
     Message,
   ],

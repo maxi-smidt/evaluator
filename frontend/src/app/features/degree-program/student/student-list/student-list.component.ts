@@ -5,18 +5,18 @@ import { Student } from '../../../course/models/student.model';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { ActivatedRoute } from '@angular/router';
 import { CheckboxModule } from 'primeng/checkbox';
-import { DropdownModule } from 'primeng/dropdown';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
+import { SelectModule } from 'primeng/select';
 
 @Component({
   selector: 'ms-student-list',
   imports: [
     TranslatePipe,
     CheckboxModule,
-    DropdownModule,
     PrimeTemplate,
     TableModule,
+    SelectModule,
   ],
   templateUrl: './student-list.component.html',
 })

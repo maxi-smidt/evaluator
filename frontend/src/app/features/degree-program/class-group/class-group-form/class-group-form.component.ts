@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
-import { CalendarModule } from 'primeng/calendar';
+import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
 import { DegreeProgramService } from '../../services/degree-program.service';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
@@ -10,7 +10,7 @@ import { Button } from 'primeng/button';
 
 @Component({
   selector: 'ms-class-group-form',
-  imports: [TranslatePipe, CalendarModule, FormsModule, Button],
+  imports: [TranslatePipe, DatePickerModule, FormsModule, Button],
   templateUrl: './class-group-form.component.html',
 })
 export class ClassGroupFormComponent implements OnInit {

@@ -1,9 +1,9 @@
 <div class="d-flex align-items-center">
   <h3 class="me-3">{{ 'home.courses' | translate }}</h3>
 
-  <p-dropdown
+  <p-select
     [options]="yearItems"
-    [(ngModel)]="selectedYear"/>
+    [(ngModel)]="selectedYear" />
 </div>
 
 <div class="row border border-2 rounded mt-3 g-2 pb-2 px-1">

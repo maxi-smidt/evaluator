@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import {
   Course,
@@ -21,17 +21,17 @@ import { StudentService } from '../services/student.service';
 import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
-    selector: 'ms-enrollment',
-    imports: [
-        DropdownModule,
-        TranslatePipe,
-        FormsModule,
-        MultiSelectModule,
-        Button,
-        TableModule,
-        InputTextModule,
-    ],
-    templateUrl: './enrollment.component.html'
+  selector: 'ms-enrollment',
+  imports: [
+    SelectModule,
+    TranslatePipe,
+    FormsModule,
+    MultiSelectModule,
+    Button,
+    TableModule,
+    InputTextModule,
+  ],
+  templateUrl: './enrollment.component.html',
 })
 export class EnrollmentComponent implements OnInit {
   courseInstances: SimpleCourseInstance[] = [];

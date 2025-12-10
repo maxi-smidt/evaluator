@@ -41,13 +41,13 @@
       <th>
         <p-columnFilter field="role" matchMode="equals" [showMenu]="false">
           <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-            <p-dropdown
+            <p-select
               [(ngModel)]="value!"
               [options]="userRoles"
               (onChange)="filter($event.value)"
               placeholder="{{ 'common.choose-role' | translate }}"
               [showClear]="true">
-            </p-dropdown>
+            </p-select>
           </ng-template>
         </p-columnFilter>
       </th>

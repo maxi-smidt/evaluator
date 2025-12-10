@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { Button } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -10,9 +9,9 @@ import { DegreeProgramService } from '../../services/degree-program.service';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 
 @Component({
-    selector: 'ms-class-group-list',
-    imports: [TranslatePipe, Button, DropdownModule, PrimeTemplate, TableModule],
-    templateUrl: './class-group-list.component.html'
+  selector: 'ms-class-group-list',
+  imports: [TranslatePipe, Button, PrimeTemplate, TableModule],
+  templateUrl: './class-group-list.component.html',
 })
 export class ClassGroupListComponent implements OnInit {
   classes: ClassGroup[] = [];

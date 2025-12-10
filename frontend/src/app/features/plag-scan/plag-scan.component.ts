@@ -11,24 +11,24 @@ import { TranslationService } from '../../shared/services/translation.service';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 import { BlockUIModule } from 'primeng/blockui';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { FileDownloadService } from '../../shared/services/file-download.service';
 import { ToastService } from '../../shared/services/toast.service';
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
-    selector: 'ms-plag-scan',
-    imports: [
-        FileUploadModule,
-        TranslatePipe,
-        BlockUIModule,
-        ProgressSpinnerModule,
-        DropdownModule,
-        FormsModule,
-        InputTextModule,
-    ],
-    templateUrl: './plag-scan.component.html'
+  selector: 'ms-plag-scan',
+  imports: [
+    FileUploadModule,
+    TranslatePipe,
+    BlockUIModule,
+    ProgressSpinnerModule,
+    SelectModule,
+    FormsModule,
+    InputTextModule,
+  ],
+  templateUrl: './plag-scan.component.html',
 })
 export class PlagScanComponent {
   @ViewChild('fileUpload', { static: false }) fileUpload!: FileUpload;

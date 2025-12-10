@@ -1,6 +1,6 @@
 import { Component, effect, input } from '@angular/core';
 import { CourseInstance } from '../../../models/course.model';
-import { InputSwitchModule } from 'primeng/inputswitch';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -12,7 +12,7 @@ import { TranslationService } from '../../../../../shared/services/translation.s
 @Component({
   selector: 'ms-edit-general',
   imports: [
-    InputSwitchModule,
+    ToggleSwitchModule,
     FormsModule,
     TranslatePipe,
     InputNumberModule,

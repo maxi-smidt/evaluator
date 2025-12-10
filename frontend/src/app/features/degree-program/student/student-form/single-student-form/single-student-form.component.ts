@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { ClassGroup } from '../../../models/class-group.model';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
 import {
   FormBuilder,
@@ -19,7 +19,7 @@ import { ToastService } from '../../../../../shared/services/toast.service';
 @Component({
   selector: 'ms-single-student-form',
   imports: [
-    DropdownModule,
+    SelectModule,
     TranslatePipe,
     FormsModule,
     Button,

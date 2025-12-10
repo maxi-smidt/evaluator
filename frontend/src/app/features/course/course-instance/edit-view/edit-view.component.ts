@@ -9,7 +9,6 @@ import { EditGroupComponent } from './edit-group/edit-group.component';
 import { EditPartitionComponent } from './edit-partition/edit-partition.component';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { TranslationService } from '../../../../shared/services/translation.service';
-import { TabMenuModule } from 'primeng/tabmenu';
 import { EditGeneralComponent } from './edit-general/edit-general.component';
 import {
   CourseInstance,
@@ -37,7 +36,6 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
     EditGroupComponent,
     EditPartitionComponent,
     TranslatePipe,
-    TabMenuModule,
     EditGeneralComponent,
     EditStaffComponent,
     EditDueDatesComponent,
@@ -193,7 +191,7 @@ export class EditViewComponent implements OnInit {
     });
   }
 
-  protected onTabChange(newValue: string | number) {
+  protected onTabChange(newValue: string | number | undefined) {
     this.router
       .navigate([], {
         relativeTo: this.route,

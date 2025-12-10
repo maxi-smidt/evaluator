@@ -6,7 +6,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
 import { Button } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
-import { ConfirmationService, PrimeTemplate } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
@@ -14,18 +14,17 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { TranslationService } from '../../../../shared/services/translation.service';
 
 @Component({
-    selector: 'ms-course-instance-list',
-    imports: [
-        TranslatePipe,
-        AccordionModule,
-        BadgeModule,
-        Button,
-        DataViewModule,
-        PrimeTemplate,
-        TagModule,
-        ConfirmPopupModule,
-    ],
-    templateUrl: './course-instance-list.component.html'
+  selector: 'ms-course-instance-list',
+  imports: [
+    TranslatePipe,
+    AccordionModule,
+    BadgeModule,
+    Button,
+    DataViewModule,
+    TagModule,
+    ConfirmPopupModule,
+  ],
+  templateUrl: './course-instance-list.component.html',
 })
 export class CourseInstanceListComponent implements OnInit {
   courseInstances: SimpleCourseInstance[] = [];

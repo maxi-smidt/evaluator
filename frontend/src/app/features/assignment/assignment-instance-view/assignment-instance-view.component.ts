@@ -76,7 +76,7 @@ export class AssignmentInstanceViewComponent implements OnInit {
       case CorrectionStatus.NOT_SUBMITTED:
         return 'danger';
       case CorrectionStatus.UNDEFINED:
-        return 'warning';
+        return 'warn';
     }
   }
 

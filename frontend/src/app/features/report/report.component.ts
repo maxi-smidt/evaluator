@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 import { InputTextModule } from 'primeng/inputtext';
@@ -11,7 +11,7 @@ import { Textarea } from 'primeng/textarea';
 @Component({
   selector: 'ms-report',
   imports: [
-    DropdownModule,
+    SelectModule,
     FormsModule,
     TranslatePipe,
     InputTextModule,

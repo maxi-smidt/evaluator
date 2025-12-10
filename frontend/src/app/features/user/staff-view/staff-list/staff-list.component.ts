@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DetailUser } from '../../../../core/models/user.models';
 import { UserService } from '../../../../core/services/user.service';
 import { Button } from 'primeng/button';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { PrimeTemplate } from 'primeng/api';
 import { TableModule } from 'primeng/table';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
@@ -13,17 +13,17 @@ import { ActivatedRoute } from '@angular/router';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 
 @Component({
-    selector: 'ms-staff-list',
-    imports: [
-        Button,
-        DropdownModule,
-        PrimeTemplate,
-        TableModule,
-        TranslatePipe,
-        FormsModule,
-        CheckboxModule,
-    ],
-    templateUrl: './staff-list.component.html'
+  selector: 'ms-staff-list',
+  imports: [
+    Button,
+    SelectModule,
+    PrimeTemplate,
+    TableModule,
+    TranslatePipe,
+    FormsModule,
+    CheckboxModule,
+  ],
+  templateUrl: './staff-list.component.html',
 })
 export class StaffListComponent implements OnInit {
   degreeProgramAbbreviation: string = '';
