@@ -3,21 +3,20 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { ReportService } from './services/report.service';
 import { ToastService } from '../../shared/services/toast.service';
+import { Textarea } from 'primeng/textarea';
 
 @Component({
   selector: 'ms-report',
-  standalone: true,
   imports: [
     DropdownModule,
     FormsModule,
     TranslatePipe,
     InputTextModule,
-    InputTextareaModule,
     ButtonModule,
+    Textarea,
   ],
   templateUrl: './report.component.html',
 })

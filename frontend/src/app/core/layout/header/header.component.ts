@@ -6,17 +6,16 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ImageModule } from 'primeng/image';
 
 @Component({
-  selector: 'ms-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
-  standalone: true,
-  imports: [
-    ButtonModule,
-    TranslatePipe,
-    RouterLink,
-    RouterLinkActive,
-    ImageModule,
-  ],
+    selector: 'ms-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.css'],
+    imports: [
+        ButtonModule,
+        TranslatePipe,
+        RouterLink,
+        RouterLinkActive,
+        ImageModule,
+    ]
 })
 export class HeaderComponent {
   toggleButton: boolean = true;

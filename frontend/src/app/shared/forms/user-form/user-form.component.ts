@@ -8,15 +8,14 @@ import { UserService } from '../../../core/services/user.service';
 import { ToastService } from '../../services/toast.service';
 
 @Component({
-  selector: 'ms-user-form',
-  templateUrl: './user-form.component.html',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule,
-    TranslatePipe,
-    ButtonModule,
-    ConfirmDialogModule,
-  ],
+    selector: 'ms-user-form',
+    templateUrl: './user-form.component.html',
+    imports: [
+        ReactiveFormsModule,
+        TranslatePipe,
+        ButtonModule,
+        ConfirmDialogModule,
+    ]
 })
 export class UserFormComponent implements OnInit {
   roleChoices: string[] = [];

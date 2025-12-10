@@ -25,7 +25,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'ms-multi-student-form',
-  standalone: true,
   imports: [
     Button,
     FileUploadModule,

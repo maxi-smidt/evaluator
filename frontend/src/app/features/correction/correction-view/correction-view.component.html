@@ -12,10 +12,9 @@
             showDelay="500"
             tooltipPosition="bottom"
   />
-  <p-floatLabel>
+  <p-floatlabel>
     <input id="hour"
            type="number"
-           style="width: 85px"
            pInputText
            (change)="expenseToString()"
            [disabled]="expenseNotSet || readOnly"
@@ -23,8 +22,8 @@
            min="0"
            max="120"/>
     <label for="hour">{{ 'course.evaluateView.hours' | translate }}</label>
-  </p-floatLabel>
-  <p-floatLabel>
+  </p-floatlabel>
+  <p-floatlabel>
     <input id="minute"
            type="number"
            style="width: 85px"
@@ -35,7 +34,7 @@
            min="0"
            max="59"/>
     <label for="minute">{{ 'course.evaluateView.minutes' | translate }}</label>
-  </p-floatLabel>
+  </p-floatlabel>
 
   @if (course.allowLateSubmission) {
     <div class="ms-auto d-flex gap-2">
@@ -49,7 +48,7 @@
       />
     </div>
 
-    <p-floatLabel>
+    <p-floatlabel>
       <input id="day"
              type="number"
              pInputText
@@ -60,9 +59,9 @@
              min="1"
              max="25"/>
       <label for="minute">{{ 'course.evaluateView.days' | translate }}</label>
-    </p-floatLabel>
+    </p-floatlabel>
 
-    <p-floatLabel>
+    <p-floatlabel>
       <input id="penalty"
              type="number"
              pInputText
@@ -72,7 +71,7 @@
              min="-100"
              max="0"/>
       <label for="minute">{{ 'course.evaluateView.penalty' | translate }}</label>
-    </p-floatLabel>
+    </p-floatlabel>
   }
 </div>
 
@@ -88,7 +87,7 @@
             (onClick)="onDownloadClick()"/>
   <p-button [icon]="showPreviousDeductions ? 'pi pi-eye' : 'pi pi-eye-slash'"
             label="{{ 'course.evaluateView.deductions' | translate }}"
-            severity="warning"
+            severity="warn"
             (onClick)="onToggleShowPreviousDeductionClick()"/>
 
   <div class="ms-auto">

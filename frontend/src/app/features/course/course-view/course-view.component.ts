@@ -22,26 +22,25 @@ import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
-  selector: 'ms-course-view',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    Button,
-    DataViewModule,
-    FloatLabelModule,
-    InputTextModule,
-    FormsModule,
-    InputGroupAddonModule,
-    InputGroupModule,
-    ReactiveFormsModule,
-    DialogModule,
-    InputOtpModule,
-    ConfirmPopupModule,
-    IconFieldModule,
-    InputIconModule,
-    TooltipModule,
-  ],
-  templateUrl: './course-view.component.html',
+    selector: 'ms-course-view',
+    imports: [
+        TranslatePipe,
+        Button,
+        DataViewModule,
+        FloatLabelModule,
+        InputTextModule,
+        FormsModule,
+        InputGroupAddonModule,
+        InputGroupModule,
+        ReactiveFormsModule,
+        DialogModule,
+        InputOtpModule,
+        ConfirmPopupModule,
+        IconFieldModule,
+        InputIconModule,
+        TooltipModule,
+    ],
+    templateUrl: './course-view.component.html'
 })
 export class CourseViewComponent implements OnInit {
   course: DetailCourse = {} as DetailCourse;

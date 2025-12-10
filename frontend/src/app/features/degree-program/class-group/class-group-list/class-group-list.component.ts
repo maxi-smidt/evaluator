@@ -10,10 +10,9 @@ import { DegreeProgramService } from '../../services/degree-program.service';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 
 @Component({
-  selector: 'ms-class-group-list',
-  standalone: true,
-  imports: [TranslatePipe, Button, DropdownModule, PrimeTemplate, TableModule],
-  templateUrl: './class-group-list.component.html',
+    selector: 'ms-class-group-list',
+    imports: [TranslatePipe, Button, DropdownModule, PrimeTemplate, TableModule],
+    templateUrl: './class-group-list.component.html'
 })
 export class ClassGroupListComponent implements OnInit {
   classes: ClassGroup[] = [];

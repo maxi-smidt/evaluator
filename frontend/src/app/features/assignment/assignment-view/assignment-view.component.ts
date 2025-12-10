@@ -11,14 +11,12 @@ import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { ToastService } from '../../../shared/services/toast.service';
 import { PreviousDeductions } from '../../previous-deductions/models/previous-deduction.model';
 import { PreviousDeductionsService } from '../../previous-deductions/services/previous-deductions.service';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MessagesModule } from 'primeng/messages';
-import { TranslationService } from '../../../shared/services/translation.service';
-import { Message } from 'primeng/api';
+import { Textarea } from 'primeng/textarea';
+import { Message } from 'primeng/message';
 
 @Component({
   selector: 'ms-assignment-view',
-  standalone: true,
   imports: [
     NgJsonEditorModule,
     FloatLabelModule,
@@ -26,14 +24,13 @@ import { Message } from 'primeng/api';
     InputTextModule,
     Button,
     TranslatePipe,
-    InputTextareaModule,
     MessagesModule,
+    Textarea,
+    Message,
   ],
   templateUrl: './assignment-view.component.html',
 })
 export class AssignmentViewComponent implements OnInit {
-  serviceMessage: Message[];
-
   assignmentBefore: Assignment = {} as Assignment;
   assignment: Assignment = {} as Assignment;
   shownDraft: object | undefined;
@@ -53,20 +50,10 @@ export class AssignmentViewComponent implements OnInit {
     private route: ActivatedRoute,
     private toastService: ToastService,
     private previousDeductionsService: PreviousDeductionsService,
-    private translationService: TranslationService,
   ) {
     this.editorOptions = new JsonEditorOptions();
     this.editorOptions.expandAll = true;
     this.editorOptions.mode = 'tree';
-
-    this.serviceMessage = [
-      {
-        severity: 'warn',
-        detail: this.translationService.translate(
-          'assignment.not-working-message',
-        ),
-      },
-    ];
 
     this.exampleDraft = [
       {

@@ -6,11 +6,11 @@ import { DegreeProgramService } from '../../services/degree-program.service';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'ms-class-group-form',
-  standalone: true,
-  imports: [TranslatePipe, CalendarModule, FormsModule],
+  imports: [TranslatePipe, CalendarModule, FormsModule, Button],
   templateUrl: './class-group-form.component.html',
 })
 export class ClassGroupFormComponent implements OnInit {

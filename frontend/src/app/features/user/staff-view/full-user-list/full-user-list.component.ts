@@ -11,10 +11,9 @@ import { ActivatedRoute } from '@angular/router';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 
 @Component({
-  selector: 'ms-full-user-list',
-  standalone: true,
-  imports: [TableModule, TranslatePipe, Button, DropdownModule, FormsModule],
-  templateUrl: './full-user-list.component.html',
+    selector: 'ms-full-user-list',
+    imports: [TableModule, TranslatePipe, Button, DropdownModule, FormsModule],
+    templateUrl: './full-user-list.component.html'
 })
 export class FullUserListComponent implements OnInit {
   degreeProgramAbbreviation: string = '';

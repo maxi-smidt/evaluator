@@ -18,18 +18,17 @@ import { ToastService } from '../../shared/services/toast.service';
 import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
-  selector: 'ms-plag-scan',
-  standalone: true,
-  imports: [
-    FileUploadModule,
-    TranslatePipe,
-    BlockUIModule,
-    ProgressSpinnerModule,
-    DropdownModule,
-    FormsModule,
-    InputTextModule,
-  ],
-  templateUrl: './plag-scan.component.html',
+    selector: 'ms-plag-scan',
+    imports: [
+        FileUploadModule,
+        TranslatePipe,
+        BlockUIModule,
+        ProgressSpinnerModule,
+        DropdownModule,
+        FormsModule,
+        InputTextModule,
+    ],
+    templateUrl: './plag-scan.component.html'
 })
 export class PlagScanComponent {
   @ViewChild('fileUpload', { static: false }) fileUpload!: FileUpload;

@@ -2,13 +2,10 @@
   <p>{{ 'edit.due-dates.set-all' | translate }}</p>
 
   <div class="d-flex gap-2 align-items-center">
-
-    <p-calendar
-      [(ngModel)]="equalTime"
-      [iconDisplay]="'input'"
-      [showIcon]="true"
-      [timeOnly]="true">
-    </p-calendar>
+    <p-datePicker [(ngModel)]="equalTime"
+                  [iconDisplay]="'input'"
+                  [showIcon]="true"
+                  [timeOnly]="true" />
 
     <p-button
       icon="pi pi-check"
@@ -19,20 +16,22 @@
   </div>
 </div>
 
-<p-accordion [multiple]="true" [activeIndex]="[0]">
-  @for (assignment of courseInstance().assignments; track assignment.id) {
-    <p-accordionTab header="{{ assignment.name }}">
-      <div class="d-flex flex-column">
+<p-accordion [multiple]="true" value="0">
+  @for (assignment of courseInstance().assignments; track $index) {
+    <p-accordion-panel value="{{$index}}">
+      <p-accordion-header>{{ assignment.name }}</p-accordion-header>
+      <p-accordion-content>
+        <div class="d-flex flex-column">
         <label for="date" class="mb-2">{{ 'edit.due-dates.due-date' | translate }}</label>
         <div class="d-flex">
-          <p-calendar
+          <p-datePicker
             [(ngModel)]="assignment.dueTo"
             [iconDisplay]="'input'"
             [showIcon]="true"
             [showTime]="true"
             [hourFormat]="'24'"
             [dateFormat]="'dd.mm.yy'"
-            id="date"/>
+            id="date" />
 
           <div class="ms-auto">
             <p-button
@@ -40,11 +39,12 @@
               severity="danger"
               (onClick)="onDeleteAssignmentInstance($event, assignment.id)"
               label="{{ 'common.delete' | translate }}"
-              size="small"/>
+              size="small" />
           </div>
         </div>
       </div>
-    </p-accordionTab>
+      </p-accordion-content>
+    </p-accordion-panel>
   } @empty {
     <p>{{ 'common.no-data' | translate }}</p>
   }

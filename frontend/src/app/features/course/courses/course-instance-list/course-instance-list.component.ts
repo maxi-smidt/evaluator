@@ -14,19 +14,18 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { TranslationService } from '../../../../shared/services/translation.service';
 
 @Component({
-  selector: 'ms-course-instance-list',
-  standalone: true,
-  imports: [
-    TranslatePipe,
-    AccordionModule,
-    BadgeModule,
-    Button,
-    DataViewModule,
-    PrimeTemplate,
-    TagModule,
-    ConfirmPopupModule,
-  ],
-  templateUrl: './course-instance-list.component.html',
+    selector: 'ms-course-instance-list',
+    imports: [
+        TranslatePipe,
+        AccordionModule,
+        BadgeModule,
+        Button,
+        DataViewModule,
+        PrimeTemplate,
+        TagModule,
+        ConfirmPopupModule,
+    ],
+    templateUrl: './course-instance-list.component.html'
 })
 export class CourseInstanceListComponent implements OnInit {
   courseInstances: SimpleCourseInstance[] = [];

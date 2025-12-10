@@ -13,18 +13,17 @@ import { ActivatedRoute } from '@angular/router';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 
 @Component({
-  selector: 'ms-staff-list',
-  standalone: true,
-  imports: [
-    Button,
-    DropdownModule,
-    PrimeTemplate,
-    TableModule,
-    TranslatePipe,
-    FormsModule,
-    CheckboxModule,
-  ],
-  templateUrl: './staff-list.component.html',
+    selector: 'ms-staff-list',
+    imports: [
+        Button,
+        DropdownModule,
+        PrimeTemplate,
+        TableModule,
+        TranslatePipe,
+        FormsModule,
+        CheckboxModule,
+    ],
+    templateUrl: './staff-list.component.html'
 })
 export class StaffListComponent implements OnInit {
   degreeProgramAbbreviation: string = '';

@@ -12,7 +12,7 @@
     placeholder="{{ 'common.choose-class-group' | translate }}"/>
 
   @if (selectedClassGroup) {
-    <p-fileUpload
+    <p-fileupload
       #fileUpload
       mode="basic"
       chooseLabel="{{ 'common.choose-file' | translate }}"
@@ -22,7 +22,7 @@
   }
 
   @if (selectedClassGroup && students.length > 0) {
-    <p-button severity="warning"
+    <p-button severity="warn"
               label="{{ 'degree-program.students-view.clear-students' | translate }}"
               (onClick)="clearStudents()"/>
 

@@ -9,7 +9,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Button, ButtonDirective } from 'primeng/button';
+import { Button } from 'primeng/button';
 import { StudentService } from '../../../services/student.service';
 import { Student } from '../../../../course/models/student.model';
 import { InputTextModule } from 'primeng/inputtext';
@@ -18,7 +18,6 @@ import { ToastService } from '../../../../../shared/services/toast.service';
 
 @Component({
   selector: 'ms-single-student-form',
-  standalone: true,
   imports: [
     DropdownModule,
     TranslatePipe,
@@ -26,7 +25,6 @@ import { ToastService } from '../../../../../shared/services/toast.service';
     Button,
     ReactiveFormsModule,
     InputTextModule,
-    ButtonDirective,
     FloatLabelModule,
   ],
   templateUrl: './single-student-form.component.html',

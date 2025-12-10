@@ -3,7 +3,6 @@ import { CourseService } from '../../services/course.service';
 import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
 import { Course } from '../../models/course.model';
-import { NgClass } from '@angular/common';
 import { Button } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputOtpModule } from 'primeng/inputotp';
@@ -15,11 +14,9 @@ import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
   selector: 'ms-course-list',
-  standalone: true,
   imports: [
     AccordionModule,
     BadgeModule,
-    NgClass,
     Button,
     DialogModule,
     InputOtpModule,

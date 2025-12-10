@@ -8,10 +8,9 @@ import { TranslationService } from '../../../shared/services/translation.service
 import { CourseService } from '../../course/services/course.service';
 
 @Component({
-  selector: 'ms-tutor-home',
-  templateUrl: './tutor-home.component.html',
-  standalone: true,
-  imports: [TranslatePipe, CourseCardComponent, DropdownModule, FormsModule],
+    selector: 'ms-tutor-home',
+    templateUrl: './tutor-home.component.html',
+    imports: [TranslatePipe, CourseCardComponent, DropdownModule, FormsModule]
 })
 export class TutorHomeComponent implements OnInit {
   courseInstances: SimpleCourseInstance[] = [];

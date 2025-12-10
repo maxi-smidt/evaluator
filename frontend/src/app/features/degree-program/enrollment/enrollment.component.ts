@@ -21,18 +21,17 @@ import { StudentService } from '../services/student.service';
 import { ToastService } from '../../../shared/services/toast.service';
 
 @Component({
-  selector: 'ms-enrollment',
-  standalone: true,
-  imports: [
-    DropdownModule,
-    TranslatePipe,
-    FormsModule,
-    MultiSelectModule,
-    Button,
-    TableModule,
-    InputTextModule,
-  ],
-  templateUrl: './enrollment.component.html',
+    selector: 'ms-enrollment',
+    imports: [
+        DropdownModule,
+        TranslatePipe,
+        FormsModule,
+        MultiSelectModule,
+        Button,
+        TableModule,
+        InputTextModule,
+    ],
+    templateUrl: './enrollment.component.html'
 })
 export class EnrollmentComponent implements OnInit {
   courseInstances: SimpleCourseInstance[] = [];

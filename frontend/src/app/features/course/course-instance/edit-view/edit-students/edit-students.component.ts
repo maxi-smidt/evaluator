@@ -7,10 +7,9 @@ import { Button } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 
 @Component({
-  selector: 'ms-edit-students',
-  standalone: true,
-  imports: [DropdownModule, TranslatePipe, FormsModule, Button, TableModule],
-  templateUrl: './edit-students.component.html',
+    selector: 'ms-edit-students',
+    imports: [DropdownModule, TranslatePipe, FormsModule, Button, TableModule],
+    templateUrl: './edit-students.component.html'
 })
 export class EditStudentsComponent {
   students = model.required<Student[]>();

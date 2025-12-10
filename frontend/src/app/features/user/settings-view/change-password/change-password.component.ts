@@ -12,10 +12,9 @@ import { SettingsService } from '../services/settings.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'ms-change-password',
-  standalone: true,
-  imports: [TranslatePipe, ReactiveFormsModule, InputTextModule, ButtonModule],
-  templateUrl: './change-password.component.html',
+    selector: 'ms-change-password',
+    imports: [TranslatePipe, ReactiveFormsModule, InputTextModule, ButtonModule],
+    templateUrl: './change-password.component.html'
 })
 export class ChangePasswordComponent {
   protected passwordForm = new FormGroup({

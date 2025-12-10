@@ -1,5 +1,4 @@
 import { Component, model } from '@angular/core';
-import { CalendarModule } from 'primeng/calendar';
 import { FormsModule } from '@angular/forms';
 import { DueDateCourseInstance } from '../../../models/course.model';
 import { AccordionModule } from 'primeng/accordion';
@@ -8,16 +7,18 @@ import { AssignmentService } from '../../../../assignment/services/assignment.se
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmationService } from 'primeng/api';
 import { TranslationService } from '../../../../../shared/services/translation.service';
+import { Button } from 'primeng/button';
+import { DatePicker } from 'primeng/datepicker';
 
 @Component({
   selector: 'ms-edit-due-dates',
-  standalone: true,
   imports: [
-    CalendarModule,
     FormsModule,
     AccordionModule,
     TranslatePipe,
     ConfirmPopupModule,
+    Button,
+    DatePicker,
   ],
   templateUrl: './edit-due-dates.component.html',
 })

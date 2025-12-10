@@ -3,21 +3,12 @@ import { Role, User } from '../../../../../core/models/user.models';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../../../core/services/user.service';
-import { Button } from 'primeng/button';
-import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
 import { StaffControlComponent } from './staff-control/staff-control.component';
 import { TranslationService } from '../../../../../shared/services/translation.service';
 
 @Component({
   selector: 'ms-edit-staff',
-  standalone: true,
-  imports: [
-    MultiSelectModule,
-    FormsModule,
-    Button,
-    TranslatePipe,
-    StaffControlComponent,
-  ],
+  imports: [MultiSelectModule, FormsModule, StaffControlComponent],
   templateUrl: './edit-staff.component.html',
 })
 export class EditStaffComponent implements OnInit {

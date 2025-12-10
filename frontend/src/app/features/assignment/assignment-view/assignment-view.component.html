@@ -3,25 +3,23 @@
 <p>{{ 'assignment.info' | translate }}</p>
 
 <div class="d-flex mt-5 gap-3">
-  <p-floatLabel>
+  <p-floatlabel>
     <input id="name" type="text" pInputText [(ngModel)]="assignment.name"/>
     <label for="name">{{ 'common.designation' | translate }}</label>
-  </p-floatLabel>
+  </p-floatlabel>
 
-  <p-floatLabel>
+  <p-floatlabel>
     <input id="number" type="number" pInputText [(ngModel)]="assignment.nr"/>
     <label for="number">{{ 'assignment.number' | translate }}</label>
-  </p-floatLabel>
+  </p-floatlabel>
 
-  <p-floatLabel>
+  <p-floatlabel>
     <input id="points" type="number" pInputText [(ngModel)]="assignment.points" readonly disabled/>
     <label for="points">{{ 'assignment.points' | translate }}</label>
-  </p-floatLabel>
+  </p-floatlabel>
 </div>
 
-<p-messages
-  [(value)]="serviceMessage"
-  [enableService]="false"/>
+<p-message severity="warn">{{ 'assignment.not-working-message' | translate }}</p-message>
 
 <div class="d-flex gap-2 mt-3">
   <div class="d-flex flex-column w-50">
@@ -46,7 +44,7 @@
     <h3>{{ 'assignment.draft' | translate }}</h3>
     <textarea rows="5"
               cols="30"
-              pInputTextarea
+              pTextarea
               [(ngModel)]="draftTextField"
               [autoResize]="true">
     </textarea>
@@ -57,7 +55,7 @@
     <h3>{{ 'assignment.previous-deductions' | translate }}</h3>
     <textarea rows="5"
               cols="30"
-              pInputTextarea
+              pTextarea
               [(ngModel)]="previousDeductionsTextField"
               [autoResize]="true">
     </textarea>

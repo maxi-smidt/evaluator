@@ -10,14 +10,13 @@ import { DegreeProgramService } from '../../services/degree-program.service';
 import { ClassGroup } from '../../models/class-group.model';
 
 @Component({
-  selector: 'ms-student-form',
-  standalone: true,
-  imports: [
-    TabMenuModule,
-    MultiStudentFormComponent,
-    SingleStudentFormComponent,
-  ],
-  templateUrl: './student-form.component.html',
+    selector: 'ms-student-form',
+    imports: [
+        TabMenuModule,
+        MultiStudentFormComponent,
+        SingleStudentFormComponent,
+    ],
+    templateUrl: './student-form.component.html'
 })
 export class StudentFormComponent implements OnInit {
   items: MenuItem[] | undefined;

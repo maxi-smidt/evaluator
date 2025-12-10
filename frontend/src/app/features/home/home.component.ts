@@ -7,12 +7,12 @@ import { DpdHomeComponent } from './dpd-home/dpd-home.component';
 import { AdminHomeComponent } from './admin-home/admin-home.component';
 import { TutorHomeComponent } from './tutor-home/tutor-home.component';
 import { MessagesModule } from 'primeng/messages';
+import { Message } from 'primeng/message';
 
 @Component({
   selector: 'ms-home',
   templateUrl: './home.component.html',
-  standalone: true,
-  imports: [TranslatePipe, NgComponentOutlet, MessagesModule],
+  imports: [TranslatePipe, NgComponentOutlet, MessagesModule, Message],
 })
 export class HomeComponent implements OnInit {
   homeComponent:

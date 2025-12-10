@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FieldsetModule } from 'primeng/fieldset';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import { UserFormComponent } from '../../../shared/forms/user-form/user-form.component';
 import { DpdService } from '../services/dpd.service';
 import { DegreeProgram } from '../../degree-program/models/degree-program.model';
 import { ButtonModule } from 'primeng/button';
@@ -9,8 +8,7 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'ms-dpd-home',
-  standalone: true,
-  imports: [FieldsetModule, TranslatePipe, UserFormComponent, ButtonModule],
+  imports: [FieldsetModule, TranslatePipe, ButtonModule],
   templateUrl: './dpd-home.component.html',
 })
 export class DpdHomeComponent implements OnInit {

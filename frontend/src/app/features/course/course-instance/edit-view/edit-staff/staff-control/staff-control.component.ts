@@ -7,16 +7,15 @@ import { FormsModule } from '@angular/forms';
 import { User } from '../../../../../../core/models/user.models';
 
 @Component({
-  selector: 'ms-staff-control',
-  standalone: true,
-  imports: [
-    Button,
-    MultiSelectModule,
-    PrimeTemplate,
-    TranslatePipe,
-    FormsModule,
-  ],
-  templateUrl: './staff-control.component.html',
+    selector: 'ms-staff-control',
+    imports: [
+        Button,
+        MultiSelectModule,
+        PrimeTemplate,
+        TranslatePipe,
+        FormsModule,
+    ],
+    templateUrl: './staff-control.component.html'
 })
 export class StaffControlComponent {
   title = input.required<string>();

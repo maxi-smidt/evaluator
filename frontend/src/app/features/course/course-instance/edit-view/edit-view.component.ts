@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { ConfirmationService, MenuItem } from 'primeng/api';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService } from 'primeng/api';
 import { Student } from '../../models/student.model';
 import { EditPartition } from '../../models/edit-partition.model';
 import { CourseService } from '../../services/course.service';
@@ -26,12 +26,12 @@ import { ToastService } from '../../../../shared/services/toast.service';
 import { EditStudentsComponent } from './edit-students/edit-students.component';
 import { StudentService } from '../../../degree-program/services/student.service';
 import { DegreeProgramService } from '../../../degree-program/services/degree-program.service';
-import { LocalStorageService } from '../../../../core/services/local-storage.service';
+import { Button } from 'primeng/button';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 
 @Component({
   selector: 'ms-edit-view',
   templateUrl: './edit-view.component.html',
-  standalone: true,
   imports: [
     ConfirmDialogModule,
     EditGroupComponent,
@@ -42,13 +42,17 @@ import { LocalStorageService } from '../../../../core/services/local-storage.ser
     EditStaffComponent,
     EditDueDatesComponent,
     EditStudentsComponent,
+    Button,
+    Tabs,
+    TabList,
+    Tab,
+    TabPanels,
+    TabPanel,
   ],
 })
 export class EditViewComponent implements OnInit {
   user: User = {} as User;
-
-  menuItems: MenuItem[];
-  activeItem: MenuItem | undefined;
+  activeTab: string = '0';
 
   // grouped students
   courseId: number = -1;
@@ -80,6 +84,7 @@ export class EditViewComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private route: ActivatedRoute,
+    private router: Router,
     private confirmationService: ConfirmationService,
     private translationService: TranslationService,
     private assignmentService: AssignmentService,
@@ -88,17 +93,7 @@ export class EditViewComponent implements OnInit {
     private toastService: ToastService,
     private studentService: StudentService,
     private degreeProgramService: DegreeProgramService,
-    private localStorageService: LocalStorageService,
-  ) {
-    this.menuItems = [
-      { label: this.translationService.translate('edit.title-groups') },
-      { label: this.translationService.translate('edit.title-partition') },
-      { label: this.translationService.translate('edit.title-general') },
-      { label: this.translationService.translate('edit.title-assignments') },
-    ];
-
-    this.activeItem = this.menuItems[0];
-  }
+  ) {}
 
   ngOnInit() {
     this.courseId = this.urlParamService.findParam('courseId', this.route);
@@ -106,37 +101,33 @@ export class EditViewComponent implements OnInit {
     this.userService.getUser().subscribe({
       next: (value) => {
         this.user = value;
+
         if (
-          value.role !== Role.DEGREE_PROGRAM_DIRECTOR &&
-          value.role !== Role.COURSE_LEADER
+          [Role.DEGREE_PROGRAM_DIRECTOR, Role.COURSE_LEADER].includes(
+            value.role,
+          )
         ) {
-          return;
-        }
-        this.menuItems.push(
-          { label: this.translationService.translate('edit.title-staff') },
-          { label: this.translationService.translate('edit.title-students') },
-        );
-
-        this.userService.getUsers([`course=${this.courseId}`]).subscribe({
-          next: (value) => {
-            this.pushUsersSeparated(value);
-            this.selectedTutorsBefore = JSON.parse(
-              JSON.stringify(this.selectedTutors),
-            );
-            this.selectedCourseLeadersBefore = JSON.parse(
-              JSON.stringify(this.selectedCourseLeaders),
-            );
-          },
-        });
-
-        this.studentService
-          .getStudents('course_instance_id', this.courseId)
-          .subscribe({
+          this.userService.getUsers([`course=${this.courseId}`]).subscribe({
             next: (value) => {
-              this.students = value;
-              this.studentsBefore = JSON.parse(JSON.stringify(this.students));
+              this.pushUsersSeparated(value);
+              this.selectedTutorsBefore = JSON.parse(
+                JSON.stringify(this.selectedTutors),
+              );
+              this.selectedCourseLeadersBefore = JSON.parse(
+                JSON.stringify(this.selectedCourseLeaders),
+              );
             },
           });
+
+          this.studentService
+            .getStudents('course_instance_id', this.courseId)
+            .subscribe({
+              next: (value) => {
+                this.students = value;
+                this.studentsBefore = JSON.parse(JSON.stringify(this.students));
+              },
+            });
+        }
       },
     });
 
@@ -197,16 +188,20 @@ export class EditViewComponent implements OnInit {
         },
       });
 
-    const tabLabel: string | null =
-      this.localStorageService.getItem('editViewTabIndex');
-    this.activeItem = tabLabel
-      ? this.menuItems.find((item) => item.label === tabLabel)
-      : this.menuItems[0];
+    this.route.queryParams.subscribe((params) => {
+      this.activeTab = params['tab'] || '0';
+    });
   }
 
-  onActiveItemChange(event: MenuItem) {
-    this.activeItem = event;
-    this.localStorageService.setItem('editViewTabIndex', this.activeItem.label);
+  protected onTabChange(newValue: string | number) {
+    this.router
+      .navigate([], {
+        relativeTo: this.route,
+        queryParams: { tab: newValue },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      })
+      .then();
   }
 
   adjustInactiveGroup() {
@@ -432,4 +427,6 @@ export class EditViewComponent implements OnInit {
       }
     });
   }
+
+  protected readonly Role = Role;
 }

@@ -19,18 +19,17 @@ import { TabViewModule } from 'primeng/tabview';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
-  selector: 'ms-course-instance-view',
-  templateUrl: './course-instance-view.component.html',
-  standalone: true,
-  imports: [
-    ButtonModule,
-    TranslatePipe,
-    NgClass,
-    BadgeModule,
-    ChartModule,
-    TabViewModule,
-    TooltipModule,
-  ],
+    selector: 'ms-course-instance-view',
+    templateUrl: './course-instance-view.component.html',
+    imports: [
+        ButtonModule,
+        TranslatePipe,
+        NgClass,
+        BadgeModule,
+        ChartModule,
+        TabViewModule,
+        TooltipModule,
+    ]
 })
 export class CourseInstanceViewComponent implements OnInit {
   courseInstance: DetailCourseInstance | undefined;

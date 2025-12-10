@@ -13,11 +13,11 @@ import { AssignmentService } from '../services/assignment.service';
 import { CorrectionStatus } from '../../correction/models/correction.model';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastService } from '../../../shared/services/toast.service';
+import { Button } from 'primeng/button';
 
 @Component({
   selector: 'ms-assignment-instance-view',
   templateUrl: './assignment-instance-view.component.html',
-  standalone: true,
   imports: [
     ConfirmDialogModule,
     AccordionModule,
@@ -25,6 +25,7 @@ import { ToastService } from '../../../shared/services/toast.service';
     TranslatePipe,
     TagModule,
     TooltipModule,
+    Button,
   ],
 })
 export class AssignmentInstanceViewComponent implements OnInit {

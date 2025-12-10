@@ -11,7 +11,6 @@ import { TranslationService } from '../../../../../shared/services/translation.s
 
 @Component({
   selector: 'ms-edit-general',
-  standalone: true,
   imports: [
     InputSwitchModule,
     FormsModule,

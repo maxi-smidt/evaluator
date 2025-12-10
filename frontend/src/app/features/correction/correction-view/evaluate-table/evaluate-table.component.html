@@ -40,16 +40,18 @@
             </p-editor>
           </td>
           <td>
-            <p-inputNumber [size]="3"
-                           [min]="defaultPoints() !== 0 ? defaultPoints() * -1 : undefined"
+            <p-inputNumber [min]="defaultPoints() !== 0 ? defaultPoints() * -1 : undefined"
                            [ngModel]="entry.points"
                            (ngModelChange)="entry.points = $event ? + $event : 0"
                            [showButtons]="true" buttonLayout="horizontal"
                            [step]="pointStepSize()"
                            [disabled]="readOnly()"
-                           decrementButtonClass="p-button-danger" incrementButtonClass="p-button-success"
-                           incrementButtonIcon="pi pi-plus" decrementButtonIcon="pi pi-minus"
-                           (onInput)="onInputChange()"/>
+                           decrementButtonClass="p-button-danger"
+                           incrementButtonClass="p-button-success"
+                           incrementButtonIcon="pi pi-plus"
+                           decrementButtonIcon="pi pi-minus"
+                           (onInput)="onInputChange()"
+                           [inputStyle]="{ width: '80px', 'text-align': 'center' }" />
           </td>
           <td>
             <p-button icon="pi pi-times"
