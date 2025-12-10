@@ -1,11 +1,11 @@
 <h2 class="mb-4">{{ 'report.title' | translate }}</h2>
 
 <div class="mb-3">
-  <p-dropdown
+  <p-select
     [options]="options"
     [(ngModel)]="selection"
     placeholder="Typ des Reports">
-  </p-dropdown>
+  </p-select>
 </div>
 
 <div class="mb-3">
@@ -15,12 +15,11 @@
 
 <div class="mb-3">
   <label for="text" class="form-label">{{ 'report.area-text' | translate }}</label>
-  <textarea id="text" rows="5" cols="30" pInputTextarea class="form-control" [(ngModel)]="description"></textarea>
+  <textarea id="text" rows="5" cols="30" pTextarea class="form-control" [(ngModel)]="description"></textarea>
 </div>
 
 <p-button type="submit"
           label="{{ 'common.btn-submit' | translate }}"
           [disabled]="title === '' || description === '' || selection === ''"
           size="small"
-          (onClick)="onSubmit()"
-/>
+          (onClick)="onSubmit()" />

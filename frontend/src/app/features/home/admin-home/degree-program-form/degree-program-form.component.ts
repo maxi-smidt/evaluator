@@ -8,10 +8,9 @@ import { SimpleUser } from '../../../../core/models/user.models';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-  selector: 'ms-degree-program-form',
-  templateUrl: './degree-program-form.component.html',
-  standalone: true,
-  imports: [ReactiveFormsModule, TranslatePipe, ButtonModule],
+    selector: 'ms-degree-program-form',
+    templateUrl: './degree-program-form.component.html',
+    imports: [ReactiveFormsModule, TranslatePipe, ButtonModule]
 })
 export class DegreeProgramFormComponent implements OnInit {
   degreeProgramDirectorChoices: SimpleUser[] = [];

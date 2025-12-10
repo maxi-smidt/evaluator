@@ -5,10 +5,9 @@ import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
-  selector: 'ms-edit-group',
-  templateUrl: './edit-group.component.html',
-  standalone: true,
-  imports: [DragDropModule, TranslatePipe, ButtonModule],
+    selector: 'ms-edit-group',
+    templateUrl: './edit-group.component.html',
+    imports: [DragDropModule, TranslatePipe, ButtonModule]
 })
 export class EditGroupComponent {
   groupedStudents = input.required<{ [groupNr: string]: Student[] }>();

@@ -1,28 +1,28 @@
 <form [formGroup]="checkoutForm" (ngSubmit)="onSubmit()">
   <div class="my-4 pt-1 d-flex gap-3">
-    <p-floatLabel>
+    <p-floatlabel>
       <input id="id" type="text" pInputText formControlName="id"/>
       <label for="id">{{ 'common.student-id' | translate }}</label>
-    </p-floatLabel>
+    </p-floatlabel>
 
-    <p-floatLabel>
+    <p-floatlabel>
       <input id="firstName" type="text" pInputText formControlName="firstName"/>
       <label for="firstName">{{ 'common.firstname' | translate }}</label>
-    </p-floatLabel>
+    </p-floatlabel>
 
-    <p-floatLabel>
+    <p-floatlabel>
       <input id="lastName" type="text" pInputText formControlName="lastName"/>
       <label for="lastName">{{ 'common.lastname' | translate }}</label>
-    </p-floatLabel>
+    </p-floatlabel>
 
-    <p-dropdown
+    <p-select
       id="dropdown"
       [style]="{'width': '220px'}"
       [options]="classGroups()"
       formControlName="classGroup"
       optionLabel="startYear"
       optionValue="id"
-      placeholder="{{ 'common.choose-class-group' | translate }}"/>
+      placeholder="{{ 'common.choose-class-group' | translate }}" />
   </div>
 
   <p-button type="submit" label="{{ 'common.btn-submit' | translate }}" [disabled]="checkoutForm.invalid"/>

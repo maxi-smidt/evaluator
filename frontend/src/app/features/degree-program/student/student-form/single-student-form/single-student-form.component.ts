@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { ClassGroup } from '../../../models/class-group.model';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
 import {
   FormBuilder,
@@ -9,7 +9,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Button, ButtonDirective } from 'primeng/button';
+import { Button } from 'primeng/button';
 import { StudentService } from '../../../services/student.service';
 import { Student } from '../../../../course/models/student.model';
 import { InputTextModule } from 'primeng/inputtext';
@@ -18,15 +18,13 @@ import { ToastService } from '../../../../../shared/services/toast.service';
 
 @Component({
   selector: 'ms-single-student-form',
-  standalone: true,
   imports: [
-    DropdownModule,
+    SelectModule,
     TranslatePipe,
     FormsModule,
     Button,
     ReactiveFormsModule,
     InputTextModule,
-    ButtonDirective,
     FloatLabelModule,
   ],
   templateUrl: './single-student-form.component.html',

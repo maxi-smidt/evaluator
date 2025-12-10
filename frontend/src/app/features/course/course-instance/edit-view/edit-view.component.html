@@ -1,35 +1,42 @@
 <p-confirmDialog />
 
-<p-tabMenu
-  [model]="menuItems"
-  [activeItem]="activeItem"
-  (activeItemChange)="onActiveItemChange($event)"/>
-
 <div class="mt-4 mt-4 border border-3 rounded-3 p-2">
-  <h2 class="mb-3">{{ activeItem?.label }}</h2>
-  <div class="container">
-    @switch (activeItem?.label) {
-      @case ('Gruppeneinteilung') {
-        <ms-edit-group [groupedStudents]="groupedStudents"/>
+  <p-tabs [value]="activeTab" (valueChange)="onTabChange($event)">
+    <p-tablist>
+      <p-tab value="0">{{ 'edit.title-groups' | translate }}</p-tab>
+      <p-tab value="1">{{ 'edit.title-partition' | translate }}</p-tab>
+      <p-tab value="2">{{ 'edit.title-general' | translate }}</p-tab>
+      <p-tab value="3">{{ 'edit.title-assignments' | translate }}</p-tab>
+
+      @if ([Role.DEGREE_PROGRAM_DIRECTOR, Role.COURSE_LEADER].includes(this.user.role)) {
+        <p-tab value="4">{{ 'edit.title-staff' | translate }}</p-tab>
+        <p-tab value="5">{{ 'edit.title-students' | translate }}</p-tab>
       }
-      @case ('Gruppenzuteilung') {
-        <ms-edit-partition [partition]="partition" [groups]="groups"/>
-      }
-      @case ('Allgemein') {
+    </p-tablist>
+    <p-tabpanels>
+      <p-tabpanel value="0">
+        <ms-edit-group [groupedStudents]="groupedStudents" />
+      </p-tabpanel>
+      <p-tabpanel value="1">
+        <ms-edit-partition [partition]="partition" [groups]="groups" />
+      </p-tabpanel>
+      <p-tabpanel value="2">
         <ms-edit-general [course]="course"/>
+      </p-tabpanel>
+      <p-tabpanel value="3">
+        <ms-edit-due-dates [(courseInstance)]="dueDateCourseInstance" />
+      </p-tabpanel>
+      @if ([Role.DEGREE_PROGRAM_DIRECTOR, Role.COURSE_LEADER].includes(this.user.role)) {
+        <p-tabpanel value="4">
+          <ms-edit-staff [courseInstanceId]="courseId" [(selectedTutors)]="selectedTutors"
+                           [user]="user" [(selectedCourseLeaders)]="selectedCourseLeaders" />
+        </p-tabpanel>
+        <p-tabpanel value="5">
+          <ms-edit-students [(students)]="students" />
+        </p-tabpanel>
       }
-      @case ('Assignments') {
-        <ms-edit-due-dates [(courseInstance)]="dueDateCourseInstance"/>
-      }
-      @case ('Personal') {
-        <ms-edit-staff [courseInstanceId]="courseId" [(selectedTutors)]="selectedTutors"
-                       [user]="user" [(selectedCourseLeaders)]="selectedCourseLeaders"/>
-      }
-      @case ('Studierende') {
-        <ms-edit-students [(students)]="students" />
-      }
-    }
-  </div>
+    </p-tabpanels>
+  </p-tabs>
 </div>
 
 <div class="text-center mt-3">

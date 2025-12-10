@@ -1,11 +1,11 @@
-<p-confirmPopup/>
+<p-confirmpopup />
 
 <h2>{{ 'degree-program.courses-view.course-instances' | translate }}</h2>
 
 <p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
   @for (obj of sortedCourses; track obj.course.id) {
-    <p-accordionTab>
-      <ng-template pTemplate="header">
+    <p-accordion-panel>
+      <p-accordion-header>
         <div class="d-flex align-items-center w-100">
           <span class="font-bold white-space-nowrap">
             {{ obj.course.name }}
@@ -14,9 +14,9 @@
             <p-badge value="{{ obj.courseInstances.length }}" class="me-2"/>
           </div>
         </div>
-      </ng-template>
-
-      <div class="grid grid-nogutter border border-2 rounded-1">
+      </p-accordion-header>
+      <p-accordion-content>
+        <div class="grid grid-nogutter border border-2 rounded-1">
         @for (courseInstance of obj.courseInstances; track courseInstance.id) {
           <div class="col-12 hover border border-1">
             <div class="d-flex p-2 gap-3 align-items-center">
@@ -33,6 +33,7 @@
           </div>
         }
       </div>
-    </p-accordionTab>
+      </p-accordion-content>
+    </p-accordion-panel>
   }
 </p-accordion>

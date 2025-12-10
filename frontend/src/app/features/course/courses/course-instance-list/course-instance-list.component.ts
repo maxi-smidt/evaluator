@@ -6,7 +6,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
 import { Button } from 'primeng/button';
 import { DataViewModule } from 'primeng/dataview';
-import { ConfirmationService, PrimeTemplate } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UrlParamService } from '../../../../shared/services/url-param.service';
@@ -15,14 +15,12 @@ import { TranslationService } from '../../../../shared/services/translation.serv
 
 @Component({
   selector: 'ms-course-instance-list',
-  standalone: true,
   imports: [
     TranslatePipe,
     AccordionModule,
     BadgeModule,
     Button,
     DataViewModule,
-    PrimeTemplate,
     TagModule,
     ConfirmPopupModule,
   ],

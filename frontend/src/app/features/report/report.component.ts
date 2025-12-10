@@ -1,23 +1,22 @@
 import { Component } from '@angular/core';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { ReportService } from './services/report.service';
 import { ToastService } from '../../shared/services/toast.service';
+import { Textarea } from 'primeng/textarea';
 
 @Component({
   selector: 'ms-report',
-  standalone: true,
   imports: [
-    DropdownModule,
+    SelectModule,
     FormsModule,
     TranslatePipe,
     InputTextModule,
-    InputTextareaModule,
     ButtonModule,
+    Textarea,
   ],
   templateUrl: './report.component.html',
 })

@@ -70,7 +70,7 @@ the according values (these are just the development values) in there.
 \* you could also specify just one word – this would be a named volume. Then you would have to add 
 ```
 volumes:
-  postgres_db:
+  evaluator-postgres:
 ```
 on the very bottom of the `docker-compose.yml`.
 
@@ -110,10 +110,30 @@ After you have started the database, you can proceed with this step, otherwise t
 ```
 pip install -r requirements.txt
 ```
+
+The database is ready to get filled now. Therefore, run the script for reseting and seeding:
+```
+python manage.py rebuild_db
+```
+
+This will create the following users that you can use to log in:
+
+| Username       | Password       | Type                      |
+|----------------|----------------|---------------------------|
+| `evaluator-su` | `password`     | `ADMIN`                   |
+| `P00000`       | `password`     | `DEGREE_PROGRAM_DIRECTOR` |
+| `P00001`       | `password`     | `COURSE_LEADER`           |
+| `P00002`       | `password`     | `COURSE_LEADER`           |
+| `S0000000001`  | `password`     | `TUTOR`                   |
+| `S0000000002`  | `password`     | `TUTOR`                   |
+| `S0000000003`  | `password`     | `TUTOR`                   |
+
+
 Now, the Django server can be started by:
 ```
 python manage.py runserver
 ```
+
 Or alternatively, you can create a run configuration (**recommended**):
 ![](./images/backend_run_config.png)
 

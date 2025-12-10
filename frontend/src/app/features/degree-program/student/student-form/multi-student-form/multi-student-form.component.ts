@@ -17,7 +17,7 @@ import {
 } from '../../../models/class-group.model';
 import { ConfirmationService } from '../../../../../shared/services/confirmation.service';
 import { NgClass } from '@angular/common';
-import { DropdownModule } from 'primeng/dropdown';
+import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { StudentService } from '../../../services/student.service';
 import { ToastService } from '../../../../../shared/services/toast.service';
@@ -25,7 +25,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'ms-multi-student-form',
-  standalone: true,
   imports: [
     Button,
     FileUploadModule,
@@ -34,7 +33,7 @@ import { HttpErrorResponse } from '@angular/common/http';
     TooltipModule,
     ConfirmDialogModule,
     NgClass,
-    DropdownModule,
+    SelectModule,
     FormsModule,
   ],
   templateUrl: './multi-student-form.component.html',

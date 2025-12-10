@@ -1,11 +1,18 @@
-<p-tabMenu [model]="items"
-           [activeItem]="activeItem"
-           (activeItemChange)="onActiveItemChange($event)"/>
-
-<div class="mt-3">
-  @if (items && activeItem === items[0]) {
-    <ms-multi-student-form [classGroups]="classGroups" />
-  } @else if (items && activeItem === items[1]) {
-    <ms-single-student-form [classGroups]="classGroups" />
-  }
-</div>
+<p-tabs class="mt-3">
+  <p-tablist>
+    <i class="pi pi-users"></i>
+    {{ 'degree-program.students-view.multi' | translate }}
+  </p-tablist>
+  <p-tablist>
+    <i class="pi pi-user"></i>
+    {{ 'degree-program.students-view.single' | translate }}
+  </p-tablist>
+  <p-tabpanels>
+    <p-tabpanel>
+      <ms-multi-student-form [classGroups]="classGroups" />
+    </p-tabpanel>
+    <p-tabpanel>
+      <ms-single-student-form [classGroups]="classGroups" />
+    </p-tabpanel>
+  </p-tabpanels>
+</p-tabs>

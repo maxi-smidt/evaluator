@@ -6,10 +6,9 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
-  selector: 'ms-login',
-  templateUrl: './login.component.html',
-  standalone: true,
-  imports: [TranslatePipe, FormsModule, ButtonModule],
+    selector: 'ms-login',
+    templateUrl: './login.component.html',
+    imports: [TranslatePipe, FormsModule, ButtonModule]
 })
 export class LoginComponent {
   username: string = '';
