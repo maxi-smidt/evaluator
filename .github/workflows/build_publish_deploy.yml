@@ -3,6 +3,17 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+    inputs:
+      deploy_frontend:
+        description: 'Force Build & Deploy Frontend'
+        required: false
+        default: false
+        type: boolean
+      deploy_backend:
+        description: 'Force Build & Deploy Backend'
+        required: false
+        default: false
+        type: boolean
 
 jobs:
   changes:
@@ -10,8 +21,9 @@ jobs:
     permissions:
       pull-requests: read
     outputs:
-      frontend: ${{ steps.filter.outputs.frontend }}
-      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend == 'true' || inputs.deploy_frontend == true }}
+      backend: ${{ steps.filter.outputs.backend == 'true' || inputs.deploy_backend == true }}
+      deploy_only: ${{ steps.filter.outputs.deploy_only }}
     steps:
       - uses: actions/checkout@v6
       - uses: dorny/paths-filter@v3
@@ -24,6 +36,7 @@ jobs:
               - 'backend/**'
             deploy_only:
               - 'docker-compose.yml'
+
   build-and-push-frontend:
     needs: changes
     if: ${{ needs.changes.outputs.frontend == 'true' }}
