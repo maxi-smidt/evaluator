@@ -1,6 +1,6 @@
-import json
-import requests
+import base64
 
+from github import GithubIntegration, Auth
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 from rest_framework.status import HTTP_201_CREATED
@@ -8,7 +8,7 @@ from rest_framework.status import HTTP_201_CREATED
 from ..models import Report
 from ..serializers.report_serializers import ReportSerializer
 # noinspection PyUnresolvedReferences
-from backend.settings import GITLAB_AUTH_TOKEN, GITLAB_POST_URL
+from backend.settings import GITHUB_PRIVATE_KEY_BASE64, GITHUB_INSTALLATION_ID, GITHUB_APP_ID
 
 class ReportCreateView(CreateAPIView):
     serializer_class = ReportSerializer
@@ -26,19 +26,22 @@ class ReportCreateView(CreateAPIView):
 
     @staticmethod
     def create_issue(report: Report):
-        params = {
-            'title': f'{report.get_type_display()}: {report.title}',
-            'description': report.description,
-        }
-        r = requests.post(
-            url=GITLAB_POST_URL,
-            headers={"PRIVATE-TOKEN": GITLAB_AUTH_TOKEN},
-            params=params,
+        auth = Auth.AppAuth(
+            app_id=GITHUB_APP_ID,
+            private_key=base64.b64decode(GITHUB_PRIVATE_KEY_BASE64).decode('utf-8'),
         )
-        return json.loads(r.text)
+        gi = GithubIntegration(auth=auth)
+        g = gi.get_github_for_installation(int(GITHUB_INSTALLATION_ID))
+        repo = g.get_repo('maxi-smidt/evaluator')
+        issue = repo.create_issue(
+            title=f'{report.get_type_display()}: {report.title}',
+            body=report.description,
+            labels=['reported']
+        )
+        return issue.html_url
 
     @staticmethod
-    def modify_report(report: Report, issue_response):
-        report.gitlab_url = issue_response['web_url']
+    def modify_report(report: Report, url: str):
+        report.gitlab_url = url
         report.save()
 

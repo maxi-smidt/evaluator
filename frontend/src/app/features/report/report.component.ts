@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal, WritableSignal } from '@angular/core';
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
@@ -22,9 +22,18 @@ import { Textarea } from 'primeng/textarea';
 })
 export class ReportComponent {
   options: string[] = ['BUG', 'FEATURE'];
-  selection: string = '';
-  title: string = '';
-  description: string = '';
+
+  selection: WritableSignal<string | null> = signal<string | null>(null);
+  title: WritableSignal<string> = signal('');
+  description: WritableSignal<string> = signal('');
+
+  isValid = computed(() => {
+    return (
+      this.selection() &&
+      this.title().trim().length > 0 &&
+      this.description().trim().length > 0
+    );
+  });
 
   constructor(
     private reportService: ReportService,
@@ -33,7 +42,7 @@ export class ReportComponent {
 
   protected onSubmit() {
     this.reportService
-      .submitReport(this.title, this.description, this.selection)
+      .submitReport(this.title(), this.description(), this.selection()!)
       .subscribe({
         next: () => {
           this.toastService.info('report.message');
@@ -42,8 +51,8 @@ export class ReportComponent {
           this.toastService.error('report.error');
         },
       });
-    this.selection = '';
-    this.title = '';
-    this.description = '';
+    this.selection.set(null);
+    this.title.set('');
+    this.description.set('');
   }
 }
