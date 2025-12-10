@@ -1,35 +1,33 @@
 <h2 class="mb-3">{{ 'plag-scan.title' | translate }}</h2>
 
-<p-blockUI [blocked]="isLoading">
-  <p-progressSpinner ariaLabel="loading"/>
-</p-blockUI>
+<p-block-ui [blocked]="isLoading">
+  <p>{{ 'plag-scan.info' | translate }}</p>
 
-<p>{{ 'plag-scan.info' | translate }}</p>
+  <div class="d-flex gap-3 mb-3">
+    <p-select
+      [style]="{'width': '230px'}"
+      [options]="languages"
+      [(ngModel)]="selectedLanguage"
+      optionLabel="title"
+      placeholder="{{'plag-scan.language' | translate }}"/>
 
-<div class="d-flex gap-3 mb-3">
-  <p-select
-    [style]="{'width': '230px'}"
-    [options]="languages"
-    [(ngModel)]="selectedLanguage"
-    optionLabel="title"
-    placeholder="{{'plag-scan.language' | translate }}"/>
+    <input
+      type="text"
+      [(ngModel)]="extensionString"
+      pInputText
+      placeholder="{{ 'plag-scan.extension-placeholder' | translate }}"
+      variant="filled"/>
+  </div>
 
-  <input
-    type="text"
-    [(ngModel)]="extensionString"
-    pInputText
-    placeholder="{{ 'plag-scan.extension-placeholder' | translate }}"
-    variant="filled"/>
-</div>
-
-<p-fileUpload
-  #fileUpload
-  name="zipfile"
-  [chooseLabel]="translationService.translate('common.choose-file')"
-  [cancelLabel]="translationService.translate('common.cancel')"
-  [customUpload]="true"
-  (uploadHandler)="onUpload($event)"
-  [showUploadButton]="extensionString && selectedLanguage"
-  [multiple]="false"
-  accept=".zip"
-  [maxFileSize]="100000000"/>
+  <p-fileupload
+    #fileUpload
+    name="zipfile"
+    [chooseLabel]="translationService.translate('common.choose-file')"
+    [cancelLabel]="translationService.translate('common.cancel')"
+    [customUpload]="true"
+    (uploadHandler)="onUpload($event)"
+    [showUploadButton]="extensionString && selectedLanguage"
+    [multiple]="false"
+    accept=".zip"
+    [maxFileSize]="100000000" />
+</p-block-ui>
