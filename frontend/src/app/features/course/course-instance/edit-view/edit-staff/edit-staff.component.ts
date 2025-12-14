@@ -41,13 +41,10 @@ export class EditStaffComponent implements OnInit {
   }
 
   pushUsersSeparated(users: User[]) {
-    users.forEach((user) => {
-      if (user.role === Role.TUTOR) {
-        this.selectableTutors.push(user);
-      } else if (user.role === Role.COURSE_LEADER) {
-        this.selectableCourseLeaders.push(user);
-      }
-    });
+    this.selectableTutors = users.filter((u) => u.role === Role.TUTOR);
+    this.selectableCourseLeaders = users.filter(
+      (u) => u.role === Role.COURSE_LEADER,
+    );
   }
 
   translate(key: string) {
