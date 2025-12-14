@@ -16,4 +16,7 @@ sleep 10
 echo "--- Apply Django migration ---"
 docker-compose exec backend python manage.py migrate
 
+echo "--- Cleaning up Docker ---"
+docker system prune -a
+
 echo "Deployment complete!"
