@@ -1,5 +1,6 @@
 from io import BytesIO
 from weasyprint import HTML, CSS
+from weasyprint.css.validation.properties import lang
 from yattag import Doc
 from datetime import datetime
 
@@ -9,25 +10,87 @@ from ..models import Correction
 class PdfMaker:
     t_header = ['Anmerkung', 'Punkte']
     css = CSS(string='''
-        @page { size: A4; margin: 1.5cm; }
-        body { font-family: Arial, sans-serif;}
-        header p {font-size: 16px; font-weight: 400; }
-        header h1 { font-size: 32px; text-align: center; }
-        .date { position: absolute; top: -35px; right: -10px; font-size: 14px; }
-        .points { font-weight: 500; font-size: 17px; }
-        body { margin-top: 30px; }
-        body h3 { font-size: 19px; margin-bottom: 5px;}
-        body h4 { margin-top: 10px; margin-bottom: 5px; }
-        table { width: 100%; border-collapse: collapse; border: 1px solid #000;}
-        th, td { border: 1px solid #000; padding: 10px; font-size: 14px; }
-        th { background-color: #f2f2f2; padding: 5px 10px; font-size: 14px; }
-        td { padding: 2px 2px; }
-        td p { margin: 2px; }
-        .td-points { text-align: center; }
-        .td-text { padding-left: 7px; }
-        td ol { margin-bottom: 0;  margin-top: 0; }
-        th:first-child { width: 90%; }
-        th:nth-child(2) { width: 10%; }
+        * { 
+            box-sizing: border-box; 
+        }
+        @page { 
+            size: A4; 
+            margin: 1.5cm; 
+        }
+        body { 
+            font-family: Arial, sans-serif;
+            margin: 0; 
+        }
+        header p {
+            font-size: 16px;
+            font-weight: 400;
+        }
+        header h1 {
+            font-size: 32px;
+            text-align: center;
+        }
+        .date { 
+            position: absolute; 
+            top: -35px; 
+            right: 0px; 
+            font-size: 14px; 
+        }
+        .points { 
+            font-weight: 500;
+            font-size: 17px; 
+        }
+        body { 
+            margin-top: 30px;
+        }
+        body h3 { 
+            font-size: 19px;
+            margin-bottom: 5px;
+        }
+        body h4 { 
+            margin-top: 10px; 
+            margin-bottom: 5px;
+        }
+        table { 
+            width: 100%;
+            table-layout: fixed;
+            border-collapse: collapse;
+            border: 1px solid #000;
+            margin-top: 20px;
+        }
+        .col-text { 
+            width: 160mm; 
+        }
+        .col-points { 
+            width: 20mm; 
+        }
+        th, td {
+            border: 1px solid #000;
+            padding: 8px;
+            font-size: 14px;
+        }
+        th { 
+            background-color: #f2f2f2;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+        .col-points {
+            text-align: center;
+        }
+        td.col-text {
+            text-align: left;
+            padding-left: 7px;
+            overflow-wrap: break-word; 
+        }
+        td.col-points {
+            font-weight: 500;
+        }
+        td p { 
+            margin: 2px;
+        }
+        td ol { 
+            margin-bottom: 0; 
+            margin-top: 0;
+        }
     ''')
 
     def __init__(self, correction: Correction):
@@ -99,19 +162,21 @@ class PdfMaker:
 
     def make_table(self, data):
         doc, tag, text = Doc().tagtext()
-        with tag('table', klass='table'):
-            with tag('thead'):
-                with tag('tr'):
-                    for header in self.t_header:
-                        with tag('th'):
-                            text(header)
-            with tag('tbody'):
-                for row in data:
+        with tag('div', lang='de'):
+            with tag('table', klass='table'):
+                with tag('thead'):
                     with tag('tr'):
-                        with tag('td', klass='td-text'):
-                            doc.asis(row['text'])
-                        with tag('td', klass='td-points'):
-                            doc.asis(self.__convert_points(row['points']))
+                        with tag('th', klass='col-text'):
+                            text(self.t_header[0])
+                        with tag('th', klass='col-points'):
+                            text(self.t_header[1])
+                with tag('tbody'):
+                    for row in data:
+                        with tag('tr'):
+                            with tag('td', klass='col-text'):
+                                doc.asis(row['text'])
+                            with tag('td', klass='col-points'):
+                                doc.asis(self.__convert_points(row['points']))
         return doc.getvalue()
 
     def make_html(self):
