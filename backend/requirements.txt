@@ -9,8 +9,11 @@ cssselect2==0.8.0
 Django==6.0
 django-cors-headers==4.9.0
 django-extensions==4.1
+django-stubs==5.2.8
+django-stubs-ext==5.2.8
 djangorestframework==3.16.1
 djangorestframework-camel-case==1.4.2
+djangorestframework-stubs==3.16.6
 djangorestframework_simplejwt==5.5.1
 fonttools==4.61.1
 idna==3.11
@@ -31,6 +34,8 @@ rpds-py==0.30.0
 sqlparse==0.5.4
 tinycss2==1.5.1
 tinyhtml5==2.0.0
+types-PyYAML==6.0.12.20250915
+types-requests==2.32.4.20250913
 typing_extensions==4.15.0
 urllib3==2.6.2
 weasyprint==67.0
