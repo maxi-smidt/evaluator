@@ -1,6 +1,5 @@
 from io import BytesIO
 from weasyprint import HTML, CSS
-from weasyprint.css.validation.properties import lang
 from yattag import Doc
 from datetime import datetime
 
@@ -102,7 +101,7 @@ class PdfMaker:
         self.draft = correction.draft
         self.course_instance = correction.assignment_instance.course_instance
         self.late_submitted_days = correction.late_submitted_days
-        self.late_penalty = self.course_instance.late_submission_penalty
+        self.late_penalty = correction.late_submission_penalty
 
     def make_header(self):
         doc, tag, text = Doc().tagtext()
