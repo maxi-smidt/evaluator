@@ -11,9 +11,8 @@
       @for (entry of tableData(); track entry; let idx = $index) {
         <tr>
           <td>
-            <p-editor [(ngModel)]="entry.text"
-                      [readonly]="readOnly()">
-              <ng-template pTemplate="header">
+            <p-editor [(ngModel)]="entry.text" [readonly]="readOnly()">
+              <ng-template #header>
                 <span class="ql-formats group">
                   <button class="ql-bold" aria-label="Bold"></button>
                   <button class="ql-italic" aria-label="Italic"></button>

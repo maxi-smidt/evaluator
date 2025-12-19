@@ -1,9 +1,5 @@
-.evaluation-table {
-  border-collapse: separate;
-  border-radius: 7px;
-  border-style: solid;
-  border-color: #b0bec5;
-  border-width: 2px;
+table {
+  table-layout: fixed;
 }
 
 .text {

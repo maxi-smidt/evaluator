@@ -20,7 +20,7 @@
     "confirmation": {
       "header": "Bestätigung",
       "message-unsaved": "Es gibt nicht gespeicherte Änderungen. Trotzdem fortfahren?",
-      "message-delete": "Wollen sie das Objekt wirklich löschen? Dieser Schritt kann nicht rückgängig gemacht werden!",
+      "message-delete": "Soll das Objekt wirklich gelöscht werden? Dieser Schritt kann nicht rückgängig gemacht werden!",
       "accept": "Ja",
       "reject": "Nein"
     },
