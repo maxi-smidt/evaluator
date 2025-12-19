@@ -75,7 +75,7 @@
                  disabled="true"/>
           <input class="deduction previous-deduction-fs" type="text" pInputText [(ngModel)]="deduction.deduction"
                  disabled="true" />
-          <p-button icon="pi pi-plus" class="add-deduction" text rounded severity="success"
+          <p-button icon="pi pi-plus" class="add-deduction" text rounded severity="success" [disabled]="readOnly()"
                     (onClick)="addPreviousDeduction(deduction)"/>
         </div>
       }
