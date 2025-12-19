@@ -1,0 +1,7 @@
+.course-card {
+  transition: filter 0.18s ease-in-out;
+  cursor: pointer;
+}
+.course-card:hover {
+  filter: brightness(0.95);
+}

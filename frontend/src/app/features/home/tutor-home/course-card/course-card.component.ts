@@ -5,6 +5,7 @@ import { SimpleCourseInstance } from '../../../course/models/course.model';
 @Component({
   selector: 'ms-course-card',
   templateUrl: './course-card.component.html',
+  styleUrls: ['./course-card.component.css'],
   standalone: true,
 })
 export class CourseCardComponent {

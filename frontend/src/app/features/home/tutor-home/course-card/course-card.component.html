@@ -1,6 +1,6 @@
-<div class="card bg-primary-subtle text-center rounded text-nowrap" tabindex="0"
+<div class="card course-card bg-primary-subtle text-center rounded text-nowrap" tabindex="0"
      (click)="onCourseClick(courseInstance().id)" (keyup.enter)="onCourseClick(courseInstance().id)">
-  <div class="card-body">
+  <div class="card-body user-select-none">
     {{ courseInstance().course.abbreviation }} {{ courseInstance().year }}
   </div>
 </div>
