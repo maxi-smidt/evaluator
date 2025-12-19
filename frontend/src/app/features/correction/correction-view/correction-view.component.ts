@@ -34,6 +34,7 @@ import { Tooltip } from 'primeng/tooltip';
 @Component({
   selector: 'ms-correction-view',
   templateUrl: './correction-view.component.html',
+  styleUrls: ['./correction-view.component.css'],
   imports: [
     EvaluateTableComponent,
     ContextMenuModule,

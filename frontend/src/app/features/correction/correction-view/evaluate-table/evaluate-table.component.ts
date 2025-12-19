@@ -82,5 +82,6 @@ export class EvaluateTableComponent {
       text: deduction.description,
       points: Number.isNaN(points) ? 0 : points,
     });
+    this.updatePointsAndEmit();
   }
 }
