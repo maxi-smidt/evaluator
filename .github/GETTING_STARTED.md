@@ -63,7 +63,6 @@ the according values (these are just the development values) in there.
 | `PG_PORT`                | `5432`                                                       | port of the database                          | database |
 | `SECRET_KEY`             | **                                                           | secret key that Django uses for hashing       | backend  |
 | `DEBUG`                  | `True`                                                       | if set to `True` debug information is printed | backend  |
-| `DJANGO_SETTINGS_MODULE` | `backend.settings`                                           | Django settings module                        | backend  |
 | `CORS_ALLOWED_ORIGINS`   | `http://localhost:80,http://localhost,http://localhost:4200` | request origins Django allows to receive      | backend  |
 | `ALLOWED_HOSTS`          | `localhost`                                                  | allowed destination domains                   | backend  |
 
