@@ -9,9 +9,9 @@ import { TranslationService } from '../../../../../shared/services/translation.s
 @Component({
   selector: 'ms-edit-staff',
   imports: [MultiSelectModule, FormsModule, StaffControlComponent],
-  templateUrl: './edit-staff.component.html',
+  templateUrl: './setting-staff.component.html',
 })
-export class EditStaffComponent implements OnInit {
+export class SettingStaffComponent implements OnInit {
   user = input.required<User>();
   courseInstanceId = input.required<number>();
 

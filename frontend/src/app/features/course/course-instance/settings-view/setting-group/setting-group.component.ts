@@ -5,11 +5,11 @@ import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
-    selector: 'ms-edit-group',
-    templateUrl: './edit-group.component.html',
-    imports: [DragDropModule, TranslatePipe, ButtonModule]
+  selector: 'ms-edit-group',
+  templateUrl: './setting-group.component.html',
+  imports: [DragDropModule, TranslatePipe, ButtonModule],
 })
-export class EditGroupComponent {
+export class SettingGroupComponent {
   groupedStudents = input.required<{ [groupNr: string]: Student[] }>();
   draggedStudent: { student: Student; group: number } | undefined | null;
 

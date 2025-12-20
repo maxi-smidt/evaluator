@@ -5,11 +5,11 @@ import { Student } from '../../models/student.model';
 import { EditPartition } from '../../models/edit-partition.model';
 import { CourseService } from '../../services/course.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { EditGroupComponent } from './edit-group/edit-group.component';
-import { EditPartitionComponent } from './edit-partition/edit-partition.component';
+import { SettingGroupComponent } from './setting-group/setting-group.component';
+import { SettingPartitionComponent } from './setting-partition/setting-partition.component';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { TranslationService } from '../../../../shared/services/translation.service';
-import { EditGeneralComponent } from './edit-general/edit-general.component';
+import { SettingGeneralComponent } from './setting-general/setting-general.component';
 import {
   CourseInstance,
   DueDateCourseInstance,
@@ -19,10 +19,10 @@ import { AssignmentService } from '../../../assignment/services/assignment.servi
 import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { UserService } from '../../../../core/services/user.service';
 import { Role, User } from '../../../../core/models/user.models';
-import { EditStaffComponent } from './edit-staff/edit-staff.component';
-import { EditDueDatesComponent } from './edit-due-dates/edit-due-dates.component';
+import { SettingStaffComponent } from './setting-staff/setting-staff.component';
+import { SettingDueDatesComponent } from './setting-due-dates/setting-due-dates.component';
 import { ToastService } from '../../../../shared/services/toast.service';
-import { EditStudentsComponent } from './edit-students/edit-students.component';
+import { SettingStudentsComponent } from './setting-students/setting-students.component';
 import { StudentService } from '../../../degree-program/services/student.service';
 import { DegreeProgramService } from '../../../degree-program/services/degree-program.service';
 import { Button } from 'primeng/button';
@@ -30,16 +30,16 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 
 @Component({
   selector: 'ms-edit-view',
-  templateUrl: './edit-view.component.html',
+  templateUrl: './settings-view.component.html',
   imports: [
     ConfirmDialogModule,
-    EditGroupComponent,
-    EditPartitionComponent,
+    SettingGroupComponent,
+    SettingPartitionComponent,
     TranslatePipe,
-    EditGeneralComponent,
-    EditStaffComponent,
-    EditDueDatesComponent,
-    EditStudentsComponent,
+    SettingGeneralComponent,
+    SettingStaffComponent,
+    SettingDueDatesComponent,
+    SettingStudentsComponent,
     Button,
     Tabs,
     TabList,
@@ -48,7 +48,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
     TabPanel,
   ],
 })
-export class EditViewComponent implements OnInit {
+export class SettingsViewComponent implements OnInit {
   user: User = {} as User;
   activeTab: string = '0';
 

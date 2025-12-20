@@ -20,9 +20,9 @@ import { DatePicker } from 'primeng/datepicker';
     Button,
     DatePicker,
   ],
-  templateUrl: './edit-due-dates.component.html',
+  templateUrl: './setting-due-dates.component.html',
 })
-export class EditDueDatesComponent {
+export class SettingDueDatesComponent {
   courseInstance = model.required<DueDateCourseInstance>();
 
   equalTime: Date | undefined;
