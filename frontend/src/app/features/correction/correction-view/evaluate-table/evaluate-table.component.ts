@@ -72,16 +72,27 @@ export class EvaluateTableComponent {
       return text.replace(/<[^>]*>/g, '').trim();
     };
     return this.tableData().some(
-      (entry) => entry.text === stripHtml(description), // the entry.text is rendered as pdf because of the editor
+      (entry) => stripHtml(entry.text) === this.escapeText(description),
     );
   }
 
   addPreviousDeduction(deduction: Deduction) {
     const points: number = Number.parseFloat(deduction.deduction);
     this.tableData().push({
-      text: deduction.description,
+      text: `<p>${this.escapeText(deduction.description)}</p>`,
       points: Number.isNaN(points) ? 0 : points,
     });
     this.updatePointsAndEmit();
+  }
+
+  private escapeText(text: string) {
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;')
+      .replace(/ /g, '&nbsp;')
+      .replace(/\n/g, '<br>');
   }
 }
