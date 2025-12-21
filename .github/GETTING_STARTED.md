@@ -92,7 +92,7 @@ run the following commands in your backend directory:
 ```
 python manage.py migrate  # migrates the database schema (use this for the first time)
 python manage.py clear_db # clears all the data and drops the database (use this if you want to clear/delete the database)
-python manage.py reset_db # applies clear_db, migrate and seed_db (use this if you want to reset the data)
+python manage.py rebuild_db # applies clear_db, migrate and seed_db (use this if you want to reset the data)
 python manage.py seed_db  # fills the database with generated data (use this if you want to fille your empty tables with data)
 ```
 
