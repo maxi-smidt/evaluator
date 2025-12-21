@@ -43,9 +43,9 @@ const routes: Routes = [
       {
         path: 'correction/:correctionId',
         loadComponent: () =>
-          import(
-            './features/correction/correction-view/correction-view.component'
-          ).then((m) => m.CorrectionViewComponent),
+          import('./features/correction/correction-view/correction-view.component').then(
+            (m) => m.CorrectionViewComponent,
+          ),
         canDeactivate: [
           (component: CorrectionViewComponent) => component.checkChanges(),
         ],
