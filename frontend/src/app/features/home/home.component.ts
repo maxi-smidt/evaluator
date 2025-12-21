@@ -1,34 +1,27 @@
-import { Component, OnInit, Type } from '@angular/core';
-import { Role, User } from '../../core/models/user.models';
+import { Component, inject, OnInit, Type } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
+import { Role, User } from '../../core/models/user.models';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
-import { NgComponentOutlet } from '@angular/common';
-import { DpdHomeComponent } from './dpd-home/dpd-home.component';
-import { AdminHomeComponent } from './admin-home/admin-home.component';
-import { TutorHomeComponent } from './tutor-home/tutor-home.component';
 import { Message } from 'primeng/message';
+import { NgComponentOutlet } from '@angular/common';
+import { AdminHomeComponent } from './admin-home/admin-home.component';
+import { DpdHomeComponent } from './dpd-home/dpd-home.component';
+import { TutorHomeComponent } from './tutor-home/tutor-home.component';
 
 @Component({
   selector: 'ms-home',
   templateUrl: './home.component.html',
-  imports: [TranslatePipe, NgComponentOutlet, Message],
+  imports: [TranslatePipe, Message, NgComponentOutlet],
 })
 export class HomeComponent implements OnInit {
-  homeComponent:
-    | Type<DpdHomeComponent | AdminHomeComponent | TutorHomeComponent>
-    | undefined;
-  user: User;
+  private userService = inject(UserService);
 
-  constructor(private userService: UserService) {
-    this.user = {
-      firstName: '',
-      lastName: '',
-      username: '',
-      role: Role.UNDEFINED,
-    };
-  }
+  protected homeComponent?: Type<
+    DpdHomeComponent | AdminHomeComponent | TutorHomeComponent
+  >;
+  protected user?: User;
 
-  ngOnInit() {
+  public ngOnInit() {
     this.userService.getUser().subscribe({
       next: (value) => {
         this.user = value;
@@ -37,26 +30,17 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  async loadHomeComponent() {
-    switch (this.user.role) {
+  private async loadHomeComponent() {
+    switch (this.user?.role) {
       case Role.TUTOR: {
-        const { TutorHomeComponent } = await import(
-          './tutor-home/tutor-home.component'
-        );
         this.homeComponent = TutorHomeComponent;
         break;
       }
       case Role.DEGREE_PROGRAM_DIRECTOR: {
-        const { DpdHomeComponent } = await import(
-          './dpd-home/dpd-home.component'
-        );
         this.homeComponent = DpdHomeComponent;
         break;
       }
       case Role.ADMIN: {
-        const { AdminHomeComponent } = await import(
-          './admin-home/admin-home.component'
-        );
         this.homeComponent = AdminHomeComponent;
         break;
       }
