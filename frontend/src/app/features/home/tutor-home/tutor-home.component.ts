@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  inject,
+  OnInit,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { CourseCardComponent } from './course-card/course-card.component';
 import { SimpleCourseInstance } from '../../course/models/course.model';
@@ -13,19 +19,16 @@ import { CourseService } from '../../course/services/course.service';
   imports: [TranslatePipe, CourseCardComponent, SelectModule, FormsModule],
 })
 export class TutorHomeComponent implements OnInit {
-  courseInstances: SimpleCourseInstance[] = [];
-  yearItems: string[] = [];
-  selectedYear: string | undefined;
-  allString: string;
+  private courseService = inject(CourseService);
+  private translationService = inject(TranslationService);
 
-  constructor(
-    private courseService: CourseService,
-    private translationService: TranslationService,
-  ) {
-    this.allString = this.translationService.translate('home.tutorHome.all');
-  }
+  protected courseInstances: SimpleCourseInstance[] = [];
+  protected yearItems: WritableSignal<string[]> = signal([]);
+  protected allString: string =
+    this.translationService.translate('home.tutorHome.all');
+  protected selectedYear: string = this.allString;
 
-  ngOnInit() {
+  public ngOnInit() {
     this.courseService.getCourseInstances().subscribe({
       next: (courseInstances) => {
         this.courseInstances = courseInstances;
@@ -35,15 +38,7 @@ export class TutorHomeComponent implements OnInit {
   }
 
   private fillItems() {
-    const years = this.courseInstances.map((ci) => ci.year.toString());
-
-    this.yearItems = years.filter(
-      (oldYear, index, self) =>
-        index ===
-        self.findIndex((newYear) => newYear === oldYear && newYear === oldYear),
-    );
-
-    this.yearItems.push(this.allString);
-    this.selectedYear = this.allString;
+    const years = new Set(this.courseInstances.map((ci) => ci.year.toString()));
+    this.yearItems.set([...years, this.allString]);
   }
 }

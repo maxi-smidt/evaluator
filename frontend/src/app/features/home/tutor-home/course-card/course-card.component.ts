@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { SimpleCourseInstance } from '../../../course/models/course.model';
 
@@ -6,14 +6,13 @@ import { SimpleCourseInstance } from '../../../course/models/course.model';
   selector: 'ms-course-card',
   templateUrl: './course-card.component.html',
   styleUrls: ['./course-card.component.css'],
-  standalone: true,
 })
 export class CourseCardComponent {
-  courseInstance = input.required<SimpleCourseInstance>();
+  private router = inject(Router);
 
-  constructor(private router: Router) {}
+  public courseInstance = input.required<SimpleCourseInstance>();
 
-  onCourseClick(courseId: number) {
+  protected onCourseClick(courseId: number) {
     this.router.navigate(['course', 'instance', courseId]).then();
   }
 }
