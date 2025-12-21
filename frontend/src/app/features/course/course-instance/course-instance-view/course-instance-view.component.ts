@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   DetailCourseInstance,
@@ -13,10 +13,11 @@ import {
   AssignmentStatus,
   SimpleAssignmentInstance,
 } from '../../../assignment/models/assignment.model';
-import { ChartData } from '../../models/chart-data.model';
 import { ChartModule } from 'primeng/chart';
 import { TooltipModule } from 'primeng/tooltip';
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { map, switchMap } from 'rxjs';
 
 @Component({
   selector: 'ms-course-instance-view',
@@ -35,43 +36,31 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
     TabPanel,
   ],
 })
-export class CourseInstanceViewComponent implements OnInit {
-  courseInstance: DetailCourseInstance | undefined;
+export class CourseInstanceViewComponent {
+  private readonly courseService = inject(CourseService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
-  expenseChartData: ChartData | undefined;
-  pointsChartData: ChartData | undefined;
-  options: { aspectRatio: number } | undefined;
+  protected options: { aspectRatio: number } = { aspectRatio: 1.5 };
 
-  constructor(
-    private courseService: CourseService,
-    private route: ActivatedRoute,
-    private router: Router,
-  ) {}
-
-  ngOnInit() {
-    const courseId = this.route.snapshot.params['courseId'];
-    this.courseService
-      .getCourseInstance<DetailCourseInstance>(
-        Number(courseId),
-        SerializerType.DETAIL,
-      )
-      .subscribe({
-        next: (course) => {
-          this.courseInstance = course;
-        },
-      });
-
-    this.courseService.getChartData(courseId).subscribe({
-      next: (data) => {
-        this.expenseChartData = data.dataExpense;
-        this.pointsChartData = data.dataPoints;
-      },
-    });
-
-    this.options = {
-      aspectRatio: 1.5,
-    };
-  }
+  private courseId$ = this.route.params.pipe(
+    map((params) => Number(params['courseId'])),
+  );
+  protected courseInstance = toSignal(
+    this.courseId$.pipe(
+      switchMap((id) =>
+        this.courseService.getCourseInstance<DetailCourseInstance>(
+          id,
+          SerializerType.DETAIL,
+        ),
+      ),
+    ),
+  );
+  protected chartData = toSignal(
+    this.courseId$.pipe(switchMap((id) => this.courseService.getChartData(id))),
+  );
+  protected expenseChartData = computed(() => this.chartData()?.dataExpense);
+  protected pointsChartData = computed(() => this.chartData()?.dataPoints);
 
   getExerciseStateClass(simpleAssignment: SimpleAssignmentInstance) {
     switch (simpleAssignment.status) {

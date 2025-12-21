@@ -1,5 +1,5 @@
 <div class="row align-items-center justify-content-between">
-  <h3 class="mb-3 col">{{ courseInstance?.course?.name }} {{ courseInstance?.year }}</h3>
+  <h3 class="mb-3 col">{{ courseInstance()?.course?.name }} {{ courseInstance()?.year }}</h3>
   <div class="col-auto">
     <p-button icon="pi pi-cog"
               size="large"
@@ -18,7 +18,7 @@
     <h4>{{ 'course.courseView.title-assignments' | translate }}</h4>
 
     <div class="grid grid-nogutter border border-1 rounded-2 border-secondary-subtle">
-      @for (assignment of courseInstance?.assignments; track assignment.id) {
+      @for (assignment of courseInstance()?.assignments; track assignment.id) {
         <div class="col-12 border border-1 list-group-item border-secondary-subtle py-1"
              [ngClass]="getExerciseStateClass(assignment)">
           <div class="d-flex align-items-center w-100 px-2 gap-3">
@@ -74,10 +74,10 @@
         </p-tablist>
         <p-tabpanels>
           <p-tabpanel value="0">
-            <p-chart type="bar" [data]="expenseChartData" [options]="options"/>
+            <p-chart type="bar" [data]="expenseChartData()" [options]="options"/>
           </p-tabpanel>
           <p-tabpanel value="1">
-            <p-chart type="bar" [data]="pointsChartData" [options]="options"/>
+            <p-chart type="bar" [data]="pointsChartData()" [options]="options"/>
           </p-tabpanel>
         </p-tabpanels>
       </p-tabs>
