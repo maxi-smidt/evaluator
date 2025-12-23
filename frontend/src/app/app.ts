@@ -10,7 +10,4 @@ import { Toast } from 'primeng/toast';
   `,
   imports: [RouterOutlet, Toast],
 })
-export class AppComponent {
-  title = 'frontend';
-  constructor() {}
-}
+export class App {}

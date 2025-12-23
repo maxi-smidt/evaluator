@@ -1,15 +1,14 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { LoginComponent } from './core/login/login.component';
-import { userAuthGuard } from './core/guards/user-auth.guard';
-import { courseRoutes } from './features/course/course.routing';
-import { HomeComponent } from './features/home/home.component';
-import { dpRoutes } from './features/degree-program/degree-program.routing';
 import { LayoutComponent } from './core/layout/layout.component';
+import { userAuthGuard } from './core/guards/user-auth.guard';
+import { HomeComponent } from './features/home/home.component';
 import { CorrectionViewComponent } from './features/correction/correction-view/correction-view.component';
+import { courseRoutes } from './features/course/course.routing';
 import { assignmentRoutes } from './features/assignment/assignment.routing';
+import { dpRoutes } from './features/degree-program/degree-program.routing';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
     path: '',
@@ -56,9 +55,3 @@ const routes: Routes = [
   },
   { path: '**', redirectTo: 'home', pathMatch: 'full' },
 ];
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
-export class AppRoutingModule {}
