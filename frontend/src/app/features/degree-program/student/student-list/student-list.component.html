@@ -1,7 +1,7 @@
 <h2>{{ 'degree-program.students-view.all-students' | translate }}</h2>
 
 <p-table
-  [value]="students"
+  [value]="students()"
   dataKey="id"
   [rows]="10"
   [rowsPerPageOptions]="[10, 25, 50]"
