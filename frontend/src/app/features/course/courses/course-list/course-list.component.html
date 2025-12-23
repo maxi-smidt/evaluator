@@ -1,20 +1,22 @@
-<h2>{{ 'degree-program.courses-view.courses' | translate }}</h2>
+@if (courses()) {
+  <h2>{{ 'degree-program.courses-view.courses' | translate }}</h2>
 
-<div class="grid grid-nogutter border border-2 rounded-1">
-  @for (course of simpleCourses; track course.id) {
-    <div class="col-12 hover border border-1">
-      <div class="d-flex align-items-center w-100 p-2 gap-3">
-        <h5 class="ms-1 mb-0">[{{ course.abbreviation }}] {{ course.name }}</h5>
-        <div class="ms-auto">
-          <p-button icon="pi pi-plus" severity="success" (onClick)="onNewInstanceClick($event, course.id)"
-                    size="small"
-                    label="{{ 'degree-program.courses-view.course-list.new-instance' | translate }}"/>
-          <p-button class="ms-2" icon="pi pi-arrow-right" size="small" (onClick)="routeToCourse(course.id)"/>
+  <div class="grid grid-nogutter border border-2 rounded-1">
+    @for (course of courses(); track course.id) {
+      <div class="col-12 hover border border-1">
+        <div class="d-flex align-items-center w-100 p-2 gap-3">
+          <h5 class="ms-1 mb-0">[{{ course.abbreviation }}] {{ course.name }}</h5>
+          <div class="ms-auto">
+            <p-button icon="pi pi-plus" severity="success" (onClick)="onNewInstanceClick(course.id)"
+                      size="small"
+                      label="{{ 'degree-program.courses-view.course-list.new-instance' | translate }}"/>
+            <p-button class="ms-2" icon="pi pi-arrow-right" size="small" (onClick)="routeToCourse(course.id)"/>
+          </div>
         </div>
       </div>
-    </div>
-  }
-</div>
+    }
+  </div>
+}
 
 <p-dialog header="{{ 'degree-program.courses-view.course-list.new-instance' | translate }}" [modal]="true"
           [(visible)]="dialogVisible">

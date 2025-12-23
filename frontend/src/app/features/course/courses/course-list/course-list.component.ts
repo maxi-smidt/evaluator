@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CourseService } from '../../services/course.service';
 import { AccordionModule } from 'primeng/accordion';
 import { BadgeModule } from 'primeng/badge';
-import { Course } from '../../models/course.model';
 import { Button } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputOtpModule } from 'primeng/inputotp';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { ToastService } from '../../../../shared/services/toast.service';
+import { map, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'ms-course-list',
@@ -25,40 +25,30 @@ import { ToastService } from '../../../../shared/services/toast.service';
   ],
   templateUrl: './course-list.component.html',
 })
-export class CourseListComponent implements OnInit {
-  simpleCourses: Course[] = [];
-  dialogVisible: boolean = false;
-  year: number | undefined;
-  selectedCourseId: number | undefined;
+export class CourseListComponent {
+  private readonly courseService = inject(CourseService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
 
-  constructor(
-    private courseService: CourseService,
-    private route: ActivatedRoute,
-    private urlParamService: UrlParamService,
-    private router: Router,
-    private toastService: ToastService,
-  ) {}
+  private degreeProgramAbbreviation$ = this.route.params.pipe(
+    map((params) => params['abbreviation']),
+  );
+  protected courses = toSignal(
+    this.degreeProgramAbbreviation$.pipe(
+      switchMap((abbreviation) => this.courseService.getCourses(abbreviation)),
+    ),
+  );
+  protected dialogVisible: boolean = false;
+  protected year?: number;
+  protected selectedCourseId?: number;
 
-  ngOnInit() {
-    const degreeProgramAbbreviation = this.urlParamService.findParam(
-      'abbreviation',
-      this.route,
-    );
-
-    this.courseService.getCourses(degreeProgramAbbreviation).subscribe({
-      next: (value) => {
-        this.simpleCourses = value;
-      },
-    });
-  }
-
-  onNewInstanceClick(event: MouseEvent, courseId: number) {
+  protected onNewInstanceClick(courseId: number) {
     this.dialogVisible = true;
-    event.stopPropagation();
     this.selectedCourseId = courseId;
   }
 
-  onSaveNewInstanceClick() {
+  protected onSaveNewInstanceClick() {
     if (this.year === undefined || this.year < new Date().getFullYear() - 1) {
       this.toastService.error('degree-program.courses-view.course-list.error');
       return;
@@ -66,7 +56,7 @@ export class CourseListComponent implements OnInit {
 
     this.dialogVisible = false;
     this.courseService
-      .createCourseInstance(this.selectedCourseId!, this.year!)
+      .createCourseInstance(this.selectedCourseId!, this.year)
       .subscribe({
         next: () => {
           this.year = undefined;
@@ -74,7 +64,7 @@ export class CourseListComponent implements OnInit {
       });
   }
 
-  routeToCourse(courseId: number) {
-    this.router.navigate(['course', courseId]).then();
+  protected routeToCourse(courseId: number) {
+    void this.router.navigate(['course', courseId]);
   }
 }
