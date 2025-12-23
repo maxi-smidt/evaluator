@@ -1,0 +1,13 @@
+<h4> {{ exercise().name }} | {{ currentPoints() }} / {{ maxPoints() }} </h4>
+
+@for (subExercise of exercise().sub; track $index) {
+  <h6>
+    {{ subExercise.name }} | {{ getSubExercisePoints(subExercise.notes, subExercise.points) }} / {{ subExercise.points }}
+  </h6>
+  <ms-evaluate-table [tableData]="subExercise.notes"
+                     (tableDataChange)="updateSubExercise($index, $event)"
+                     [maxPossiblePoints]="subExercise.points"
+                     [readOnly]="readOnly()"
+                     [pointStepSize]="stepSize()"
+                     [showDeduction]="showPreviousDeductions()" />
+}

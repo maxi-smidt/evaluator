@@ -23,7 +23,7 @@ export interface CorrectionDraft {
   exercise: Exercise[];
 }
 
-interface Exercise {
+export interface Exercise {
   name: string;
   sub: SubExercise[];
 }

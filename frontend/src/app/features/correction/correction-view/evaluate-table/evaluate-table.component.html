@@ -8,10 +8,10 @@
     </tr>
     </thead>
     <tbody>
-      @for (entry of tableData(); track entry; let idx = $index) {
+      @for (entry of tableData(); track $index) {
         <tr>
           <td>
-            <p-editor [(ngModel)]="entry.text" [readonly]="readOnly()">
+            <p-editor [ngModel]="entry.text" (ngModelChange)="updateEntry($index, 'text', $event)" [readonly]="readOnly()">
               <ng-template #header>
                 <span class="ql-formats group">
                   <button class="ql-bold" aria-label="Bold"></button>
@@ -39,9 +39,9 @@
             </p-editor>
           </td>
           <td>
-            <p-inputNumber [min]="defaultPoints() !== 0 ? defaultPoints() * -1 : undefined"
+            <p-inputNumber [min]="maxPossiblePoints() !== 0 ? maxPossiblePoints() * -1 : undefined"
                            [ngModel]="entry.points"
-                           (ngModelChange)="entry.points = $event ? + $event : 0"
+                           (ngModelChange)="updateEntry($index, 'points', $event)"
                            [showButtons]="true" buttonLayout="horizontal"
                            [step]="pointStepSize()"
                            [disabled]="readOnly()"
@@ -49,7 +49,6 @@
                            incrementButtonClass="p-button-success"
                            incrementButtonIcon="pi pi-plus"
                            decrementButtonIcon="pi pi-minus"
-                           (onInput)="onInputChange()"
                            [inputStyle]="{ width: '80px', 'text-align': 'center' }" />
           </td>
           <td>
@@ -57,7 +56,7 @@
                       [rounded]="true"
                       [text]="true" severity="danger"
                       [disabled]="readOnly()"
-                      (click)="deleteRow(idx)">
+                      (click)="deleteRow($index)">
             </p-button>
           </td>
         </tr>

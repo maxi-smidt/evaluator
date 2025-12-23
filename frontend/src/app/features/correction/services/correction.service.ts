@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Correction, CorrectionStatus } from '../models/correction.model';
 import { HttpClient } from '@angular/common/http';
 import { FileDownloadService } from '../../../shared/services/file-download.service';
+import { tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -45,13 +46,13 @@ export class CorrectionService {
         observe: 'response',
         responseType: 'blob' as 'json',
       })
-      .subscribe({
-        next: (value) => {
+      .pipe(
+        tap((response) => {
           this.fileDownloadService.download(
-            value.body!,
-            value.headers.get('filename')!,
+            response.body!,
+            response.headers.get('filename')!,
           );
-        },
-      });
+        }),
+      );
   }
 }

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, input, Output } from '@angular/core';
+import { Component, computed, input, model } from '@angular/core';
 import { Entry } from '../../models/correction.model';
 import { EditorModule } from 'primeng/editor';
 import { InputNumber } from 'primeng/inputnumber';
@@ -30,36 +30,39 @@ import { NgClass } from '@angular/common';
   ],
 })
 export class EvaluateTableComponent {
-  defaultPoints = input.required<number>();
-  tableData = input.required<Entry[]>();
-  readOnly = input.required<boolean>();
-  pointStepSize = input.required<number>();
+  public readonly maxPossiblePoints = input<number>(0);
+  public readonly tableData = model.required<Entry[]>();
+  public readonly readOnly = input.required<boolean>();
+  public readonly pointStepSize = input.required<number>();
+
+  protected readonly currentPoints = computed(() =>
+    this.tableData().reduce(
+      (acc, current) => acc + current.points,
+      this.maxPossiblePoints(),
+    ),
+  );
+
   showDeduction = input.required<boolean>();
   previousDeductions = input<Deduction[] | undefined>();
 
-  @Output()
-  totalPoints = new EventEmitter<number>();
-
-  currentPoints: number = 0;
-
   protected deleteRow(index: number) {
-    this.tableData().splice(index, 1);
-    this.updatePointsAndEmit();
+    this.tableData.update((current) => current.filter((_, i) => index !== i));
   }
 
   protected addRow() {
-    this.tableData().push({ text: '', points: 0 });
+    this.addDeduction({ text: '', points: 0 });
   }
 
-  protected onInputChange() {
-    this.updatePointsAndEmit();
-  }
-
-  private updatePointsAndEmit() {
-    this.currentPoints =
-      this.defaultPoints() +
-      this.tableData().reduce((acc, entry) => acc + entry.points, 0);
-    this.totalPoints.emit(this.currentPoints);
+  protected updateEntry(
+    index: number,
+    field: keyof Entry,
+    value: number | string,
+  ) {
+    this.tableData.update((current) => {
+      const newArr = [...current];
+      newArr[index] = { ...newArr[index], [field]: value };
+      return newArr;
+    });
   }
 
   protected showDeductionTableExtension(): boolean {
@@ -76,13 +79,16 @@ export class EvaluateTableComponent {
     );
   }
 
-  addPreviousDeduction(deduction: Deduction) {
+  protected addPreviousDeduction(deduction: Deduction) {
     const points: number = Number.parseFloat(deduction.deduction);
-    this.tableData().push({
+    this.addDeduction({
       text: `<p>${this.escapeText(deduction.description)}</p>`,
       points: Number.isNaN(points) ? 0 : points,
     });
-    this.updatePointsAndEmit();
+  }
+
+  private addDeduction(deduction: Entry) {
+    this.tableData.update((current) => [...current, deduction]);
   }
 
   private escapeText(text: string) {
