@@ -116,7 +116,7 @@ export class CourseViewComponent {
       });
   }
 
-  onSaveNewAssignment() {
+  protected onSaveNewAssignment() {
     if (!this.newAssignmentName || !this.newAssignmentNr) {
       this.toastService.error('course.courseView.error');
       return;
@@ -142,7 +142,7 @@ export class CourseViewComponent {
       });
   }
 
-  onDeleteAssignment(event: Event, assignmentId: number) {
+  protected onDeleteAssignment(event: Event, assignmentId: number) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       header: this.translationService.translate('common.confirmation.header'),
