@@ -1,4 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  untracked,
+} from '@angular/core';
 import { CourseService } from '../services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
@@ -20,87 +27,93 @@ import { ToastService } from '../../../shared/services/toast.service';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { TooltipModule } from 'primeng/tooltip';
+import { BehaviorSubject, combineLatest, map, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'ms-course-view',
-    imports: [
-        TranslatePipe,
-        Button,
-        DataViewModule,
-        FloatLabelModule,
-        InputTextModule,
-        FormsModule,
-        InputGroupAddonModule,
-        InputGroupModule,
-        ReactiveFormsModule,
-        DialogModule,
-        InputOtpModule,
-        ConfirmPopupModule,
-        IconFieldModule,
-        InputIconModule,
-        TooltipModule,
-    ],
-    templateUrl: './course-view.component.html'
+  selector: 'ms-course-view',
+  imports: [
+    TranslatePipe,
+    Button,
+    DataViewModule,
+    FloatLabelModule,
+    InputTextModule,
+    FormsModule,
+    InputGroupAddonModule,
+    InputGroupModule,
+    ReactiveFormsModule,
+    DialogModule,
+    InputOtpModule,
+    ConfirmPopupModule,
+    IconFieldModule,
+    InputIconModule,
+    TooltipModule,
+  ],
+  templateUrl: './course-view.component.html',
 })
-export class CourseViewComponent implements OnInit {
-  course: DetailCourse = {} as DetailCourse;
-  courseBefore: DetailCourse = {} as DetailCourse;
+export class CourseViewComponent {
+  private readonly courseService = inject(CourseService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly assignmentService = inject(AssignmentService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly toastService = inject(ToastService);
+  protected readonly translationService = inject(TranslationService);
+
+  private readonly refresh$ = new BehaviorSubject<void>(undefined);
+  private readonly courseId$ = this.route.params.pipe(
+    map((params) => Number(params['courseId'])),
+  );
+  protected serverStateCourse = toSignal(
+    combineLatest([this.courseId$, this.refresh$]).pipe(
+      switchMap(([id, _]) => this.courseService.getDetailCourse(id)),
+    ),
+  );
+  protected draftStateCourse = signal<DetailCourse | undefined>(undefined);
+
+  private isDirty = computed(
+    () =>
+      JSON.stringify(this.serverStateCourse()) !==
+      JSON.stringify(this.draftStateCourse()),
+  );
 
   dialogVisible: boolean = false;
   newAssignmentName: string | undefined;
   newAssignmentNr: number | undefined;
 
-  constructor(
-    private courseService: CourseService,
-    private route: ActivatedRoute,
-    private router: Router,
-    protected translationService: TranslationService,
-    private assignmentService: AssignmentService,
-    private confirmationService: ConfirmationService,
-    private toastService: ToastService,
-  ) {}
-
-  ngOnInit() {
-    const courseId = this.route.snapshot.params['courseId'];
-    this.courseService.getDetailCourse(courseId).subscribe({
-      next: (value) => {
-        this.course = value;
-        this.courseBefore = JSON.parse(JSON.stringify(value));
-      },
+  constructor() {
+    effect(() => {
+      const data = this.serverStateCourse();
+      const currentDraft = untracked(() => this.draftStateCourse());
+      if (data && (!currentDraft || data.id !== currentDraft.id)) {
+        this.draftStateCourse.set(structuredClone(data));
+      }
     });
   }
 
-  routeToAssignment(assignmentId: number) {
+  protected routeToAssignment(assignmentId: number) {
     this.router.navigate(['assignment', assignmentId]).then();
   }
 
-  hasChanged(): boolean {
-    const transform = (detailCourse: DetailCourse) => {
-      const courseCopy = JSON.parse(JSON.stringify(detailCourse));
-      delete courseCopy.assignments;
-      return courseCopy;
-    };
-
-    return (
-      JSON.stringify(transform(this.course)) !==
-      JSON.stringify(transform(this.courseBefore))
-    );
-  }
-
-  onSubmit() {
-    if (!this.hasChanged()) {
+  protected onSubmit() {
+    if (!this.isDirty()) {
       this.toastService.error('common.noChangesInfo');
       return;
     }
 
-    const { assignments: _assignment, id: _id, ...course } = this.course;
-    this.courseService.patchCourse(this.course.id, { ...course }).subscribe({
-      next: (value) => {
-        this.course = value;
-        this.courseBefore = JSON.parse(JSON.stringify(value));
-        this.toastService.success('common.saved');
-      },
-    });
+    const {
+      assignments: _assignment,
+      id: _id,
+      ...payload
+    } = this.draftStateCourse()!;
+    this.courseService
+      .patchCourse(this.serverStateCourse()!.id, payload)
+      .subscribe({
+        next: () => {
+          this.refresh$.next();
+          this.toastService.success('common.saved');
+        },
+      });
   }
 
   onSaveNewAssignment() {
@@ -111,7 +124,7 @@ export class CourseViewComponent implements OnInit {
 
     this.assignmentService
       .createAssignment(
-        this.course.id,
+        this.serverStateCourse()!.id,
         this.newAssignmentNr,
         this.newAssignmentName,
       )
@@ -145,13 +158,19 @@ export class CourseViewComponent implements OnInit {
       ),
       accept: () => {
         this.assignmentService.deleteAssignment(assignmentId).subscribe({
-          next: () => {
-            this.course.assignments = this.course.assignments.filter(
-              (assignment) => assignment.id !== assignmentId,
-            );
-          },
+          next: () => this.refresh$.next(),
         });
       },
+    });
+  }
+
+  protected updateDraftField<K extends keyof DetailCourse>(
+    key: K,
+    value: DetailCourse[K],
+  ) {
+    this.draftStateCourse.update((current) => {
+      if (!current) return undefined;
+      return { ...current, [key]: value };
     });
   }
 }
