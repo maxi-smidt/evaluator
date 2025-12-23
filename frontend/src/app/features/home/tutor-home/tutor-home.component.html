@@ -7,7 +7,7 @@
 </div>
 
 <div class="row border border-2 rounded mt-3 g-2 pb-2 px-1">
-  @for (courseInstance of courseInstances; track courseInstance) {
+  @for (courseInstance of courseInstances(); track courseInstance) {
     @if ([courseInstance.year.toString(), allString].includes(selectedYear)) {
       <div class="col-md-3 col-sm-4 col-6">
         <ms-course-card [courseInstance]="courseInstance" />
