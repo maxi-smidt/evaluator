@@ -21,10 +21,8 @@ export class DegreeProgramComponent {
   private readonly translationService = inject(TranslationService);
   private readonly router = inject(Router);
 
-  items: MenuItem[];
-  activeItem: MenuItem;
-
-  degreeProgramAbbreviation: string = '';
+  protected items: MenuItem[];
+  private activeItem: MenuItem;
 
   constructor() {
     const staff = this.translationService.translate('degree-program.staff');

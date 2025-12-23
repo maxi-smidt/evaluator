@@ -1,14 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SelectModule } from 'primeng/select';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
-import {
-  Course,
-  CourseInstance,
-  SimpleCourseInstance,
-} from '../../course/models/course.model';
+import { Course, CourseInstance } from '../../course/models/course.model';
 import { CourseService } from '../../course/services/course.service';
 import { ActivatedRoute } from '@angular/router';
-import { UrlParamService } from '../../../shared/services/url-param.service';
 import { FormsModule } from '@angular/forms';
 import { DegreeProgramService } from '../services/degree-program.service';
 import { ClassGroup } from '../models/class-group.model';
@@ -19,6 +14,8 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { StudentService } from '../services/student.service';
 import { ToastService } from '../../../shared/services/toast.service';
+import { map, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'ms-enrollment',
@@ -33,46 +30,35 @@ import { ToastService } from '../../../shared/services/toast.service';
   ],
   templateUrl: './enrollment.component.html',
 })
-export class EnrollmentComponent implements OnInit {
-  courseInstances: SimpleCourseInstance[] = [];
-  selectedCourseInstance: Course | undefined;
+export class EnrollmentComponent {
+  private readonly courseService = inject(CourseService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly degreeProgramService = inject(DegreeProgramService);
+  private readonly studentService = inject(StudentService);
+  private readonly toastService = inject(ToastService);
 
-  classGroups: ClassGroup[] = [];
-  selectedClassGroups: ClassGroup[] = [];
+  private readonly degreeProgramAbbreviation$ = this.route.params.pipe(
+    map((params) => params['abbreviation']),
+  );
+  protected readonly courseInstances = toSignal(
+    this.degreeProgramAbbreviation$.pipe(
+      switchMap((abbreviation) =>
+        this.courseService.getCourseInstances(abbreviation),
+      ),
+    ),
+  );
+  protected classGroups = toSignal(
+    this.degreeProgramAbbreviation$.pipe(
+      switchMap((abbreviation) =>
+        this.degreeProgramService.getClassGroups(abbreviation),
+      ),
+    ),
+  );
 
-  selectedStudent: string | undefined;
-
-  students: Student[] = [];
-
-  constructor(
-    private courseService: CourseService,
-    private route: ActivatedRoute,
-    private urlParamService: UrlParamService,
-    private degreeProgramService: DegreeProgramService,
-    private studentService: StudentService,
-    private toastService: ToastService,
-  ) {}
-
-  ngOnInit() {
-    const degreeProgramAbbreviation = this.urlParamService.findParam(
-      'abbreviation',
-      this.route,
-    );
-
-    this.courseService.getCourseInstances(degreeProgramAbbreviation).subscribe({
-      next: (value) => {
-        this.courseInstances = value;
-      },
-    });
-
-    this.degreeProgramService
-      .getClassGroups(degreeProgramAbbreviation)
-      .subscribe({
-        next: (value) => {
-          this.classGroups = value;
-        },
-      });
-  }
+  protected students: Student[] = [];
+  protected selectedCourseInstance?: Course;
+  protected selectedClassGroups: ClassGroup[] = [];
+  protected selectedStudent?: string;
 
   protected buildCourseInstanceLabel(courseInstance: CourseInstance) {
     return `${courseInstance.course.abbreviation} ${courseInstance.year}`;
