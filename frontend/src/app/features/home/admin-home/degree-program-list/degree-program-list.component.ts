@@ -1,33 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AdminService } from '../../services/admin.service';
 import { TranslationService } from '../../../../shared/services/translation.service';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { ButtonModule } from 'primeng/button';
-import { AdminDegreeProgram } from '../../../degree-program/models/degree-program.model';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'ms-degree-program-list',
-    templateUrl: './degree-program-list.component.html',
-    imports: [TranslatePipe, ButtonModule]
+  selector: 'ms-degree-program-list',
+  templateUrl: './degree-program-list.component.html',
+  imports: [TranslatePipe, ButtonModule],
 })
-export class DegreeProgramListComponent implements OnInit {
-  tableHeader: string[];
-  degreePrograms: AdminDegreeProgram[] = [];
+export class DegreeProgramListComponent {
+  private readonly adminService = inject(AdminService);
+  private readonly translationService = inject(TranslationService);
 
-  constructor(
-    private adminService: AdminService,
-    private translationService: TranslationService,
-  ) {
-    this.tableHeader = this.translationService.getArray(
-      'home.adminHome.degreeProgramList.table-header',
-    );
-  }
+  protected tableHeader: string[] = this.translationService.getArray(
+    'home.adminHome.degreeProgramList.table-header',
+  );
 
-  ngOnInit() {
-    this.adminService.getDegreePrograms().subscribe({
-      next: (value) => {
-        this.degreePrograms = value;
-      },
-    });
-  }
+  protected readonly degreePrograms = toSignal(
+    this.adminService.getDegreePrograms(),
+  );
 }

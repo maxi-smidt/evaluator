@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
 import { TranslationService } from '../../../../shared/services/translation.service';
 import { AdminService } from '../../services/admin.service';
@@ -7,37 +7,27 @@ import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { UserService } from '../../../../core/services/user.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'ms-user-list',
-    templateUrl: './user-list.component.html',
-    imports: [TranslatePipe, FormsModule, ButtonModule]
+  selector: 'ms-user-list',
+  templateUrl: './user-list.component.html',
+  imports: [TranslatePipe, FormsModule, ButtonModule],
 })
-export class UserListComponent implements OnInit {
-  tableHeader: string[];
-  users: DetailUser[] = [];
+export class UserListComponent {
+  private readonly adminService = inject(AdminService);
+  private readonly userService = inject(UserService);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly translationService = inject(TranslationService);
+
+  protected tableHeader: string[] = this.translationService.getArray(
+    'home.adminHome.userList.table-header',
+  );
+
+  protected readonly users = toSignal(this.userService.getUsers());
   usersChangeSet: DetailUser[] = [];
 
-  constructor(
-    private adminService: AdminService,
-    private userService: UserService,
-    private confirmationService: ConfirmationService,
-    private translationService: TranslationService,
-  ) {
-    this.tableHeader = this.translationService.getArray(
-      'home.adminHome.userList.table-header',
-    );
-  }
-
-  ngOnInit() {
-    this.userService.getUsers().subscribe({
-      next: (value) => {
-        this.users = value;
-      },
-    });
-  }
-
-  onActivityChange(user: DetailUser) {
+  protected onActivityChange(user: DetailUser) {
     const idx = this.usersChangeSet.findIndex(
       (u) => u.username === user.username,
     );
@@ -48,7 +38,7 @@ export class UserListComponent implements OnInit {
     }
   }
 
-  onActivitySave() {
+  protected onActivitySave() {
     if (!this.usersChangeSet.length) {
       return;
     }
