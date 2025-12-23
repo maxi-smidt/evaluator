@@ -1,17 +1,19 @@
-<p-tabs class="mt-3">
+<p-tabs value="0">
   <p-tablist>
-    <i class="pi pi-users"></i>
-    {{ 'degree-program.students-view.multi' | translate }}
-  </p-tablist>
-  <p-tablist>
-    <i class="pi pi-user"></i>
-    {{ 'degree-program.students-view.single' | translate }}
+    <p-tab value="0">
+      <i class="pi pi-users"></i>
+      {{ 'degree-program.students-view.multi' | translate }}
+    </p-tab>
+    <p-tab value="1">
+      <i class="pi pi-user"></i>
+      {{ 'degree-program.students-view.single' | translate }}
+    </p-tab>
   </p-tablist>
   <p-tabpanels>
-    <p-tabpanel>
+    <p-tabpanel value="0">
       <ms-multi-student-form [classGroups]="classGroups()" />
     </p-tabpanel>
-    <p-tabpanel>
+    <p-tabpanel value="1">
       <ms-single-student-form [classGroups]="classGroups()" />
     </p-tabpanel>
   </p-tabpanels>

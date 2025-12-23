@@ -3,7 +3,7 @@ import { MultiStudentFormComponent } from './multi-student-form/multi-student-fo
 import { SingleStudentFormComponent } from './single-student-form/single-student-form.component';
 import { ActivatedRoute } from '@angular/router';
 import { DegreeProgramService } from '../../services/degree-program.service';
-import { TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { map, switchMap } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
@@ -18,6 +18,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     TabPanel,
     Tabs,
     TranslatePipe,
+    Tab,
   ],
   templateUrl: './student-form.component.html',
 })
