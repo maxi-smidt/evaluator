@@ -1,10 +1,10 @@
 <p-confirmDialog/>
 
-<h2>{{ 'common.class-group' | translate }} {{ classGroup?.startYear }}</h2>
+<h2>{{ 'common.class-group' | translate }} {{ classGroup()?.startYear }}</h2>
 
-@if (classGroup) {
+@if (classGroup()) {
   <p-table
-    [value]="classGroup.students"
+    [value]="classGroup()!.students"
     [rows]="5"
     [rowsPerPageOptions]="[5, 10, 20]"
     [paginator]="true"
@@ -63,7 +63,7 @@
 <p-dialog header="{{ 'common.choose-class-group' | translate }}" [modal]="true"
           [(visible)]="modalVisibility" [style]="{ width: '30rem' }">
   <p-table
-    [value]="classGroups"
+    [value]="classGroups()"
     [rows]="5"
     [rowsPerPageOptions]="[5, 10, 20]"
     [paginator]="true">

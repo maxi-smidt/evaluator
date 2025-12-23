@@ -1,58 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { DatePickerModule } from 'primeng/datepicker';
 import { FormsModule } from '@angular/forms';
 import { DegreeProgramService } from '../../services/degree-program.service';
-import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastService } from '../../../../shared/services/toast.service';
 import { Button } from 'primeng/button';
+import { map } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'ms-class-group-form',
   imports: [TranslatePipe, DatePickerModule, FormsModule, Button],
   templateUrl: './class-group-form.component.html',
 })
-export class ClassGroupFormComponent implements OnInit {
-  minDate: Date | undefined;
-  maxDate: Date | undefined;
-  date: Date;
-  degreeProgramAbbreviation: string = '';
+export class ClassGroupFormComponent {
+  private readonly degreeProgramService = inject(DegreeProgramService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly toastService = inject(ToastService);
+  private readonly router = inject(Router);
 
-  constructor(
-    private degreeProgramService: DegreeProgramService,
-    private urlParamService: UrlParamService,
-    private route: ActivatedRoute,
-    private toastService: ToastService,
-    private router: Router,
-  ) {
-    this.date = new Date();
-    this.minDate = new Date();
+  private readonly degreeProgramAbbreviation = toSignal(
+    this.route.params.pipe(map((params) => params['abbreviation'])),
+  );
+
+  protected readonly minDate: Date = new Date();
+  protected readonly maxDate: Date = new Date();
+  protected date: Date = new Date();
+
+  constructor() {
     this.minDate.setFullYear(this.getYear() - 5);
-    this.maxDate = new Date();
     this.maxDate.setFullYear(this.getYear() + 5);
   }
 
-  ngOnInit() {
-    this.degreeProgramAbbreviation = this.urlParamService.findParam(
-      'abbreviation',
-      this.route,
-    );
-  }
-
-  getYear() {
+  private getYear() {
     return this.date.getFullYear();
   }
 
-  onSubmit() {
+  protected onSubmit() {
     this.degreeProgramService
-      .createClassGroup(this.degreeProgramAbbreviation, this.getYear())
+      .createClassGroup(this.degreeProgramAbbreviation()!, this.getYear())
       .subscribe({
         next: (value) => {
           this.toastService.success('common.saved');
-          this.router
-            .navigate([value.id], { relativeTo: this.route.parent })
-            .then();
+          void this.router.navigate([value.id], {
+            relativeTo: this.route.parent,
+          });
         },
         error: (err) => {
           if (err.status === 500) {
