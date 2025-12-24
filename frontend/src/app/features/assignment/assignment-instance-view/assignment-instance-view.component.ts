@@ -96,8 +96,9 @@ export class AssignmentInstanceViewComponent {
             void this.router.navigate(['correction', value.id]);
           },
         });
+    } else {
+      void this.router.navigate(['correction', correctionId]);
     }
-    void this.router.navigate(['correction', correctionId]);
   }
 
   protected notSubmittedAction(studentId: string) {
