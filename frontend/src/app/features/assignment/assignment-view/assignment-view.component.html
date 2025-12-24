@@ -23,7 +23,7 @@
   <div class="d-flex gap-2 mt-3">
     <div class="d-flex flex-column w-50">
       <h3>{{ 'assignment.draft' | translate }}</h3>
-      <json-editor [options]="editorOptions" [data]="draftStateAssignment()?.draft ?? []" (jsonChange)="updateAssignmentDraft($event)"/>
+      <json-editor [options]="editorOptions" [data]="baseStateDraft" (jsonChange)="updateAssignmentDraft($event)"/>
     </div>
     <div class="d-flex flex-column w-50">
       <h3>{{ 'assignment.previous-deductions' | translate }}</h3>

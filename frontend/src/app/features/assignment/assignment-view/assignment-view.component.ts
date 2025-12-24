@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Assignment, Exercise } from '../models/assignment.model';
 import { AssignmentService } from '../services/assignment.service';
 import { ActivatedRoute } from '@angular/router';
-import { JsonEditorOptions, NgJsonEditorModule } from 'ang-jsoneditor';
+import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
@@ -26,7 +26,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 @Component({
   selector: 'ms-assignment-view',
   imports: [
-    NgJsonEditorModule,
+    JsonEditorComponent,
     FloatLabelModule,
     FormsModule,
     InputTextModule,
@@ -48,6 +48,7 @@ export class AssignmentViewComponent {
   protected readonly assignmentId$ = this.route.params.pipe(
     map((params) => Number(params['assignmentId'])),
   );
+  protected baseStateDraft: Exercise[] = [];
   protected serverStateAssignment = toSignal(
     combineLatest([this.assignmentId$, this.refresh$]).pipe(
       switchMap(([id, _]) => this.assignmentService.getAssignment(id)),
@@ -82,7 +83,9 @@ export class AssignmentViewComponent {
     effect(() => {
       const data = this.serverStateAssignment();
       if (data) {
-        this.draftStateAssignment.set(structuredClone(data));
+        const assignment = structuredClone(data);
+        this.draftStateAssignment.set(assignment);
+        this.baseStateDraft = assignment.draft;
       }
     });
 
