@@ -31,7 +31,8 @@
     "choose-class-group": "Jahrgang wählen",
     "index": "Nummer",
     "file_name_wc": "Wildcards:\n{lastname}: Nachname\n{firstname}: Vorname\n{nr}: Aufgabennummer\n{points}: Punkte",
-    "file-name": "Filename Template"
+    "file-name": "Filename Template",
+    "error-saving": "Das Objekt konnte nicht gespeichert werden"
   },
   "header": {
     "btn-home": "Startseite",

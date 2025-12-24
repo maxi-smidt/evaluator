@@ -1,4 +1,4 @@
-import { Component, computed, input, model } from '@angular/core';
+import { Component, input, model } from '@angular/core';
 import { Entry } from '../../models/correction.model';
 import { EditorModule } from 'primeng/editor';
 import { InputNumber } from 'primeng/inputnumber';
@@ -35,15 +35,8 @@ export class EvaluateTableComponent {
   public readonly readOnly = input.required<boolean>();
   public readonly pointStepSize = input.required<number>();
 
-  protected readonly currentPoints = computed(() =>
-    this.tableData().reduce(
-      (acc, current) => acc + current.points,
-      this.maxPossiblePoints(),
-    ),
-  );
-
-  showDeduction = input.required<boolean>();
-  previousDeductions = input<Deduction[] | undefined>();
+  public readonly showDeduction = input.required<boolean>();
+  public readonly previousDeductions = input<Deduction[] | undefined>();
 
   protected deleteRow(index: number) {
     this.tableData.update((current) => current.filter((_, i) => index !== i));

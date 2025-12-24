@@ -11,8 +11,17 @@ import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { ToastService } from '../../../shared/services/toast.service';
 import { PreviousDeductionsService } from '../../previous-deductions/services/previous-deductions.service';
 import { Textarea } from 'primeng/textarea';
-import { BehaviorSubject, combineLatest, map, switchMap } from 'rxjs';
+import {
+  BehaviorSubject,
+  catchError,
+  combineLatest,
+  map,
+  of,
+  switchMap,
+  throwError,
+} from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'ms-assignment-view',
@@ -49,7 +58,14 @@ export class AssignmentViewComponent {
   protected previousDeductions = toSignal(
     this.assignmentId$.pipe(
       switchMap((id) =>
-        this.previousDeductionsService.getPreviousDeductions(id, 'assignment'),
+        this.previousDeductionsService
+          .getPreviousDeductions(id, 'assignment')
+          .pipe(
+            catchError((error: HttpErrorResponse) => {
+              if (error.status === 404) return of(undefined);
+              return throwError(() => error);
+            }),
+          ),
       ),
     ),
   );
@@ -172,7 +188,7 @@ export class AssignmentViewComponent {
   }
 
   protected onPreviousDeductionsQuickUpload() {
-    if (this.previousDeductions === undefined) {
+    if (!this.previousDeductions()) {
       this.previousDeductionsService
         .createPreviousDeductions(
           this.previousDeductionsTextField!,

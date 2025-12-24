@@ -34,7 +34,6 @@ import {
 } from '../../course/models/course.model';
 import { ToastService } from '../../../shared/services/toast.service';
 import { PreviousDeductionsService } from '../../previous-deductions/services/previous-deductions.service';
-import { PreviousDeductions } from '../../previous-deductions/models/previous-deduction.model';
 import { Button } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
 import {
@@ -43,6 +42,7 @@ import {
   toSignal,
 } from '@angular/core/rxjs-interop';
 import { ExerciseGroupComponent } from './exercise-group/exercise-group.component';
+import { PreviousDeductions } from '../../previous-deductions/models/previous-deduction.model';
 
 @Component({
   selector: 'ms-correction-view',
@@ -146,8 +146,10 @@ export class CorrectionViewComponent {
     );
   });
 
-  showPreviousDeductions: boolean = false;
-  previousDeductions: PreviousDeductions | undefined;
+  protected readonly showPreviousDeductions = signal<boolean>(false);
+  protected readonly previousDeductions = signal<
+    PreviousDeductions | undefined
+  >(undefined);
 
   constructor() {
     effect(() => {
@@ -336,21 +338,21 @@ export class CorrectionViewComponent {
   }
 
   protected onToggleShowPreviousDeductionClick() {
-    this.showPreviousDeductions = !this.showPreviousDeductions;
+    this.showPreviousDeductions.update((current) => !current);
 
-    if (!this.previousDeductions) {
+    if (!this.previousDeductions()) {
       this.previousDeductionsService
         .getPreviousDeductions(this.correctionId()!, 'correction')
         .subscribe({
           next: (value) => {
-            this.previousDeductions = value;
+            this.previousDeductions.set(value);
           },
           error: (err) => {
             if (err.status === 404) {
               this.toastService.error(
                 'course.evaluateView.error-no-deductions',
               );
-              this.showPreviousDeductions = false;
+              this.showPreviousDeductions.set(false);
             }
           },
         });

@@ -9,5 +9,6 @@
                      [maxPossiblePoints]="subExercise.points"
                      [readOnly]="readOnly()"
                      [pointStepSize]="stepSize()"
-                     [showDeduction]="showPreviousDeductions()" />
+                     [showDeduction]="showPreviousDeductions()"
+                     [previousDeductions]="previousDeductions()?.[subExercise.name]" />
 }

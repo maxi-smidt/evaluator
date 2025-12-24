@@ -86,7 +86,7 @@
               label="{{ 'common.download' | translate }}"
               severity="success"
               (onClick)="onDownloadClick()"/>
-    <p-button [icon]="showPreviousDeductions ? 'pi pi-eye' : 'pi pi-eye-slash'"
+    <p-button [icon]="showPreviousDeductions() ? 'pi pi-eye' : 'pi pi-eye-slash'"
               label="{{ 'course.evaluateView.deductions' | translate }}"
               severity="warn"
               (onClick)="onToggleShowPreviousDeductionClick()"/>
@@ -103,13 +103,15 @@
                      (tableDataChange)="updateAnnotations($event)"
                      [readOnly]="readOnly()"
                      [pointStepSize]="course()!.pointStepSize"
-                     [showDeduction]="showPreviousDeductions"
-                     [previousDeductions]="previousDeductions?.draft?.annotations" />
+                     [showDeduction]="showPreviousDeductions()"
+                     [previousDeductions]="previousDeductions()?.draft?.annotations" />
 
   @for (exercise of draftStateCorrection()!.draft.exercise; track $index) {
     <ms-exercise-group [exercise]="exercise"
                        (exerciseChange)="updateExercise($index, $event)"
                        [readOnly]="readOnly()"
-                       [stepSize]="course()!.pointStepSize" />
+                       [stepSize]="course()!.pointStepSize"
+                       [showPreviousDeductions]="showPreviousDeductions()"
+                       [previousDeductions]="previousDeductions()?.draft?.exercises?.[exercise.name]" />
   }
 }

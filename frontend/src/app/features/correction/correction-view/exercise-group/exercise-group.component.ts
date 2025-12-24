@@ -1,6 +1,6 @@
 import { Component, computed, input, output } from '@angular/core';
 import { EvaluateTableComponent } from '../evaluate-table/evaluate-table.component';
-import { PreviousDeductions } from '../../../previous-deductions/models/previous-deduction.model';
+import { PartialDeduction } from '../../../previous-deductions/models/previous-deduction.model';
 import { Entry, Exercise } from '../../models/correction.model';
 
 @Component({
@@ -13,7 +13,7 @@ export class ExerciseGroupComponent {
   public readonly readOnly = input.required<boolean>();
   public readonly stepSize = input.required<number>();
   public readonly showPreviousDeductions = input<boolean>(false);
-  public readonly previousDeductions = input<PreviousDeductions | undefined>(
+  public readonly previousDeductions = input<PartialDeduction | undefined>(
     undefined,
   );
 

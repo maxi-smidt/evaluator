@@ -409,7 +409,7 @@ export class SettingsViewComponent {
       },
       error: (err) => {
         console.error(err);
-        this.toastService.error('common.errorSaving'); // Add a generic error key
+        this.toastService.error('common.error-saving');
       },
     });
   }
