@@ -20,9 +20,9 @@ import { TranslationService } from '../../../../../shared/services/translation.s
     InputTextModule,
     TooltipModule,
   ],
-  templateUrl: './edit-general.component.html',
+  templateUrl: './setting-general.component.html',
 })
-export class EditGeneralComponent {
+export class SettingGeneralComponent {
   course = input.required<CourseInstance>();
 
   constructor(protected translationService: TranslationService) {

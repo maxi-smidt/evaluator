@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { Toast } from 'primeng/toast';
 
 @Component({
   selector: 'ms-root',
@@ -6,9 +8,6 @@ import { Component } from '@angular/core';
     <router-outlet />
     <p-toast [life]="5000" />
   `,
-  standalone: false,
+  imports: [RouterOutlet, Toast],
 })
-export class AppComponent {
-  title = 'frontend';
-  constructor() {}
-}
+export class App {}

@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MultiStudentFormComponent } from './multi-student-form/multi-student-form.component';
 import { SingleStudentFormComponent } from './single-student-form/single-student-form.component';
-import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { ActivatedRoute } from '@angular/router';
 import { DegreeProgramService } from '../../services/degree-program.service';
-import { ClassGroup } from '../../models/class-group.model';
-import { TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from 'primeng/tabs';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
+import { map, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'ms-student-form',
@@ -18,29 +18,23 @@ import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
     TabPanel,
     Tabs,
     TranslatePipe,
+    Tab,
   ],
   templateUrl: './student-form.component.html',
 })
-export class StudentFormComponent implements OnInit {
-  classGroups: ClassGroup[] = [];
+export class StudentFormComponent {
+  private readonly degreeProgramService = inject(DegreeProgramService);
+  private readonly route = inject(ActivatedRoute);
 
-  constructor(
-    private degreeProgramService: DegreeProgramService,
-    private route: ActivatedRoute,
-    private urlParamService: UrlParamService,
-  ) {}
-
-  ngOnInit(): void {
-    const degreeProgramAbbreviation = this.urlParamService.findParam(
-      'abbreviation',
-      this.route,
-    );
-    this.degreeProgramService
-      .getClassGroups(degreeProgramAbbreviation)
-      .subscribe({
-        next: (value) => {
-          this.classGroups = value;
-        },
-      });
-  }
+  private degreeProgramAbbreviation$ = this.route.params.pipe(
+    map((params) => params['abbreviation']),
+  );
+  protected classGroups = toSignal(
+    this.degreeProgramAbbreviation$.pipe(
+      switchMap((abbreviation) =>
+        this.degreeProgramService.getClassGroups(abbreviation),
+      ),
+    ),
+    { initialValue: [] },
+  );
 }

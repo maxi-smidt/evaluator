@@ -8,9 +8,9 @@ import { TableModule } from 'primeng/table';
 @Component({
   selector: 'ms-edit-students',
   imports: [TranslatePipe, FormsModule, Button, TableModule],
-  templateUrl: './edit-students.component.html',
+  templateUrl: './setting-students.component.html',
 })
-export class EditStudentsComponent {
+export class SettingStudentsComponent {
   students = model.required<Student[]>();
 
   protected onRemoveClick(student: Student) {

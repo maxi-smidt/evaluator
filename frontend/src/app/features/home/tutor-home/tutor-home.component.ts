@@ -1,49 +1,41 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { CourseCardComponent } from './course-card/course-card.component';
-import { SimpleCourseInstance } from '../../course/models/course.model';
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { CourseService } from '../../course/services/course.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'ms-tutor-home',
   templateUrl: './tutor-home.component.html',
   imports: [TranslatePipe, CourseCardComponent, SelectModule, FormsModule],
 })
-export class TutorHomeComponent implements OnInit {
-  courseInstances: SimpleCourseInstance[] = [];
-  yearItems: string[] = [];
-  selectedYear: string | undefined;
-  allString: string;
+export class TutorHomeComponent {
+  private courseService = inject(CourseService);
+  private translationService = inject(TranslationService);
 
-  constructor(
-    private courseService: CourseService,
-    private translationService: TranslationService,
-  ) {
-    this.allString = this.translationService.translate('home.tutorHome.all');
-  }
+  protected courseInstances = toSignal(this.courseService.getCourseInstances());
+  protected yearItems: WritableSignal<string[]> = signal([]);
 
-  ngOnInit() {
-    this.courseService.getCourseInstances().subscribe({
-      next: (courseInstances) => {
-        this.courseInstances = courseInstances;
-        this.fillItems();
-      },
+  protected allString: string =
+    this.translationService.translate('home.tutorHome.all');
+  protected selectedYear: string = this.allString;
+
+  constructor() {
+    effect(() => {
+      if (!this.courseInstances()) return;
+      const years = new Set(
+        this.courseInstances()!.map((ci) => ci.year.toString()),
+      );
+      this.yearItems.set([...years, this.allString]);
     });
-  }
-
-  private fillItems() {
-    const years = this.courseInstances.map((ci) => ci.year.toString());
-
-    this.yearItems = years.filter(
-      (oldYear, index, self) =>
-        index ===
-        self.findIndex((newYear) => newYear === oldYear && newYear === oldYear),
-    );
-
-    this.yearItems.push(this.allString);
-    this.selectedYear = this.allString;
   }
 }

@@ -8,11 +8,11 @@ import { FormsModule } from '@angular/forms';
 import { SimpleUser } from '../../../../../core/models/user.models';
 
 @Component({
-    selector: 'ms-edit-partition',
-    templateUrl: './edit-partition.component.html',
-    imports: [MultiSelectModule, FormsModule]
+  selector: 'ms-edit-partition',
+  templateUrl: './setting-partition.component.html',
+  imports: [MultiSelectModule, FormsModule],
 })
-export class EditPartitionComponent {
+export class SettingPartitionComponent {
   partition = input.required<EditPartition[]>();
   groups = input<number[]>();
 

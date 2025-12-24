@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Assignment, Exercise } from '../models/assignment.model';
 import { AssignmentService } from '../services/assignment.service';
 import { ActivatedRoute } from '@angular/router';
@@ -9,10 +9,19 @@ import { InputTextModule } from 'primeng/inputtext';
 import { Button } from 'primeng/button';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { ToastService } from '../../../shared/services/toast.service';
-import { PreviousDeductions } from '../../previous-deductions/models/previous-deduction.model';
 import { PreviousDeductionsService } from '../../previous-deductions/services/previous-deductions.service';
 import { Textarea } from 'primeng/textarea';
-import { Message } from 'primeng/message';
+import {
+  BehaviorSubject,
+  catchError,
+  combineLatest,
+  map,
+  of,
+  switchMap,
+  throwError,
+} from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'ms-assignment-view',
@@ -24,16 +33,42 @@ import { Message } from 'primeng/message';
     Button,
     TranslatePipe,
     Textarea,
-    Message,
   ],
   templateUrl: './assignment-view.component.html',
 })
-export class AssignmentViewComponent implements OnInit {
-  assignmentBefore: Assignment = {} as Assignment;
-  assignment: Assignment = {} as Assignment;
-  shownDraft: object | undefined;
+export class AssignmentViewComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly assignmentService = inject(AssignmentService);
+  private readonly toastService = inject(ToastService);
+  private readonly previousDeductionsService = inject(
+    PreviousDeductionsService,
+  );
 
-  previousDeductions: PreviousDeductions | undefined;
+  private readonly refresh$ = new BehaviorSubject<void>(undefined);
+  protected readonly assignmentId$ = this.route.params.pipe(
+    map((params) => Number(params['assignmentId'])),
+  );
+  protected serverStateAssignment = toSignal(
+    combineLatest([this.assignmentId$, this.refresh$]).pipe(
+      switchMap(([id, _]) => this.assignmentService.getAssignment(id)),
+    ),
+  );
+  protected draftStateAssignment = signal<Assignment | undefined>(undefined);
+
+  protected previousDeductions = toSignal(
+    this.assignmentId$.pipe(
+      switchMap((id) =>
+        this.previousDeductionsService
+          .getPreviousDeductions(id, 'assignment')
+          .pipe(
+            catchError((error: HttpErrorResponse) => {
+              if (error.status === 404) return of(undefined);
+              return throwError(() => error);
+            }),
+          ),
+      ),
+    ),
+  );
 
   exampleDraft: object;
   examplePreviousDeductions: object;
@@ -43,12 +78,30 @@ export class AssignmentViewComponent implements OnInit {
 
   public editorOptions: JsonEditorOptions;
 
-  constructor(
-    private assignmentService: AssignmentService,
-    private route: ActivatedRoute,
-    private toastService: ToastService,
-    private previousDeductionsService: PreviousDeductionsService,
-  ) {
+  constructor() {
+    effect(() => {
+      const data = this.serverStateAssignment();
+      if (data) {
+        this.draftStateAssignment.set(structuredClone(data));
+      }
+    });
+
+    effect(() => {
+      const assignment = this.draftStateAssignment();
+
+      if (!assignment) return 0;
+
+      return assignment.draft.reduce(
+        (outerAcc, exercise) =>
+          outerAcc +
+          exercise.distribution.reduce(
+            (innerAcc, subExercise) => innerAcc + subExercise.points,
+            0,
+          ),
+        0,
+      );
+    });
+
     this.editorOptions = new JsonEditorOptions();
     this.editorOptions.expandAll = true;
     this.editorOptions.mode = 'tree';
@@ -112,70 +165,34 @@ export class AssignmentViewComponent implements OnInit {
     };
   }
 
-  ngOnInit() {
-    const assignmentId = this.route.snapshot.params['assignmentId'];
-    this.assignmentService.getAssignment(assignmentId).subscribe({
-      next: (value) => {
-        this.assignment = value;
-        this.assignmentBefore = JSON.parse(JSON.stringify(value));
-        this.shownDraft = JSON.parse(JSON.stringify(value.draft));
-      },
-    });
-    this.previousDeductionsService
-      .getPreviousDeductions(assignmentId, 'assignment')
-      .subscribe({
-        next: (value) => {
-          this.previousDeductions = value;
-        },
-        error: () => {
-          this.previousDeductions = undefined;
-        },
-      });
-  }
+  private isDirty = computed(
+    () =>
+      JSON.stringify(this.serverStateAssignment()) !==
+      JSON.stringify(this.draftStateAssignment()),
+  );
 
-  getData(event: Exercise[]) {
-    this.assignment.draft = event;
-    this.calculatePoints();
-  }
-
-  calculatePoints() {
-    this.assignment.points = this.assignment.draft.reduce((total, exercise) => {
-      return (
-        total +
-        exercise.distribution.reduce((subTotal, subExercise) => {
-          return subTotal + subExercise.points;
-        }, 0)
-      );
-    }, 0);
-  }
-
-  draftHasChanged(): boolean {
-    return (
-      JSON.stringify(this.assignment) !== JSON.stringify(this.assignmentBefore)
-    );
-  }
-
-  onSubmit() {
-    if (!this.draftHasChanged()) {
+  protected onSubmit() {
+    if (!this.isDirty()) {
       this.toastService.info('common.noChangesInfo');
       return;
     }
 
-    this.assignmentService.putAssignment(this.assignment).subscribe({
-      next: (value) => {
-        this.assignment = value;
-        this.assignmentBefore = JSON.parse(JSON.stringify(value));
-        this.toastService.success('common.saved');
-      },
-    });
+    this.assignmentService
+      .putAssignment(this.draftStateAssignment()!)
+      .subscribe({
+        next: () => {
+          this.refresh$.next();
+          this.toastService.success('common.saved');
+        },
+      });
   }
 
-  onPreviousDeductionsQuickUpload() {
-    if (this.previousDeductions === undefined) {
+  protected onPreviousDeductionsQuickUpload() {
+    if (!this.previousDeductions()) {
       this.previousDeductionsService
         .createPreviousDeductions(
           this.previousDeductionsTextField!,
-          this.assignment.id,
+          this.serverStateAssignment()!.id,
         )
         .subscribe({
           next: () => (this.previousDeductionsTextField = undefined),
@@ -183,7 +200,7 @@ export class AssignmentViewComponent implements OnInit {
     } else {
       this.previousDeductionsService
         .putPreviousDeductions(
-          this.assignment.id,
+          this.serverStateAssignment()!.id,
           this.previousDeductionsTextField!,
           'assignment',
         )
@@ -193,10 +210,37 @@ export class AssignmentViewComponent implements OnInit {
     }
   }
 
-  onDraftQuickUpload() {
-    this.assignment.draft = JSON.parse(this.draftTextField!);
-    this.assignmentService.putAssignment(this.assignment).subscribe({
-      next: () => (this.draftTextField = undefined),
+  protected onDraftQuickUpload() {
+    try {
+      const draftJson = JSON.parse(this.draftTextField!);
+      this.draftStateAssignment.update((current) => ({
+        ...current!,
+        draft: draftJson,
+      }));
+      this.assignmentService
+        .putAssignment(this.draftStateAssignment()!)
+        .subscribe({
+          next: () => {
+            this.draftTextField = undefined;
+            this.refresh$.next();
+          },
+        });
+    } catch {
+      this.toastService.error('assignment.invalid-json');
+    }
+  }
+
+  protected updateDraftField<K extends keyof Assignment>(
+    key: K,
+    value: Assignment[K],
+  ) {
+    this.draftStateAssignment.update((current) => {
+      if (!current) return undefined;
+      return { ...current, [key]: value };
     });
+  }
+
+  protected updateAssignmentDraft(draft: Exercise[]) {
+    this.draftStateAssignment.update((current) => ({ ...current!, draft }));
   }
 }

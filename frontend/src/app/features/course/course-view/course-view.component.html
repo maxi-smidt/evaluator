@@ -1,75 +1,77 @@
 <p-confirmpopup/>
 
-<h2>{{ 'course.courseView.title' | translate }} {{ courseBefore.name }}</h2>
+@if (serverStateCourse()) {
+  <h2>{{ 'course.courseView.title' | translate }} {{ serverStateCourse()!.name }}</h2>
 
-<p>{{ 'assignment.info' | translate }}</p>
+  <p>{{ 'assignment.info' | translate }}</p>
 
-<div class="d-flex mt-5 gap-3">
-  <p-floatlabel>
-    <input id="name" type="text" pInputText [(ngModel)]="course.name" [size]="35" [maxlength]="50"/>
-    <label for="name">{{ 'common.designation' | translate }}</label>
-  </p-floatlabel>
-
-  <p-floatlabel>
-    <input id="abbreviation" type="text" pInputText [(ngModel)]="course.abbreviation" [size]="4" [maxlength]="5"/>
-    <label for="abbreviation">{{ 'common.abbreviation' | translate }}</label>
-  </p-floatlabel>
-
-  <div class="d-flex gap-1">
+  <div class="d-flex mt-5 gap-3">
     <p-floatlabel>
-      <input id="file_name" type="text" pInputText [(ngModel)]="course.fileName" [size]="50" [maxlength]="60"/>
-      <label for="file_name">{{ 'common.abbreviation' | translate }}</label>
+      <input id="name" type="text" pInputText [ngModel]="draftStateCourse()!.name" (ngModelChange)="updateDraftField('name', $event)" [size]="35" [maxlength]="50"/>
+      <label for="name">{{ 'common.designation' | translate }}</label>
     </p-floatlabel>
 
-    <p-button icon="pi pi-info-circle" text rounded severity="secondary" [pTooltip]="translationService.translate('common.file_name_wc')"/>
+    <p-floatlabel>
+      <input id="abbreviation" type="text" pInputText [ngModel]="draftStateCourse()!.abbreviation" (ngModelChange)="updateDraftField('abbreviation', $event)" [size]="4" [maxlength]="5"/>
+      <label for="abbreviation">{{ 'common.abbreviation' | translate }}</label>
+    </p-floatlabel>
+
+    <div class="d-flex gap-1">
+      <p-floatlabel>
+        <input id="file_name" type="text" pInputText [ngModel]="draftStateCourse()!.fileName" (ngModelChange)="updateDraftField('fileName', $event)" [size]="50" [maxlength]="60"/>
+        <label for="file_name">{{ 'common.abbreviation' | translate }}</label>
+      </p-floatlabel>
+
+      <p-button icon="pi pi-info-circle" text rounded severity="secondary" [pTooltip]="translationService.translate('common.file_name_wc')"/>
+    </div>
   </div>
-</div>
 
-<div class="mt-3">
-  <p-button label="{{ 'common.btn-submit' | translate }}" (onClick)="onSubmit()"/>
-</div>
+  <div class="mt-3">
+    <p-button label="{{ 'common.btn-submit' | translate }}" (onClick)="onSubmit()"/>
+  </div>
 
-<div class="grid grid-nogutter border border-2 rounded-1 mt-4">
-  @for (assignment of course.assignments; track assignment.id) {
-    <div class="col-12 hover border border-1">
-      <div class="d-flex p-2 gap-3 align-items-center">
-        <h5 class="ms-1 mb-0">{{ assignment.name }}</h5>
-        <div class="d-flex ms-auto gap-2">
-          <p-button icon="pi pi-times" severity="danger" size="small"
-                    (onClick)="onDeleteAssignment($event, assignment.id)"/>
-          <p-button icon="pi pi-arrow-right" size="small" (onClick)="routeToAssignment(assignment.id)"/>
+  <div class="grid grid-nogutter border border-2 rounded-1 mt-4">
+    @for (assignment of draftStateCourse()!.assignments; track assignment.id) {
+      <div class="col-12 hover border border-1">
+        <div class="d-flex p-2 gap-3 align-items-center">
+          <h5 class="ms-1 mb-0">{{ assignment.name }}</h5>
+          <div class="d-flex ms-auto gap-2">
+            <p-button icon="pi pi-times" severity="danger" size="small"
+                      (onClick)="onDeleteAssignment($event, assignment.id)"/>
+            <p-button icon="pi pi-arrow-right" size="small" (onClick)="routeToAssignment(assignment.id)"/>
+          </div>
         </div>
       </div>
-    </div>
-  } @empty {
-    <div class="col-12 border border-1">
-      <div class="d-flex p-2 gap-3 align-items-center">
-        <p>{{ 'common.no-data' | translate }}</p>
+    } @empty {
+      <div class="col-12 border border-1">
+        <div class="d-flex p-2 gap-3 align-items-center">
+          <p>{{ 'common.no-data' | translate }}</p>
+        </div>
       </div>
+    }
+  </div>
+
+  <div class="d-flex gap-3 mt-3 justify-content-center">
+    <p-button severity="success" icon="pi pi-plus" label="{{ 'course.courseView.new-assignment' | translate }}"
+              (onClick)="this.dialogVisible = true"/>
+  </div>
+
+
+  <p-dialog header="{{ 'course.courseView.new-assignment' | translate }}" [modal]="true" [(visible)]="dialogVisible">
+    <div class="d-flex justify-content-center gap-3 mt-3 mb-3 py-2">
+      <p-floatlabel>
+        <input id="named" type="text" pInputText [(ngModel)]="newAssignmentName" [maxlength]="50"/>
+        <label for="named">{{ 'common.designation' | translate }}</label>
+      </p-floatlabel>
+
+      <p-floatlabel>
+        <input id="number" type="number" pInputText [(ngModel)]="newAssignmentNr" [maxlength]="4"/>
+        <label for="number">{{ 'assignment.number' | translate }}</label>
+      </p-floatlabel>
     </div>
-  }
-</div>
-
-<div class="d-flex gap-3 mt-3 justify-content-center">
-  <p-button severity="success" icon="pi pi-plus" label="{{ 'course.courseView.new-assignment' | translate }}"
-            (onClick)="this.dialogVisible = true"/>
-</div>
-
-
-<p-dialog header="{{ 'course.courseView.new-assignment' | translate }}" [modal]="true" [(visible)]="dialogVisible">
-  <div class="d-flex justify-content-center gap-3 mt-3 mb-3 py-2">
-    <p-floatlabel>
-      <input id="named" type="text" pInputText [(ngModel)]="newAssignmentName" [maxlength]="50"/>
-      <label for="named">{{ 'common.designation' | translate }}</label>
-    </p-floatlabel>
-
-    <p-floatlabel>
-      <input id="number" type="number" pInputText [(ngModel)]="newAssignmentNr" [maxlength]="4"/>
-      <label for="number">{{ 'assignment.number' | translate }}</label>
-    </p-floatlabel>
-  </div>
-  <div class="d-flex gap-2 justify-content-center">
-    <p-button label="{{ 'common.cancel' | translate }}" severity="secondary" (onClick)="dialogVisible = false"/>
-    <p-button class="ms-2" label="{{ 'common.btn-save' | translate }}" (onClick)="onSaveNewAssignment()"/>
-  </div>
-</p-dialog>
+    <div class="d-flex gap-2 justify-content-center">
+      <p-button label="{{ 'common.cancel' | translate }}" severity="secondary" (onClick)="dialogVisible = false"/>
+      <p-button class="ms-2" label="{{ 'common.btn-save' | translate }}" (onClick)="onSaveNewAssignment()"/>
+    </div>
+  </p-dialog>
+}

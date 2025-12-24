@@ -27,14 +27,14 @@
 
   <div class="col-md-7">
     <label for="fileName" class="form-label">{{ 'common.file-name' | translate }}</label>
-    <p-inputGroup id="fileName" class="w-full">
+    <p-inputgroup id="fileName" class="w-full">
       <input type="text" pInputText placeholder="" formControlName="text1"/>
       <p-inputGroupAddon>_Nachname_</p-inputGroupAddon>
       <input type="text" pInputText placeholder="" formControlName="text2"/>
       <p-inputGroupAddon>Nr_</p-inputGroupAddon>
       <input type="text" pInputText placeholder="" formControlName="text3"/>
       <p-inputGroupAddon>.pdf</p-inputGroupAddon>
-    </p-inputGroup>
+    </p-inputgroup>
     @if (submitted && f.text1.errors) {
       <div style="color: red">Erster Teil ist erforderlich.</div>
     }

@@ -4,7 +4,7 @@
       <h5 class="ms-1 mb-0 text-white">{{ 'home.dpdHome.programs' | translate }}</h5>
     </div>
   </div>
-  @for (dp of degreePrograms; track dp) {
+  @for (dp of degreePrograms(); track dp) {
     <div class="col-12 hover border border-1">
       <div class="d-flex align-items-center w-100 p-2 gap-3">
         <h5 class="ms-1 mb-0">{{ dp.name }}</h5>

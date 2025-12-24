@@ -1,125 +1,117 @@
 <p-confirmDialog/>
 
-<div class="sticky-1 sticky-top mb-3 bg-white border border-3 rounded-3 p-2 gap-2">
-  <h3 class="my-0">{{ correction.assignment.name }} - {{ correction.student.firstName }} {{ correction.student.lastName }}
-    | {{ totalPoints }}</h3>
-</div>
-
-<div class="d-flex mb-3 mt-3 border border-3 rounded-3 pt-4 pb-2 px-2 gap-2">
-  <p-button [severity]="expenseNotSet ? 'secondary' : 'primary'"
-            [icon]="expenseNotSet ? 'pi pi-times-circle' : 'pi pi-clock'"
-            [disabled]="readOnly"
-            (click)="onExpenseSetClick()"
-            [pTooltip]="translate('course.evaluateView.' + (expenseNotSet ? 'tt-expenseNotSet' : 'tt-expenseSet'))"
-            showDelay="500"
-            tooltipPosition="bottom"
-  />
-  <p-floatlabel>
-    <input id="hour"
-           type="number"
-           pInputText
-           (change)="expenseToString()"
-           [disabled]="expenseNotSet || readOnly"
-           [(ngModel)]="expenseElement.hour"
-           min="0"
-           max="120"/>
-    <label for="hour">{{ 'course.evaluateView.hours' | translate }}</label>
-  </p-floatlabel>
-  <p-floatlabel>
-    <input id="minute"
-           type="number"
-           style="width: 85px"
-           pInputText
-           (change)="expenseToString()"
-           [disabled]="expenseNotSet || readOnly"
-           [(ngModel)]="expenseElement.minute"
-           min="0"
-           max="59"/>
-    <label for="minute">{{ 'course.evaluateView.minutes' | translate }}</label>
-  </p-floatlabel>
-
-  @if (course.allowLateSubmission) {
-    <div class="ms-auto d-flex gap-2">
-      <p-button [severity]="hasLateSubmitted ? 'danger' : 'secondary'"
-                [icon]="hasLateSubmitted ? 'pi pi-flag-fill' : 'pi pi-flag'"
-                [disabled]="readOnly"
-                (click)="onHasLateSubmittedClick()"
-                [pTooltip]="translate('course.evaluateView.' + (hasLateSubmitted ? 'tt-lateSubmitted' : 'tt-notLateSubmitted'))"
-                showDelay="500"
-                tooltipPosition="bottom"
-      />
-    </div>
-
-    <p-floatlabel>
-      <input id="day"
-             type="number"
-             pInputText
-             [disabled]="!hasLateSubmitted"
-             (change)="calculateLateSubmission()"
-             [(ngModel)]="correction.lateSubmittedDays"
-             style="width: 100px"
-             min="1"
-             max="25"/>
-      <label for="minute">{{ 'course.evaluateView.days' | translate }}</label>
-    </p-floatlabel>
-
-    <p-floatlabel>
-      <input id="penalty"
-             type="number"
-             pInputText
-             [disabled]="true"
-             [(ngModel)]="lateSubmissionPenalty"
-             style="width: 100px"
-             min="-100"
-             max="0"/>
-      <label for="minute">{{ 'course.evaluateView.penalty' | translate }}</label>
-    </p-floatlabel>
-  }
-</div>
-
-<div class="sticky-2 sticky-top mt-3 mb-3 d-flex bg-white border border-3 rounded-3 p-2 gap-2">
-  <p-button icon="pi pi-save"
-            label="{{ 'common.btn-save' | translate }}"
-            severity="primary"
-            (onClick)="onSaveClick()"
-            [disabled]="readOnly"/>
-  <p-button icon="pi pi-download"
-            label="{{ 'common.download' | translate }}"
-            severity="success"
-            (onClick)="onDownloadClick()"/>
-  <p-button [icon]="showPreviousDeductions ? 'pi pi-eye' : 'pi pi-eye-slash'"
-            label="{{ 'course.evaluateView.deductions' | translate }}"
-            severity="warn"
-            (onClick)="onToggleShowPreviousDeductionClick()"/>
-
-  <div class="ms-auto">
-    <p-button icon="pi pi-arrow-left" label="{{ 'common.back' | translate }}" severity="secondary"
-              (onClick)="onBackButtonClick()"/>
+@if (serverStateCorrection() && course()) {
+  <div class="sticky-1 sticky-top mb-3 bg-white border border-3 rounded-3 p-2 gap-2">
+    <h3 class="my-0">{{ serverStateCorrection()!.assignment.name }} - {{ serverStateCorrection()!.student.firstName }} {{ serverStateCorrection()!.student.lastName }}
+      |  {{ currentPoints() }} / {{ totalPoints() }}</h3>
   </div>
-</div>
 
-<h4>{{ 'course.evaluateView.annotations' | translate }}</h4>
+  <div class="d-flex mb-3 mt-3 border border-3 rounded-3 pt-4 pb-2 px-2 gap-2">
+    <p-button [severity]="expenseNotSet() ? 'secondary' : 'primary'"
+              [icon]="expenseNotSet() ? 'pi pi-times-circle' : 'pi pi-clock'"
+              [disabled]="readOnly()"
+              (click)="onExpenseSetClick()"
+              [pTooltip]="translate('course.evaluateView.' + (expenseNotSet() ? 'tt-expenseNotSet' : 'tt-expenseSet'))"
+              showDelay="500"
+              tooltipPosition="bottom"
+    />
+    <p-floatlabel>
+      <input id="hour"
+             type="number"
+             pInputText
+             [disabled]="expenseNotSet() || readOnly()"
+             [ngModel]="expense().hours"
+             min="0"
+             max="120"/>
+      <label for="hour">{{ 'course.evaluateView.hours' | translate }}</label>
+    </p-floatlabel>
+    <p-floatlabel>
+      <input id="minute"
+             type="number"
+             style="width: 85px"
+             pInputText
+             [disabled]="expenseNotSet() || readOnly()"
+             [(ngModel)]="expense().minutes"
+             min="0"
+             max="59"/>
+      <label for="minute">{{ 'course.evaluateView.minutes' | translate }}</label>
+    </p-floatlabel>
 
-<ms-evaluate-table [tableData]="correction.draft.annotations"
-                   [defaultPoints]="0"
-                   [readOnly]="readOnly"
-                   [pointStepSize]="course.pointStepSize"
-                   [showDeduction]="showPreviousDeductions"
-                   [previousDeductions]="previousDeductions?.draft?.annotations"
-                   (totalPoints)="updateAnnotationPoints($event)"/>
+    @if (course()!.allowLateSubmission) {
+      <div class="ms-auto d-flex gap-2">
+        <p-button [severity]="hasLateSubmitted() ? 'danger' : 'secondary'"
+                  [icon]="hasLateSubmitted() ? 'pi pi-flag-fill' : 'pi pi-flag'"
+                  [disabled]="readOnly()"
+                  (click)="onHasLateSubmittedClick()"
+                  [pTooltip]="translate('course.evaluateView.' + (hasLateSubmitted() ? 'tt-lateSubmitted' : 'tt-notLateSubmitted'))"
+                  showDelay="500"
+                  tooltipPosition="bottom"
+        />
+      </div>
 
-@for (exercise of correction.draft.exercise; track exercise.name) {
-  <h4> {{ exercise.name }} | ({{ currentExercisePoints(exercise.name) }} / {{ getTotalExercisePoints(exercise.name) }}) </h4>
+      <p-floatlabel>
+        <input id="day"
+               type="number"
+               pInputText
+               [disabled]="!hasLateSubmitted()"
+               [ngModel]="draftStateCorrection()!.lateSubmittedDays"
+               (ngModelChange)="updateLateDays($event)"
+               style="width: 100px"
+               min="1"
+               max="25"/>
+        <label for="minute">{{ 'course.evaluateView.days' | translate }}</label>
+      </p-floatlabel>
 
-  @for (sub_exercise of exercise.sub; track sub_exercise.name) {
-    <h6> {{ sub_exercise.name }} | ({{ pointsDistribution[exercise.name][sub_exercise.name] }}
-      / {{ sub_exercise.points }})</h6>
-    <ms-evaluate-table [tableData]="sub_exercise.notes"
-                       [defaultPoints]="sub_exercise.points"
-                       [readOnly]="readOnly"
-                       [pointStepSize]="course.pointStepSize"
-                       [previousDeductions]="previousDeductions?.draft?.exercises?.[exercise.name]?.[sub_exercise.name]"
-                       [showDeduction]="showPreviousDeductions"
-                       (totalPoints)="updateSubExercisePoints($event, sub_exercise.name, exercise.name)"/>
+      <p-floatlabel>
+        <input id="penalty"
+               type="number"
+               pInputText
+               [disabled]="true"
+               [ngModel]="lateSubmissionPenalty()"
+               style="width: 100px"
+               min="-100"
+               max="0"/>
+        <label for="minute">{{ 'course.evaluateView.penalty' | translate }}</label>
+      </p-floatlabel>
+    }
+  </div>
+
+  <div class="sticky-2 sticky-top mt-3 mb-3 d-flex bg-white border border-3 rounded-3 p-2 gap-2">
+    <p-button icon="pi pi-save"
+              label="{{ 'common.btn-save' | translate }}"
+              severity="primary"
+              (onClick)="onSaveClick()"
+              [disabled]="readOnly()"/>
+    <p-button icon="pi pi-download"
+              label="{{ 'common.download' | translate }}"
+              severity="success"
+              (onClick)="onDownloadClick()"/>
+    <p-button [icon]="showPreviousDeductions() ? 'pi pi-eye' : 'pi pi-eye-slash'"
+              label="{{ 'course.evaluateView.deductions' | translate }}"
+              severity="warn"
+              (onClick)="onToggleShowPreviousDeductionClick()"/>
+
+    <div class="ms-auto">
+      <p-button icon="pi pi-arrow-left" label="{{ 'common.back' | translate }}" severity="secondary"
+                (onClick)="onBackButtonClick()"/>
+    </div>
+  </div>
+
+  <h4>{{ 'course.evaluateView.annotations' | translate }}</h4>
+
+  <ms-evaluate-table [tableData]="draftStateCorrection()!.draft.annotations"
+                     (tableDataChange)="updateAnnotations($event)"
+                     [readOnly]="readOnly()"
+                     [pointStepSize]="course()!.pointStepSize"
+                     [showDeduction]="showPreviousDeductions()"
+                     [previousDeductions]="previousDeductions()?.draft?.annotations" />
+
+  @for (exercise of draftStateCorrection()!.draft.exercise; track $index) {
+    <ms-exercise-group [exercise]="exercise"
+                       (exerciseChange)="updateExercise($index, $event)"
+                       [readOnly]="readOnly()"
+                       [stepSize]="course()!.pointStepSize"
+                       [showPreviousDeductions]="showPreviousDeductions()"
+                       [previousDeductions]="previousDeductions()?.draft?.exercises?.[exercise.name]" />
   }
 }

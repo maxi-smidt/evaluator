@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { PasswordUser } from '../../../core/models/user.models';
 import { TranslatePipe } from '../../pipes/translate.pipe';
@@ -6,35 +6,26 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { UserService } from '../../../core/services/user.service';
 import { ToastService } from '../../services/toast.service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'ms-user-form',
-    templateUrl: './user-form.component.html',
-    imports: [
-        ReactiveFormsModule,
-        TranslatePipe,
-        ButtonModule,
-        ConfirmDialogModule,
-    ]
+  selector: 'ms-user-form',
+  templateUrl: './user-form.component.html',
+  imports: [
+    ReactiveFormsModule,
+    TranslatePipe,
+    ButtonModule,
+    ConfirmDialogModule,
+  ],
 })
-export class UserFormComponent implements OnInit {
-  roleChoices: string[] = [];
+export class UserFormComponent {
+  private readonly userService = inject(UserService);
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly toastService = inject(ToastService);
 
-  constructor(
-    private userService: UserService,
-    private formBuilder: FormBuilder,
-    private toastService: ToastService,
-  ) {}
+  protected roleChoices = toSignal(this.userService.getUserRoles());
 
-  ngOnInit() {
-    this.userService.getUserRoles().subscribe({
-      next: (value) => {
-        this.roleChoices = value;
-      },
-    });
-  }
-
-  checkoutForm = this.formBuilder.group({
+  protected checkoutForm = this.formBuilder.group({
     first_name: '',
     last_name: '',
     username: '',
@@ -42,7 +33,7 @@ export class UserFormComponent implements OnInit {
     role: '',
   });
 
-  onSubmit() {
+  protected onSubmit() {
     if (this.checkoutForm.valid) {
       this.userService
         .registerUser(this.checkoutForm.value as PasswordUser)

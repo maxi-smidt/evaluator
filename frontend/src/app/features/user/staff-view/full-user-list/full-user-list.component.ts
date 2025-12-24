@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { UserService } from '../../../../core/services/user.service';
-import { User } from '../../../../core/models/user.models';
 import { TableModule } from 'primeng/table';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { Button } from 'primeng/button';
@@ -8,57 +7,44 @@ import { DegreeProgramService } from '../../../degree-program/services/degree-pr
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { UrlParamService } from '../../../../shared/services/url-param.service';
+import { BehaviorSubject, combineLatest, map, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'ms-full-user-list',
   imports: [TableModule, TranslatePipe, Button, SelectModule, FormsModule],
   templateUrl: './full-user-list.component.html',
 })
-export class FullUserListComponent implements OnInit {
-  degreeProgramAbbreviation: string = '';
-  userRoles: string[] = [];
+export class FullUserListComponent {
+  private readonly userService = inject(UserService);
+  private readonly degreeProgramService = inject(DegreeProgramService);
+  private readonly route = inject(ActivatedRoute);
 
-  users: User[] = [];
-
-  constructor(
-    private userService: UserService,
-    private degreeProgramService: DegreeProgramService,
-    private route: ActivatedRoute,
-    private urlParamService: UrlParamService,
-  ) {}
-
-  ngOnInit() {
-    this.degreeProgramAbbreviation = this.urlParamService.findParam(
-      'abbreviation',
-      this.route,
-    );
-
-    this.userService.getUserRoles().subscribe({
-      next: (value) => {
-        this.userRoles = value;
-      },
-    });
-
-    this.userService
-      .getUsers([`dp=${this.degreeProgramAbbreviation}`, 'exclude=true'])
-      .subscribe({
-        next: (value) => {
-          this.users = value;
-        },
-      });
-  }
+  private readonly refresh$ = new BehaviorSubject<void>(undefined);
+  private readonly degreeProgramAbbreviation$ = this.route.params.pipe(
+    map((params) => params['abbreviation']),
+  );
+  private readonly degreeProgramAbbreviation = toSignal(
+    this.degreeProgramAbbreviation$,
+  );
+  protected readonly userRoles = toSignal(this.userService.getUserRoles());
+  protected readonly users = toSignal(
+    combineLatest([this.degreeProgramAbbreviation$, this.refresh$]).pipe(
+      switchMap(([abbreviation, _]) =>
+        this.userService.getUsers([`dp=${abbreviation}`, 'exclude=true']),
+      ),
+    ),
+    { initialValue: [] },
+  );
 
   protected onAddToDegreeProgramClick(username: string) {
     this.degreeProgramService
       .createUserDegreeProgramConnection(
         username,
-        this.degreeProgramAbbreviation,
+        this.degreeProgramAbbreviation(),
       )
       .subscribe({
-        next: () => {
-          this.users = this.users.filter((user) => user.username !== username);
-        },
+        next: () => this.refresh$.next(),
       });
   }
 }

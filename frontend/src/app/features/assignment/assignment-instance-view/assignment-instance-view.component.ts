@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
-import { AssignmentInstance } from '../models/assignment.model';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { CorrectionService } from '../../correction/services/correction.service';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
@@ -14,6 +13,8 @@ import { CorrectionStatus } from '../../correction/models/correction.model';
 import { TooltipModule } from 'primeng/tooltip';
 import { ToastService } from '../../../shared/services/toast.service';
 import { Button } from 'primeng/button';
+import { BehaviorSubject, combineLatest, map, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'ms-assignment-instance-view',
@@ -28,44 +29,36 @@ import { Button } from 'primeng/button';
     Button,
   ],
 })
-export class AssignmentInstanceViewComponent implements OnInit {
-  assignment: AssignmentInstance;
-  groups: number[];
-  assignmentId: number;
+export class AssignmentInstanceViewComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly translationService = inject(TranslationService);
+  private readonly correctionService = inject(CorrectionService);
+  private readonly router = inject(Router);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly assignmentService = inject(AssignmentService);
+  private readonly toastService = inject(ToastService);
 
-  constructor(
-    private route: ActivatedRoute,
-    private translationService: TranslationService,
-    private correctionService: CorrectionService,
-    private router: Router,
-    private confirmationService: ConfirmationService,
-    private assignmentService: AssignmentService,
-    private toastService: ToastService,
-  ) {
-    this.groups = [];
-    this.assignmentId = -1;
-    this.assignment = {} as AssignmentInstance;
-  }
-
-  ngOnInit() {
-    this.assignmentId = this.route.snapshot.params['assignmentId'];
-    this.assignmentService
-      .getFullAssignmentInstance(this.assignmentId)
-      .subscribe({
-        next: (value) => {
-          this.assignment = value;
-          this.groups = Object.keys(this.assignment.groupedStudents).map((v) =>
-            Number(v),
-          );
-        },
-      });
-  }
+  private readonly refresh$ = new BehaviorSubject<void>(undefined);
+  private readonly assignmentId$ = this.route.params.pipe(
+    map((params) => Number(params['assignmentId'])),
+  );
+  private readonly assignmentId = toSignal(this.assignmentId$);
+  protected readonly assignment = toSignal(
+    combineLatest([this.assignmentId$, this.refresh$]).pipe(
+      switchMap(([id, _]) =>
+        this.assignmentService.getFullAssignmentInstance(id),
+      ),
+    ),
+  );
+  protected readonly groups = computed(() =>
+    Object.keys(this.assignment()?.groupedStudents ?? []).map((v) => Number(v)),
+  );
 
   private translate(key: string) {
     return this.translationService.translate(key);
   }
 
-  getSeverity(status: CorrectionStatus) {
+  protected getSeverity(status: CorrectionStatus) {
     switch (status) {
       case CorrectionStatus.CORRECTED:
         return 'success';
@@ -78,77 +71,65 @@ export class AssignmentInstanceViewComponent implements OnInit {
     }
   }
 
-  onStartOrResumeAction(
+  protected onStartOrResumeAction(
     studentId: string,
     state: CorrectionStatus,
     correctionId: number,
   ) {
-    if (
+    const isFinished =
       state === CorrectionStatus.CORRECTED ||
-      state === CorrectionStatus.NOT_SUBMITTED
-    ) {
+      state === CorrectionStatus.NOT_SUBMITTED;
+
+    if (isFinished) {
       return;
     }
+
     if (state === CorrectionStatus.UNDEFINED) {
       this.correctionService
         .createCorrection(
           studentId,
-          this.assignmentId,
+          this.assignmentId()!,
           CorrectionStatus.IN_PROGRESS,
         )
         .subscribe({
           next: (value) => {
-            this.router.navigate(['correction', value.id]).then();
+            void this.router.navigate(['correction', value.id]);
           },
         });
     } else {
-      this.router.navigate(['correction', correctionId]).then();
+      void this.router.navigate(['correction', correctionId]);
     }
   }
 
-  notSubmittedAction(studentId: string, group: number) {
+  protected notSubmittedAction(studentId: string) {
     this.correctionService
       .createCorrection(
         studentId,
-        this.assignmentId,
+        this.assignmentId()!,
         CorrectionStatus.NOT_SUBMITTED,
       )
       .subscribe({
-        next: (correction) => {
-          const student = this.assignment.groupedStudents[group].find(
-            (student) => student.id === studentId,
-          )!;
-          student.status = correction.status;
-          student.correctionId = correction.id;
-        },
+        next: () => this.refresh$.next(),
       });
   }
 
-  editAction(correctionId: number) {
+  protected editAction(correctionId: number) {
     this.correctionService
       .patchCorrection(correctionId, { status: CorrectionStatus.IN_PROGRESS })
       .subscribe({
         next: () => {
-          this.router.navigate(['correction', correctionId]).then();
+          void this.router.navigate(['correction', correctionId]);
         },
-        error: () => {
-          this.toastService.info('course.assignmentView.error-no-access');
-        },
+        error: () =>
+          this.toastService.info('course.assignmentView.error-no-access'),
       });
   }
 
-  deleteAction(correctionId: number, group: number) {
+  protected deleteAction(correctionId: number) {
     this.confirmDialog().then((result) => {
       if (result) {
         this.correctionService.deleteCorrection(correctionId).subscribe({
-          next: () => {
-            const student = this.assignment.groupedStudents[group].find(
-              (student) => student.correctionId === correctionId,
-            )!;
-            student.correctionId = null as unknown as number;
-            student.points = null as unknown as number;
-            student.status = CorrectionStatus.UNDEFINED;
-          },
+          next: () => this.refresh$.next(),
           error: () => {
             this.toastService.info('course.assignmentView.error-no-access');
           },
@@ -157,11 +138,11 @@ export class AssignmentInstanceViewComponent implements OnInit {
     });
   }
 
-  downloadAction(correctionId: number) {
+  protected downloadAction(correctionId: number) {
     this.correctionService.downloadCorrection(correctionId);
   }
 
-  viewOnlyAction(correctionId: number) {
+  protected viewOnlyAction(correctionId: number) {
     this.router.navigate(['correction', correctionId]).then();
   }
 

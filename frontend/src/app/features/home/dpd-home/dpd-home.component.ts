@@ -1,33 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FieldsetModule } from 'primeng/fieldset';
 import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { DpdService } from '../services/dpd.service';
 import { DegreeProgram } from '../../degree-program/models/degree-program.model';
 import { ButtonModule } from 'primeng/button';
 import { Router } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'ms-dpd-home',
   imports: [FieldsetModule, TranslatePipe, ButtonModule],
   templateUrl: './dpd-home.component.html',
 })
-export class DpdHomeComponent implements OnInit {
-  degreePrograms: DegreeProgram[] = [];
+export class DpdHomeComponent {
+  private router = inject(Router);
+  private degreeProgramService = inject(DpdService);
 
-  constructor(
-    private dpdService: DpdService,
-    private router: Router,
-  ) {}
+  protected degreePrograms = toSignal(
+    this.degreeProgramService.getDegreePrograms(),
+  );
 
-  ngOnInit() {
-    this.dpdService.getDegreePrograms().subscribe({
-      next: (value) => {
-        this.degreePrograms = value;
-      },
-    });
-  }
-
-  onDegreeProgramClick(dp: DegreeProgram) {
+  protected onDegreeProgramClick(dp: DegreeProgram) {
     this.router
       .navigate(['degree-program', dp.abbreviation, 'staff', 'all'])
       .then();

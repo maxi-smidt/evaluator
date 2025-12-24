@@ -1,11 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  signal,
+  untracked,
+} from '@angular/core';
 import { Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
 import {
   Correction,
-  CorrectionDraft,
   CorrectionStatus,
+  Entry,
+  Exercise,
 } from '../models/correction.model';
 import { CorrectionService } from '../services/correction.service';
 import { EvaluateTableComponent } from './evaluate-table/evaluate-table.component';
@@ -15,10 +23,9 @@ import { TranslatePipe } from '../../../shared/pipes/translate.pipe';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../../core/services/user.service';
-import { tap } from 'rxjs';
+import { combineLatest, filter, interval, map, switchMap, tap } from 'rxjs';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
-import { Student } from '../../course/models/student.model';
 import { TranslationService } from '../../../shared/services/translation.service';
 import { CourseService } from '../../course/services/course.service';
 import {
@@ -27,9 +34,15 @@ import {
 } from '../../course/models/course.model';
 import { ToastService } from '../../../shared/services/toast.service';
 import { PreviousDeductionsService } from '../../previous-deductions/services/previous-deductions.service';
-import { PreviousDeductions } from '../../previous-deductions/models/previous-deduction.model';
 import { Button } from 'primeng/button';
 import { Tooltip } from 'primeng/tooltip';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
+import { ExerciseGroupComponent } from './exercise-group/exercise-group.component';
+import { PreviousDeductions } from '../../previous-deductions/models/previous-deduction.model';
 
 @Component({
   selector: 'ms-correction-view',
@@ -46,201 +59,185 @@ import { Tooltip } from 'primeng/tooltip';
     InputTextModule,
     Button,
     Tooltip,
+    ExerciseGroupComponent,
   ],
 })
-export class CorrectionViewComponent implements OnInit, OnDestroy {
-  interval: NodeJS.Timeout | undefined;
-  correctionId: number;
+export class CorrectionViewComponent {
+  private readonly correctionService = inject(CorrectionService);
+  private readonly toastService = inject(ToastService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly userService = inject(UserService);
+  private readonly location = inject(Location);
+  private readonly translationService = inject(TranslationService);
+  private readonly courseService = inject(CourseService);
+  private readonly previousDeductionsService = inject(
+    PreviousDeductionsService,
+  );
 
-  course: CourseInstance;
-  correction: Correction;
-  correctionBefore: Correction;
+  private correctionId$ = this.route.params.pipe(
+    map((params) => Number(params['correctionId'])),
+  );
+  protected correctionId = toSignal(this.correctionId$);
+  private user = toSignal(this.userService.getUser());
+  protected serverStateCorrection = toSignal(
+    combineLatest([this.correctionId$, toObservable(this.user)]).pipe(
+      switchMap(([id, _]) =>
+        this.correctionService.getCorrection(id).pipe(
+          tap({
+            error: () => this.location.back(),
+          }),
+        ),
+      ),
+    ),
+  );
+  protected draftStateCorrection = signal<Correction | undefined>(undefined);
+  private baselineStateCorrection = signal<Correction | undefined>(undefined);
+  protected course = toSignal(
+    toObservable(this.serverStateCorrection).pipe(
+      filter((correction) => !!correction?.courseInstanceId),
+      switchMap((correction) =>
+        this.courseService.getCourseInstance<CourseInstance>(
+          correction!.courseInstanceId,
+          SerializerType.NORMAL,
+        ),
+      ),
+    ),
+  );
+  protected readOnly = computed(
+    () =>
+      this.serverStateCorrection()?.status === CorrectionStatus.CORRECTED ||
+      this.serverStateCorrection()?.tutorUsername !== this.user()?.username,
+  );
+  protected expense = signal({ hours: 0, minutes: 0 });
+  protected expenseNotSet = signal(false);
+  protected lateSubmissionPenalty = computed(
+    () =>
+      (this.course()?.lateSubmissionPenalty ?? 0) *
+      -(this.draftStateCorrection()?.lateSubmittedDays ?? 0),
+  );
+  protected hasLateSubmitted = computed(
+    () => (this.draftStateCorrection()?.lateSubmittedDays ?? 0) > 0,
+  );
+  protected isDirty = computed(() => {
+    return (
+      JSON.stringify(this.draftStateCorrection()) !==
+      JSON.stringify(this.baselineStateCorrection())
+    );
+  });
+  protected currentPoints = computed(() => {
+    const draftStateCorrection = this.draftStateCorrection();
+    if (!draftStateCorrection) return undefined;
+    return (
+      this.getCurrentPoints(draftStateCorrection) + this.lateSubmissionPenalty()
+    );
+  });
+  protected totalPoints = computed(() => {
+    return (
+      this.serverStateCorrection()?.draft.exercise.reduce(
+        (outerAcc, currentValue) =>
+          outerAcc +
+          currentValue.sub.reduce(
+            (innerAcc, subExercise) => innerAcc + subExercise.points,
+            0,
+          ),
+        0,
+      ) ?? 0
+    );
+  });
 
-  readOnly: boolean = false;
+  protected readonly showPreviousDeductions = signal<boolean>(false);
+  protected readonly previousDeductions = signal<
+    PreviousDeductions | undefined
+  >(undefined);
 
-  expenseElement: { minute: number; hour: number } = { minute: 0, hour: 0 };
-  expenseNotSet: boolean = false;
-
-  annotationPoints: number = 0;
-  pointsDistribution: {
-    [exerciseKey: string]: { [subExerciseKey: string]: number };
-  } = {};
-
-  hasLateSubmitted: boolean = false;
-  lateSubmissionPenalty: number = 0;
-
-  showPreviousDeductions: boolean = false;
-  previousDeductions: PreviousDeductions | undefined;
-
-  constructor(
-    private correctionService: CorrectionService,
-    private toastService: ToastService,
-    private route: ActivatedRoute,
-    private confirmationService: ConfirmationService,
-    private userService: UserService,
-    private location: Location,
-    private translationService: TranslationService,
-    private courseService: CourseService,
-    private previousDeductionsService: PreviousDeductionsService,
-  ) {
-    this.correction = {
-      draft: {} as CorrectionDraft,
-      student: {} as Student,
-      assignment: { points: -1, name: '' },
-    } as Correction;
-    this.course = { pointStepSize: 0 } as CourseInstance;
-    this.correctionBefore = {} as Correction;
-    this.correctionId = -1;
-  }
-
-  ngOnInit() {
-    this.correctionId = this.route.snapshot.params['correctionId'];
-
-    this.userService.getUser().subscribe({
-      next: (user) => {
-        this.correctionService.getCorrection(this.correctionId).subscribe({
-          next: (correction) => {
-            this.correction = correction;
-            this.hasLateSubmitted = this.correction.lateSubmittedDays > 0;
-            this.parseExpense();
-            this.correctionBefore = JSON.parse(JSON.stringify(correction));
-            this.readOnly =
-              this.correction.status === CorrectionStatus.CORRECTED ||
-              correction.tutorUsername !== user.username;
-
-            this.courseService
-              .getCourseInstance<CourseInstance>(
-                this.correction.courseInstanceId,
-                SerializerType.NORMAL,
-              )
-              .subscribe({
-                next: (course) => {
-                  this.course = course;
-                  this.calculateLateSubmission();
-                },
-              });
-          },
-          error: () => {
-            this.location.back();
-          },
-          complete: () => {
-            this.initPoints();
-          },
-        });
-      },
+  constructor() {
+    effect(() => {
+      const data = this.serverStateCorrection();
+      const currentDraft = untracked(() => this.draftStateCorrection());
+      if (data && (!currentDraft || currentDraft?.id !== data.id)) {
+        this.draftStateCorrection.set(structuredClone(data));
+        this.baselineStateCorrection.set(structuredClone(data));
+        this.parseExpense();
+      }
     });
 
-    if (!this.readOnly) {
-      this.interval = setInterval(() => {
-        this.saveCorrectionIfChanged();
-      }, 10000);
-    }
+    effect(() => {
+      const expense = this.expenseNotSet()
+        ? null
+        : `${this.expense().hours}:${this.expense().minutes}:00`;
+      this.draftStateCorrection.update((current) => ({
+        ...current!,
+        expense: expense,
+      }));
+    });
+
+    interval(10000)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => {
+        if (!this.readOnly()) {
+          this.saveCorrectionIfChanged();
+        }
+      });
   }
 
-  ngOnDestroy() {
-    if (this.interval) {
-      clearInterval(this.interval);
+  private getCurrentPoints(correction: Correction) {
+    let currentPoints = 0;
+
+    for (const exc of correction.draft.exercise) {
+      for (const subExc of exc.sub) {
+        currentPoints += subExc.notes.reduce(
+          (acc, note) => acc + note.points,
+          subExc.points,
+        );
+      }
     }
+    currentPoints += correction.draft.annotations.reduce(
+      (acc, entry) => acc + entry.points,
+      0,
+    );
+    return currentPoints;
   }
 
-  private saveCorrection(triggered: boolean = false) {
+  private saveCorrection(
+    triggered: boolean = false,
+    callback: (() => void) | null = null,
+  ) {
+    const payload = this.draftStateCorrection();
+    if (!payload) return;
     return this.correctionService
-      .patchCorrection(this.correctionId!, {
-        points: this.totalPoints,
-        draft: this.correction.draft,
-        expense: this.correction.expense,
-        lateSubmittedDays: this.correction.lateSubmittedDays,
+      .patchCorrection(this.correctionId()!, {
+        points: this.currentPoints() ?? 0,
+        draft: payload.draft,
+        expense: payload.expense,
+        lateSubmittedDays: payload.lateSubmittedDays,
       })
-      .pipe(
-        tap({
-          next: (response) => {
-            if (triggered) {
-              this.toastService.info('common.saved');
-            }
-            this.correction.expense = response.expense;
-            this.correction.lateSubmittedDays = response.lateSubmittedDays;
-            this.correction.status = response.status;
-            this.correction.points = response.points;
-            this.parseExpense();
-            this.correctionBefore = JSON.parse(JSON.stringify(response));
-            this.calculateLateSubmission();
-          },
-          error: (error) => {
-            this.toastService.error('course.evaluateView.couldNotSave');
-            throw error;
-          },
-        }),
-      );
+      .subscribe({
+        next: () => {
+          if (triggered) {
+            this.toastService.info('common.saved');
+          }
+          this.baselineStateCorrection.set(structuredClone(payload));
+        },
+        error: () => {
+          this.toastService.error('course.evaluateView.couldNotSave');
+        },
+        complete: () => callback?.(),
+      });
   }
 
-  private saveCorrectionIfChanged(triggered: boolean = false) {
-    if (this.hasChanged()) {
-      this.saveCorrection(triggered).subscribe();
+  private saveCorrectionIfChanged(manuallyTriggered: boolean = false) {
+    if (this.isDirty()) {
+      this.saveCorrection(manuallyTriggered);
     } else {
-      if (triggered) {
+      if (manuallyTriggered) {
         this.toastService.info('common.noChangesInfo');
       }
     }
   }
 
-  private initPoints() {
-    for (const exc of this.correction.draft.exercise) {
-      this.pointsDistribution[exc.name] = {};
-      for (const subExc of exc.sub) {
-        const points = subExc.notes.reduce((acc, note) => acc + note.points, 0);
-        this.pointsDistribution[exc.name][subExc.name] = subExc.points + points;
-      }
-    }
-    this.annotationPoints = this.correction.draft.annotations.reduce(
-      (acc, entry) => acc + entry.points,
-      0,
-    );
-  }
-
-  protected updateSubExercisePoints(
-    points: number,
-    subExerciseName: string,
-    exerciseName: string,
-  ) {
-    this.pointsDistribution[exerciseName][subExerciseName] = points;
-  }
-
-  protected updateAnnotationPoints(points: number) {
-    this.annotationPoints = points;
-  }
-
-  get totalPoints() {
-    let totalPoints = this.annotationPoints;
-    Object.values(this.pointsDistribution).forEach((subExercises) => {
-      Object.values(subExercises).forEach((points) => {
-        totalPoints += points;
-      });
-    });
-    totalPoints += this.lateSubmissionPenalty;
-    return totalPoints;
-  }
-
-  protected getTotalExercisePoints(exerciseName: string) {
-    return this.correction.draft.exercise
-      .find((ex) => ex.name === exerciseName)!
-      .sub.reduce((acc, subExercise) => acc + subExercise.points, 0);
-  }
-
-  protected currentExercisePoints(exerciseName: string) {
-    return Object.values(this.pointsDistribution[exerciseName] || {}).reduce(
-      (acc, points) => acc + points,
-      0,
-    );
-  }
-
-  private hasChanged() {
-    return (
-      JSON.stringify(this.correction) !== JSON.stringify(this.correctionBefore)
-    );
-  }
-
   public checkChanges() {
-    if (!this.hasChanged()) {
+    if (!this.isDirty()) {
       return true;
     }
     return this.confirmDialog().then((result) => {
@@ -276,22 +273,15 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
   }
 
   private parseExpense() {
-    const expense = this.correction.expense;
-    if (expense !== null) {
+    const expense = this.serverStateCorrection()?.expense;
+    if (expense) {
       const day: number = this.parseDays(expense);
       const hour = this.parseHours(expense);
       const minute = this.parseMinutes(expense);
-      this.expenseElement = { minute: minute, hour: hour + day * 24 };
+      this.expense.set({ minutes: minute, hours: hour + day * 24 });
     } else {
-      this.expenseNotSet = true;
+      this.expenseNotSet.set(true);
     }
-  }
-
-  protected expenseToString(): void {
-    const expense = this.expenseElement;
-    this.correction.expense = this.expenseNotSet
-      ? null
-      : `${expense.hour}:${expense.minute}:00`;
   }
 
   private parseDays(duration: string): number {
@@ -312,67 +302,92 @@ export class CorrectionViewComponent implements OnInit, OnDestroy {
     return parseInt(timePart!.split(':')[1], 10);
   }
 
-  protected calculateLateSubmission() {
-    this.lateSubmissionPenalty =
-      (this.course?.lateSubmissionPenalty ?? 0) *
-      -this.correction.lateSubmittedDays;
-  }
-
   protected onHasLateSubmittedClick() {
-    this.hasLateSubmitted = !this.hasLateSubmitted;
-    this.correction.lateSubmittedDays = this.hasLateSubmitted ? 1 : 0;
-    this.calculateLateSubmission();
+    const updatedDays =
+      this.draftStateCorrection()!.lateSubmittedDays > 0 ? 0 : 1;
+    this.draftStateCorrection.update((current) => ({
+      ...current!,
+      lateSubmittedDays: updatedDays,
+    }));
   }
 
-  onBackButtonClick() {
+  protected onBackButtonClick() {
     this.location.back();
   }
 
-  onSaveClick() {
+  protected onSaveClick() {
     this.saveCorrectionIfChanged(true);
   }
 
-  onDownloadClick() {
+  protected onDownloadClick() {
     const downloadAndReturn = () => {
-      this.correctionService.downloadCorrection(this.correctionId!);
-      this.location.back();
+      this.correctionService
+        .downloadCorrection(this.correctionId()!)
+        .subscribe({ next: () => this.location.back() });
     };
-    if (!this.readOnly) {
-      this.saveCorrection().subscribe({
-        complete: () => {
-          downloadAndReturn();
-        },
-      });
+    if (!this.readOnly()) {
+      this.saveCorrection(false, downloadAndReturn);
     } else {
       downloadAndReturn();
     }
   }
 
-  onExpenseSetClick() {
-    this.expenseNotSet = !this.expenseNotSet;
-    this.expenseElement = { hour: 0, minute: 0 };
-    this.expenseToString();
+  protected onExpenseSetClick() {
+    this.expenseNotSet.update((current) => !current);
+    this.expense.update(() => ({ hours: 0, minutes: 0 }));
   }
 
-  onToggleShowPreviousDeductionClick() {
-    this.showPreviousDeductions = !this.showPreviousDeductions;
+  protected onToggleShowPreviousDeductionClick() {
+    this.showPreviousDeductions.update((current) => !current);
 
-    if (!this.previousDeductions) {
+    if (!this.previousDeductions()) {
       this.previousDeductionsService
-        .getPreviousDeductions(this.correctionId, 'correction')
+        .getPreviousDeductions(this.correctionId()!, 'correction')
         .subscribe({
           next: (value) => {
-            this.previousDeductions = value;
+            this.previousDeductions.set(value);
           },
           error: (err) => {
             if (err.status === 404) {
               this.toastService.error(
                 'course.evaluateView.error-no-deductions',
               );
-              this.showPreviousDeductions = false;
+              this.showPreviousDeductions.set(false);
             }
           },
         });
     }
+  }
+
+  protected updateLateDays(days: number) {
+    this.draftStateCorrection.update((current) => {
+      if (!current) return;
+      return {
+        ...current,
+        lateSubmittedDays: days,
+      };
+    });
+  }
+
+  protected updateAnnotations(updatedAnnotations: Entry[]) {
+    this.draftStateCorrection.update((current) => {
+      if (!current) return undefined;
+      return {
+        ...current,
+        draft: { ...current.draft, annotations: updatedAnnotations },
+      };
+    });
+  }
+
+  protected updateExercise(index: number, updatedExercise: Exercise) {
+    this.draftStateCorrection.update((current) => {
+      if (!current) return undefined;
+      const newExercises = [...current.draft.exercise];
+      newExercises[index] = updatedExercise;
+      return {
+        ...current,
+        draft: { ...current.draft, exercise: newExercises },
+      };
+    });
   }
 }

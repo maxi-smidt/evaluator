@@ -1,32 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { TranslationService } from '../../shared/services/translation.service';
 import { MenubarModule } from 'primeng/menubar';
 
 @Component({
-    selector: 'ms-degree-program',
-    imports: [RouterOutlet, MenubarModule],
-    template: `
+  selector: 'ms-degree-program',
+  imports: [RouterOutlet, MenubarModule],
+  template: `
     <div style="margin-top: -30px">
       <p-menubar [model]="items" />
     </div>
     <div class="container mt-4 border border-2 rounded-2 p-2">
       <router-outlet />
     </div>
-  `
+  `,
 })
-export class DegreeProgramComponent implements OnInit {
-  items: MenuItem[];
-  activeItem: MenuItem;
+export class DegreeProgramComponent {
+  private readonly route = inject(ActivatedRoute);
+  private readonly translationService = inject(TranslationService);
+  private readonly router = inject(Router);
 
-  degreeProgramAbbreviation: string = '';
+  protected items: MenuItem[];
+  private activeItem: MenuItem;
 
-  constructor(
-    private route: ActivatedRoute,
-    private translationService: TranslationService,
-    private router: Router,
-  ) {
+  constructor() {
     const staff = this.translationService.translate('degree-program.staff');
     const courses = this.translationService.translate('degree-program.courses');
     const classes = this.translationService.translate(
@@ -38,7 +36,6 @@ export class DegreeProgramComponent implements OnInit {
     const enrollments = this.translationService.translate(
       'degree-program.enrollments',
     );
-
     this.items = [
       {
         label: staff,
@@ -50,26 +47,30 @@ export class DegreeProgramComponent implements OnInit {
             label: this.translationService.translate(
               'degree-program.staff-view.active-users',
             ),
-            command() {
-              router.navigate(['staff', 'all'], { relativeTo: route }).then();
+            command: () => {
+              void this.router.navigate(['staff', 'all'], {
+                relativeTo: this.route,
+              });
             },
           },
           {
             label: this.translationService.translate(
               'degree-program.staff-view.all-users',
             ),
-            command() {
-              router
-                .navigate(['staff', 'no-staff'], { relativeTo: route })
-                .then();
+            command: () => {
+              void this.router.navigate(['staff', 'no-staff'], {
+                relativeTo: this.route,
+              });
             },
           },
           {
             label: this.translationService.translate(
               'degree-program.staff-view.new-user',
             ),
-            command() {
-              router.navigate(['staff', 'form'], { relativeTo: route }).then();
+            command: () => {
+              void this.router.navigate(['staff', 'form'], {
+                relativeTo: this.route,
+              });
             },
           },
         ],
@@ -82,28 +83,30 @@ export class DegreeProgramComponent implements OnInit {
             label: this.translationService.translate(
               'degree-program.courses-view.courses',
             ),
-            command() {
-              router.navigate(['courses', 'all'], { relativeTo: route }).then();
+            command: () => {
+              void this.router.navigate(['courses', 'all'], {
+                relativeTo: this.route,
+              });
             },
           },
           {
             label: this.translationService.translate(
               'degree-program.courses-view.course-instances',
             ),
-            command() {
-              router
-                .navigate(['courses', 'instances'], { relativeTo: route })
-                .then();
+            command: () => {
+              void this.router.navigate(['courses', 'instances'], {
+                relativeTo: this.route,
+              });
             },
           },
           {
             label: this.translationService.translate(
               'degree-program.courses-view.new-course',
             ),
-            command() {
-              router
-                .navigate(['courses', 'form'], { relativeTo: route })
-                .then();
+            command: () => {
+              void this.router.navigate(['courses', 'form'], {
+                relativeTo: this.route,
+              });
             },
           },
         ],
@@ -118,16 +121,20 @@ export class DegreeProgramComponent implements OnInit {
             label: this.translationService.translate(
               'degree-program.class-groups-view.all-class-groups',
             ),
-            command() {
-              router.navigate(['class', 'list'], { relativeTo: route }).then();
+            command: () => {
+              void this.router.navigate(['class', 'list'], {
+                relativeTo: this.route,
+              });
             },
           },
           {
             label: this.translationService.translate(
               'degree-program.class-groups-view.new-class-group',
             ),
-            command() {
-              router.navigate(['class', 'form'], { relativeTo: route }).then();
+            command: () => {
+              void this.router.navigate(['class', 'form'], {
+                relativeTo: this.route,
+              });
             },
           },
         ],
@@ -142,20 +149,20 @@ export class DegreeProgramComponent implements OnInit {
             label: this.translationService.translate(
               'degree-program.students-view.all-students',
             ),
-            command() {
-              router
-                .navigate(['student', 'list'], { relativeTo: route })
-                .then();
+            command: () => {
+              void this.router.navigate(['student', 'list'], {
+                relativeTo: this.route,
+              });
             },
           },
           {
             label: this.translationService.translate(
               'degree-program.students-view.new-student',
             ),
-            command() {
-              router
-                .navigate(['student', 'form'], { relativeTo: route })
-                .then();
+            command: () => {
+              void this.router.navigate(['student', 'form'], {
+                relativeTo: this.route,
+              });
             },
           },
         ],
@@ -163,18 +170,14 @@ export class DegreeProgramComponent implements OnInit {
       {
         label: enrollments,
         command: () => {
-          router.navigate(['enrollment'], { relativeTo: route }).then();
+          void this.router.navigate(['enrollment'], { relativeTo: this.route });
         },
       },
     ];
     this.activeItem = this.items[1];
   }
 
-  ngOnInit() {
-    this.degreeProgramAbbreviation = this.route.snapshot.params['abbreviation'];
-  }
-
-  setActiveItem(label: string) {
+  private setActiveItem(label: string) {
     this.activeItem = this.items.find((item) => item.label === label)!;
   }
 }

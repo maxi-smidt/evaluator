@@ -1,0 +1,50 @@
+<p-confirmDialog />
+
+@if (this.user()) {
+  <div class="mt-4 mt-4 border border-3 rounded-3 p-2">
+    <p-tabs [value]="activeTab" (valueChange)="onTabChange($event)">
+      <p-tablist>
+        <p-tab value="0">{{ 'edit.title-groups' | translate }}</p-tab>
+        <p-tab value="1">{{ 'edit.title-partition' | translate }}</p-tab>
+        <p-tab value="2">{{ 'edit.title-general' | translate }}</p-tab>
+        <p-tab value="3">{{ 'edit.title-assignments' | translate }}</p-tab>
+
+        @if ([Role.DEGREE_PROGRAM_DIRECTOR, Role.COURSE_LEADER].includes(this.user()!.role)) {
+          <p-tab value="4">{{ 'edit.title-staff' | translate }}</p-tab>
+          <p-tab value="5">{{ 'edit.title-students' | translate }}</p-tab>
+        }
+      </p-tablist>
+      <p-tabpanels>
+        <p-tabpanel value="0">
+          <ms-edit-group [groupedStudents]="draftStateGroupedStudents()!" />
+        </p-tabpanel>
+        <p-tabpanel value="1">
+          <ms-edit-partition [partition]="draftStatePartition()!" [groups]="groups()" />
+        </p-tabpanel>
+        <p-tabpanel value="2">
+          <ms-edit-general [course]="draftStateCourse()!"/>
+        </p-tabpanel>
+        <p-tabpanel value="3">
+          @if (draftStateDueDateCourseInstance(); as draft) {
+            <ms-edit-due-dates [courseInstance]="draft" (courseInstanceChange)="updateDueDateCourseInstance($event)" />
+          }
+        </p-tabpanel>
+        @if ([Role.DEGREE_PROGRAM_DIRECTOR, Role.COURSE_LEADER].includes(this.user()!.role)) {
+          <p-tabpanel value="4">
+            <ms-edit-staff [courseInstanceId]="courseId()" [(selectedTutors)]="draftStateTutors"
+                             [user]="user()!" [(selectedCourseLeaders)]="draftStateCourseLeaders" />
+          </p-tabpanel>
+          <p-tabpanel value="5">
+            <ms-edit-students [(students)]="draftStateStudents" />
+          </p-tabpanel>
+        }
+      </p-tabpanels>
+    </p-tabs>
+  </div>
+
+  <div class="text-center mt-3">
+    <p-button label="{{ 'common.btn-save' | translate }}"
+              class="mt-2 mb-5 m-1" (click)="onSaveBtnClick()"
+              size="small"/>
+  </div>
+}

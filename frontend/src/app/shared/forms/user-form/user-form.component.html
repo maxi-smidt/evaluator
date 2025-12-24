@@ -27,7 +27,7 @@
     <label for="role" class="form-label">{{ 'common.role' | translate }}</label>
     <select class="form-select" id="role" formControlName="role" required>
       <option selected disabled value="">{{ 'common.choose-role' | translate }}</option>
-      @for (choice of roleChoices; track choice) {
+      @for (choice of roleChoices(); track choice) {
         <option [value]="choice">{{ choice }}</option>
       }
     </select>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { CourseService } from '../../services/course.service';
 import { Course, SimpleCourseInstance } from '../../models/course.model';
@@ -9,9 +9,15 @@ import { DataViewModule } from 'primeng/dataview';
 import { ConfirmationService } from 'primeng/api';
 import { TagModule } from 'primeng/tag';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { TranslationService } from '../../../../shared/services/translation.service';
+import { map, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+
+interface GroupedCourse {
+  course: Course;
+  courseInstances: SimpleCourseInstance[];
+}
 
 @Component({
   selector: 'ms-course-instance-list',
@@ -26,48 +32,43 @@ import { TranslationService } from '../../../../shared/services/translation.serv
   ],
   templateUrl: './course-instance-list.component.html',
 })
-export class CourseInstanceListComponent implements OnInit {
-  courseInstances: SimpleCourseInstance[] = [];
-  sortedCourses: { course: Course; courseInstances: SimpleCourseInstance[] }[] =
-    [];
+export class CourseInstanceListComponent {
+  private readonly courseService = inject(CourseService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly translationService = inject(TranslationService);
 
-  constructor(
-    private courseService: CourseService,
-    private route: ActivatedRoute,
-    private urlParamService: UrlParamService,
-    private router: Router,
-    private confirmationService: ConfirmationService,
-    private translationService: TranslationService,
-  ) {}
+  private degreeProgramAbbreviation$ = this.route.params.pipe(
+    map((params) => params['abbreviation']),
+  );
+  private courseInstances = toSignal(
+    this.degreeProgramAbbreviation$.pipe(
+      switchMap((abbreviation) =>
+        this.courseService.getCourseInstances(abbreviation),
+      ),
+    ),
+  );
+  protected sortedCourses = computed(() => {
+    const instances = this.courseInstances();
+    if (!instances) return [];
+    const groups = new Map<number, GroupedCourse>();
 
-  ngOnInit() {
-    const degreeProgramAbbreviation = this.urlParamService.findParam(
-      'abbreviation',
-      this.route,
-    );
+    for (const instance of instances) {
+      const courseId = instance.course.id;
 
-    this.courseService.getCourseInstances(degreeProgramAbbreviation).subscribe({
-      next: (value) => {
-        this.courseInstances = value;
-
-        this.courseInstances.forEach((courseInstance) => {
-          const obj = this.sortedCourses.find(
-            (x) => courseInstance.course.id === x.course.id,
-          );
-          if (obj === undefined) {
-            this.sortedCourses.push({
-              course: courseInstance.course,
-              courseInstances: [courseInstance],
-            });
-          } else {
-            obj.courseInstances.push(courseInstance);
-          }
+      if (!groups.has(courseId)) {
+        groups.set(courseId, {
+          course: instance.course,
+          courseInstances: [],
         });
-      },
-    });
-  }
+      }
+      groups.get(courseId)!.courseInstances.push(instance);
+    }
+    return Array.from(groups.values());
+  });
 
-  onDeleteCourseInstance(event: Event, courseInstanceId: number) {
+  protected onDeleteCourseInstance(event: Event, courseInstanceId: number) {
     this.confirmationService.confirm({
       target: event.target as EventTarget,
       header: this.translationService.translate('common.confirmation.header'),
@@ -84,7 +85,7 @@ export class CourseInstanceListComponent implements OnInit {
       accept: () => {
         this.courseService.deleteCourseInstance(courseInstanceId).subscribe({
           next: () => {
-            this.sortedCourses.forEach((obj) => {
+            this.sortedCourses().forEach((obj) => {
               obj.courseInstances = obj.courseInstances.filter(
                 (courseInstance) => {
                   return courseInstance.id !== courseInstanceId;
@@ -97,9 +98,7 @@ export class CourseInstanceListComponent implements OnInit {
     });
   }
 
-  routeToCourseInstanceEdit(courseInstanceId: number) {
-    this.router
-      .navigate(['course', 'instance', courseInstanceId, 'edit'])
-      .then();
+  protected routeToCourseInstanceEdit(courseInstanceId: number) {
+    void this.router.navigate(['course', 'instance', courseInstanceId, 'edit']);
   }
 }

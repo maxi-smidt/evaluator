@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Button } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import {
@@ -10,38 +10,52 @@ import {
 import { TranslatePipe } from '../../pipes/translate.pipe';
 import { CourseService } from '../../../features/course/services/course.service';
 import { Course } from '../../../features/course/models/course.model';
-import { DegreeProgram } from '../../../features/degree-program/models/degree-program.model';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { DegreeProgramService } from '../../../features/degree-program/services/degree-program.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UrlParamService } from '../../services/url-param.service';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastService } from '../../services/toast.service';
+import { map, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'ms-course-form',
-    imports: [
-        Button,
-        ConfirmDialogModule,
-        FormsModule,
-        ReactiveFormsModule,
-        TranslatePipe,
-        InputGroupModule,
-        InputGroupAddonModule,
-        InputTextModule,
-        CheckboxModule,
-    ],
-    templateUrl: './course-form.component.html'
+  selector: 'ms-course-form',
+  imports: [
+    Button,
+    ConfirmDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    TranslatePipe,
+    InputGroupModule,
+    InputGroupAddonModule,
+    InputTextModule,
+    CheckboxModule,
+  ],
+  templateUrl: './course-form.component.html',
 })
-export class CourseFormComponent implements OnInit {
-  degreeProgramAbbreviation: string | null = null;
-  degreeProgram: DegreeProgram = {} as DegreeProgram;
-  submitted = false;
-  redirect: boolean = false;
+export class CourseFormComponent {
+  private readonly formBuilder = inject(FormBuilder);
+  private readonly courseService = inject(CourseService);
+  private readonly degreeProgramService = inject(DegreeProgramService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
 
-  checkoutForm = this.formBuilder.group({
+  private degreeProgramAbbreviation$ = this.route.params.pipe(
+    map((params) => params['abbreviation']),
+  );
+  private degreeProgram = toSignal(
+    this.degreeProgramAbbreviation$.pipe(
+      switchMap((abbreviation) =>
+        this.degreeProgramService.getDegreeProgram(abbreviation),
+      ),
+    ),
+  );
+  protected submitted = false;
+  protected redirect: boolean = false;
+  protected checkoutForm = this.formBuilder.group({
     name: ['', Validators.required],
     abbreviation: ['', Validators.required],
     text1: ['', Validators.required],
@@ -49,36 +63,11 @@ export class CourseFormComponent implements OnInit {
     text3: '',
   });
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private courseService: CourseService,
-    private degreeProgramService: DegreeProgramService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private urlParamService: UrlParamService,
-    private toastService: ToastService,
-  ) {}
-
-  ngOnInit() {
-    this.degreeProgramAbbreviation = this.urlParamService.findParam(
-      'abbreviation',
-      this.route,
-    );
-
-    this.degreeProgramService
-      .getDegreeProgram(this.degreeProgramAbbreviation!)
-      .subscribe({
-        next: (value) => {
-          this.degreeProgram = value;
-        },
-      });
-  }
-
   get f() {
     return this.checkoutForm.controls;
   }
 
-  onSubmit() {
+  protected onSubmit() {
     this.submitted = true;
 
     if (this.checkoutForm.invalid) {
@@ -94,22 +83,22 @@ export class CourseFormComponent implements OnInit {
       fileName: fileName,
     };
 
-    this.courseService.createCourse(this.degreeProgram, course).subscribe({
+    this.courseService.createCourse(this.degreeProgram()!, course).subscribe({
       next: (value) => {
         this.submitted = false;
         this.checkoutForm.reset();
         this.toastService.success('common.saved');
 
         if (this.redirect) {
-          this.router.navigate(['course', value.id]).then();
+          void this.router.navigate(['course', value.id]);
         }
       },
       error: (err) => {
-        if (err.status == 500) {
-          this.toastService.error('shared.forms.course-form.error-500');
-        } else {
-          this.toastService.error('shared.forms.course-form.error-else');
-        }
+        const errorMessage =
+          err.status == 500
+            ? 'shared.forms.course-form.error-500'
+            : 'shared.forms.course-form.error-else';
+        this.toastService.error(errorMessage);
       },
     });
   }

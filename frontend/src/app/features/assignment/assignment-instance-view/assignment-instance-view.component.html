@@ -1,123 +1,125 @@
 <p-confirmDialog/>
 
-<h3 class="mb-3">{{ assignment.name }}</h3>
+@if (assignment()) {
+  <h3 class="mb-3">{{ assignment()!.name }}</h3>
 
-<p-accordion [multiple]="true" [value]="assignment.targetGroups">
-  @for (group of groups; track group) {
-    <p-accordion-panel [value]="group">
-      <p-accordion-header>
-        <span class="font-bold white-space-nowrap">{{ 'course.assignmentView.group' | translate }} {{ group }}</span>
-      </p-accordion-header>
-      <p-accordion-content>
-        <p-table [rowHover]="true" [value]="assignment.groupedStudents[group]"
-               [tableStyle]="{ 'min-width': '50rem' }">
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th [style.width]="'25%'" pSortableColumn="lastName">
-              {{ 'common.lastname' | translate }}
-              <p-sortIcon field="lastName"/>
-            </th>
-            <th [style.width]="'25%'" pSortableColumn="firstName">
-              {{ 'common.firstname' | translate }}
-              <p-sortIcon field="firstName"/>
-            </th>
-            <th [style.width]="'10%'">
-              {{ 'course.assignmentView.evaluation' | translate }}
-            </th>
-            <th [style.width]="'15%'">
-              {{ 'course.assignmentView.status' | translate }}
-            </th>
-            <th [style.width]="'17%'">
-              {{ 'common.action' | translate }}
-            </th>
-            <th [style.width]="'5%'">
-              {{ 'course.assignmentView.lateSubmission' | translate }}
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData>
-          <tr>
-            <td>{{ rowData.lastName }}</td>
-            <td>{{ rowData.firstName }}</td>
-            <td>{{ rowData.points }}</td>
-            <td><p-tag [severity]="getSeverity(rowData.status)">{{ rowData.status }}</p-tag></td>
-            <td>
-              <div>
-                <p-button icon="pi pi-caret-right"
-                          [disabled]="rowData['status'] !== CorrectionStatus.UNDEFINED && rowData['status'] !== CorrectionStatus.IN_PROGRESS"
-                          [rounded]="true"
-                          [text]="true"
-                          severity="success"
-                          pTooltip="{{ 'course.assignmentView.tt-start' | translate }}"
-                          tooltipPosition="top"
-                          showDelay="500"
-                          (click)="onStartOrResumeAction(rowData['id'], rowData['status'], rowData['correctionId'])"/>
+  <p-accordion [multiple]="true" [value]="assignment()!.targetGroups">
+    @for (group of groups(); track group) {
+      <p-accordion-panel [value]="group">
+        <p-accordion-header>
+          <span class="font-bold white-space-nowrap">{{ 'course.assignmentView.group' | translate }} {{ group }}</span>
+        </p-accordion-header>
+        <p-accordion-content>
+          <p-table [rowHover]="true" [value]="assignment()!.groupedStudents[group]"
+                 [tableStyle]="{ 'min-width': '50rem' }">
+          <ng-template pTemplate="header">
+            <tr>
+              <th [style.width]="'25%'" pSortableColumn="lastName">
+                {{ 'common.lastname' | translate }}
+                <p-sortIcon field="lastName"/>
+              </th>
+              <th [style.width]="'25%'" pSortableColumn="firstName">
+                {{ 'common.firstname' | translate }}
+                <p-sortIcon field="firstName"/>
+              </th>
+              <th [style.width]="'10%'">
+                {{ 'course.assignmentView.evaluation' | translate }}
+              </th>
+              <th [style.width]="'15%'">
+                {{ 'course.assignmentView.status' | translate }}
+              </th>
+              <th [style.width]="'17%'">
+                {{ 'common.action' | translate }}
+              </th>
+              <th [style.width]="'5%'">
+                {{ 'course.assignmentView.lateSubmission' | translate }}
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData>
+            <tr>
+              <td>{{ rowData.lastName }}</td>
+              <td>{{ rowData.firstName }}</td>
+              <td>{{ rowData.points }}</td>
+              <td><p-tag [severity]="getSeverity(rowData.status)">{{ rowData.status }}</p-tag></td>
+              <td>
+                <div>
+                  <p-button icon="pi pi-caret-right"
+                            [disabled]="rowData['status'] !== CorrectionStatus.UNDEFINED && rowData['status'] !== CorrectionStatus.IN_PROGRESS"
+                            [rounded]="true"
+                            [text]="true"
+                            severity="success"
+                            pTooltip="{{ 'course.assignmentView.tt-start' | translate }}"
+                            tooltipPosition="top"
+                            showDelay="500"
+                            (click)="onStartOrResumeAction(rowData['id'], rowData['status'], rowData['correctionId'])"/>
 
-                <p-button icon="pi pi-file-excel"
-                          [disabled]="rowData['status'] !== CorrectionStatus.UNDEFINED"
-                          [rounded]="true"
-                          [text]="true"
-                          severity="secondary"
-                          pTooltip="{{ 'course.assignmentView.tt-not-submitted' | translate }}"
-                          tooltipPosition="top"
-                          showDelay="500"
-                          (click)="notSubmittedAction(rowData['id'], group)"/>
+                  <p-button icon="pi pi-file-excel"
+                            [disabled]="rowData['status'] !== CorrectionStatus.UNDEFINED"
+                            [rounded]="true"
+                            [text]="true"
+                            severity="secondary"
+                            pTooltip="{{ 'course.assignmentView.tt-not-submitted' | translate }}"
+                            tooltipPosition="top"
+                            showDelay="500"
+                            (click)="notSubmittedAction(rowData['id'])"/>
 
-                <p-button icon="pi pi-pencil"
-                          [disabled]="rowData['status'] !== CorrectionStatus.CORRECTED"
-                          [rounded]="true"
-                          [text]="true"
-                          severity="secondary"
-                          pTooltip="{{ 'course.assignmentView.tt-edit' | translate }}"
-                          tooltipPosition="top"
-                          showDelay="500"
-                          (onClick)="editAction(rowData['correctionId'])"/>
-              </div>
-              <div>
-                <p-button icon="pi pi-download"
-                          [disabled]="rowData['status'] !== CorrectionStatus.CORRECTED"
-                          [rounded]="true"
-                          [text]="true"
-                          severity="secondary"
-                          pTooltip="{{ 'course.assignmentView.tt-download' | translate }}"
-                          tooltipPosition="top"
-                          showDelay="500"
-                          (onClick)="downloadAction(rowData['correctionId'])"/>
-                <p-button icon="pi pi-eye"
-                          [disabled]="rowData['status'] !== CorrectionStatus.CORRECTED"
-                          [rounded]="true"
-                          [text]="true"
-                          severity="secondary"
-                          pTooltip="{{ 'course.assignmentView.tt-view' | translate }}"
-                          tooltipPosition="top"
-                          showDelay="500"
-                          (onClick)="viewOnlyAction(rowData['correctionId'])"/>
+                  <p-button icon="pi pi-pencil"
+                            [disabled]="rowData['status'] !== CorrectionStatus.CORRECTED"
+                            [rounded]="true"
+                            [text]="true"
+                            severity="secondary"
+                            pTooltip="{{ 'course.assignmentView.tt-edit' | translate }}"
+                            tooltipPosition="top"
+                            showDelay="500"
+                            (onClick)="editAction(rowData['correctionId'])"/>
+                </div>
+                <div>
+                  <p-button icon="pi pi-download"
+                            [disabled]="rowData['status'] !== CorrectionStatus.CORRECTED"
+                            [rounded]="true"
+                            [text]="true"
+                            severity="secondary"
+                            pTooltip="{{ 'course.assignmentView.tt-download' | translate }}"
+                            tooltipPosition="top"
+                            showDelay="500"
+                            (onClick)="downloadAction(rowData['correctionId'])"/>
+                  <p-button icon="pi pi-eye"
+                            [disabled]="rowData['status'] !== CorrectionStatus.CORRECTED"
+                            [rounded]="true"
+                            [text]="true"
+                            severity="secondary"
+                            pTooltip="{{ 'course.assignmentView.tt-view' | translate }}"
+                            tooltipPosition="top"
+                            showDelay="500"
+                            (onClick)="viewOnlyAction(rowData['correctionId'])"/>
 
-                <p-button icon="pi pi-trash"
-                          [disabled]="rowData['status'] === CorrectionStatus.UNDEFINED"
-                          [rounded]="true"
-                          [text]="true"
-                          severity="danger"
-                          pTooltip="{{ 'course.assignmentView.tt-delete' | translate }}"
-                          tooltipPosition="top"
-                          showDelay="500"
-                          (click)="deleteAction(rowData['correctionId'], group)"/>
-              </div>
-            </td>
-            <td>
-              @if (rowData['lateSubmission']) {
-                <p-button icon="pi pi-flag-fill"
-                          pTooltip="{{ 'course.assignmentView.tt-late-flag' | translate }}"
-                          tooltipPosition="bottom"
-                          [rounded]="true"
-                          [text]="true"
-                          severity="danger"/>
-              }
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-      </p-accordion-content>
-    </p-accordion-panel>
-  }
-</p-accordion>
+                  <p-button icon="pi pi-trash"
+                            [disabled]="rowData['status'] === CorrectionStatus.UNDEFINED"
+                            [rounded]="true"
+                            [text]="true"
+                            severity="danger"
+                            pTooltip="{{ 'course.assignmentView.tt-delete' | translate }}"
+                            tooltipPosition="top"
+                            showDelay="500"
+                            (click)="deleteAction(rowData['correctionId'])"/>
+                </div>
+              </td>
+              <td>
+                @if (rowData['lateSubmission']) {
+                  <p-button icon="pi pi-flag-fill"
+                            pTooltip="{{ 'course.assignmentView.tt-late-flag' | translate }}"
+                            tooltipPosition="bottom"
+                            [rounded]="true"
+                            [text]="true"
+                            severity="danger"/>
+                }
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+        </p-accordion-content>
+      </p-accordion-panel>
+    }
+  </p-accordion>
+}

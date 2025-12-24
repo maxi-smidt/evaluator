@@ -2,7 +2,7 @@
   <div class="d-flex gap-2">
     <p-select
       [style]="{'width': '250px'}"
-      [options]="courseInstances"
+      [options]="courseInstances()"
       [(ngModel)]="selectedCourseInstance"
       placeholder="{{ 'degree-program.enrollment-view.choose-course' | translate }}">
 
@@ -21,7 +21,7 @@
   <div class="d-flex gap-2">
     <p-multiSelect
       [style]="{'width': '250px'}"
-      [options]="classGroups"
+      [options]="classGroups()"
       [(ngModel)]="selectedClassGroups"
       optionLabel="startYear"
       placeholder="{{ 'common.choose-class-group' | translate }}"/>

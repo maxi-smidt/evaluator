@@ -1,7 +1,7 @@
 <h2>{{ 'degree-program.staff-view.staff-list.title' | translate }}</h2>
 
 <p-table
-  [value]="users"
+  [value]="users()"
   dataKey="username"
   [rows]="5"
   [rowsPerPageOptions]="[5, 10, 20]"
@@ -44,7 +44,7 @@
           <ng-template pTemplate="filter" let-value let-filter="filterCallback">
             <p-select
               [(ngModel)]="value!"
-              [options]="userRoles"
+              [options]="userRoles()"
               (onChange)="filter($event.value)"
               placeholder="{{ 'common.choose-role' | translate }}"
               [showClear]="true">

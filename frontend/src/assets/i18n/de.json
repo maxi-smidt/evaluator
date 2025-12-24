@@ -31,7 +31,8 @@
     "choose-class-group": "Jahrgang wählen",
     "index": "Nummer",
     "file_name_wc": "Wildcards:\n{lastname}: Nachname\n{firstname}: Vorname\n{nr}: Aufgabennummer\n{points}: Punkte",
-    "file-name": "Filename Template"
+    "file-name": "Filename Template",
+    "error-saving": "Das Objekt konnte nicht gespeichert werden"
   },
   "header": {
     "btn-home": "Startseite",
@@ -302,8 +303,8 @@
     "draft": "Draft",
     "example-draft": "Beispiel Draft",
     "example-previous-deductions": "Beispiel Abzüge",
-    "not-working-message": "Only the quick upload works at the moment",
     "quick-upload-btn": "Quick-Upload",
-    "previous-deductions": "Bisherige Abzüge"
+    "previous-deductions": "Bisherige Abzüge",
+    "invalid-json": "Es konnte kein valides JSON geparst werden"
   }
 }

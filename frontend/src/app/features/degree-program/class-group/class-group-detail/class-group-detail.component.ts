@@ -1,8 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import { DegreeProgramService } from '../../services/degree-program.service';
-import { ClassGroup, DetailClassGroup } from '../../models/class-group.model';
-import { UrlParamService } from '../../../../shared/services/url-param.service';
 import { ActivatedRoute } from '@angular/router';
 import { Button } from 'primeng/button';
 import { PrimeTemplate } from 'primeng/api';
@@ -12,62 +10,62 @@ import { DialogModule } from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationService } from '../../../../shared/services/confirmation.service';
+import { BehaviorSubject, combineLatest, map, switchMap } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
-    selector: 'ms-class-group-detail',
-    imports: [
-        TranslatePipe,
-        Button,
-        PrimeTemplate,
-        TableModule,
-        DialogModule,
-        ConfirmDialogModule,
-        TooltipModule,
-    ],
-    templateUrl: './class-group-detail.component.html'
+  selector: 'ms-class-group-detail',
+  imports: [
+    TranslatePipe,
+    Button,
+    PrimeTemplate,
+    TableModule,
+    DialogModule,
+    ConfirmDialogModule,
+    TooltipModule,
+  ],
+  templateUrl: './class-group-detail.component.html',
 })
-export class ClassGroupDetailComponent implements OnInit {
-  classGroup: DetailClassGroup | undefined;
-  modalVisibility: boolean = false;
-  selectedStudentId: string | undefined;
-  classGroups: ClassGroup[] = [];
+export class ClassGroupDetailComponent {
+  private readonly degreeProgramService = inject(DegreeProgramService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly confirmationService = inject(ConfirmationService);
+  private readonly studentService = inject(StudentService);
 
-  constructor(
-    private degreeProgramService: DegreeProgramService,
-    private route: ActivatedRoute,
-    private urlParamService: UrlParamService,
-    private confirmationService: ConfirmationService,
-    private studentService: StudentService,
-  ) {}
+  private readonly refresh$ = new BehaviorSubject<void>(undefined);
+  private readonly classGroupId$ = this.route.params.pipe(
+    map((params) => params['classGroupId']),
+  );
+  private readonly degreeProgramAbbreviation$ = this.route.params.pipe(
+    map((params) => params['abbreviation']),
+  );
+  protected readonly classGroup = toSignal(
+    combineLatest([this.classGroupId$, this.refresh$]).pipe(
+      switchMap(([id, _]) => this.degreeProgramService.getClassGroup(id)),
+    ),
+  );
+  protected readonly classGroups = toSignal(
+    combineLatest([
+      this.degreeProgramAbbreviation$,
+      this.classGroupId$,
+      this.refresh$,
+    ]).pipe(
+      switchMap(([abbreviation, classGroupId, _]) =>
+        this.degreeProgramService
+          .getClassGroups(abbreviation)
+          .pipe(
+            map((groups) =>
+              groups.filter((group) => group.id !== classGroupId),
+            ),
+          ),
+      ),
+    ),
+    { initialValue: [] },
+  );
+  protected modalVisibility: boolean = false;
+  protected selectedStudentId: string | undefined;
 
-  ngOnInit() {
-    const classGroupId = this.urlParamService.findParam(
-      'classGroupId',
-      this.route,
-    );
-    const degreeProgramAbbreviation = this.urlParamService.findParam(
-      'abbreviation',
-      this.route,
-    );
-
-    this.degreeProgramService.getClassGroup(classGroupId).subscribe({
-      next: (value) => {
-        this.classGroup = value;
-      },
-    });
-
-    this.degreeProgramService
-      .getClassGroups(degreeProgramAbbreviation)
-      .subscribe({
-        next: (value) => {
-          this.classGroups = value.filter(
-            (classGroup) => classGroup.id !== Number(classGroupId),
-          );
-        },
-      });
-  }
-
-  removeStudentFromClass(studentId: string) {
+  protected removeStudentFromClass(studentId: string) {
     this.confirmationService
       .makeConfirmDialog(
         'common.confirmation.header',
@@ -78,38 +76,26 @@ export class ClassGroupDetailComponent implements OnInit {
       .then((save) => {
         if (save) {
           this.studentService.removeFromClassGroup(studentId).subscribe({
-            next: () => {
-              if (this.classGroup) {
-                this.classGroup.students = this.classGroup.students.filter(
-                  (student) => student.id !== studentId,
-                );
-              }
-            },
+            next: () => this.refresh$.next(),
           });
         }
       });
   }
 
-  setSelectedStudent(studentId: string) {
+  protected setSelectedStudent(studentId: string) {
     this.selectedStudentId = studentId;
     this.modalVisibility = true;
   }
 
-  setSelectedClassGroup(classGroupId: number) {
+  protected setSelectedClassGroup(classGroupId: number) {
     this.modalVisibility = false;
     this.changeStudentsClassGroup(this.selectedStudentId!, classGroupId);
     this.selectedStudentId = undefined;
   }
 
-  changeStudentsClassGroup(studentId: string, classGroupId: number) {
+  protected changeStudentsClassGroup(studentId: string, classGroupId: number) {
     this.studentService.changeClassGroup(studentId, classGroupId).subscribe({
-      next: (value) => {
-        if (this.classGroup && value.id !== this.classGroup.id) {
-          this.classGroup.students = this.classGroup.students.filter(
-            (student) => student.id !== studentId,
-          );
-        }
-      },
+      next: () => this.refresh$.next(),
     });
   }
 }

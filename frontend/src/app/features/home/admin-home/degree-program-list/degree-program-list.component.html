@@ -8,7 +8,7 @@
   </tr>
   </thead>
   <tbody>
-    @for (program of degreePrograms; track program.abbreviation) {
+    @for (program of degreePrograms(); track program.abbreviation) {
       <tr>
         <td>{{ program.name }}</td>
         <td>{{ program.abbreviation }}</td>

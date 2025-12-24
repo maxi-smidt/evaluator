@@ -1,76 +1,72 @@
-<h2>{{ 'assignment.title' | translate }} {{ assignmentBefore.name }}</h2>
+@if (serverStateAssignment()) {
+  <h2>{{ 'assignment.title' | translate }} {{ serverStateAssignment()!.name }}</h2>
 
-<p>{{ 'assignment.info' | translate }}</p>
+  <p>{{ 'assignment.info' | translate }}</p>
 
-<div class="d-flex mt-5 gap-3">
-  <p-floatlabel>
-    <input id="name" type="text" pInputText [(ngModel)]="assignment.name"/>
-    <label for="name">{{ 'common.designation' | translate }}</label>
-  </p-floatlabel>
+  <div class="d-flex mt-5 gap-3">
+    <p-floatlabel>
+      <input id="name" type="text" pInputText [ngModel]="draftStateAssignment()!.name" (ngModelChange)="updateDraftField('name', $event)" />
+      <label for="name">{{ 'common.designation' | translate }}</label>
+    </p-floatlabel>
 
-  <p-floatlabel>
-    <input id="number" type="number" pInputText [(ngModel)]="assignment.nr"/>
-    <label for="number">{{ 'assignment.number' | translate }}</label>
-  </p-floatlabel>
+    <p-floatlabel>
+      <input id="number" type="number" pInputText [ngModel]="draftStateAssignment()!.nr" (ngModelChange)="updateDraftField('nr', $event)" />
+      <label for="number">{{ 'assignment.number' | translate }}</label>
+    </p-floatlabel>
 
-  <p-floatlabel>
-    <input id="points" type="number" pInputText [(ngModel)]="assignment.points" readonly disabled/>
-    <label for="points">{{ 'assignment.points' | translate }}</label>
-  </p-floatlabel>
-</div>
-
-<p-message severity="warn">{{ 'assignment.not-working-message' | translate }}</p-message>
-
-<div class="d-flex gap-2 mt-3">
-  <div class="d-flex flex-column w-50">
-    <h3>{{ 'assignment.draft' | translate }}</h3>
-    @if (shownDraft) {
-      <json-editor [options]="editorOptions" [data]="shownDraft" (change)="getData($event)"/>
-    }
+    <p-floatlabel>
+      <input id="points" type="number" pInputText [ngModel]="draftStateAssignment()!.points" readonly disabled/>
+      <label for="points">{{ 'assignment.points' | translate }}</label>
+    </p-floatlabel>
   </div>
-  <div class="d-flex flex-column w-50">
-    <h3>{{ 'assignment.previous-deductions' | translate }}</h3>
-    @if (previousDeductions) {
-      <json-editor [options]="editorOptions" [data]="previousDeductions.draft"/>
-    }
-  </div>
-</div>
-<div class="mt-3 text-center">
-  <p-button label="{{ 'common.btn-submit' | translate }}" (onClick)="onSubmit()"/>
-</div>
 
-<div class="d-flex gap-2 mt-3">
-  <div class="d-flex flex-column w-50 gap-2">
-    <h3>{{ 'assignment.draft' | translate }}</h3>
-    <textarea rows="5"
-              cols="30"
-              pTextarea
-              [(ngModel)]="draftTextField"
-              [autoResize]="true">
-    </textarea>
-    <p-button label="{{ 'assignment.quick-upload-btn' | translate }}" [disabled]="!draftTextField"
-              (onClick)="onDraftQuickUpload()"/>
+  <div class="d-flex gap-2 mt-3">
+    <div class="d-flex flex-column w-50">
+      <h3>{{ 'assignment.draft' | translate }}</h3>
+      <json-editor [options]="editorOptions" [data]="draftStateAssignment()?.draft ?? []" (jsonChange)="updateAssignmentDraft($event)"/>
+    </div>
+    <div class="d-flex flex-column w-50">
+      <h3>{{ 'assignment.previous-deductions' | translate }}</h3>
+      <json-editor [options]="editorOptions" [data]="previousDeductions()?.draft ?? {}"/>
+    </div>
   </div>
-  <div class="d-flex flex-column w-50 gap-2">
-    <h3>{{ 'assignment.previous-deductions' | translate }}</h3>
-    <textarea rows="5"
-              cols="30"
-              pTextarea
-              [(ngModel)]="previousDeductionsTextField"
-              [autoResize]="true">
-    </textarea>
-    <p-button label="{{ 'assignment.quick-upload-btn' | translate }}" [disabled]="!previousDeductionsTextField"
-              (onClick)="onPreviousDeductionsQuickUpload()"/>
+  <div class="mt-3 text-center">
+    <p-button label="{{ 'common.btn-submit' | translate }}" (onClick)="onSubmit()"/>
   </div>
-</div>
 
-<div class="d-flex gap-2 mt-3">
-  <div class="d-flex flex-column w-50">
-    <h3>{{ 'assignment.example-draft' | translate }}</h3>
-    <json-editor [options]="editorOptions" [data]="exampleDraft"/>
+  <div class="d-flex gap-2 mt-3">
+    <div class="d-flex flex-column w-50 gap-2">
+      <h3>{{ 'assignment.draft' | translate }}</h3>
+      <textarea rows="5"
+                cols="30"
+                pTextarea
+                [(ngModel)]="draftTextField"
+                [autoResize]="true">
+      </textarea>
+      <p-button label="{{ 'assignment.quick-upload-btn' | translate }}" [disabled]="!draftTextField"
+                (onClick)="onDraftQuickUpload()"/>
+    </div>
+    <div class="d-flex flex-column w-50 gap-2">
+      <h3>{{ 'assignment.previous-deductions' | translate }}</h3>
+      <textarea rows="5"
+                cols="30"
+                pTextarea
+                [(ngModel)]="previousDeductionsTextField"
+                [autoResize]="true">
+      </textarea>
+      <p-button label="{{ 'assignment.quick-upload-btn' | translate }}" [disabled]="!previousDeductionsTextField"
+                (onClick)="onPreviousDeductionsQuickUpload()"/>
+    </div>
   </div>
-  <div class="d-flex flex-column w-50">
-    <h3>{{ 'assignment.example-previous-deductions' | translate }}</h3>
-    <json-editor [options]="editorOptions" [data]="examplePreviousDeductions"/>
+
+  <div class="d-flex gap-2 mt-3">
+    <div class="d-flex flex-column w-50">
+      <h3>{{ 'assignment.example-draft' | translate }}</h3>
+      <json-editor [options]="editorOptions" [data]="exampleDraft"/>
+    </div>
+    <div class="d-flex flex-column w-50">
+      <h3>{{ 'assignment.example-previous-deductions' | translate }}</h3>
+      <json-editor [options]="editorOptions" [data]="examplePreviousDeductions"/>
+    </div>
   </div>
-</div>
+}

@@ -17,7 +17,7 @@
       <option selected disabled
               value="">{{ 'home.adminHome.degreeProgramForm.lbl-director-disabled' | translate }}
       </option>
-      @for (choice of degreeProgramDirectorChoices; track choice) {
+      @for (choice of degreeProgramDirectors(); track choice.username) {
         <option [ngValue]="choice">{{ choice.lastName }} {{ choice.firstName }}</option>
       }
     </select>

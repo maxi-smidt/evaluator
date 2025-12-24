@@ -8,7 +8,7 @@ interface Deductions {
   exercises: { [key: string]: PartialDeduction };
 }
 
-interface PartialDeduction {
+export interface PartialDeduction {
   [key: string]: Deduction[];
 }
 
