@@ -20,7 +20,7 @@ export class ApiInterceptor implements HttpInterceptor {
   }
 
   getUrl(url: string): string {
-    if (url.includes('assets/')) return url;
+    if (url.includes('i18n/')) return url;
 
     if (url.includes('spring/')) {
       const newUrl = url.replace('spring/', '');

@@ -1,26 +1,33 @@
-FROM node:latest as build-stage
+ARG NODE_VERSION=24.12.0-alpine
+ARG NGINX_VERSION=1.29-alpine
 ARG BUILD_MODE
+
+# =========================================
+# Stage 1: Build the Angular Application
+# =========================================
+FROM node:${NODE_VERSION} AS builder
 
 WORKDIR /app
 
-COPY package*.json /app/
+COPY package.json package-lock.json ./
 
-RUN npm install --legacy-peer-deps
+RUN --mount=type=cache,target=/root/.npm npm ci --legacy-peer-deps
 
-COPY ./ /app/
+COPY . .
 
-RUN if [ "$BUILD_MODE" = "production" ]; then \
-      npm run build -- --configuration=production; \
-    else \
-      npm run build -- --configuration=development; \
-    fi
+RUN npm run build --configuration=$BUILD_MODE;
 
 
-FROM nginx:alpine as production-stage
+# =========================================
+# Stage 2: Prepare Nginx to Serve Static Files
+# =========================================
+FROM nginxinc/nginx-unprivileged:${NGINX_VERSION} AS runner
 
-COPY --from=build-stage /app/dist/evaluator/ /usr/share/nginx/html
+USER nginx
 
-COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY --chown=nginx:nginx --from=builder /app/dist/*/browser /usr/share/nginx/html
 
 EXPOSE 4200
 
