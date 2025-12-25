@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:18
+    volumes:
+      - evaluator-postgres:/var/lib/postgresql/18/docker
+    environment:
+      POSTGRES_DB: ${PG_DB}
+      POSTGRES_USER: ${PG_DB_USER}
+      POSTGRES_PASSWORD: ${PG_DB_PW}
+    ports:
+      - "5432:5432"
+    restart: always
+
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./backend:/app
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgres://${PG_DB_USER}:${PG_DB_PW}@db:5432/${PG_DB}
+    depends_on:
+      - db
+      - jplag
+    restart: always
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        BUILD_MODE: ${BUILD_MODE}
+    ports:
+      - "4200:4200"
+    depends_on:
+      - backend
+    restart: always
+
+  jplag:
+    image: maxismidt/evaluator-jplag:latest
+    ports:
+      - "8000:8080"
+    environment:
+      CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS}
+      SPRING_PROFILES_ACTIVE: "prod"
+    restart: always
+
+volumes:
+  evaluator-postgres:
