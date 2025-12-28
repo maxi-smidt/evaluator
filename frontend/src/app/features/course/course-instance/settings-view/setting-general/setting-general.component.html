@@ -1,37 +1,39 @@
-<h4 class="mt-4">{{ 'edit.allow-late-submission' | translate }}</h4>
+@if (course()) {
+  <h4 class="mt-4">{{ 'edit.allow-late-submission' | translate }}</h4>
 
-<p-toggleswitch [(ngModel)]="course().allowLateSubmission" />
+  <p-toggleswitch [(ngModel)]="course().allowLateSubmission" />
 
-<h4 class="mt-4">{{ 'edit.late-submission-penalty' | translate }}</h4>
+  <h4 class="mt-4">{{ 'edit.late-submission-penalty' | translate }}</h4>
 
-<p-inputNumber
-  [(ngModel)]="course().lateSubmissionPenalty"
-  mode="decimal"
-  [min]="0"
-  [max]="100"
-  [showButtons]="true"
-  [maxFractionDigits]="3"
-  [step]="0.125"
-  [disabled]="!course().allowLateSubmission"
-  [inputStyle]="{ width: '150px' }" />
+  <p-inputNumber
+    [(ngModel)]="course().lateSubmissionPenalty"
+    mode="decimal"
+    [min]="0"
+    [max]="100"
+    [showButtons]="true"
+    [maxFractionDigits]="3"
+    [step]="0.125"
+    [disabled]="!course().allowLateSubmission"
+    [inputStyle]="{ width: '150px' }" />
 
-<h4 class="mt-4">{{ 'edit.step-size' | translate }}</h4>
+  <h4 class="mt-4">{{ 'edit.step-size' | translate }}</h4>
 
-<p-inputNumber
-  [(ngModel)]="course().pointStepSize"
-  mode="decimal"
-  [min]="0"
-  [max]="100"
-  [showButtons]="true"
-  [maxFractionDigits]="3"
-  [step]="0.125"
-  [inputStyle]="{ width: '150px' }" />
+  <p-inputNumber
+    [(ngModel)]="course().pointStepSize"
+    mode="decimal"
+    [min]="0"
+    [max]="100"
+    [showButtons]="true"
+    [maxFractionDigits]="3"
+    [step]="0.125"
+    [inputStyle]="{ width: '150px' }" />
 
-<h4 class="mt-4">{{ 'common.file-name' | translate }}</h4>
+  <h4 class="mt-4">{{ 'common.file-name' | translate }}</h4>
 
-<div class="d-flex gap-1">
-  <input type="text" pInputText [(ngModel)]="course().fileName" [size]="60" [maxlength]="60"/>
+  <div class="d-flex gap-1">
+    <input type="text" pInputText [(ngModel)]="course().fileName" [size]="60" [maxlength]="60"/>
 
-  <p-button icon="pi pi-info-circle" text rounded severity="secondary"
-            [pTooltip]="translationService.translate('common.file_name_wc')"/>
-</div>
+    <p-button icon="pi pi-info-circle" text rounded severity="secondary"
+              pTooltip="{{ 'common.file_name_wc' | translate }}"/>
+  </div>
+}

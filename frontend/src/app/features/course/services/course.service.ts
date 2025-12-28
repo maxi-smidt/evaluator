@@ -78,7 +78,7 @@ export class CourseService {
   }
 
   getStudentsInGroupsByCourse(courseId: number) {
-    return this.http.get<{ groupedStudents: { [groupNr: string]: Student[] } }>(
+    return this.http.get<{ groupedStudents: { [groupNr: number]: Student[] } }>(
       `student-group/${courseId}/`,
     );
   }
