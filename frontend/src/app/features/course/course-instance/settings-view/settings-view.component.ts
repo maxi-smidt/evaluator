@@ -84,9 +84,6 @@ export class SettingsViewComponent {
   });
 
   private readonly refreshStaffUsers$ = new BehaviorSubject<void>(undefined);
-  private readonly refreshGroupedStudents$ = new BehaviorSubject<void>(
-    undefined,
-  );
   private readonly refreshGroupPartition$ = new BehaviorSubject<void>(
     undefined,
   );
@@ -114,16 +111,6 @@ export class SettingsViewComponent {
     this.staffUsers().filter((user) => user.role === Role.TUTOR),
   );
   protected readonly draftStateTutors = signal<User[]>([]);
-
-  protected readonly serverStateGroupedStudents = toSignal(
-    combineLatest([this.courseId$, this.refreshGroupedStudents$]).pipe(
-      switchMap(([id]) => this.courseService.getStudentsInGroupsByCourse(id)),
-      map((response) => ({ '-1': [], ...response.groupedStudents })),
-    ),
-  );
-  protected readonly draftStateGroupedStudents = signal<
-    { [groupNr: string]: Student[] } | undefined
-  >(undefined);
 
   private readonly groupPartition = toSignal(
     combineLatest([this.courseId$, this.refreshGroupPartition$]).pipe(
@@ -206,11 +193,6 @@ export class SettingsViewComponent {
     });
 
     effect(() => {
-      const data = this.serverStateGroupedStudents();
-      if (data) this.draftStateGroupedStudents.set(structuredClone(data));
-    });
-
-    effect(() => {
       const data = this.serverStatePartition();
       if (data) this.draftStatePartition.set(structuredClone(data));
     });
@@ -231,15 +213,6 @@ export class SettingsViewComponent {
     });
   }
 
-  // --- Dirty Checking ---
-  // Using isEqual (Lodash or similar) is much safer and faster than JSON.stringify for large objects
-  // If you cannot use lodash, ensure key order is consistent, or stick to JSON.stringify but be aware of the risks.
-
-  private readonly groupIsDirty = computed(
-    () =>
-      JSON.stringify(this.serverStateGroupedStudents()) !==
-      JSON.stringify(this.draftStateGroupedStudents()),
-  );
   private readonly partitionIsDirty = computed(
     () =>
       JSON.stringify(this.serverStatePartition()) !==
@@ -270,7 +243,6 @@ export class SettingsViewComponent {
 
   private readonly isDirty = computed(
     () =>
-      this.groupIsDirty() ||
       this.partitionIsDirty() ||
       this.courseIsDirty() ||
       this.staffIsDirty() ||
@@ -279,7 +251,7 @@ export class SettingsViewComponent {
   );
 
   protected onTabChange(newValue: string | number | undefined) {
-    this.router.navigate([], {
+    void this.router.navigate([], {
       relativeTo: this.route,
       queryParams: { tab: newValue },
       queryParamsHandling: 'merge',
@@ -313,18 +285,6 @@ export class SettingsViewComponent {
     }
 
     const tasks: Observable<unknown>[] = [];
-
-    // 1. Groups
-    if (this.groupIsDirty()) {
-      tasks.push(
-        this.courseService
-          .patchStudentsCourseGroup(
-            this.courseId(),
-            this.draftStateGroupedStudents()!,
-          )
-          .pipe(tap(() => this.refreshGroupedStudents$.next())),
-      );
-    }
 
     // 2. Partition
     if (this.partitionIsDirty()) {

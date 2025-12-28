@@ -7,7 +7,6 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { Button } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
-import { TranslationService } from '../../../../../shared/services/translation.service';
 
 @Component({
   selector: 'ms-edit-general',
@@ -23,11 +22,11 @@ import { TranslationService } from '../../../../../shared/services/translation.s
   templateUrl: './setting-general.component.html',
 })
 export class SettingGeneralComponent {
-  course = input.required<CourseInstance>();
+  public course = input.required<CourseInstance>();
 
-  constructor(protected translationService: TranslationService) {
+  constructor() {
     effect(() => {
-      if (!this.course().allowLateSubmission) {
+      if (this.course() && !this.course().allowLateSubmission) {
         this.course().lateSubmissionPenalty = null;
       }
     });

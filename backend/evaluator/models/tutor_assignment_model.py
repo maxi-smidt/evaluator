@@ -1,6 +1,7 @@
 import json
 
 from django.db import models
+from typing import List
 
 from .assignment_instance_model import AssignmentInstance
 from user.models import Tutor
@@ -16,7 +17,7 @@ class TutorAssignment(models.Model):
     _groups = models.TextField(default='[]')
 
     @property
-    def groups(self):
+    def groups(self) -> List[int]:
         return json.loads(self._groups)
 
     @groups.setter

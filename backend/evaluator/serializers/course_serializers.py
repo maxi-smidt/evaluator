@@ -94,11 +94,18 @@ class CourseInstanceEnrollmentsSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def update_groups(grouped_students, course_instance):
+        groups = set()
         for group, students in grouped_students.items():
+            if len(students): groups.add(int(group))
             for student in students:
                 enrollment = CourseEnrollment.objects.get(course_instance=course_instance, student_id=student['id'])
                 enrollment.group = group
                 enrollment.save()
+        for tutor_assignment in TutorAssignment.objects.filter(assignment_instance__course_instance=course_instance):
+            intersection = list(groups.intersection(set(tutor_assignment.groups)))
+            if intersection != tutor_assignment.groups:
+                tutor_assignment.groups = intersection
+                tutor_assignment.save()
 
 
 class CourseInstanceChartSerializer(serializers.ModelSerializer):
