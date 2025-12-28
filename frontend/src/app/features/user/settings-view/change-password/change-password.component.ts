@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { TranslatePipe } from '../../../../shared/pipes/translate.pipe';
 import {
   FormControl,
@@ -12,11 +12,14 @@ import { SettingsService } from '../services/settings.service';
 import { ToastService } from '../../../../shared/services/toast.service';
 
 @Component({
-    selector: 'ms-change-password',
-    imports: [TranslatePipe, ReactiveFormsModule, InputTextModule, ButtonModule],
-    templateUrl: './change-password.component.html'
+  selector: 'ms-change-password',
+  imports: [TranslatePipe, ReactiveFormsModule, InputTextModule, ButtonModule],
+  templateUrl: './change-password.component.html',
 })
 export class ChangePasswordComponent {
+  private settingsService = inject(SettingsService);
+  private toastService = inject(ToastService);
+
   protected passwordForm = new FormGroup({
     oldPassword: new FormControl('', [Validators.required]),
     newPassword: new FormControl('', [Validators.required]),
@@ -24,11 +27,6 @@ export class ChangePasswordComponent {
   });
 
   errors: string[] = [];
-
-  constructor(
-    private settingsService: SettingsService,
-    private toastService: ToastService,
-  ) {}
 
   onSubmit() {
     this.errors = [];

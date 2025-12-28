@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Correction, CorrectionStatus } from '../models/correction.model';
 import { HttpClient } from '@angular/common/http';
 import { FileDownloadService } from '../../../shared/services/file-download.service';
@@ -8,10 +8,8 @@ import { tap } from 'rxjs';
   providedIn: 'root',
 })
 export class CorrectionService {
-  constructor(
-    private http: HttpClient,
-    private fileDownloadService: FileDownloadService,
-  ) {}
+  private http = inject(HttpClient);
+  private fileDownloadService = inject(FileDownloadService);
 
   patchCorrection(correctionId: number, patch: unknown) {
     return this.http.patch<Correction>(`correction/${correctionId}/`, patch);

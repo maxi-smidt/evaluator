@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { DegreeProgram } from '../models/degree-program.model';
 import {
@@ -12,7 +12,7 @@ import { Student } from '../../course/models/student.model';
   providedIn: 'root',
 })
 export class DegreeProgramService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getDegreeProgram(abbreviation: string) {
     return this.http.get<DegreeProgram>(`degree-program/${abbreviation}/`);

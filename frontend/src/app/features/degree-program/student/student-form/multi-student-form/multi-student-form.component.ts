@@ -1,4 +1,4 @@
-import { Component, input, ViewChild } from '@angular/core';
+import { Component, inject, input, ViewChild } from '@angular/core';
 import { Button } from 'primeng/button';
 import {
   FileSelectEvent,
@@ -46,19 +46,17 @@ import { HttpErrorResponse } from '@angular/common/http';
   ],
 })
 export class MultiStudentFormComponent {
+  private papa = inject(Papa);
+  private confirmationService = inject(ConfirmationService);
+  private studentService = inject(StudentService);
+  private toastService = inject(ToastService);
+
   classGroups = input.required<ClassGroup[]>();
   @ViewChild('fileUpload', { static: false }) fileUpload!: FileUpload;
   expectedHeader = JSON.stringify(['MatNr', 'Name', 'Vorname']);
   students: Student[] = [];
   errorStudents: string[] = [];
   selectedClassGroup: SimpleClassGroup | undefined;
-
-  constructor(
-    private papa: Papa,
-    private confirmationService: ConfirmationService,
-    private studentService: StudentService,
-    private toastService: ToastService,
-  ) {}
 
   removeStudentFromSelection(studentId: string) {
     this.confirmationService

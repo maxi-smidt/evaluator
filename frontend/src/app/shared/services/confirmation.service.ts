@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { ConfirmationService as CS } from 'primeng/api';
 import { TranslationService } from './translation.service';
 
@@ -6,12 +6,10 @@ import { TranslationService } from './translation.service';
   providedIn: 'root',
 })
 export class ConfirmationService {
-  constructor(
-    private confirmationService: CS,
-    private translationService: TranslationService,
-  ) {}
+  private confirmationService = inject(CS);
+  private translationService = inject(TranslationService);
 
-  makeConfirmDialog(
+  public makeConfirmDialog(
     headerKey: string,
     messageKey: string,
     acceptLabel: string,

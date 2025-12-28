@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DetailUser, PasswordUser, User } from '../models/user.models';
 import { HttpClient } from '@angular/common/http';
 import {
@@ -15,6 +15,8 @@ import {
   providedIn: 'root',
 })
 export class UserService {
+  private http = inject(HttpClient);
+
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser = this.currentUserSubject
     .asObservable()
@@ -31,8 +33,6 @@ export class UserService {
         : this.getUser().pipe(map((fetchedUser) => !!fetchedUser)),
     ),
   );
-
-  constructor(private http: HttpClient) {}
 
   setUser(user: User | null) {
     this.currentUserSubject.next(user);

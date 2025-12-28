@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlagScanService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   scanZipFile(file: File, language: string) {
     const formData = new FormData();

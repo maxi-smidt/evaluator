@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -11,13 +11,11 @@ import { LocalStorageService } from './local-storage.service';
   providedIn: 'root',
 })
 export class AuthService {
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private jwtService: JwtService,
-    private userService: UserService,
-    private localStorageService: LocalStorageService,
-  ) {}
+  private http = inject(HttpClient);
+  private router = inject(Router);
+  private jwtService = inject(JwtService);
+  private userService = inject(UserService);
+  private localStorageService = inject(LocalStorageService);
 
   login(username: string, password: string) {
     return this.http

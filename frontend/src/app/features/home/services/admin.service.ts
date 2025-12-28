@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { DetailUser, SimpleUser } from '../../../core/models/user.models';
 import { HttpClient } from '@angular/common/http';
 import { AdminDegreeProgram } from '../../degree-program/models/degree-program.model';
@@ -7,7 +7,7 @@ import { AdminDegreeProgram } from '../../degree-program/models/degree-program.m
   providedIn: 'root',
 })
 export class AdminService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   registerDegreeProgram(degreeProgram: AdminDegreeProgram) {
     return this.http.post('degree-program/create/', degreeProgram);
