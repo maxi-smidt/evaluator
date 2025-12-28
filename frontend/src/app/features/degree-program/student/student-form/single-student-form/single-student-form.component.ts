@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { ClassGroup } from '../../../models/class-group.model';
 import { SelectModule } from 'primeng/select';
 import { TranslatePipe } from '../../../../../shared/pipes/translate.pipe';
@@ -30,22 +30,18 @@ import { ToastService } from '../../../../../shared/services/toast.service';
   templateUrl: './single-student-form.component.html',
 })
 export class SingleStudentFormComponent {
+  private formBuilder = inject(FormBuilder);
+  private studentService = inject(StudentService);
+  private toastService = inject(ToastService);
+
   classGroups = input.required<ClassGroup[]>();
 
-  checkoutForm: FormGroup;
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private studentService: StudentService,
-    private toastService: ToastService,
-  ) {
-    this.checkoutForm = this.formBuilder.group({
-      id: ['', Validators.required],
-      firstName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      classGroup: ['', Validators.required],
-    });
-  }
+  checkoutForm: FormGroup = this.formBuilder.group({
+    id: ['', Validators.required],
+    firstName: ['', Validators.required],
+    lastName: ['', Validators.required],
+    classGroup: ['', Validators.required],
+  });
 
   onSubmit() {
     if (this.checkoutForm.valid) {

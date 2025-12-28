@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   HttpRequest,
   HttpHandler,
@@ -20,14 +20,12 @@ import { AuthService } from '../services/auth.service';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
+  private jwtService = inject(JwtService);
+  private authService = inject(AuthService);
+
   private isRefreshing = false;
   private refreshTokenSubject: BehaviorSubject<string | null> =
     new BehaviorSubject<string | null>(null);
-
-  constructor(
-    private jwtService: JwtService,
-    private authService: AuthService,
-  ) {}
 
   intercept(
     request: HttpRequest<unknown>,

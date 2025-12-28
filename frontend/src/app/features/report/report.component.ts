@@ -1,4 +1,10 @@
-import { Component, computed, signal, WritableSignal } from '@angular/core';
+import {
+  Component,
+  computed,
+  inject,
+  signal,
+  WritableSignal,
+} from '@angular/core';
 import { SelectModule } from 'primeng/select';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '../../shared/pipes/translate.pipe';
@@ -21,6 +27,9 @@ import { Textarea } from 'primeng/textarea';
   templateUrl: './report.component.html',
 })
 export class ReportComponent {
+  private reportService = inject(ReportService);
+  private toastService = inject(ToastService);
+
   options: string[] = ['BUG', 'FEATURE'];
 
   selection: WritableSignal<string | null> = signal<string | null>(null);
@@ -34,11 +43,6 @@ export class ReportComponent {
       this.description().trim().length > 0
     );
   });
-
-  constructor(
-    private reportService: ReportService,
-    private toastService: ToastService,
-  ) {}
 
   protected onSubmit() {
     this.reportService

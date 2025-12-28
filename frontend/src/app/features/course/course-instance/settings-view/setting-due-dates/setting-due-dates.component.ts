@@ -1,4 +1,4 @@
-import { Component, model } from '@angular/core';
+import { Component, inject, model } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DueDateCourseInstance } from '../../../models/course.model';
 import { AccordionModule } from 'primeng/accordion';
@@ -23,15 +23,13 @@ import { DatePicker } from 'primeng/datepicker';
   templateUrl: './setting-due-dates.component.html',
 })
 export class SettingDueDatesComponent {
+  private assignmentService = inject(AssignmentService);
+  private confirmationService = inject(ConfirmationService);
+  private translationService = inject(TranslationService);
+
   courseInstance = model.required<DueDateCourseInstance>();
 
   equalTime: Date | undefined;
-
-  constructor(
-    private assignmentService: AssignmentService,
-    private confirmationService: ConfirmationService,
-    private translationService: TranslationService,
-  ) {}
 
   setDefaultDate() {
     if (this.equalTime === undefined) {

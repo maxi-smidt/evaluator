@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { SimpleClassGroup } from '../models/class-group.model';
 import { Student } from '../../course/models/student.model';
@@ -7,7 +7,7 @@ import { Student } from '../../course/models/student.model';
   providedIn: 'root',
 })
 export class StudentService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   removeFromClassGroup(studentId: string) {
     return this.patchStudent(studentId, { classGroup: null });

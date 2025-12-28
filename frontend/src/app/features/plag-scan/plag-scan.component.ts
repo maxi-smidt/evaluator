@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, inject, ViewChild } from '@angular/core';
 import {
   FileUpload,
   FileUploadHandlerEvent,
@@ -31,6 +31,11 @@ import { InputTextModule } from 'primeng/inputtext';
   templateUrl: './plag-scan.component.html',
 })
 export class PlagScanComponent {
+  private plagScanService = inject(PlagScanService);
+  protected translationService = inject(TranslationService);
+  private fileDownloadService = inject(FileDownloadService);
+  private toastService = inject(ToastService);
+
   @ViewChild('fileUpload', { static: false }) fileUpload!: FileUpload;
 
   isLoading: boolean = false;
@@ -41,12 +46,7 @@ export class PlagScanComponent {
   extensionString: string | undefined;
   validExtensions: string[] = [];
 
-  constructor(
-    private plagScanService: PlagScanService,
-    protected translationService: TranslationService,
-    private fileDownloadService: FileDownloadService,
-    private toastService: ToastService,
-  ) {
+  constructor() {
     this.languages.push({ title: 'C++', label: 'cpp' });
     this.languages.push({ title: 'C#', label: 'csharp' });
     this.languages.push({ title: 'Java', label: 'java' });

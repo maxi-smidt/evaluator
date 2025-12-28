@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { PreviousDeductions } from '../models/previous-deduction.model';
 
@@ -6,7 +6,7 @@ import { PreviousDeductions } from '../models/previous-deduction.model';
   providedIn: 'root',
 })
 export class PreviousDeductionsService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getPreviousDeductions(correctionId: number, idType: string) {
     return this.http.get<PreviousDeductions>(

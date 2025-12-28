@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Assignment, AssignmentInstance } from '../models/assignment.model';
 import { EditPartition } from '../../course/models/edit-partition.model';
@@ -7,7 +7,7 @@ import { EditPartition } from '../../course/models/edit-partition.model';
   providedIn: 'root',
 })
 export class AssignmentService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   getFullAssignmentInstance(assignmentId: number) {
     return this.http.get<AssignmentInstance>(

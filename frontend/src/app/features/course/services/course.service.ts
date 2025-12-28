@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   Course,
   DetailCourse,
@@ -14,7 +14,7 @@ import { DegreeProgram } from '../../degree-program/models/degree-program.model'
   providedIn: 'root',
 })
 export class CourseService {
-  constructor(private http: HttpClient) {}
+  private http = inject(HttpClient);
 
   createCourseInstance(courseId: number, year: number) {
     return this.http.post('course-instance/create/', {

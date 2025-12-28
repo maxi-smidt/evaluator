@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { TranslationService } from './translation.service';
 
@@ -6,14 +6,12 @@ import { TranslationService } from './translation.service';
   providedIn: 'root',
 })
 export class ToastService {
+  private messageService = inject(MessageService);
+  private translationService = inject(TranslationService);
+
   private readonly ERROR = 'Error';
   private readonly INFO = 'Info';
   private readonly SUCCESS = 'Success';
-
-  constructor(
-    private messageService: MessageService,
-    private translationService: TranslationService,
-  ) {}
 
   error(key: string) {
     this.showMessage(this.ERROR, key);

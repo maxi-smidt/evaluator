@@ -45,9 +45,8 @@
     </div>
 
     <div class="d-flex">
-      <p-button label="{{ 'header.btn-logout' | translate }}" [outlined]="toggleButton"
-                (mouseenter)="toggleButton = false" (mouseleave)="toggleButton = true"
-                (click)="onLogoutBtnClick()" size="small" icon="pi pi-sign-out" />
+      <p-button label="{{ 'header.btn-logout' | translate }}" variant="outlined"
+                (click)="onLogoutButtonClick()" size="small" icon="pi pi-sign-out" />
     </div>
   </div>
 </nav>

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 
@@ -6,11 +6,11 @@ import { Observable, tap } from 'rxjs';
   providedIn: 'root',
 })
 export class TranslationService {
+  private http = inject(HttpClient);
+
   private translations: unknown;
 
-  constructor(private http: HttpClient) {}
-
-  loadLanguage(language: string): Observable<unknown> {
+  public loadLanguage(language: string): Observable<unknown> {
     return this.http.get(`/i18n/${language}.json`).pipe(
       tap((translations) => {
         this.translations = translations;
@@ -18,7 +18,7 @@ export class TranslationService {
     );
   }
 
-  translate(key: string): string {
+  public translate(key: string): string {
     const keys = key.split('.');
     let result: unknown = this.translations;
 
@@ -31,7 +31,7 @@ export class TranslationService {
     return typeof result === 'string' ? result : key;
   }
 
-  getArray(key: string): string[] {
+  public getArray(key: string): string[] {
     const keys = key.split('.');
     let result: unknown = this.translations;
 
