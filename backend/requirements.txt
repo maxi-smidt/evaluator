@@ -19,7 +19,7 @@ fonttools==4.61.1
 idna==3.11
 jsonschema==4.25.1
 jsonschema-specifications==2025.9.1
-pillow==12.0.0
+pillow==12.1.0
 psycopg2-binary==2.9.11
 pycparser==2.23
 pydyf==0.12.1
