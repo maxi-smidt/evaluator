@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, signal } from '@angular/core';
 import { Assignment, Exercise } from '../models/assignment.model';
 import { AssignmentService } from '../services/assignment.service';
 import { ActivatedRoute } from '@angular/router';
-import { JsonEditorOptions, JsonEditorComponent } from 'ang-jsoneditor';
+import { JsonEditorOptions, JsonEditorComponent } from '@msmidt/ngx-jsoneditor';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { FormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
