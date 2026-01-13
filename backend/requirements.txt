@@ -25,7 +25,7 @@ pycparser==2.23
 pydyf==0.12.1
 PyGithub==2.8.1
 PyJWT==2.10.1
-PyNaCl==1.6.1
+PyNaCl==1.6.2
 pyphen==0.17.2
 python-dotenv==1.2.1
 referencing==0.37.0
