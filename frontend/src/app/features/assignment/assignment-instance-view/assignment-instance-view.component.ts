@@ -139,7 +139,7 @@ export class AssignmentInstanceViewComponent {
   }
 
   protected downloadAction(correctionId: number) {
-    this.correctionService.downloadCorrection(correctionId);
+    this.correctionService.downloadCorrection(correctionId).subscribe();
   }
 
   protected viewOnlyAction(correctionId: number) {
