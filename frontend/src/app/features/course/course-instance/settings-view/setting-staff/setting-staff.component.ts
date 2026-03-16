@@ -35,11 +35,11 @@ export class SettingStaffComponent {
   );
 
   protected selectableCourseLeaders = computed(() =>
-    this.users() ? this.users()!.filter((u) => u.role === Role.TUTOR) : [],
-  );
-  protected selectableTutors = computed(() =>
     this.users()
       ? this.users()!.filter((u) => u.role === Role.COURSE_LEADER)
       : [],
+  );
+  protected selectableTutors = computed(() =>
+    this.users() ? this.users()!.filter((u) => u.role === Role.TUTOR) : [],
   );
 }
